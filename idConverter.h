@@ -1,0 +1,136 @@
+#pragma once
+#include <vector>
+#include "itemID.h"
+#include "biomeID.h"
+#include "enchantmentID.h"
+#include "statusEffectID.h"
+#include "GamemodeID.h"
+#include "fireworkShapeID.h"
+#include "idList.h"
+#include "nbtSerializer.h"
+struct idConverter
+{
+	//oldtonew[oldID] gives newID
+	std::vector<itemID> itemIDConverter = std::vector<itemID>();
+	std::vector<entityID> entityIDConverter = std::vector<entityID>();
+	std::vector<biomeID> biomeIDConverter = std::vector<biomeID>();
+	std::vector<enchantmentID> enchantmentIDConverter = std::vector<enchantmentID>();
+	std::vector<statusEffectID> statusEffectIDConverter = std::vector<statusEffectID>();
+	std::vector<gameModeID> gameModeIDConverter = std::vector<gameModeID>();
+	std::vector<fireworkShapeID> fireworkShapeIDConverter = std::vector<fireworkShapeID>();
+
+	int oldVersion = 0;
+	int newVersion = currentFileVersionID;
+
+	idConverter(cint& oldVersion, cint& newVersion = currentFileVersionID);
+
+	template<typename dataType, typename idType>
+	inline static bool convertID(const idType& valueToConvert, idType& destination, const std::vector <dataType>& converter)
+	{
+		cint index = (int)converter[(int)valueToConvert];
+		if (index != -1)
+		{
+			if constexpr (std::is_same<idType, blockID>::value)
+			{
+				if (index >= (int)blockID::count)
+				{
+					return false;
+				}
+			}
+
+			destination = (idType)index;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	template<typename idType>
+	inline static bool serializeID(nbtSerializer& s, const std::wstring& memberName, idType& value, const std::vector<idType>* converter)
+	{
+		if (s.write)
+		{
+			return s.serializeValue(memberName, (int&)value);
+		}
+		else
+		{
+			int intValue;
+			if (s.serializeValue(memberName, intValue))
+			{
+				if ((!converter) || convertID<idType>((idType&)intValue, (idType&)intValue, *converter))
+				{
+					value = (idType)intValue;
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	template<typename dataType, typename idType>
+	inline static std::vector<idType> readIDList(nbtSerializer& s, const idList<dataType*, idType>& dataList, const std::wstring& name)
+	{
+		cbool write = false;
+		if (s.push<nbtDataTag::tagList>(name))
+		{
+			const std::vector<nbtData*> serializedIDList = s.getChildren();
+			std::vector<idType> conversionList = std::vector<idType>(serializedIDList.size());
+			for (int i = 0; i < serializedIDList.size(); i++)
+			{
+				std::wstring name;
+				s.serializeValue(serializedIDList[i], name);
+				conversionList[i] = dataList.getIDByName(name);
+			}
+			s.pop();
+			return conversionList;
+		}
+		else
+		{
+			return std::vector<idType>();
+		}
+	}
+	template<typename dataType, typename idType>
+	static void writeIDList(nbtSerializer& s, const idList<dataType*, idType>& dataList, const std::wstring& name)
+	{
+		cbool write = true;
+		if (s.push<nbtDataTag::tagList>(name))
+		{
+			for (int i = 0; i < dataList.size; i++)
+			{
+				s.serializeValue(std::wstring(L""), dataList[i]->name);
+			}
+			s.pop();
+		}
+	}
+	static void writeIDsToFile();
+	template<typename dataType, typename idType>
+	inline static void convertArray(dataType*& idArray, csize_t & idArraySize, const std::vector<idType>& converter)
+	{
+		//convert everything to the new value
+		for (int index = 0; index < idArraySize; index++)
+		{
+			convertID<idType>(idArray[index], idArray[index], converter);
+		}
+	}
+	template<typename dataType, typename idType>
+	inline static bool findArrayDifference(const idList<dataType*, idType>& dataList, const std::vector<idType>& converter)
+	{
+		if (dataList.size != converter.size())
+		{
+			return true;
+		}
+		//convert everything to the new value
+		for (int index = 0; index < converter.size(); index++)
+		{
+			if ((int)converter[index] != index)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+};
+extern std::vector<idConverter*> converterList;
+idConverter* getConverter(cint& oldVersion);

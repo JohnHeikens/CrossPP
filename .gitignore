@@ -1,0 +1,9 @@
+x64
+old data
+Output
+saves
+*.class
+models
+*.ipch
+.vs/MedievalSurvival
+Debug

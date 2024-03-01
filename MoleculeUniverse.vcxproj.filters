@@ -1,0 +1,3664 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\ID">
+      <UniqueIdentifier>{676af98f-a2e9-48d2-a7df-8847fa248bc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\test">
+      <UniqueIdentifier>{f5fce4d7-258e-4a25-b97e-4468b1391dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\include">
+      <UniqueIdentifier>{e95ef0e1-4fea-4b1a-a393-c37537d175c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NBT">
+      <UniqueIdentifier>{36eea1e3-4024-4459-a42f-b0491399b960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\soundHandler">
+      <UniqueIdentifier>{12c8f572-d94a-4907-ae42-5988ad51607d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interface">
+      <UniqueIdentifier>{1ed1f670-774a-472e-8790-4cba3d2c296b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\damage">
+      <UniqueIdentifier>{6053fa7b-bb6e-48d2-8765-c3d8845e41c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\statusEffect">
+      <UniqueIdentifier>{7cb1edc1-9da5-4c87-affc-66582d1d0104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rendering">
+      <UniqueIdentifier>{ba82544a-aee4-4712-b6a5-f749938f4b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world">
+      <UniqueIdentifier>{71287c61-4bff-4666-a73f-83df20225ea9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome">
+      <UniqueIdentifier>{46055f7b-4cb7-4870-ae9b-133de6dbf3be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\blockContainer">
+      <UniqueIdentifier>{9f5614c9-c8b9-4333-890a-1c1f16ce84e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chunk">
+      <UniqueIdentifier>{58fbaa4c-9872-4f52-b1d0-625555ebdf4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block">
+      <UniqueIdentifier>{20bb32a4-ca06-4d76-a307-e8c9bf797543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item">
+      <UniqueIdentifier>{5efb5c8d-82fe-4678-9317-46481be01e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\physics">
+      <UniqueIdentifier>{9d1d691d-c448-44d0-b2ef-5a7db1178f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound">
+      <UniqueIdentifier>{59bfe25e-393f-4ff3-8e7f-148d7ca5fe85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity">
+      <UniqueIdentifier>{f286b30c-d13c-45ff-87ad-54ad166fa0e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob">
+      <UniqueIdentifier>{286b81d0-f307-4189-bfbb-67d88dc94795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\humanoid">
+      <UniqueIdentifier>{3812790e-9724-4dc6-9616-6882c3a62dd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory">
+      <UniqueIdentifier>{e1b14378-2175-41d1-aa1f-14482b54978e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData">
+      <UniqueIdentifier>{3ec7a810-6e3d-4aba-92fa-0739678dbcb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\fluid">
+      <UniqueIdentifier>{b54046c7-e99a-4cb2-95db-b37f67694216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop">
+      <UniqueIdentifier>{1aa3c9b2-b26b-4b66-aa19-a1948943345f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\slime">
+      <UniqueIdentifier>{338252ec-fdb4-4e5c-8c23-62169cb6ce85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\coral">
+      <UniqueIdentifier>{7b140937-d44e-437f-8645-14ba1caaf51f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\enderDragon">
+      <UniqueIdentifier>{dfbf73bb-0239-4e78-b74e-f5beb73c4269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI">
+      <UniqueIdentifier>{978a78b1-8dfd-4b2f-af95-a10f78c1a9c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\enderDragon">
+      <UniqueIdentifier>{22811d5a-f981-4ed2-b8e3-8614d9eabd61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\fireBallAI">
+      <UniqueIdentifier>{0afbb6fb-749f-4f05-930a-b9f460311674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\dimension">
+      <UniqueIdentifier>{9d832f0a-22e3-438c-93cc-584193e63b4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure">
+      <UniqueIdentifier>{71b6b68a-d7a1-4715-8732-ab30a025a40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\humanoid\zombie">
+      <UniqueIdentifier>{d08c1abb-e290-4c5d-b430-3f394dec0961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\fourLeggedMob">
+      <UniqueIdentifier>{bb33e655-2bc3-46ae-a72e-8a2d08d52739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\fourLeggedMob\sheep">
+      <UniqueIdentifier>{cdce1614-c5ef-443e-869d-e023f4da8601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\fourLeggedMob\pig">
+      <UniqueIdentifier>{da1a80c7-41b7-4479-a6cb-4e36614c0fa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\passiveMob">
+      <UniqueIdentifier>{0d2e6054-0682-46e8-857b-48ae506557e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\fourLeggedMob\cow">
+      <UniqueIdentifier>{7704e192-7101-433b-a0d4-8e204865e591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\fourLeggedMob\wolf">
+      <UniqueIdentifier>{75d50d06-53f0-4b8c-954b-94a93714a4ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\fourLeggedMob\creeper">
+      <UniqueIdentifier>{61de50c6-5e6a-49f9-bd1e-e0442dd77145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\cod">
+      <UniqueIdentifier>{7b28e939-f447-400b-b02c-54b6ec95c0ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\blaze">
+      <UniqueIdentifier>{ad166225-0741-42cb-8f2d-a13558b9a241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\ghast">
+      <UniqueIdentifier>{f168df69-94b2-4b24-bb97-4f7fb0c823e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\humanoid\enderman">
+      <UniqueIdentifier>{bb497fc5-3142-426f-a842-372bbe66e501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\humanoid\human">
+      <UniqueIdentifier>{44397b03-e176-46e4-9774-8cc3118f9554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\humanoid\skeleton">
+      <UniqueIdentifier>{63602a2f-6612-46f2-8b8b-c908d23c60c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\humanoid\zombifiedPiglin">
+      <UniqueIdentifier>{66d92db4-9eca-4aae-8bc7-99ab6504f7a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\passiveMob\chicken">
+      <UniqueIdentifier>{c284172b-1206-41d3-b160-8b741d714fea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\shulker">
+      <UniqueIdentifier>{8bcbc91c-00d8-4297-b58b-996d9acb0294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\targetAI">
+      <UniqueIdentifier>{71ccdf5b-b411-45f3-bff7-ea6d08491f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\targetAI\attackOnCollideAI">
+      <UniqueIdentifier>{6d85beb6-1854-433d-a710-f0142068f25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\targetAI\angerAI">
+      <UniqueIdentifier>{f690aa3d-ec59-4095-ace0-172126b56d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\breedableMob">
+      <UniqueIdentifier>{425b4c5e-0fd9-46d8-b817-ab96eaba01c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\boidsAI">
+      <UniqueIdentifier>{c8544d7f-72a4-4037-afaa-bbee867306c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\wanderAI">
+      <UniqueIdentifier>{4f69d5df-cb38-4ba7-b994-f90cb9a28320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\eatGrassAI">
+      <UniqueIdentifier>{b05528fc-e816-425f-aa9c-0bb4e0236733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\avoidEntityAI">
+      <UniqueIdentifier>{fc60ccff-ae54-401e-b51d-2b00c3dd399a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\loveModeAI">
+      <UniqueIdentifier>{7226bf0f-ecaf-4274-948e-41bfbf538996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\entityAI">
+      <UniqueIdentifier>{9798156c-00d8-4fdf-afca-91f8d61bbfae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\panicAI">
+      <UniqueIdentifier>{79e15daa-6875-43d3-afa1-cf71d1896a13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\NewFilter1">
+      <UniqueIdentifier>{ce97701b-542c-4952-8ab9-0fe07c47572c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\taskList">
+      <UniqueIdentifier>{be5d6120-bf0f-436a-a4ef-f979b9f46433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\teleportOnDamageAI">
+      <UniqueIdentifier>{534c5822-8b24-4803-ab63-0f7f34459bc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\teleportToAttachAI">
+      <UniqueIdentifier>{ea152340-4851-42df-bacb-47861dc77972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\taskAI">
+      <UniqueIdentifier>{29e3b7dc-bc3f-423c-8538-e6812469df7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\experienceOrb">
+      <UniqueIdentifier>{f7d13bf0-d498-4963-985d-93922e64fc6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\targetAI\angerAI\hurtByTargetAI">
+      <UniqueIdentifier>{a085bdc9-481e-4cbc-ac5e-c8b0e18231b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\attachedBlockData">
+      <UniqueIdentifier>{846f4ace-0f5f-46c1-b3cc-15c2fca958d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\doubleBlockData">
+      <UniqueIdentifier>{f4f04b7b-b0fd-4ec4-b946-60112965277c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\doubleAttachedBlockData">
+      <UniqueIdentifier>{6853acab-0f80-4f8f-ac09-26d2805be229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData">
+      <UniqueIdentifier>{770c4b0d-4328-417d-8137-b619fc4954b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\ageData">
+      <UniqueIdentifier>{89b1c8fe-e63a-48d3-8cda-8c60d6fbe425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\ageData\frostedIceData">
+      <UniqueIdentifier>{daa65010-5a48-4107-8c62-27e197276974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\attachedData">
+      <UniqueIdentifier>{2e5b87d7-3ddc-4255-b9cb-9bbb1343adac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\attachedBlockData\attachmentDirectionData">
+      <UniqueIdentifier>{4474ac58-3fb0-4595-aca8-2477fb579590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\attachedBlockData\attachmentDirectionData\redstoneTorchData">
+      <UniqueIdentifier>{5ab208fb-c9a2-4e37-a95b-9d758e047aa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\pollenData">
+      <UniqueIdentifier>{138a9210-cac2-412a-b001-38c5d4af163f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\pollenData\attachedBlockPollenData">
+      <UniqueIdentifier>{33300c1d-d474-46fd-ba53-c4bf83da60ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\pollenData\attachedBlockPollenData\doubleAttachedBlockPollenData">
+      <UniqueIdentifier>{ea56b909-cdb7-4845-b1d1-5b1ad16cc9c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\pollenData\attachedBlockPollenData\shortGrassData">
+      <UniqueIdentifier>{5e3bd97a-a4cf-4632-96ee-ec1ae38b0401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\openData">
+      <UniqueIdentifier>{195fec4e-1372-4721-8dbc-3dce42bcaced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\upsideDownData">
+      <UniqueIdentifier>{d82aa876-c1c4-4f30-8e5e-04e6a3744981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\ageData\fireData">
+      <UniqueIdentifier>{96272c0a-17ea-4191-bcb3-697be5050076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\attachedBlockData\attachmentDirectionData\buttonData">
+      <UniqueIdentifier>{4315cce8-362f-427a-b35b-db7f88a15926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\attachedBlockData\attachmentDirectionData\leverData">
+      <UniqueIdentifier>{cf797490-dd24-46b7-b706-bcfc8a18394d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\lastPowerLevelData">
+      <UniqueIdentifier>{1353d89a-8cbe-4bb3-bd31-d14bb7b942d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\pistonData">
+      <UniqueIdentifier>{a948e585-c628-4f3f-9485-db22a5291e1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\inputData">
+      <UniqueIdentifier>{cc03c1e9-a9c4-4a12-a42a-af988a4bff62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\inputData\repeaterData">
+      <UniqueIdentifier>{3e70ab91-2a0f-4d87-945a-19bdcd235b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\inputData\comparatorData">
+      <UniqueIdentifier>{7f430226-a43b-4b21-97cd-28d4a69b5489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\tntData">
+      <UniqueIdentifier>{84b338e0-5bad-44a5-bb0e-aef8584a3018}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\ageData\bambooData">
+      <UniqueIdentifier>{edb26c92-73ce-4933-a0ea-29f801412a2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\grassBlockData">
+      <UniqueIdentifier>{4720d04e-0fdb-4d85-8f42-7f75bf9cd586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\lastPowerLevelData\noteBlockData">
+      <UniqueIdentifier>{b7d9f71f-746e-4841-b298-79de054a5be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\jukeBoxData">
+      <UniqueIdentifier>{3e7baff4-e204-4b52-ac86-2b275b75b64c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\lastPowerLevelData\redstoneLampData">
+      <UniqueIdentifier>{f8837829-5a12-4708-ac1a-c22342b72fe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\spawnerData">
+      <UniqueIdentifier>{771f10b0-21ef-4748-b1e1-fc9e9029c8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\fallingBlockData">
+      <UniqueIdentifier>{4a313353-6eb1-4da1-b2b7-e07b37cabe2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\endPortalFrameData">
+      <UniqueIdentifier>{72bdaa69-f01d-47e5-98e8-f724dc58ec4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\stairsData">
+      <UniqueIdentifier>{42812fc7-cbe0-40f4-8418-bdd2115bd73a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\slabData">
+      <UniqueIdentifier>{10788714-804f-437c-94ba-9b21c083aac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\doubleBlockData\bedData">
+      <UniqueIdentifier>{2ffed378-c751-49b2-9f50-ab1bc99cd26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\doubleBlockData\doorData">
+      <UniqueIdentifier>{a33dbb69-a5ae-410b-8a31-c1f70d188d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\doubleBlockData\doorData\ironDoorData">
+      <UniqueIdentifier>{b0ad47a0-26dd-413d-b51a-a780d9936feb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\trapDoorData">
+      <UniqueIdentifier>{10bd2147-87a7-44d9-980a-57465418e1c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\trapDoorData\ironTrapDoorData">
+      <UniqueIdentifier>{6e6ac95b-0b27-4697-b1ef-ca9f53b80913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\fenceGateData">
+      <UniqueIdentifier>{6d59b6ed-bc02-4725-87dd-58a0dd6eaf61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\sugarCaneData">
+      <UniqueIdentifier>{1b9377ac-310d-4ea0-b82c-8aac3b6c866a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\attachedBlockData\saplingData">
+      <UniqueIdentifier>{4a71d107-568b-45a4-a763-8e483836ed5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\pollenData\attachedBlockPollenData\mushroomData">
+      <UniqueIdentifier>{2c282161-2d84-499d-8673-a5ee2b56acca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\pollenData\fungusData">
+      <UniqueIdentifier>{a75fe372-8952-4585-8523-34b21ad2956e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\ageData\cropData">
+      <UniqueIdentifier>{f55153be-4ecb-4c4d-ab8b-4bfc0d14461e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\ageData\cropData\attachedCropData">
+      <UniqueIdentifier>{d81c3457-2ed5-4829-bc21-31b9f40d7414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\ageData\cropData\stemPlantData">
+      <UniqueIdentifier>{de6cd0aa-b00e-4fa0-b466-3a054453a84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\fallingBlockData\snowLayerData">
+      <UniqueIdentifier>{b42ab242-345a-4105-a904-3869f0e1830c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\fluidData">
+      <UniqueIdentifier>{9fae901b-7f2d-4ce8-af12-18019062f9a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\fluidData\spongeData">
+      <UniqueIdentifier>{f1c840fa-21a8-4e64-86b0-f04a59c1f65c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\dispenserData">
+      <UniqueIdentifier>{c4a5dd5f-e33d-4279-97ef-3f71ea3d69ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\dispenserData\dropperData">
+      <UniqueIdentifier>{d5cde05e-acb8-4f78-a1bd-7c1d55438872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\chestData">
+      <UniqueIdentifier>{6915cf91-6f6f-46d6-a90b-1e66c26c4fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\furnaceData">
+      <UniqueIdentifier>{ee0f329b-7fc2-4979-94e0-d62243fc1140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\structureBlockData">
+      <UniqueIdentifier>{731636b2-7a45-4229-841b-4ce26bde20b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\facingData\jigsawData">
+      <UniqueIdentifier>{07200c97-1b42-4672-a6f4-3776ed79209e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\pollen">
+      <UniqueIdentifier>{57b0101a-8b8e-4fe9-a7dd-39faec5b9c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\fireworkRocket">
+      <UniqueIdentifier>{813624fa-f8cc-4772-a0e6-6f44b1ad831c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\piston">
+      <UniqueIdentifier>{0d3ed19e-6338-4708-bb02-eece007a23ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\ridableEntity">
+      <UniqueIdentifier>{956521c8-c87f-4b6d-9585-78788fcf6705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\ridableEntity\hollowRidableEntity">
+      <UniqueIdentifier>{2d2c5622-7ebc-4819-ae51-ac741c472815}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\ridableEntity\hollowRidableEntity\boat">
+      <UniqueIdentifier>{d2045979-164e-4cd2-aa5f-23c192e0ac8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\ridableEntity\hollowRidableEntity\minecart">
+      <UniqueIdentifier>{37d09b75-d820-4f3e-b181-1845d58f1e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\tnt">
+      <UniqueIdentifier>{fc2a05d1-add9-4b72-aa63-e4ff1c159a3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\endCrystal">
+      <UniqueIdentifier>{af34dd62-60a4-42d9-9e03-ceb7cd8b2d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\fallingBlock">
+      <UniqueIdentifier>{fd7af4fe-b92e-47c7-bd42-c8a72dddbc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\particle">
+      <UniqueIdentifier>{e9d540ba-4959-4545-954d-8a5a9de2fc5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer">
+      <UniqueIdentifier>{72066e58-c623-4320-b9cb-ff6760ae78e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\uiSlotContainer">
+      <UniqueIdentifier>{5d6276f3-4548-437c-8f17-469e08fdc879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\inventory">
+      <UniqueIdentifier>{a4b7df7d-ddc8-4306-acbc-73c9c99d686a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\craftableSlotContainer">
+      <UniqueIdentifier>{7cb6b1f8-f018-41e3-a86e-2f5889d161bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer">
+      <UniqueIdentifier>{9f4b4c0b-3d88-436e-b461-62efa6ebb613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer\humanSlotContainerUI">
+      <UniqueIdentifier>{85741628-08d6-42f9-9a71-f13e25058a1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer\craftingTableSlotContainer">
+      <UniqueIdentifier>{38642d5e-b11b-4f03-ba46-73236118e7b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\craftableSlotContainer\smithingTableSlotContainer">
+      <UniqueIdentifier>{b143f43c-b74f-49d2-b5ba-90982aef12f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\craftableSlotContainer\anvilSlotContainer">
+      <UniqueIdentifier>{ab6399d6-b3df-4b6e-81b6-50445c8b11fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\inventory\furnaceSlotContainer">
+      <UniqueIdentifier>{06c40ba5-d4d5-4e90-94f3-c84c6941eca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\inventory\brewingStandSlotContainer">
+      <UniqueIdentifier>{5a3db6d7-54c4-4aa7-a730-9d6703e811d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\inventory\chestSlotContainer">
+      <UniqueIdentifier>{1f295817-a902-4a89-8d3e-988dd76924f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\inventory\dispenserSlotContainer">
+      <UniqueIdentifier>{8e296e1d-9eed-4589-8a77-5bb02273104f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\slotContainer\inventory\enchantingTableSlotContainer">
+      <UniqueIdentifier>{785798c7-5bc6-466e-967d-d6dc0d19106b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{d95d2efa-7ad4-4bbe-87c9-71db0a1453e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\structureBlockModeUI">
+      <UniqueIdentifier>{6bbde28f-d95c-4302-bdfe-a1ec70f2d2ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\structureBlockModeUI\structureBlockSaveModeUI">
+      <UniqueIdentifier>{10b504a0-4a99-4c45-876a-797277542735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\structureBlockModeUI\structureBlockLoadModeUI">
+      <UniqueIdentifier>{4bafe6a9-e4c6-4e2c-8435-fe788cb0f4ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\structureBlockUI">
+      <UniqueIdentifier>{4cd69a76-4c24-4df8-9c26-b651ab5a8b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\jigsawUI">
+      <UniqueIdentifier>{88285791-c1e0-4e8c-878e-5ceffb774419}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\inventoryForm">
+      <UniqueIdentifier>{6ef4bd96-d3ef-45a5-8c1e-058fb47d4f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\creditsForm">
+      <UniqueIdentifier>{eff625c0-f989-45a4-b6e0-03ea2616063c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable">
+      <UniqueIdentifier>{3164548a-f6f5-4cc0-bb66-1f135143b5a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\fishingHook">
+      <UniqueIdentifier>{cee672f8-c1bc-4b53-8b5d-a30d26239ee8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\snowBall">
+      <UniqueIdentifier>{9780be8d-a104-4df7-a653-2bab954275d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\egg">
+      <UniqueIdentifier>{445b3b11-aacc-454f-be35-18df02ffa8b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\arrow">
+      <UniqueIdentifier>{d08804fa-a744-4668-9c85-969d2105173c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\enderPearl">
+      <UniqueIdentifier>{1a6e46ad-053a-4cfc-a1a1-9471f091e48a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\eyeOfEnder">
+      <UniqueIdentifier>{05dbdce6-5911-4974-b9b0-6b7bae270cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\fireBall">
+      <UniqueIdentifier>{8068787b-2bc2-4e23-87e1-2eb7e8b12897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\fireBall\ghastFireBall">
+      <UniqueIdentifier>{ae3d456e-9863-4567-be30-45aa4f4171ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\fireBall\dragonFireBall">
+      <UniqueIdentifier>{0098adc2-43fc-4a99-a099-bdd8567b05df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\throwable\fireBall\smallFireBall">
+      <UniqueIdentifier>{41c8f08a-121c-4fed-b974-bbfb8210be9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\floatingSlot">
+      <UniqueIdentifier>{6c0b44f6-75d9-418d-9de4-19c978faf1ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entityData">
+      <UniqueIdentifier>{a99ba9a1-a9af-41d0-b3c3-7cee539d6dad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entityData\throwableData">
+      <UniqueIdentifier>{b72a8338-e156-4408-ae66-8c6e76b2a176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biomeData">
+      <UniqueIdentifier>{0a6ac5d4-497d-4198-bb5a-1e8b0f8efe97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entityData\mobData">
+      <UniqueIdentifier>{d41854c8-e63f-4dcb-a683-2b3b2a556669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particleBrush">
+      <UniqueIdentifier>{f12e87d3-0e4a-4917-a68e-081fc8bca563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particleBrush\rectParticleBrush">
+      <UniqueIdentifier>{eac7dc6b-2b21-4b0f-99cc-f26575d8765f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particleBrush\rectParticleBrush\blockParticleBrush">
+      <UniqueIdentifier>{148aac82-532c-44bb-a385-d12de1801382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particleBrush\rectParticleBrush\itemParticleBrush">
+      <UniqueIdentifier>{76386e8b-f038-4efd-ac7a-ac9c08d88431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particleBrush\textureParticleBrush">
+      <UniqueIdentifier>{c9deca0c-9678-4103-ac13-cf53ff656fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\settings">
+      <UniqueIdentifier>{a9bd57dd-15cd-431d-8fb3-dc74b0155ce8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IItemComparable">
+      <UniqueIdentifier>{0eabdcc6-c705-4e8e-84ac-a21fdb35e218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\itemData">
+      <UniqueIdentifier>{277a128f-bd59-4dbe-a428-cb39a2ba5da2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IItemComparable\tag">
+      <UniqueIdentifier>{a7d85e63-46d9-4635-ae10-274827319f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropData">
+      <UniqueIdentifier>{c779f9b4-7760-4e53-8afd-e25666aae6f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator">
+      <UniqueIdentifier>{5749ef3b-9e4b-4da7-b543-58c959eb28cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\endBiomeGenerator">
+      <UniqueIdentifier>{ce137dbf-2021-40cd-a87d-5844d51bad59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\endBiomeGenerator\theEnd">
+      <UniqueIdentifier>{5e1fb60a-70bb-4166-83f2-0461f0fe97a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\endBiomeGenerator\endVoid">
+      <UniqueIdentifier>{4b97a451-5efc-4a6a-b7fc-e81a5982e4e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\endBiomeGenerator\endLands">
+      <UniqueIdentifier>{748aae7a-4502-4b04-b3a0-bb68a60f6809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\netherBiomeGenerator">
+      <UniqueIdentifier>{750327c1-86f2-41bb-af43-50ce61f56708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\netherBiomeGenerator\netherWastes">
+      <UniqueIdentifier>{273776f6-69ac-41e7-b224-2cd82a6e6d4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\netherBiomeGenerator\netherForest">
+      <UniqueIdentifier>{e235b991-b864-4535-8273-d3aa36136294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\netherBiomeGenerator\netherForest\crimsonForest">
+      <UniqueIdentifier>{28d8d681-f2ff-499a-8785-e9d8e2dd62e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\netherBiomeGenerator\netherForest\warpedForest">
+      <UniqueIdentifier>{63bec553-0702-4d89-8c2e-c4701cd8e697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\netherBiomeGenerator\netherForest\soulSandValley">
+      <UniqueIdentifier>{b24f187a-5573-4f7e-a8f6-35c7804915de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\netherBiomeGenerator\netherForest\basaltDeltas">
+      <UniqueIdentifier>{f424725f-5821-4bbb-b707-8ec803fde333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\mountains">
+      <UniqueIdentifier>{b6f1eadc-d233-481d-b512-f9db9d8c7a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\desert">
+      <UniqueIdentifier>{a6812c76-17b2-4401-b69b-4bf89facaf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\mushroomFields">
+      <UniqueIdentifier>{8a706e1b-f744-45f0-b05f-c93b639b158c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\iceSpikes">
+      <UniqueIdentifier>{0094d324-b21b-4640-93a8-7a54c1e1467d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\forest">
+      <UniqueIdentifier>{c7b2df54-7956-4d8f-9f3e-29844d5a29ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\swamp">
+      <UniqueIdentifier>{8a48fda7-94ab-4096-b88d-525c0fba6122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\darkForest">
+      <UniqueIdentifier>{62954f0c-83fa-4f8a-aa57-66f8a785ca4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\plains">
+      <UniqueIdentifier>{f6220990-9701-43eb-8a1c-3d4edc20f867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\savanna">
+      <UniqueIdentifier>{dde67040-4f67-4b09-adc4-333045b22219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\ocean">
+      <UniqueIdentifier>{fc89ee23-efd8-4058-9f13-eeec5c8fdc66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\taiga">
+      <UniqueIdentifier>{b2b57e89-d0e7-42f3-9013-5dd5bc8615ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\badLands">
+      <UniqueIdentifier>{3dc09d18-2d0e-4632-ad45-988ac4b914c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\biome\overworldBiomeGenerator\jungle">
+      <UniqueIdentifier>{73332f27-8491-41e0-99cd-5c5299c74740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable">
+      <UniqueIdentifier>{7eac2fd5-78df-4ccb-b6ed-076a23968541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\itemDrop">
+      <UniqueIdentifier>{f4959855-4b87-4672-ab55-386d4099a9b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution">
+      <UniqueIdentifier>{3a31c536-965d-4f95-85f1-01a8448dbbe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\amountDrop">
+      <UniqueIdentifier>{b8ddbc5f-5c82-4969-b394-64638072bd73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution\bonusAmountDistribution">
+      <UniqueIdentifier>{1e8588a6-59e8-4a80-9d73-6e1742727719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution\bonusAmountDistribution\uniformBonusAmountDistribution">
+      <UniqueIdentifier>{20eeeca0-39ca-45aa-a313-e12332af6589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution\constantAmountDistribution">
+      <UniqueIdentifier>{574ced26-abc8-48a6-9a9d-4d15a74a95d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution\uniformAmountDistribution">
+      <UniqueIdentifier>{164200a6-b4d4-42e6-872c-13755b2134b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution\binomialAmountDistribution">
+      <UniqueIdentifier>{8f7d066c-c212-4874-a6e5-8d38617fe55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution\bonusAmountDistribution\binomialWithBonusCountDistribution">
+      <UniqueIdentifier>{23c7d99c-977e-49b7-b93f-1b44ecbac253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\explosionDecayDrop">
+      <UniqueIdentifier>{b51a1a18-4074-4b75-a64b-e80825c0ed14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\choiceDrop">
+      <UniqueIdentifier>{478209c4-e02e-4efc-8e1f-a00feb202b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\alternativesDrop">
+      <UniqueIdentifier>{f3850777-40e5-4010-aeb1-75e27b902b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition">
+      <UniqueIdentifier>{07ba031c-b2b4-4e3d-8f67-07147f3ae858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\conditionDrop">
+      <UniqueIdentifier>{ca0fb2e2-f3b4-45da-9dc4-6e0674cdfd3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition\explosionDrop">
+      <UniqueIdentifier>{6cce2805-53f7-49b3-b183-c7803ec97938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition\toolDrop">
+      <UniqueIdentifier>{250ca506-710e-4ebb-8835-886fc772ea12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition\blockStateCondition">
+      <UniqueIdentifier>{73978e72-65be-4b9b-9001-1ab1c99fba84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition\invertedCondition">
+      <UniqueIdentifier>{423925c4-6709-46f6-a66e-b175d9c589cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition\tableBonusCondition">
+      <UniqueIdentifier>{45898a8e-01f8-4039-a4d1-dedff4c03934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition\chanceCondition">
+      <UniqueIdentifier>{8d3ec5e6-4d40-4919-a909-01445c28a0c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\uniformChoiceDrop">
+      <UniqueIdentifier>{9a574c56-5c48-48a3-8693-89c29e4a8d7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\additiveDrop">
+      <UniqueIdentifier>{d52c315b-0c97-49d2-99b7-6d5d0f504e62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\recipe">
+      <UniqueIdentifier>{8db5cffc-2006-4ab4-a4db-a98ca95d1600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\recipe\shapedRecipe">
+      <UniqueIdentifier>{575f7a28-eba7-4b0a-9bac-1fe8960dd084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\recipe\shapeLessRecipe">
+      <UniqueIdentifier>{5c7baec3-b7bf-4567-8bce-b67a71a502a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\recipe\furnaceRecipe">
+      <UniqueIdentifier>{0db60d09-2098-47e3-9aba-ee4d37b728d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rendering\renderBrush">
+      <UniqueIdentifier>{54612fb8-52b0-4735-89f5-f1082efd380e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resourcePack">
+      <UniqueIdentifier>{6b8adc2a-5bba-4235-8d99-0d677f1b155d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resourcePack\textureList">
+      <UniqueIdentifier>{61b515a7-3e91-4963-a082-c0c5547e7603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resourcePack\soundList">
+      <UniqueIdentifier>{1f1652cb-5920-4582-928a-bbaadd11fe1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ID\idAnalysis">
+      <UniqueIdentifier>{5f37b46f-a64b-4e67-b562-98d659e569b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\blockContainer\tickableBlockContainer">
+      <UniqueIdentifier>{34aed1a9-18a5-49e2-80b9-8a0f76ec3833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\blockContainer\tickableBlockContainer\movableBlockContainer">
+      <UniqueIdentifier>{eec90811-e104-4622-8f91-abefd38bb16f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dimensionData">
+      <UniqueIdentifier>{41902099-d404-403f-a4ac-c97723eeffaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure\structurePlacementBlueprint">
+      <UniqueIdentifier>{f9bd6d48-fe3e-46c9-921d-2c87514db169}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure\structureFeature">
+      <UniqueIdentifier>{28dbba43-0fae-40c3-9471-c9180c5cba11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure\structureFeature\decayedStructureFeature">
+      <UniqueIdentifier>{f9d1b28d-be11-4afe-b036-a107c9785a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure\structureFeature\netherFortressFeature">
+      <UniqueIdentifier>{df3da3e5-df20-42a4-9752-cd69af10f56e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure\structureFeature\mushroomFeature">
+      <UniqueIdentifier>{85384caf-04a4-4acd-9546-2594ee604544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure\structureFeature\treeFeature">
+      <UniqueIdentifier>{c270133c-ff81-4cd8-93a9-079741814dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jigsawPool">
+      <UniqueIdentifier>{dcb56678-cbec-4309-b161-2014fa5fed0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\dimension\end">
+      <UniqueIdentifier>{db3e95ff-d740-43ab-a66c-72b601a32764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\dimension\overWorld">
+      <UniqueIdentifier>{f8eda3ab-5073-4a0b-801b-adf837af5baf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\dimension\nether">
+      <UniqueIdentifier>{dc7b5600-593c-4cba-aa45-290aa2c48384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\generationData">
+      <UniqueIdentifier>{2dae20d0-680b-4c1e-bc3f-6f1f1237c04c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\generationData\overWorldGenerationData">
+      <UniqueIdentifier>{fbda6589-d65b-4d79-ad0f-b8d4695cd714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\generationData\netherGenerationData">
+      <UniqueIdentifier>{0811e8ec-1329-4bc3-b15d-4fc13010d236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\generationData\endGenerationData">
+      <UniqueIdentifier>{566a8c18-1087-44df-874a-7dd52b9a7979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\settingForm">
+      <UniqueIdentifier>{ddfdca48-f856-4dd2-bab7-49459f063257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\settingForm\videoSettingsForm">
+      <UniqueIdentifier>{d23fca6d-503c-4854-b754-cd6ed651646a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\soundSettingsForm">
+      <UniqueIdentifier>{b40cc3af-c6c6-41ed-ab66-41d46f353108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\mainMenu">
+      <UniqueIdentifier>{00b2ff2b-4858-4b39-92f9-a64c0ff117b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data">
+      <UniqueIdentifier>{6042fcae-4585-4147-96c2-062d1c5ed67c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\gameModeData">
+      <UniqueIdentifier>{8313c3c2-2bd9-4536-a39c-ffdc8719ed94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\statusEffectData">
+      <UniqueIdentifier>{765f935d-0916-43d3-9f0d-5400e48a509b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\enchantmentData">
+      <UniqueIdentifier>{17a790f7-e495-45ba-b81d-c0d88fdb9952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\doubleBlock">
+      <UniqueIdentifier>{408c0c74-3bd7-4287-81b3-ab853fdc2b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\connectedBlock">
+      <UniqueIdentifier>{78563d77-de8b-40e6-befe-6b378a4963ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\cropBlock">
+      <UniqueIdentifier>{72152c71-f863-4719-9c1a-7091335001b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\woodTypeData">
+      <UniqueIdentifier>{0350ae0c-eef3-4d5b-8b36-f2500ff81779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\mushroomColorData">
+      <UniqueIdentifier>{796c66bd-af0b-4849-9a67-6a2a80e602ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\animatedParticleData">
+      <UniqueIdentifier>{32a1ba1f-6665-4929-b505-a39f1e637e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resourcePack\folderList">
+      <UniqueIdentifier>{95c1305f-2b02-4527-9afb-e2eb2f2b920c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item\itemTag">
+      <UniqueIdentifier>{23d42cbe-b26a-4f07-9296-5105b92664d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item\itemTag\durabilityData">
+      <UniqueIdentifier>{29989b10-d4e1-42c2-8bd7-08cbfa5b8f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item\itemTag\potionData">
+      <UniqueIdentifier>{270e0713-ee32-4e33-a0fd-6e93bd6ac4cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item\itemTag\fireworkStarData">
+      <UniqueIdentifier>{36163ed6-b363-4244-86cc-dd76ad698cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item\itemTag\fireworkData">
+      <UniqueIdentifier>{68e971e8-8301-4a37-bbf1-202272e85f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item\itemTag\bucketData">
+      <UniqueIdentifier>{36dbb628-88de-4af3-865b-3b198ecbbeb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interface\nbtSerializer">
+      <UniqueIdentifier>{a34202fb-ddca-4d42-bd2a-0208f4e83657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interface\nbtSerializable">
+      <UniqueIdentifier>{0a9ed6b2-810b-47c5-8418-421b7c90bb16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\noteData">
+      <UniqueIdentifier>{162c2faa-eda3-4bff-9023-d92469292be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\fireworkShapeData">
+      <UniqueIdentifier>{e00940bc-da39-4121-a56e-3c675b2afb7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\particleTypeData">
+      <UniqueIdentifier>{78042e96-d3f9-4e9f-99bd-8c80aabe1180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\netherVineTypeData">
+      <UniqueIdentifier>{7dd77cf8-32d4-4eec-b523-c0899ab58e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data\structureData">
+      <UniqueIdentifier>{0b6c96de-e32d-481a-81a1-736150f61b47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resourcePack\musicList">
+      <UniqueIdentifier>{769bab96-63c2-4f6b-818b-264fe43e6f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound\musicManager">
+      <UniqueIdentifier>{5bd9260f-62a9-467c-9194-818a4603503a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\benchMark">
+      <UniqueIdentifier>{24942957-aeee-4d0c-9bbf-2c0d7748b8bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\amountDistribution\bonusAmountDistribution\oreDropsDistribution">
+      <UniqueIdentifier>{66a37e6d-11a4-46f5-ba2b-631aea000959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\itemStack">
+      <UniqueIdentifier>{2abccacf-e86c-46a1-a243-f5f55fe0f5cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ID\idList">
+      <UniqueIdentifier>{5d9156bf-f72c-4804-8015-974b239e12b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\enchantment">
+      <UniqueIdentifier>{e66691ce-1a77-4490-9f20-4d919629b645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NBT\idConverter">
+      <UniqueIdentifier>{1ad4995a-da4f-4bac-9842-f43317081087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\enderDragon\enderDragonCirclingAI">
+      <UniqueIdentifier>{5ef92dbc-b76e-4135-980b-d781bcb39a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\enderDragon\enderDragonStrafingAI">
+      <UniqueIdentifier>{eb6180e9-d552-444a-9f19-049ffcb4e683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\fireBallAI\blazeFireBallAI">
+      <UniqueIdentifier>{c74dade6-92c0-4bc8-ac49-7191666bb053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\fireBallAI\ghastFireBallAI">
+      <UniqueIdentifier>{62ac02a2-8857-4c23-ae5e-8fb62bd32de3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\targetAI\attackOnCollideAI\explodeAI">
+      <UniqueIdentifier>{18efc731-5eac-4962-a2c8-f8646d299289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\brewingStandData">
+      <UniqueIdentifier>{2bd9f0d5-88e1-449f-9875-1b38d63da413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\lootTable\rollDrop">
+      <UniqueIdentifier>{5aa5d8fb-8de8-486c-9d2f-9ba8c56e8bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\dropCondition\alternativeDropCondition">
+      <UniqueIdentifier>{be595f80-4964-4342-84ac-672cebfed223}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world\chat">
+      <UniqueIdentifier>{1789c73d-f315-4d75-a359-4f37c1a8a37b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\slime\magmaCube">
+      <UniqueIdentifier>{2df63b0b-9fbd-49b2-abff-cb4748f13a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\targetAI\attackOnCollideAI\arrowAttackAI">
+      <UniqueIdentifier>{d0aa05cb-37e3-4d98-a3cc-9b1acf8616ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lightLevel">
+      <UniqueIdentifier>{4a90bfe9-8d82-43e7-9559-b44eda07f138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NBT\nbtValue">
+      <UniqueIdentifier>{e31b53f5-080f-41a8-a09e-5acbb8d86aa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\brewingStand">
+      <UniqueIdentifier>{ed7bcf1f-1f43-4575-9768-9a27bb5430bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameForm">
+      <UniqueIdentifier>{ab94c675-e4f6-43ef-88a4-b8062f8b0f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\main">
+      <UniqueIdentifier>{f89f20ea-558a-4076-83ef-6e5ca838d7f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\constants">
+      <UniqueIdentifier>{6da2805f-218d-412d-b04f-de063690c2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stdafx">
+      <UniqueIdentifier>{08f42ed5-ada5-4bdd-826d-ff4308375761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\AI\entityAI\playerControlledAI">
+      <UniqueIdentifier>{f74a1a69-7bf5-4026-8e2a-44919df94021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inventory\rectangularSlotContainer">
+      <UniqueIdentifier>{3188b749-86e0-4b45-a513-4279406109bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound\soundCollection">
+      <UniqueIdentifier>{962ff895-311f-4b9f-9002-c0ddfbf13e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\item\enchantment">
+      <UniqueIdentifier>{237cabd1-9c6f-4b95-9f21-47ad3157ced5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound\musicCollection">
+      <UniqueIdentifier>{d662447f-01b6-4c8c-a5f7-e3f03c8366d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\pressurePlateData">
+      <UniqueIdentifier>{098a63e5-39ec-4093-aaa5-302ef8e74c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\damage\damageSource">
+      <UniqueIdentifier>{0f07cce9-d3e8-4fa1-9432-5c16bbb8e48f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\physics\collisionEdgeData">
+      <UniqueIdentifier>{a62b57d0-98ea-439e-a3da-bf54f6f3d689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\debug">
+      <UniqueIdentifier>{7bde4c2b-b610-4070-a0d3-45fbaf30c0fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\leavesData">
+      <UniqueIdentifier>{a383c0fe-8140-4b3a-b97e-87be528aef24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\block\blockData\sapSpreadData">
+      <UniqueIdentifier>{a2a018fa-c6ef-4160-bd93-91edaaf96743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\blockContainer\renderBlockContainer">
+      <UniqueIdentifier>{229dfb9d-f011-4bd6-afc1-3bd6a10ee24f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\blockArrayContainer">
+      <UniqueIdentifier>{2fb6a890-b69f-4b23-8e62-5499759eb5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\mob\fourLeggedMob\fourleggedPassiveMob">
+      <UniqueIdentifier>{48c1d5fc-624b-43e5-b569-dbddae281607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NBT\gzipIncluder">
+      <UniqueIdentifier>{83e3d022-0fc7-4348-8b27-54ec0d829ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\packageCreator">
+      <UniqueIdentifier>{7b797960-c5e1-49da-adfe-796d3619d627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\physics\collisionData">
+      <UniqueIdentifier>{84234cd6-87ca-40b8-8e67-63b096c5a661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector">
+      <UniqueIdentifier>{9907a675-2392-43a3-a0c5-47c5eddbd99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\worldSelector">
+      <UniqueIdentifier>{ddb59a9f-c3c0-4793-b22e-b1a1f3d4af26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\serverSelector">
+      <UniqueIdentifier>{785aaac1-14a3-47ba-adb1-113136c8edc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\serverSelector\serverControl">
+      <UniqueIdentifier>{f80ca5bd-11de-4dbb-953b-c18269206a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\serverSelector\serverEditor">
+      <UniqueIdentifier>{f7e188ba-56d9-4219-a573-1a8449281cd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drop\experienceDrop">
+      <UniqueIdentifier>{4d5b8dfa-d6bf-4ab0-8c06-d9d40e132461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\damage\mobDamageSource">
+      <UniqueIdentifier>{3c26fdba-5418-4a0e-adfd-49e9543d6231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network">
+      <UniqueIdentifier>{d70e01d8-bb4c-45d1-93e6-725a929f9629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\server">
+      <UniqueIdentifier>{ad4d38ee-1ed3-49da-b651-7767fd7008a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\server\gameControl">
+      <UniqueIdentifier>{efe68503-39ac-447c-8cef-afc7ccd827d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\playerSocket">
+      <UniqueIdentifier>{a5bf73c9-f881-4bff-b13a-b7d5da2644a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\client">
+      <UniqueIdentifier>{f92b57be-31f1-414e-beba-525c52a1f643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\socketContainer">
+      <UniqueIdentifier>{fdf76290-77b6-498f-9ce8-7b5ba56e6f29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\tcpSerializer">
+      <UniqueIdentifier>{d35b7845-404d-4050-850f-2a74fd14d4ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\clientInput">
+      <UniqueIdentifier>{217c93e9-7881-4afd-8c9f-0ab20834de3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\soundPacket">
+      <UniqueIdentifier>{74c5b1bd-b0fb-4037-87ef-df97d7fb5445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\gameTile">
+      <UniqueIdentifier>{182b4bf5-01a0-4f8a-865e-cd3a1cd0466a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\worldSelector\saveFileControl">
+      <UniqueIdentifier>{71a30b28-a485-41a1-939c-dd114f2457f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\worldSelector\worldCreator">
+      <UniqueIdentifier>{3b9b6e3b-4739-452a-b3ca-fb0cf70b86ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\playerData">
+      <UniqueIdentifier>{f2ddfbd4-f9f5-4787-b72a-064e994d51b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\serverSelector\serverData">
+      <UniqueIdentifier>{0e30f132-8d2a-4cfe-8a3a-42d5b442e40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\gameSelector\serverSelector\serverData\serverDataList">
+      <UniqueIdentifier>{3b22857a-fc1f-4bb6-a87a-5ddef28ff311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\compressedPacket">
+      <UniqueIdentifier>{ebe5ef7b-e41b-4d50-9ed3-f7997258e6c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\clientInput\keyHistory">
+      <UniqueIdentifier>{b8b4f772-8914-4b91-a9fb-744b3a22f8e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\application.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\compiler\area.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\bodypart2d.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\brush\brush.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\brush\brushes.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\button.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\checkbox.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\collisions.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\color\color.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\colorpicker.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\compiler\compiler.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\control.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\compiler\errors.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\neuralnetwork\fastlayer.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\filesystem\file\fastStream.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\filedialog.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\font.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\fontfamily.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\form.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\frustum.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\graphics.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\interface\idestructable.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\interaction.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\intersectable.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\intersectablecuboid.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\filesystem\iserializable.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\filesystem\jsonReader.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\keyframe.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\label.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\LayerNoiseSimplex.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\listcontrol.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\compiler\memorymanagement.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\meshfunctions.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\neuralnetwork\neuralnetwork.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\resolutiontexture.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\SimplexNoise.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\slider.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\sound\sound.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\standardarea.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\swingsynchronizer.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\TextBox.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\graphics\texture.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\timemath.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\triangle.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\array\wstring.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="include\application\control\picturebox.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="soundhandler.cpp">
+      <Filter>Source Files\soundHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="soundhandler2d.cpp">
+      <Filter>Source Files\soundHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="enderDragon.cpp">
+      <Filter>Source Files\entity\mob\enderDragon</Filter>
+    </ClCompile>
+    <ClCompile Include="zombie.cpp">
+      <Filter>Source Files\entity\mob\humanoid\zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="sheep.cpp">
+      <Filter>Source Files\entity\mob\fourLeggedMob\sheep</Filter>
+    </ClCompile>
+    <ClCompile Include="passiveMob.cpp">
+      <Filter>Source Files\entity\mob\passiveMob</Filter>
+    </ClCompile>
+    <ClCompile Include="enderman.cpp">
+      <Filter>Source Files\entity\mob\humanoid\enderman</Filter>
+    </ClCompile>
+    <ClCompile Include="wanderAI.cpp">
+      <Filter>Source Files\entity\AI\wanderAI</Filter>
+    </ClCompile>
+    <ClCompile Include="attackOnCollideAI.cpp">
+      <Filter>Source Files\entity\AI\targetAI\attackOnCollideAI</Filter>
+    </ClCompile>
+    <ClCompile Include="eatGrassAI.cpp">
+      <Filter>Source Files\entity\AI\eatGrassAI</Filter>
+    </ClCompile>
+    <ClCompile Include="taskAI.cpp">
+      <Filter>Source Files\entity\AI\taskAI</Filter>
+    </ClCompile>
+    <ClCompile Include="taskList.cpp">
+      <Filter>Source Files\entity\AI\taskList</Filter>
+    </ClCompile>
+    <ClCompile Include="panicAI.cpp">
+      <Filter>Source Files\entity\AI\panicAI</Filter>
+    </ClCompile>
+    <ClCompile Include="targetAI.cpp">
+      <Filter>Source Files\entity\AI\targetAI</Filter>
+    </ClCompile>
+    <ClCompile Include="angerAI.cpp">
+      <Filter>Source Files\entity\AI\targetAI\angerAI</Filter>
+    </ClCompile>
+    <ClCompile Include="hurtByTargetAI.cpp">
+      <Filter>Source Files\entity\AI\targetAI\angerAI\hurtByTargetAI</Filter>
+    </ClCompile>
+    <ClCompile Include="wolf.cpp">
+      <Filter>Source Files\entity\mob\fourLeggedMob\wolf</Filter>
+    </ClCompile>
+    <ClCompile Include="boidsAI.cpp">
+      <Filter>Source Files\entity\AI\boidsAI</Filter>
+    </ClCompile>
+    <ClCompile Include="cod.cpp">
+      <Filter>Source Files\entity\mob\cod</Filter>
+    </ClCompile>
+    <ClCompile Include="block.cpp">
+      <Filter>Source Files\block</Filter>
+    </ClCompile>
+    <ClCompile Include="settings.cpp">
+      <Filter>Source Files\settings</Filter>
+    </ClCompile>
+    <ClCompile Include="renderBrush.cpp">
+      <Filter>Source Files\rendering\renderBrush</Filter>
+    </ClCompile>
+    <ClCompile Include="textureList.cpp">
+      <Filter>Source Files\resourcePack\textureList</Filter>
+    </ClCompile>
+    <ClCompile Include="blockContainer.cpp">
+      <Filter>Source Files\blockContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="blockData.cpp">
+      <Filter>Source Files\block\blockData</Filter>
+    </ClCompile>
+    <ClCompile Include="idAnalysis.cpp">
+      <Filter>Source Files\ID\idAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="stemPlantData.cpp">
+      <Filter>Source Files\block\blockData\ageData\cropData\stemPlantData</Filter>
+    </ClCompile>
+    <ClCompile Include="mushroomFeature.cpp">
+      <Filter>Source Files\structure\structureFeature\mushroomFeature</Filter>
+    </ClCompile>
+    <ClCompile Include="mushroomData.cpp">
+      <Filter>Source Files\block\blockData\pollenData\attachedBlockPollenData\mushroomData</Filter>
+    </ClCompile>
+    <ClCompile Include="chunk.cpp">
+      <Filter>Source Files\chunk</Filter>
+    </ClCompile>
+    <ClCompile Include="tickableBlockContainer.cpp">
+      <Filter>Source Files\blockContainer\tickableBlockContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="biomeGenerator.cpp">
+      <Filter>Source Files\biome</Filter>
+    </ClCompile>
+    <ClCompile Include="doubleBlockData.cpp">
+      <Filter>Source Files\block\blockData\doubleBlockData</Filter>
+    </ClCompile>
+    <ClCompile Include="mob.cpp">
+      <Filter>Source Files\entity\mob</Filter>
+    </ClCompile>
+    <ClCompile Include="mobData.cpp">
+      <Filter>Source Files\entityData\mobData</Filter>
+    </ClCompile>
+    <ClCompile Include="humanoid.cpp">
+      <Filter>Source Files\entity\mob\humanoid</Filter>
+    </ClCompile>
+    <ClCompile Include="human.cpp">
+      <Filter>Source Files\entity\mob\humanoid\human</Filter>
+    </ClCompile>
+    <ClCompile Include="itemTag.cpp">
+      <Filter>Source Files\item\itemTag</Filter>
+    </ClCompile>
+    <ClCompile Include="furnaceSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\inventory\furnaceSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="nbtCompound.cpp">
+      <Filter>Source Files\NBT</Filter>
+    </ClCompile>
+    <ClCompile Include="nbtSerializer.cpp">
+      <Filter>Source Files\interface\nbtSerializer</Filter>
+    </ClCompile>
+    <ClCompile Include="nbtSerializable.cpp">
+      <Filter>Source Files\interface\nbtSerializable</Filter>
+    </ClCompile>
+    <ClCompile Include="structureBlockUI.cpp">
+      <Filter>Source Files\UI\structureBlockUI</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcePack.cpp">
+      <Filter>Source Files\resourcePack</Filter>
+    </ClCompile>
+    <ClCompile Include="jigsawPool.cpp">
+      <Filter>Source Files\jigsawPool</Filter>
+    </ClCompile>
+    <ClCompile Include="floatingSlot.cpp">
+      <Filter>Source Files\entity\floatingSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="gameControl.cpp">
+      <Filter>Source Files\network\server\gameControl</Filter>
+    </ClCompile>
+    <ClCompile Include="musicList.cpp">
+      <Filter>Source Files\resourcePack\musicList</Filter>
+    </ClCompile>
+    <ClCompile Include="soundList.cpp">
+      <Filter>Source Files\resourcePack\soundList</Filter>
+    </ClCompile>
+    <ClCompile Include="musicManager.cpp">
+      <Filter>Source Files\sound\musicManager</Filter>
+    </ClCompile>
+    <ClCompile Include="furnaceRecipe.cpp">
+      <Filter>Source Files\recipe\furnaceRecipe</Filter>
+    </ClCompile>
+    <ClCompile Include="dimension.cpp">
+      <Filter>Source Files\world\dimension</Filter>
+    </ClCompile>
+    <ClCompile Include="benchmark.cpp">
+      <Filter>Source Files\benchMark</Filter>
+    </ClCompile>
+    <ClCompile Include="inventoryForm.cpp">
+      <Filter>Source Files\UI\inventoryForm</Filter>
+    </ClCompile>
+    <ClCompile Include="lootTable.cpp">
+      <Filter>Source Files\drop\lootTable</Filter>
+    </ClCompile>
+    <ClCompile Include="oreDropsDistribution.cpp">
+      <Filter>Source Files\drop\amountDistribution\bonusAmountDistribution\oreDropsDistribution</Filter>
+    </ClCompile>
+    <ClCompile Include="dropCondition.cpp">
+      <Filter>Source Files\drop\dropCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="amountDistribution.cpp">
+      <Filter>Source Files\drop\amountDistribution</Filter>
+    </ClCompile>
+    <ClCompile Include="itemStack.cpp">
+      <Filter>Source Files\inventory\itemStack</Filter>
+    </ClCompile>
+    <ClCompile Include="tag.cpp">
+      <Filter>Source Files\IItemComparable\tag</Filter>
+    </ClCompile>
+    <ClCompile Include="idList.cpp">
+      <Filter>Source Files\ID\idList</Filter>
+    </ClCompile>
+    <ClCompile Include="recipe.cpp">
+      <Filter>Source Files\recipe</Filter>
+    </ClCompile>
+    <ClCompile Include="overWorld.cpp">
+      <Filter>Source Files\world\dimension\overWorld</Filter>
+    </ClCompile>
+    <ClCompile Include="end.cpp">
+      <Filter>Source Files\world\dimension\end</Filter>
+    </ClCompile>
+    <ClCompile Include="nether.cpp">
+      <Filter>Source Files\world\dimension\nether</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>Source Files\entity\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="saplingData.cpp">
+      <Filter>Source Files\block\blockData\attachedBlockData\saplingData</Filter>
+    </ClCompile>
+    <ClCompile Include="boat.cpp">
+      <Filter>Source Files\entity\ridableEntity\hollowRidableEntity\boat</Filter>
+    </ClCompile>
+    <ClCompile Include="hollowRidableEntity.cpp">
+      <Filter>Source Files\entity\ridableEntity\hollowRidableEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ridableEntity.cpp">
+      <Filter>Source Files\entity\ridableEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="pig.cpp">
+      <Filter>Source Files\entity\mob\fourLeggedMob\pig</Filter>
+    </ClCompile>
+    <ClCompile Include="cow.cpp">
+      <Filter>Source Files\entity\mob\fourLeggedMob\cow</Filter>
+    </ClCompile>
+    <ClCompile Include="fourLeggedMob.cpp">
+      <Filter>Source Files\entity\mob\fourLeggedMob</Filter>
+    </ClCompile>
+    <ClCompile Include="additiveDrop.cpp">
+      <Filter>Source Files\drop\lootTable\additiveDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="snowLayerData.cpp">
+      <Filter>Source Files\block\blockData\fallingBlockData\snowLayerData</Filter>
+    </ClCompile>
+    <ClCompile Include="mountains.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\mountains</Filter>
+    </ClCompile>
+    <ClCompile Include="fluidData.cpp">
+      <Filter>Source Files\block\blockData\fluidData</Filter>
+    </ClCompile>
+    <ClCompile Include="bucketData.cpp">
+      <Filter>Source Files\item\itemTag\bucketData</Filter>
+    </ClCompile>
+    <ClCompile Include="sugarCaneData.cpp">
+      <Filter>Source Files\block\blockData\sugarCaneData</Filter>
+    </ClCompile>
+    <ClCompile Include="doubleBlock.cpp">
+      <Filter>Source Files\block\doubleBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="worldSelector.cpp">
+      <Filter>Source Files\UI\gameSelector\worldSelector</Filter>
+    </ClCompile>
+    <ClCompile Include="incompatibleEnchantments.cpp">
+      <Filter>Source Files\enchantment</Filter>
+    </ClCompile>
+    <ClCompile Include="saveFileControl.cpp">
+      <Filter>Source Files\UI\gameSelector\worldSelector\saveFileControl</Filter>
+    </ClCompile>
+    <ClCompile Include="doorData.cpp">
+      <Filter>Source Files\block\blockData\doubleBlockData\doorData</Filter>
+    </ClCompile>
+    <ClCompile Include="connectedBlock.cpp">
+      <Filter>Source Files\block\connectedBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="throwable.cpp">
+      <Filter>Source Files\entity\throwable</Filter>
+    </ClCompile>
+    <ClCompile Include="overWorldBiomeGenerator.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="netherWastes.cpp">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherWastes</Filter>
+    </ClCompile>
+    <ClCompile Include="amountDrop.cpp">
+      <Filter>Source Files\drop\lootTable\amountDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="choiceDrop.cpp">
+      <Filter>Source Files\drop\lootTable\choiceDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="fireData.cpp">
+      <Filter>Source Files\block\blockData\ageData\fireData</Filter>
+    </ClCompile>
+    <ClCompile Include="netherGenerationData.cpp">
+      <Filter>Source Files\world\generationData\netherGenerationData</Filter>
+    </ClCompile>
+    <ClCompile Include="structureFeature.cpp">
+      <Filter>Source Files\structure\structureFeature</Filter>
+    </ClCompile>
+    <ClCompile Include="endBiomeGenerator.cpp">
+      <Filter>Source Files\biome\endBiomeGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="theEnd.cpp">
+      <Filter>Source Files\biome\endBiomeGenerator\theEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="idConverter.cpp">
+      <Filter>Source Files\NBT\idConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="entityData.cpp">
+      <Filter>Source Files\entityData</Filter>
+    </ClCompile>
+    <ClCompile Include="ageData.cpp">
+      <Filter>Source Files\block\blockData\ageData</Filter>
+    </ClCompile>
+    <ClCompile Include="attachedData.cpp">
+      <Filter>Source Files\block\blockData\attachedData</Filter>
+    </ClCompile>
+    <ClCompile Include="sapSpreadData.cpp">
+      <Filter>Source Files\block\blockData\sapSpreadData</Filter>
+    </ClCompile>
+    <ClCompile Include="jigsawUI.cpp">
+      <Filter>Source Files\UI\jigsawUI</Filter>
+    </ClCompile>
+    <ClCompile Include="structureBlockSaveModeUI.cpp">
+      <Filter>Source Files\UI\structureBlockModeUI\structureBlockSaveModeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="structureBlockLoadModeUI.cpp">
+      <Filter>Source Files\UI\structureBlockModeUI\structureBlockLoadModeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="snowBall.cpp">
+      <Filter>Source Files\entity\throwable\snowBall</Filter>
+    </ClCompile>
+    <ClCompile Include="fishingHook.cpp">
+      <Filter>Source Files\entity\throwable\fishingHook</Filter>
+    </ClCompile>
+    <ClCompile Include="egg.cpp">
+      <Filter>Source Files\entity\throwable\egg</Filter>
+    </ClCompile>
+    <ClCompile Include="arrow.cpp">
+      <Filter>Source Files\entity\throwable\arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="enderPearl.cpp">
+      <Filter>Source Files\entity\throwable\enderPearl</Filter>
+    </ClCompile>
+    <ClCompile Include="eyeOfEnder.cpp">
+      <Filter>Source Files\entity\throwable\eyeOfEnder</Filter>
+    </ClCompile>
+    <ClCompile Include="throwableData.cpp">
+      <Filter>Source Files\entityData\throwableData</Filter>
+    </ClCompile>
+    <ClCompile Include="stairsData.cpp">
+      <Filter>Source Files\block\blockData\facingData\stairsData</Filter>
+    </ClCompile>
+    <ClCompile Include="slabData.cpp">
+      <Filter>Source Files\block\blockData\slabData</Filter>
+    </ClCompile>
+    <ClCompile Include="openData.cpp">
+      <Filter>Source Files\block\blockData\openData</Filter>
+    </ClCompile>
+    <ClCompile Include="fenceGateData.cpp">
+      <Filter>Source Files\block\blockData\facingData\fenceGateData</Filter>
+    </ClCompile>
+    <ClCompile Include="upsideDownData.cpp">
+      <Filter>Source Files\block\blockData\upsideDownData</Filter>
+    </ClCompile>
+    <ClCompile Include="trapDoorData.cpp">
+      <Filter>Source Files\block\blockData\facingData\trapDoorData</Filter>
+    </ClCompile>
+    <ClCompile Include="endPortalFrameData.cpp">
+      <Filter>Source Files\block\blockData\facingData\endPortalFrameData</Filter>
+    </ClCompile>
+    <ClCompile Include="spawnerData.cpp">
+      <Filter>Source Files\block\blockData\spawnerData</Filter>
+    </ClCompile>
+    <ClCompile Include="tnt.cpp">
+      <Filter>Source Files\entity\tnt</Filter>
+    </ClCompile>
+    <ClCompile Include="enderDragonCirclingAI.cpp">
+      <Filter>Source Files\entity\AI\enderDragon\enderDragonCirclingAI</Filter>
+    </ClCompile>
+    <ClCompile Include="enderDragonStrafingAI.cpp">
+      <Filter>Source Files\entity\AI\enderDragon\enderDragonStrafingAI</Filter>
+    </ClCompile>
+    <ClCompile Include="fireBall.cpp">
+      <Filter>Source Files\entity\throwable\fireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="dragonFireBall.cpp">
+      <Filter>Source Files\entity\throwable\fireBall\dragonFireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="ghastFireBall.cpp">
+      <Filter>Source Files\entity\throwable\fireBall\ghastFireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="endCrystal.cpp">
+      <Filter>Source Files\entity\endCrystal</Filter>
+    </ClCompile>
+    <ClCompile Include="enderDragonPortalFlyingAI.cpp">
+      <Filter>Source Files\entity\AI\enderDragon</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingBlock.cpp">
+      <Filter>Source Files\entity\fallingBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingBlockData.cpp">
+      <Filter>Source Files\block\blockData\fallingBlockData</Filter>
+    </ClCompile>
+    <ClCompile Include="smallFireBall.cpp">
+      <Filter>Source Files\entity\throwable\fireBall\smallFireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="blaze.cpp">
+      <Filter>Source Files\entity\mob\blaze</Filter>
+    </ClCompile>
+    <ClCompile Include="fireBallAI.cpp">
+      <Filter>Source Files\entity\AI\fireBallAI</Filter>
+    </ClCompile>
+    <ClCompile Include="blazeFireBallAI.cpp">
+      <Filter>Source Files\entity\AI\fireBallAI\blazeFireBallAI</Filter>
+    </ClCompile>
+    <ClCompile Include="structureBlockData.cpp">
+      <Filter>Source Files\block\blockData\structureBlockData</Filter>
+    </ClCompile>
+    <ClCompile Include="jigsawData.cpp">
+      <Filter>Source Files\block\blockData\facingData\jigsawData</Filter>
+    </ClCompile>
+    <ClCompile Include="netherFortressFeature.cpp">
+      <Filter>Source Files\structure\structureFeature\netherFortressFeature</Filter>
+    </ClCompile>
+    <ClCompile Include="zombifiedPiglin.cpp">
+      <Filter>Source Files\entity\mob\humanoid\zombifiedPiglin</Filter>
+    </ClCompile>
+    <ClCompile Include="chicken.cpp">
+      <Filter>Source Files\entity\mob\passiveMob\chicken</Filter>
+    </ClCompile>
+    <ClCompile Include="endGenerationData.cpp">
+      <Filter>Source Files\world\generationData\endGenerationData</Filter>
+    </ClCompile>
+    <ClCompile Include="endVoid.cpp">
+      <Filter>Source Files\biome\endBiomeGenerator\endVoid</Filter>
+    </ClCompile>
+    <ClCompile Include="endLands.cpp">
+      <Filter>Source Files\biome\endBiomeGenerator\endLands</Filter>
+    </ClCompile>
+    <ClCompile Include="bedData.cpp">
+      <Filter>Source Files\block\blockData\doubleBlockData\bedData</Filter>
+    </ClCompile>
+    <ClCompile Include="minecart.cpp">
+      <Filter>Source Files\entity\ridableEntity\hollowRidableEntity\minecart</Filter>
+    </ClCompile>
+    <ClCompile Include="creeper.cpp">
+      <Filter>Source Files\entity\mob\fourLeggedMob\creeper</Filter>
+    </ClCompile>
+    <ClCompile Include="explodeAI.cpp">
+      <Filter>Source Files\entity\AI\targetAI\attackOnCollideAI\explodeAI</Filter>
+    </ClCompile>
+    <ClCompile Include="soulSandValley.cpp">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\soulSandValley</Filter>
+    </ClCompile>
+    <ClCompile Include="crimsonForest.cpp">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\crimsonForest</Filter>
+    </ClCompile>
+    <ClCompile Include="netherForest.cpp">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest</Filter>
+    </ClCompile>
+    <ClCompile Include="warpedForest.cpp">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\warpedForest</Filter>
+    </ClCompile>
+    <ClCompile Include="basaltDeltas.cpp">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\basaltDeltas</Filter>
+    </ClCompile>
+    <ClCompile Include="ghast.cpp">
+      <Filter>Source Files\entity\mob\ghast</Filter>
+    </ClCompile>
+    <ClCompile Include="ghastFireBallAI.cpp">
+      <Filter>Source Files\entity\AI\fireBallAI\ghastFireBallAI</Filter>
+    </ClCompile>
+    <ClCompile Include="potionData.cpp">
+      <Filter>Source Files\item\itemTag\potionData</Filter>
+    </ClCompile>
+    <ClCompile Include="brewingStandData.cpp">
+      <Filter>Source Files\block\blockData\brewingStandData</Filter>
+    </ClCompile>
+    <ClCompile Include="rollDrop.cpp">
+      <Filter>Source Files\drop\lootTable\rollDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="uniformChoiceDrop.cpp">
+      <Filter>Source Files\drop\lootTable\uniformChoiceDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="itemDrop.cpp">
+      <Filter>Source Files\drop\lootTable\itemDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="explosionDrop.cpp">
+      <Filter>Source Files\drop\dropCondition\explosionDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="toolDrop.cpp">
+      <Filter>Source Files\drop\dropCondition\toolDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="conditionDrop.cpp">
+      <Filter>Source Files\drop\lootTable\conditionDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="alternativesDrop.cpp">
+      <Filter>Source Files\drop\lootTable\alternativesDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="alternativeDropCondition.cpp">
+      <Filter>Source Files\drop\dropCondition\alternativeDropCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="invertedCondition.cpp">
+      <Filter>Source Files\drop\dropCondition\invertedCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="tableBonusCondition.cpp">
+      <Filter>Source Files\drop\dropCondition\tableBonusCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="explosionDecayDrop.cpp">
+      <Filter>Source Files\drop\lootTable\explosionDecayDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="chanceCondition.cpp">
+      <Filter>Source Files\drop\dropCondition\chanceCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="chat.cpp">
+      <Filter>Source Files\world\chat</Filter>
+    </ClCompile>
+    <ClCompile Include="loveModeAI.cpp">
+      <Filter>Source Files\entity\AI\loveModeAI</Filter>
+    </ClCompile>
+    <ClCompile Include="breedableMob.cpp">
+      <Filter>Source Files\entity\mob\breedableMob</Filter>
+    </ClCompile>
+    <ClCompile Include="badlands.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\badLands</Filter>
+    </ClCompile>
+    <ClCompile Include="jungle.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\jungle</Filter>
+    </ClCompile>
+    <ClCompile Include="avoidEntityAI.cpp">
+      <Filter>Source Files\entity\AI\avoidEntityAI</Filter>
+    </ClCompile>
+    <ClCompile Include="slime.cpp">
+      <Filter>Source Files\entity\mob\slime</Filter>
+    </ClCompile>
+    <ClCompile Include="magmaCube.cpp">
+      <Filter>Source Files\entity\mob\slime\magmaCube</Filter>
+    </ClCompile>
+    <ClCompile Include="skeleton.cpp">
+      <Filter>Source Files\entity\mob\humanoid\skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="arrowAttackAI.cpp">
+      <Filter>Source Files\entity\AI\targetAI\attackOnCollideAI\arrowAttackAI</Filter>
+    </ClCompile>
+    <ClCompile Include="buttonData.cpp">
+      <Filter>Source Files\block\blockData\attachedBlockData\attachmentDirectionData\buttonData</Filter>
+    </ClCompile>
+    <ClCompile Include="lastPowerLevelData.cpp">
+      <Filter>Source Files\block\blockData\lastPowerLevelData</Filter>
+    </ClCompile>
+    <ClCompile Include="redstoneLampData.cpp">
+      <Filter>Source Files\block\blockData\lastPowerLevelData\redstoneLampData</Filter>
+    </ClCompile>
+    <ClCompile Include="ironDoorData.cpp">
+      <Filter>Source Files\block\blockData\doubleBlockData\doorData\ironDoorData</Filter>
+    </ClCompile>
+    <ClCompile Include="ironTrapDoorData.cpp">
+      <Filter>Source Files\block\blockData\facingData\trapDoorData\ironTrapDoorData</Filter>
+    </ClCompile>
+    <ClCompile Include="dispenserData.cpp">
+      <Filter>Source Files\block\blockData\facingData\dispenserData</Filter>
+    </ClCompile>
+    <ClCompile Include="inputData.cpp">
+      <Filter>Source Files\block\blockData\facingData\inputData</Filter>
+    </ClCompile>
+    <ClCompile Include="repeaterData.cpp">
+      <Filter>Source Files\block\blockData\facingData\inputData\repeaterData</Filter>
+    </ClCompile>
+    <ClCompile Include="comparatorData.cpp">
+      <Filter>Source Files\block\blockData\facingData\inputData\comparatorData</Filter>
+    </ClCompile>
+    <ClCompile Include="attachmentDirectionData.cpp">
+      <Filter>Source Files\block\blockData\attachedBlockData\attachmentDirectionData</Filter>
+    </ClCompile>
+    <ClCompile Include="redstoneTorchData.cpp">
+      <Filter>Source Files\block\blockData\attachedBlockData\attachmentDirectionData\redstoneTorchData</Filter>
+    </ClCompile>
+    <ClCompile Include="dropperData.cpp">
+      <Filter>Source Files\block\blockData\facingData\dispenserData\dropperData</Filter>
+    </ClCompile>
+    <ClCompile Include="pistonData.cpp">
+      <Filter>Source Files\block\blockData\facingData\pistonData</Filter>
+    </ClCompile>
+    <ClCompile Include="movableBlockContainer.cpp">
+      <Filter>Source Files\blockContainer\tickableBlockContainer\movableBlockContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="teleportOnDamageAI.cpp">
+      <Filter>Source Files\entity\AI\teleportOnDamageAI</Filter>
+    </ClCompile>
+    <ClCompile Include="piston.cpp">
+      <Filter>Source Files\entity\piston</Filter>
+    </ClCompile>
+    <ClCompile Include="tntData.cpp">
+      <Filter>Source Files\block\blockData\tntData</Filter>
+    </ClCompile>
+    <ClCompile Include="noteBlockData.cpp">
+      <Filter>Source Files\block\blockData\lastPowerLevelData\noteBlockData</Filter>
+    </ClCompile>
+    <ClCompile Include="jukeBoxData.cpp">
+      <Filter>Source Files\block\blockData\jukeBoxData</Filter>
+    </ClCompile>
+    <ClCompile Include="uniformAmountDistribution.cpp">
+      <Filter>Source Files\drop\amountDistribution\uniformAmountDistribution</Filter>
+    </ClCompile>
+    <ClCompile Include="constantAmountDistribution.cpp">
+      <Filter>Source Files\drop\amountDistribution\constantAmountDistribution</Filter>
+    </ClCompile>
+    <ClCompile Include="binomialAmountDistribution.cpp">
+      <Filter>Source Files\drop\amountDistribution\binomialAmountDistribution</Filter>
+    </ClCompile>
+    <ClCompile Include="durabilityData.cpp">
+      <Filter>Source Files\item\itemTag\durabilityData</Filter>
+    </ClCompile>
+    <ClCompile Include="spongeData.cpp">
+      <Filter>Source Files\block\blockData\fluidData\spongeData</Filter>
+    </ClCompile>
+    <ClCompile Include="frostedIceData.cpp">
+      <Filter>Source Files\block\blockData\ageData\frostedIceData</Filter>
+    </ClCompile>
+    <ClCompile Include="anvilSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\anvilSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="blockStateCondition.cpp">
+      <Filter>Source Files\drop\dropCondition\blockStateCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="bambooData.cpp">
+      <Filter>Source Files\block\blockData\ageData\bambooData</Filter>
+    </ClCompile>
+    <ClCompile Include="shulker.cpp">
+      <Filter>Source Files\entity\mob\shulker</Filter>
+    </ClCompile>
+    <ClCompile Include="darkForest.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\darkForest</Filter>
+    </ClCompile>
+    <ClCompile Include="treeFeature.cpp">
+      <Filter>Source Files\structure\structureFeature\treeFeature</Filter>
+    </ClCompile>
+    <ClCompile Include="teleportToAttachAI.cpp">
+      <Filter>Source Files\entity\AI\teleportToAttachAI</Filter>
+    </ClCompile>
+    <ClCompile Include="decayedStructureFeature.cpp">
+      <Filter>Source Files\structure\structureFeature\decayedStructureFeature</Filter>
+    </ClCompile>
+    <ClCompile Include="uniformBonusAmountDistribution.cpp">
+      <Filter>Source Files\drop\amountDistribution\bonusAmountDistribution\uniformBonusAmountDistribution</Filter>
+    </ClCompile>
+    <ClCompile Include="binomialWithBonusCountDistribution.cpp">
+      <Filter>Source Files\drop\amountDistribution\bonusAmountDistribution\binomialWithBonusCountDistribution</Filter>
+    </ClCompile>
+    <ClCompile Include="swamp.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\swamp</Filter>
+    </ClCompile>
+    <ClCompile Include="netherBiomeGenerator.cpp">
+      <Filter>Source Files\biome\netherBiomeGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="blockParticleBrush.cpp">
+      <Filter>Source Files\particleBrush\rectParticleBrush\blockParticleBrush</Filter>
+    </ClCompile>
+    <ClCompile Include="enchantingTableSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\inventory\enchantingTableSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="experienceOrb.cpp">
+      <Filter>Source Files\entity\experienceOrb</Filter>
+    </ClCompile>
+    <ClCompile Include="itemParticleBrush.cpp">
+      <Filter>Source Files\particleBrush\rectParticleBrush\itemParticleBrush</Filter>
+    </ClCompile>
+    <ClCompile Include="rectParticleBrush.cpp">
+      <Filter>Source Files\particleBrush\rectParticleBrush</Filter>
+    </ClCompile>
+    <ClCompile Include="grassBlockData.cpp">
+      <Filter>Source Files\block\blockData\grassBlockData</Filter>
+    </ClCompile>
+    <ClCompile Include="pollen.cpp">
+      <Filter>Source Files\entity\pollen</Filter>
+    </ClCompile>
+    <ClCompile Include="pollenData.cpp">
+      <Filter>Source Files\block\blockData\pollenData</Filter>
+    </ClCompile>
+    <ClCompile Include="shortGrassData.cpp">
+      <Filter>Source Files\block\blockData\pollenData\attachedBlockPollenData\shortGrassData</Filter>
+    </ClCompile>
+    <ClCompile Include="fungusData.cpp">
+      <Filter>Source Files\block\blockData\pollenData\fungusData</Filter>
+    </ClCompile>
+    <ClCompile Include="iceSpikes.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\iceSpikes</Filter>
+    </ClCompile>
+    <ClCompile Include="fireworkStarData.cpp">
+      <Filter>Source Files\item\itemTag\fireworkStarData</Filter>
+    </ClCompile>
+    <ClCompile Include="fireworkRocket.cpp">
+      <Filter>Source Files\entity\fireworkRocket</Filter>
+    </ClCompile>
+    <ClCompile Include="fireworkData.cpp">
+      <Filter>Source Files\item\itemTag\fireworkData</Filter>
+    </ClCompile>
+    <ClCompile Include="textureParticleBrush.cpp">
+      <Filter>Source Files\particleBrush\textureParticleBrush</Filter>
+    </ClCompile>
+    <ClCompile Include="animatedParticleData.cpp">
+      <Filter>Source Files\data\animatedParticleData</Filter>
+    </ClCompile>
+    <ClCompile Include="attachedBlockData.cpp">
+      <Filter>Source Files\block\blockData\attachedBlockData</Filter>
+    </ClCompile>
+    <ClCompile Include="doubleAttachedBlockData.cpp">
+      <Filter>Source Files\block\blockData\doubleAttachedBlockData</Filter>
+    </ClCompile>
+    <ClCompile Include="lightLevel.cpp">
+      <Filter>Source Files\lightLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="cropData.cpp">
+      <Filter>Source Files\block\blockData\ageData\cropData</Filter>
+    </ClCompile>
+    <ClCompile Include="chestData.cpp">
+      <Filter>Source Files\block\blockData\chestData</Filter>
+    </ClCompile>
+    <ClCompile Include="desert.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\desert</Filter>
+    </ClCompile>
+    <ClCompile Include="forest.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\forest</Filter>
+    </ClCompile>
+    <ClCompile Include="cropBlock.cpp">
+      <Filter>Source Files\block\cropBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="furnaceData.cpp">
+      <Filter>Source Files\block\furnaceData</Filter>
+    </ClCompile>
+    <ClCompile Include="ocean.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="plains.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\plains</Filter>
+    </ClCompile>
+    <ClCompile Include="savanna.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\savanna</Filter>
+    </ClCompile>
+    <ClCompile Include="mushroomFields.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\mushroomFields</Filter>
+    </ClCompile>
+    <ClCompile Include="shapedRecipe.cpp">
+      <Filter>Source Files\recipe\shapedRecipe</Filter>
+    </ClCompile>
+    <ClCompile Include="shapeLessRecipe.cpp">
+      <Filter>Source Files\recipe\shapeLessRecipe</Filter>
+    </ClCompile>
+    <ClCompile Include="gameform.cpp">
+      <Filter>Source Files\UI\gameForm</Filter>
+    </ClCompile>
+    <ClCompile Include="taiga.cpp">
+      <Filter>Source Files\biome\overworldBiomeGenerator\taiga</Filter>
+    </ClCompile>
+    <ClCompile Include="world.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="IItemComparable.cpp">
+      <Filter>Source Files\IItemComparable</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files\stdafx</Filter>
+    </ClCompile>
+    <ClCompile Include="playerControlledAI.cpp">
+      <Filter>Source Files\entity\AI\entityAI\playerControlledAI</Filter>
+    </ClCompile>
+    <ClCompile Include="slotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="rectangularSlotContainer.cpp">
+      <Filter>Source Files\inventory\rectangularSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="itemData.cpp">
+      <Filter>Source Files\itemData</Filter>
+    </ClCompile>
+    <ClCompile Include="soundCollection.cpp">
+      <Filter>Source Files\sound\soundCollection</Filter>
+    </ClCompile>
+    <ClCompile Include="nbtData.cpp">
+      <Filter>Source Files\NBT</Filter>
+    </ClCompile>
+    <ClCompile Include="craftableSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="craftingGridSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="craftingTableSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer\craftingTableSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.cpp">
+      <Filter>Source Files\inventory\slotContainer\inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="uiSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\uiSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="chestSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\inventory\chestSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="enchantment.cpp">
+      <Filter>Source Files\item\enchantment</Filter>
+    </ClCompile>
+    <ClCompile Include="musicCollection.cpp">
+      <Filter>Source Files\sound\musicCollection</Filter>
+    </ClCompile>
+    <ClCompile Include="worldCreator.cpp">
+      <Filter>Source Files\UI\gameSelector\worldSelector\worldCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="smithingTableSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\smithingTableSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="pressurePlateData.cpp">
+      <Filter>Source Files\block\blockData\pressurePlateData</Filter>
+    </ClCompile>
+    <ClCompile Include="dispenserSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\inventory\dispenserSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="brewingStandSlotContainer.cpp">
+      <Filter>Source Files\inventory\slotContainer\inventory\brewingStandSlotContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="creditsForm.cpp">
+      <Filter>Source Files\UI\creditsForm</Filter>
+    </ClCompile>
+    <ClCompile Include="constants.cpp">
+      <Filter>Source Files\constants</Filter>
+    </ClCompile>
+    <ClCompile Include="damageSource.cpp">
+      <Filter>Source Files\damage\damageSource</Filter>
+    </ClCompile>
+    <ClCompile Include="settingsForm.cpp">
+      <Filter>Source Files\UI\settingForm</Filter>
+    </ClCompile>
+    <ClCompile Include="humanSlotContainerUI.cpp">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer\humanSlotContainerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionEdgeData.cpp">
+      <Filter>Source Files\physics\collisionEdgeData</Filter>
+    </ClCompile>
+    <ClCompile Include="biomeData.cpp">
+      <Filter>Source Files\biomeData</Filter>
+    </ClCompile>
+    <ClCompile Include="leavesData.cpp">
+      <Filter>Source Files\block\blockData\leavesData</Filter>
+    </ClCompile>
+    <ClCompile Include="renderBlockContainer.cpp">
+      <Filter>Source Files\blockContainer\renderBlockContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionDataCollection.cpp">
+      <Filter>Source Files\physics\collisionData</Filter>
+    </ClCompile>
+    <ClCompile Include="mainMenu.cpp">
+      <Filter>Source Files\UI\mainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="serverSelector.cpp">
+      <Filter>Source Files\UI\gameSelector\serverSelector</Filter>
+    </ClCompile>
+    <ClCompile Include="gameSelector.cpp">
+      <Filter>Source Files\UI\gameSelector</Filter>
+    </ClCompile>
+    <ClCompile Include="serverEditor.cpp">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="serverControl.cpp">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverControl</Filter>
+    </ClCompile>
+    <ClCompile Include="server.cpp">
+      <Filter>Source Files\network\server</Filter>
+    </ClCompile>
+    <ClCompile Include="playerSocket.cpp">
+      <Filter>Source Files\network\playerSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>Source Files\network\client</Filter>
+    </ClCompile>
+    <ClCompile Include="statusEffect.cpp">
+      <Filter>Source Files\statusEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="structureBlockModeUI.cpp">
+      <Filter>Source Files\UI\structureBlockModeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="facingData.cpp">
+      <Filter>Source Files\block\blockData\facingData</Filter>
+    </ClCompile>
+    <ClCompile Include="soundSettingsForm.cpp">
+      <Filter>Source Files\UI\soundSettingsForm</Filter>
+    </ClCompile>
+    <ClCompile Include="structure.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="overWorldGenerationData.cpp">
+      <Filter>Source Files\world\generationData\overWorldGenerationData</Filter>
+    </ClCompile>
+    <ClCompile Include="generationData.cpp">
+      <Filter>Source Files\world\generationData</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionData.cpp">
+      <Filter>Source Files\physics\collisionData</Filter>
+    </ClCompile>
+    <ClCompile Include="videoSettingsForm.cpp">
+      <Filter>Source Files\UI\settingForm\videoSettingsForm</Filter>
+    </ClCompile>
+    <ClCompile Include="experienceDrop.cpp">
+      <Filter>Source Files\drop\experienceDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="mobDamageSource.cpp">
+      <Filter>Source Files\damage\mobDamageSource</Filter>
+    </ClCompile>
+    <ClCompile Include="soundPacket.cpp">
+      <Filter>Source Files\network\soundPacket</Filter>
+    </ClCompile>
+    <ClCompile Include="gameTile.cpp">
+      <Filter>Source Files\UI\gameSelector\gameTile</Filter>
+    </ClCompile>
+    <ClCompile Include="playerData.cpp">
+      <Filter>Source Files\network\playerData</Filter>
+    </ClCompile>
+    <ClCompile Include="serverDataList.cpp">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverData\serverDataList</Filter>
+    </ClCompile>
+    <ClCompile Include="clientInput.cpp">
+      <Filter>Source Files\network\clientInput</Filter>
+    </ClCompile>
+    <ClCompile Include="include\math\random\random.cpp">
+      <Filter>Source Files\include</Filter>
+    </ClCompile>
+    <ClCompile Include="serverData.cpp">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverData</Filter>
+    </ClCompile>
+    <ClCompile Include="include\network\compressedPacket.cpp">
+      <Filter>Source Files\network\compressedPacket</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="blockID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="colorID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="coralColorID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="coralStateID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="coralTypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="sandstoneColorID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="sandstoneTypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="treeItemTypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="woodtypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>Source Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="nbtDataTag.h">
+      <Filter>Source Files\NBT</Filter>
+    </ClInclude>
+    <ClInclude Include="soundhandler.h">
+      <Filter>Source Files\soundHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="soundhandler2d.h">
+      <Filter>Source Files\soundHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="itemID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="entityID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="particleID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="harvestTier.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="toolTypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="armorTier.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="armorType.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="GamemodeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="structureBlockMode.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="structureID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="mobList.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="dragonPhase.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="enchantmentID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="biomeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="statusEffectID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="mob.h">
+      <Filter>Source Files\entity\mob</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>Source Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="nbtCompound.h">
+      <Filter>Source Files\NBT</Filter>
+    </ClInclude>
+    <ClInclude Include="nbtDataArray.h">
+      <Filter>Source Files\NBT</Filter>
+    </ClInclude>
+    <ClInclude Include="nbtData.h">
+      <Filter>Source Files\NBT</Filter>
+    </ClInclude>
+    <ClInclude Include="fireworkShapeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionTypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="damageType.h">
+      <Filter>Source Files\damage</Filter>
+    </ClInclude>
+    <ClInclude Include="statusEffect.h">
+      <Filter>Source Files\statusEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="renderData.h">
+      <Filter>Source Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="world.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="biomeGenerator.h">
+      <Filter>Source Files\biome</Filter>
+    </ClInclude>
+    <ClInclude Include="blockContainer.h">
+      <Filter>Source Files\blockContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="mushroomColorID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="netherVineTypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="noteTypeID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="keyID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="arrayDataType.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="levelID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="lightLevelID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="chunkLoadLevel.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="dimensionID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="cpuUsageID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="audioCollection.h">
+      <Filter>Source Files\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="humanoid.h">
+      <Filter>Source Files\entity\mob\humanoid</Filter>
+    </ClInclude>
+    <ClInclude Include="slotContainer.h">
+      <Filter>Source Files\inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="blockData.h">
+      <Filter>Source Files\block\blockData</Filter>
+    </ClInclude>
+    <ClInclude Include="fluidList.h">
+      <Filter>Source Files\block\fluid</Filter>
+    </ClInclude>
+    <ClInclude Include="overWorldOreList.h">
+      <Filter>Source Files\block</Filter>
+    </ClInclude>
+    <ClInclude Include="netherOreList.h">
+      <Filter>Source Files\block</Filter>
+    </ClInclude>
+    <ClInclude Include="oreBlockList.h">
+      <Filter>Source Files\block</Filter>
+    </ClInclude>
+    <ClInclude Include="harvestType.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="block.h">
+      <Filter>Source Files\block</Filter>
+    </ClInclude>
+    <ClInclude Include="slime.h">
+      <Filter>Source Files\entity\mob\slime</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicsMode.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="coralColorNames.h">
+      <Filter>Source Files\block\coral</Filter>
+    </ClInclude>
+    <ClInclude Include="coralTypeNames.h">
+      <Filter>Source Files\block\coral</Filter>
+    </ClInclude>
+    <ClInclude Include="coralstateNames.h">
+      <Filter>Source Files\block\coral</Filter>
+    </ClInclude>
+    <ClInclude Include="enderDragon.h">
+      <Filter>Source Files\entity\mob\enderDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="enderDragonPortalFlyingAI.h">
+      <Filter>Source Files\entity\AI\enderDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="fireBallAI.h">
+      <Filter>Source Files\entity\AI\fireBallAI</Filter>
+    </ClInclude>
+    <ClInclude Include="dimension.h">
+      <Filter>Source Files\world\dimension</Filter>
+    </ClInclude>
+    <ClInclude Include="structure.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="zombie.h">
+      <Filter>Source Files\entity\mob\humanoid\zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="sheep.h">
+      <Filter>Source Files\entity\mob\fourLeggedMob\sheep</Filter>
+    </ClInclude>
+    <ClInclude Include="fourLeggedMob.h">
+      <Filter>Source Files\entity\mob\fourLeggedMob</Filter>
+    </ClInclude>
+    <ClInclude Include="pig.h">
+      <Filter>Source Files\entity\mob\fourLeggedMob\pig</Filter>
+    </ClInclude>
+    <ClInclude Include="passiveMob.h">
+      <Filter>Source Files\entity\mob\passiveMob</Filter>
+    </ClInclude>
+    <ClInclude Include="cow.h">
+      <Filter>Source Files\entity\mob\fourLeggedMob\cow</Filter>
+    </ClInclude>
+    <ClInclude Include="wolf.h">
+      <Filter>Source Files\entity\mob\fourLeggedMob\wolf</Filter>
+    </ClInclude>
+    <ClInclude Include="creeper.h">
+      <Filter>Source Files\entity\mob\fourLeggedMob\creeper</Filter>
+    </ClInclude>
+    <ClInclude Include="cod.h">
+      <Filter>Source Files\entity\mob\cod</Filter>
+    </ClInclude>
+    <ClInclude Include="blaze.h">
+      <Filter>Source Files\entity\mob\blaze</Filter>
+    </ClInclude>
+    <ClInclude Include="ghast.h">
+      <Filter>Source Files\entity\mob\ghast</Filter>
+    </ClInclude>
+    <ClInclude Include="enderman.h">
+      <Filter>Source Files\entity\mob\humanoid\enderman</Filter>
+    </ClInclude>
+    <ClInclude Include="human.h">
+      <Filter>Source Files\entity\mob\humanoid\human</Filter>
+    </ClInclude>
+    <ClInclude Include="skeleton.h">
+      <Filter>Source Files\entity\mob\humanoid\skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="zombifiedPiglin.h">
+      <Filter>Source Files\entity\mob\humanoid\zombifiedPiglin</Filter>
+    </ClInclude>
+    <ClInclude Include="chicken.h">
+      <Filter>Source Files\entity\mob\passiveMob\chicken</Filter>
+    </ClInclude>
+    <ClInclude Include="shulker.h">
+      <Filter>Source Files\entity\mob\shulker</Filter>
+    </ClInclude>
+    <ClInclude Include="attackOnCollideAI.h">
+      <Filter>Source Files\entity\AI\targetAI</Filter>
+    </ClInclude>
+    <ClInclude Include="angerAI.h">
+      <Filter>Source Files\entity\AI\targetAI\angerAI</Filter>
+    </ClInclude>
+    <ClInclude Include="breedableMob.h">
+      <Filter>Source Files\entity\mob\breedableMob</Filter>
+    </ClInclude>
+    <ClInclude Include="boidsAI.h">
+      <Filter>Source Files\entity\AI\boidsAI</Filter>
+    </ClInclude>
+    <ClInclude Include="wanderAI.h">
+      <Filter>Source Files\entity\AI\wanderAI</Filter>
+    </ClInclude>
+    <ClInclude Include="eatGrassAI.h">
+      <Filter>Source Files\entity\AI\eatGrassAI</Filter>
+    </ClInclude>
+    <ClInclude Include="dragonBeamBrush.h">
+      <Filter>Source Files\entity\mob\enderDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="avoidEntityAI.h">
+      <Filter>Source Files\entity\AI\avoidEntityAI</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityAI.h">
+      <Filter>Source Files\entity\AI\entityAI</Filter>
+    </ClInclude>
+    <ClInclude Include="loveModeAI.h">
+      <Filter>Source Files\entity\AI\loveModeAI</Filter>
+    </ClInclude>
+    <ClInclude Include="panicAI.h">
+      <Filter>Source Files\entity\AI\panicAI</Filter>
+    </ClInclude>
+    <ClInclude Include="targetAI.h">
+      <Filter>Source Files\entity\AI\targetAI</Filter>
+    </ClInclude>
+    <ClInclude Include="taskList.h">
+      <Filter>Source Files\entity\AI\taskList</Filter>
+    </ClInclude>
+    <ClInclude Include="teleportOnDamageAI.h">
+      <Filter>Source Files\entity\AI\teleportOnDamageAI</Filter>
+    </ClInclude>
+    <ClInclude Include="teleportToAttachAI.h">
+      <Filter>Source Files\entity\AI\teleportToAttachAI</Filter>
+    </ClInclude>
+    <ClInclude Include="taskAI.h">
+      <Filter>Source Files\entity\AI\taskAI</Filter>
+    </ClInclude>
+    <ClInclude Include="experienceOrb.h">
+      <Filter>Source Files\entity\experienceOrb</Filter>
+    </ClInclude>
+    <ClInclude Include="hurtByTargetAI.h">
+      <Filter>Source Files\entity\AI\targetAI\angerAI\hurtByTargetAI</Filter>
+    </ClInclude>
+    <ClInclude Include="doubleAttachedBlockData.h">
+      <Filter>Source Files\block\blockData\doubleAttachedBlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="attachedBlockData.h">
+      <Filter>Source Files\block\blockData\attachedBlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="facingData.h">
+      <Filter>Source Files\block\blockData\facingData</Filter>
+    </ClInclude>
+    <ClInclude Include="ageData.h">
+      <Filter>Source Files\block\blockData\ageData</Filter>
+    </ClInclude>
+    <ClInclude Include="frostedIceData.h">
+      <Filter>Source Files\block\blockData\ageData\frostedIceData</Filter>
+    </ClInclude>
+    <ClInclude Include="attachedData.h">
+      <Filter>Source Files\block\blockData\attachedData</Filter>
+    </ClInclude>
+    <ClInclude Include="attachmentDirectionData.h">
+      <Filter>Source Files\block\blockData\attachedBlockData\attachmentDirectionData</Filter>
+    </ClInclude>
+    <ClInclude Include="redstoneTorchData.h">
+      <Filter>Source Files\block\blockData\attachedBlockData\attachmentDirectionData\redstoneTorchData</Filter>
+    </ClInclude>
+    <ClInclude Include="sapSpreadData.h">
+      <Filter>Source Files\block\blockData\sapSpreadData</Filter>
+    </ClInclude>
+    <ClInclude Include="doubleBlockData.h">
+      <Filter>Source Files\block\blockData\doubleBlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="pollenData.h">
+      <Filter>Source Files\block\blockData\pollenData</Filter>
+    </ClInclude>
+    <ClInclude Include="attachedBlockPollenData.h">
+      <Filter>Source Files\block\blockData\pollenData\attachedBlockPollenData</Filter>
+    </ClInclude>
+    <ClInclude Include="doubleAttachedBlockPollenData.h">
+      <Filter>Source Files\block\blockData\pollenData\attachedBlockPollenData\doubleAttachedBlockPollenData</Filter>
+    </ClInclude>
+    <ClInclude Include="shortGrassData.h">
+      <Filter>Source Files\block\blockData\pollenData\attachedBlockPollenData\shortGrassData</Filter>
+    </ClInclude>
+    <ClInclude Include="openData.h">
+      <Filter>Source Files\block\blockData\openData</Filter>
+    </ClInclude>
+    <ClInclude Include="upsideDownData.h">
+      <Filter>Source Files\block\blockData\upsideDownData</Filter>
+    </ClInclude>
+    <ClInclude Include="fireData.h">
+      <Filter>Source Files\block\blockData\ageData\fireData</Filter>
+    </ClInclude>
+    <ClInclude Include="buttonData.h">
+      <Filter>Source Files\block\blockData\attachedBlockData\attachmentDirectionData\buttonData</Filter>
+    </ClInclude>
+    <ClInclude Include="leverData.h">
+      <Filter>Source Files\block\blockData\attachedBlockData\attachmentDirectionData\leverData</Filter>
+    </ClInclude>
+    <ClInclude Include="lastPowerLevelData.h">
+      <Filter>Source Files\block\blockData\lastPowerLevelData</Filter>
+    </ClInclude>
+    <ClInclude Include="pistonData.h">
+      <Filter>Source Files\block\blockData\facingData\pistonData</Filter>
+    </ClInclude>
+    <ClInclude Include="inputData.h">
+      <Filter>Source Files\block\blockData\facingData\inputData</Filter>
+    </ClInclude>
+    <ClInclude Include="repeaterData.h">
+      <Filter>Source Files\block\blockData\facingData\inputData\repeaterData</Filter>
+    </ClInclude>
+    <ClInclude Include="comparatorData.h">
+      <Filter>Source Files\block\blockData\facingData\inputData\comparatorData</Filter>
+    </ClInclude>
+    <ClInclude Include="tntData.h">
+      <Filter>Source Files\block\blockData\tntData</Filter>
+    </ClInclude>
+    <ClInclude Include="bambooData.h">
+      <Filter>Source Files\block\blockData\ageData\bambooData</Filter>
+    </ClInclude>
+    <ClInclude Include="grassBlockData.h">
+      <Filter>Source Files\block\blockData\grassBlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="noteBlockData.h">
+      <Filter>Source Files\block\blockData\lastPowerLevelData\noteBlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="jukeBoxData.h">
+      <Filter>Source Files\block\blockData\jukeBoxData</Filter>
+    </ClInclude>
+    <ClInclude Include="redstoneLampData.h">
+      <Filter>Source Files\block\blockData\lastPowerLevelData\redstoneLampData</Filter>
+    </ClInclude>
+    <ClInclude Include="spawnerData.h">
+      <Filter>Source Files\block\blockData\spawnerData</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingBlockData.h">
+      <Filter>Source Files\block\blockData\fallingBlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="endPortalFrameData.h">
+      <Filter>Source Files\block\blockData\facingData\endPortalFrameData</Filter>
+    </ClInclude>
+    <ClInclude Include="stairsData.h">
+      <Filter>Source Files\block\blockData\facingData\stairsData</Filter>
+    </ClInclude>
+    <ClInclude Include="slabData.h">
+      <Filter>Source Files\block\blockData\slabData</Filter>
+    </ClInclude>
+    <ClInclude Include="bedData.h">
+      <Filter>Source Files\block\blockData\doubleBlockData\bedData</Filter>
+    </ClInclude>
+    <ClInclude Include="doorData.h">
+      <Filter>Source Files\block\blockData\doubleBlockData\doorData</Filter>
+    </ClInclude>
+    <ClInclude Include="ironDoorData.h">
+      <Filter>Source Files\block\blockData\doubleBlockData\doorData\ironDoorData</Filter>
+    </ClInclude>
+    <ClInclude Include="trapDoorData.h">
+      <Filter>Source Files\block\blockData\facingData\trapDoorData</Filter>
+    </ClInclude>
+    <ClInclude Include="ironTrapDoorData.h">
+      <Filter>Source Files\block\blockData\facingData\trapDoorData\ironTrapDoorData</Filter>
+    </ClInclude>
+    <ClInclude Include="fenceGateData.h">
+      <Filter>Source Files\block\blockData\facingData\fenceGateData</Filter>
+    </ClInclude>
+    <ClInclude Include="sugarCaneData.h">
+      <Filter>Source Files\block\blockData\sugarCaneData</Filter>
+    </ClInclude>
+    <ClInclude Include="saplingData.h">
+      <Filter>Source Files\block\blockData\attachedBlockData\saplingData</Filter>
+    </ClInclude>
+    <ClInclude Include="mushroomData.h">
+      <Filter>Source Files\block\blockData\pollenData\attachedBlockPollenData\mushroomData</Filter>
+    </ClInclude>
+    <ClInclude Include="fungusData.h">
+      <Filter>Source Files\block\blockData\pollenData\fungusData</Filter>
+    </ClInclude>
+    <ClInclude Include="cropData.h">
+      <Filter>Source Files\block\blockData\ageData\cropData</Filter>
+    </ClInclude>
+    <ClInclude Include="attachedCropData.h">
+      <Filter>Source Files\block\blockData\ageData\cropData\attachedCropData</Filter>
+    </ClInclude>
+    <ClInclude Include="stemPlantData.h">
+      <Filter>Source Files\block\blockData\ageData\cropData\stemPlantData</Filter>
+    </ClInclude>
+    <ClInclude Include="snowLayerData.h">
+      <Filter>Source Files\block\blockData\fallingBlockData\snowLayerData</Filter>
+    </ClInclude>
+    <ClInclude Include="fluidData.h">
+      <Filter>Source Files\block\blockData\fluidData</Filter>
+    </ClInclude>
+    <ClInclude Include="spongeData.h">
+      <Filter>Source Files\block\blockData\fluidData\spongeData</Filter>
+    </ClInclude>
+    <ClInclude Include="dispenserData.h">
+      <Filter>Source Files\block\blockData\facingData\dispenserData</Filter>
+    </ClInclude>
+    <ClInclude Include="dropperData.h">
+      <Filter>Source Files\block\blockData\facingData\dispenserData\dropperData</Filter>
+    </ClInclude>
+    <ClInclude Include="chestData.h">
+      <Filter>Source Files\block\blockData\chestData</Filter>
+    </ClInclude>
+    <ClInclude Include="furnaceData.h">
+      <Filter>Source Files\block\furnaceData</Filter>
+    </ClInclude>
+    <ClInclude Include="structureBlockData.h">
+      <Filter>Source Files\block\blockData\structureBlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="jigsawData.h">
+      <Filter>Source Files\block\blockData\facingData\jigsawData</Filter>
+    </ClInclude>
+    <ClInclude Include="pollen.h">
+      <Filter>Source Files\entity\pollen</Filter>
+    </ClInclude>
+    <ClInclude Include="fireworkRocket.h">
+      <Filter>Source Files\entity\fireworkRocket</Filter>
+    </ClInclude>
+    <ClInclude Include="piston.h">
+      <Filter>Source Files\entity\piston</Filter>
+    </ClInclude>
+    <ClInclude Include="ridableEntity.h">
+      <Filter>Source Files\entity\ridableEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="hollowRidableEntity.h">
+      <Filter>Source Files\entity\ridableEntity\hollowRidableEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="boat.h">
+      <Filter>Source Files\entity\ridableEntity\hollowRidableEntity\boat</Filter>
+    </ClInclude>
+    <ClInclude Include="minecart.h">
+      <Filter>Source Files\entity\ridableEntity\hollowRidableEntity\minecart</Filter>
+    </ClInclude>
+    <ClInclude Include="tnt.h">
+      <Filter>Source Files\entity\tnt</Filter>
+    </ClInclude>
+    <ClInclude Include="endCrystal.h">
+      <Filter>Source Files\entity\endCrystal</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingBlock.h">
+      <Filter>Source Files\entity\fallingBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="pistonBehaviour.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>Source Files\entity\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="uiSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\uiSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>Source Files\inventory\slotContainer\inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="craftableSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="craftingGridSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="humanSlotContainerUI.h">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer\humanSlotContainerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="craftingTableSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\craftingGridSlotContainer\craftingTableSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="smithingTableSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\smithingTableSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="anvilSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\craftableSlotContainer\anvilSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="furnaceSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\inventory\furnaceSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="brewingStandSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\inventory\brewingStandSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="chestSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\inventory\chestSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="dispenserSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\inventory\dispenserSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="enchantingTableSlotContainer.h">
+      <Filter>Source Files\inventory\slotContainer\inventory\enchantingTableSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="structureBlockModeUI.h">
+      <Filter>Source Files\UI\structureBlockModeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="structureBlockSaveModeUI.h">
+      <Filter>Source Files\UI\structureBlockModeUI\structureBlockSaveModeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="structureBlockLoadModeUI.h">
+      <Filter>Source Files\UI\structureBlockModeUI\structureBlockLoadModeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="structureBlockUI.h">
+      <Filter>Source Files\UI\structureBlockUI</Filter>
+    </ClInclude>
+    <ClInclude Include="jigsawUI.h">
+      <Filter>Source Files\UI\jigsawUI</Filter>
+    </ClInclude>
+    <ClInclude Include="inventoryForm.h">
+      <Filter>Source Files\UI\inventoryForm</Filter>
+    </ClInclude>
+    <ClInclude Include="gameControl.h">
+      <Filter>Source Files\network\server\gameControl</Filter>
+    </ClInclude>
+    <ClInclude Include="creditsForm.h">
+      <Filter>Source Files\UI\creditsForm</Filter>
+    </ClInclude>
+    <ClInclude Include="throwable.h">
+      <Filter>Source Files\entity\throwable</Filter>
+    </ClInclude>
+    <ClInclude Include="fishingHook.h">
+      <Filter>Source Files\entity\throwable\fishingHook</Filter>
+    </ClInclude>
+    <ClInclude Include="snowBall.h">
+      <Filter>Source Files\entity\throwable\snowBall</Filter>
+    </ClInclude>
+    <ClInclude Include="egg.h">
+      <Filter>Source Files\entity\throwable\egg</Filter>
+    </ClInclude>
+    <ClInclude Include="arrow.h">
+      <Filter>Source Files\entity\throwable\arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="enderPearl.h">
+      <Filter>Source Files\entity\throwable\enderPearl</Filter>
+    </ClInclude>
+    <ClInclude Include="eyeOfEnder.h">
+      <Filter>Source Files\entity\throwable\eyeOfEnder</Filter>
+    </ClInclude>
+    <ClInclude Include="fireBall.h">
+      <Filter>Source Files\entity\throwable\fireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="ghastFireBall.h">
+      <Filter>Source Files\entity\throwable\fireBall\ghastFireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="dragonFireBall.h">
+      <Filter>Source Files\entity\throwable\fireBall\dragonFireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="smallFireBall.h">
+      <Filter>Source Files\entity\throwable\fireBall\smallFireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="floatingSlot.h">
+      <Filter>Source Files\entity\floatingSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="entityData.h">
+      <Filter>Source Files\entityData</Filter>
+    </ClInclude>
+    <ClInclude Include="throwableData.h">
+      <Filter>Source Files\entityData\throwableData</Filter>
+    </ClInclude>
+    <ClInclude Include="biomeData.h">
+      <Filter>Source Files\biomeData</Filter>
+    </ClInclude>
+    <ClInclude Include="mobData.h">
+      <Filter>Source Files\entityData\mobData</Filter>
+    </ClInclude>
+    <ClInclude Include="particleBrush.h">
+      <Filter>Source Files\particleBrush</Filter>
+    </ClInclude>
+    <ClInclude Include="rectParticleBrush.h">
+      <Filter>Source Files\particleBrush\rectParticleBrush</Filter>
+    </ClInclude>
+    <ClInclude Include="blockParticleBrush.h">
+      <Filter>Source Files\particleBrush\rectParticleBrush\blockParticleBrush</Filter>
+    </ClInclude>
+    <ClInclude Include="itemParticleBrush.h">
+      <Filter>Source Files\particleBrush\rectParticleBrush\itemParticleBrush</Filter>
+    </ClInclude>
+    <ClInclude Include="textureParticleBrush.h">
+      <Filter>Source Files\particleBrush\textureParticleBrush</Filter>
+    </ClInclude>
+    <ClInclude Include="settings.h">
+      <Filter>Source Files\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="itemData.h">
+      <Filter>Source Files\itemData</Filter>
+    </ClInclude>
+    <ClInclude Include="tag.h">
+      <Filter>Source Files\IItemComparable\tag</Filter>
+    </ClInclude>
+    <ClInclude Include="dropData.h">
+      <Filter>Source Files\drop\dropData</Filter>
+    </ClInclude>
+    <ClInclude Include="overWorldBiomeGenerator.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="endBiomeGenerator.h">
+      <Filter>Source Files\biome\endBiomeGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="theEnd.h">
+      <Filter>Source Files\biome\endBiomeGenerator\theEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="endVoid.h">
+      <Filter>Source Files\biome\endBiomeGenerator\endVoid</Filter>
+    </ClInclude>
+    <ClInclude Include="endLands.h">
+      <Filter>Source Files\biome\endBiomeGenerator\endLands</Filter>
+    </ClInclude>
+    <ClInclude Include="netherBiomeGenerator.h">
+      <Filter>Source Files\biome\netherBiomeGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="netherWastes.h">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherWastes</Filter>
+    </ClInclude>
+    <ClInclude Include="netherForest.h">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest</Filter>
+    </ClInclude>
+    <ClInclude Include="crimsonForest.h">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\crimsonForest</Filter>
+    </ClInclude>
+    <ClInclude Include="warpedForest.h">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\warpedForest</Filter>
+    </ClInclude>
+    <ClInclude Include="soulSandValley.h">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\soulSandValley</Filter>
+    </ClInclude>
+    <ClInclude Include="basaltDeltas.h">
+      <Filter>Source Files\biome\netherBiomeGenerator\netherForest\basaltDeltas</Filter>
+    </ClInclude>
+    <ClInclude Include="mountains.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\mountains</Filter>
+    </ClInclude>
+    <ClInclude Include="desert.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\desert</Filter>
+    </ClInclude>
+    <ClInclude Include="mushroomFields.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\mushroomFields</Filter>
+    </ClInclude>
+    <ClInclude Include="iceSpikes.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\iceSpikes</Filter>
+    </ClInclude>
+    <ClInclude Include="forest.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\forest</Filter>
+    </ClInclude>
+    <ClInclude Include="swamp.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\swamp</Filter>
+    </ClInclude>
+    <ClInclude Include="darkForest.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\darkForest</Filter>
+    </ClInclude>
+    <ClInclude Include="plains.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\plains</Filter>
+    </ClInclude>
+    <ClInclude Include="savanna.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\savanna</Filter>
+    </ClInclude>
+    <ClInclude Include="ocean.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="taiga.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\taiga</Filter>
+    </ClInclude>
+    <ClInclude Include="badLands.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\badLands</Filter>
+    </ClInclude>
+    <ClInclude Include="jungle.h">
+      <Filter>Source Files\biome\overworldBiomeGenerator\jungle</Filter>
+    </ClInclude>
+    <ClInclude Include="itemDrop.h">
+      <Filter>Source Files\drop\lootTable\itemDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="amountDistribution.h">
+      <Filter>Source Files\drop\amountDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="amountDrop.h">
+      <Filter>Source Files\drop\lootTable\amountDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="bonusAmountDistribution.h">
+      <Filter>Source Files\drop\amountDistribution\bonusAmountDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="uniformBonusAmountDistribution.h">
+      <Filter>Source Files\drop\amountDistribution\bonusAmountDistribution\uniformBonusAmountDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="binomialWithBonusCountDistribution.h">
+      <Filter>Source Files\drop\amountDistribution\bonusAmountDistribution\binomialWithBonusCountDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="oreDropsDistribution.h">
+      <Filter>Source Files\drop\amountDistribution\bonusAmountDistribution\oreDropsDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="constantAmountDistribution.h">
+      <Filter>Source Files\drop\amountDistribution\constantAmountDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="uniformAmountDistribution.h">
+      <Filter>Source Files\drop\amountDistribution\uniformAmountDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="binomialAmountDistribution.h">
+      <Filter>Source Files\drop\amountDistribution\binomialAmountDistribution</Filter>
+    </ClInclude>
+    <ClInclude Include="explosionDecayDrop.h">
+      <Filter>Source Files\drop\lootTable\explosionDecayDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="choiceDrop.h">
+      <Filter>Source Files\drop\lootTable\choiceDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="alternativesDrop.h">
+      <Filter>Source Files\drop\lootTable\alternativesDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="dropCondition.h">
+      <Filter>Source Files\drop\dropCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="conditionDrop.h">
+      <Filter>Source Files\drop\lootTable\conditionDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="explosionDrop.h">
+      <Filter>Source Files\drop\dropCondition\explosionDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="toolDrop.h">
+      <Filter>Source Files\drop\dropCondition\toolDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="blockStateCondition.h">
+      <Filter>Source Files\drop\dropCondition\blockStateCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="alternativeDropCondition.h">
+      <Filter>Source Files\drop\dropCondition\alternativeDropCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="invertedCondition.h">
+      <Filter>Source Files\drop\dropCondition\invertedCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="tableBonusCondition.h">
+      <Filter>Source Files\drop\dropCondition\tableBonusCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="chanceCondition.h">
+      <Filter>Source Files\drop\dropCondition\chanceCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="uniformChoiceDrop.h">
+      <Filter>Source Files\drop\lootTable\uniformChoiceDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="additiveDrop.h">
+      <Filter>Source Files\drop\lootTable\additiveDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="recipe.h">
+      <Filter>Source Files\recipe</Filter>
+    </ClInclude>
+    <ClInclude Include="shapedRecipe.h">
+      <Filter>Source Files\recipe\shapedRecipe</Filter>
+    </ClInclude>
+    <ClInclude Include="shapeLessRecipe.h">
+      <Filter>Source Files\recipe\shapeLessRecipe</Filter>
+    </ClInclude>
+    <ClInclude Include="furnaceRecipe.h">
+      <Filter>Source Files\recipe\furnaceRecipe</Filter>
+    </ClInclude>
+    <ClInclude Include="renderBrush.h">
+      <Filter>Source Files\rendering\renderBrush</Filter>
+    </ClInclude>
+    <ClInclude Include="textureList.h">
+      <Filter>Source Files\resourcePack\textureList</Filter>
+    </ClInclude>
+    <ClInclude Include="soundList.h">
+      <Filter>Source Files\resourcePack\soundList</Filter>
+    </ClInclude>
+    <ClInclude Include="movableBlockContainer.h">
+      <Filter>Source Files\blockContainer\tickableBlockContainer\movableBlockContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="tickableBlockContainer.h">
+      <Filter>Source Files\blockContainer\tickableBlockContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="dimensionData.h">
+      <Filter>Source Files\dimensionData</Filter>
+    </ClInclude>
+    <ClInclude Include="structurePlacementBlueprint.h">
+      <Filter>Source Files\structure\structurePlacementBlueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="structureFeature.h">
+      <Filter>Source Files\structure\structureFeature</Filter>
+    </ClInclude>
+    <ClInclude Include="decayedStructureFeature.h">
+      <Filter>Source Files\structure\structureFeature\decayedStructureFeature</Filter>
+    </ClInclude>
+    <ClInclude Include="netherFortressFeature.h">
+      <Filter>Source Files\structure\structureFeature\netherFortressFeature</Filter>
+    </ClInclude>
+    <ClInclude Include="mushroomFeature.h">
+      <Filter>Source Files\structure\structureFeature\mushroomFeature</Filter>
+    </ClInclude>
+    <ClInclude Include="treeFeature.h">
+      <Filter>Source Files\structure\structureFeature\treeFeature</Filter>
+    </ClInclude>
+    <ClInclude Include="jigsawPool.h">
+      <Filter>Source Files\jigsawPool</Filter>
+    </ClInclude>
+    <ClInclude Include="nether.h">
+      <Filter>Source Files\world\dimension\nether</Filter>
+    </ClInclude>
+    <ClInclude Include="generationData.h">
+      <Filter>Source Files\world\generationData</Filter>
+    </ClInclude>
+    <ClInclude Include="overWorldGenerationData.h">
+      <Filter>Source Files\world\generationData\overWorldGenerationData</Filter>
+    </ClInclude>
+    <ClInclude Include="netherGenerationData.h">
+      <Filter>Source Files\world\generationData\netherGenerationData</Filter>
+    </ClInclude>
+    <ClInclude Include="endGenerationData.h">
+      <Filter>Source Files\world\generationData\endGenerationData</Filter>
+    </ClInclude>
+    <ClInclude Include="settingsForm.h">
+      <Filter>Source Files\UI\settingForm</Filter>
+    </ClInclude>
+    <ClInclude Include="videoSettingsForm.h">
+      <Filter>Source Files\UI\settingForm\videoSettingsForm</Filter>
+    </ClInclude>
+    <ClInclude Include="soundSettingsForm.h">
+      <Filter>Source Files\UI\soundSettingsForm</Filter>
+    </ClInclude>
+    <ClInclude Include="mainMenu.h">
+      <Filter>Source Files\UI\mainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="worldSelector.h">
+      <Filter>Source Files\UI\gameSelector\worldSelector</Filter>
+    </ClInclude>
+    <ClInclude Include="worldCreator.h">
+      <Filter>Source Files\UI\gameSelector\worldSelector\worldCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="saveFileControl.h">
+      <Filter>Source Files\UI\gameSelector\worldSelector\saveFileControl</Filter>
+    </ClInclude>
+    <ClInclude Include="gameModeData.h">
+      <Filter>Source Files\data\gameModeData</Filter>
+    </ClInclude>
+    <ClInclude Include="statusEffectData.h">
+      <Filter>Source Files\data\statusEffectData</Filter>
+    </ClInclude>
+    <ClInclude Include="enchantmentData.h">
+      <Filter>Source Files\data\enchantmentData</Filter>
+    </ClInclude>
+    <ClInclude Include="attachmentID.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="doubleBlock.h">
+      <Filter>Source Files\block\doubleBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="connectedBlock.h">
+      <Filter>Source Files\block\connectedBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="cropBlock.h">
+      <Filter>Source Files\block\cropBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="woodTypeData.h">
+      <Filter>Source Files\data\woodTypeData</Filter>
+    </ClInclude>
+    <ClInclude Include="mushroomColorData.h">
+      <Filter>Source Files\data\mushroomColorData</Filter>
+    </ClInclude>
+    <ClInclude Include="animatedParticleData.h">
+      <Filter>Source Files\data\animatedParticleData</Filter>
+    </ClInclude>
+    <ClInclude Include="folderList.h">
+      <Filter>Source Files\resourcePack\folderList</Filter>
+    </ClInclude>
+    <ClInclude Include="itemTag.h">
+      <Filter>Source Files\item\itemTag</Filter>
+    </ClInclude>
+    <ClInclude Include="potionData.h">
+      <Filter>Source Files\item\itemTag\potionData</Filter>
+    </ClInclude>
+    <ClInclude Include="durabilityData.h">
+      <Filter>Source Files\item\itemTag\durabilityData</Filter>
+    </ClInclude>
+    <ClInclude Include="fireworkStarData.h">
+      <Filter>Source Files\item\itemTag\fireworkStarData</Filter>
+    </ClInclude>
+    <ClInclude Include="fireworkData.h">
+      <Filter>Source Files\item\itemTag\fireworkData</Filter>
+    </ClInclude>
+    <ClInclude Include="bucketData.h">
+      <Filter>Source Files\item\itemTag\bucketData</Filter>
+    </ClInclude>
+    <ClInclude Include="resourcePack.h">
+      <Filter>Source Files\resourcePack</Filter>
+    </ClInclude>
+    <ClInclude Include="nbtSerializer.h">
+      <Filter>Source Files\interface\nbtSerializer</Filter>
+    </ClInclude>
+    <ClInclude Include="nbtSerializable.h">
+      <Filter>Source Files\interface\nbtSerializable</Filter>
+    </ClInclude>
+    <ClInclude Include="noteData.h">
+      <Filter>Source Files\data\noteData</Filter>
+    </ClInclude>
+    <ClInclude Include="fireworkShapeData.h">
+      <Filter>Source Files\data\fireworkShapeData</Filter>
+    </ClInclude>
+    <ClInclude Include="particleTypeData.h">
+      <Filter>Source Files\data\particleTypeData</Filter>
+    </ClInclude>
+    <ClInclude Include="netherVineTypeData.h">
+      <Filter>Source Files\data\netherVineTypeData</Filter>
+    </ClInclude>
+    <ClInclude Include="structureData.h">
+      <Filter>Source Files\data\structureData</Filter>
+    </ClInclude>
+    <ClInclude Include="musicList.h">
+      <Filter>Source Files\resourcePack\musicList</Filter>
+    </ClInclude>
+    <ClInclude Include="musicManager.h">
+      <Filter>Source Files\sound\musicManager</Filter>
+    </ClInclude>
+    <ClInclude Include="benchMark.h">
+      <Filter>Source Files\benchMark</Filter>
+    </ClInclude>
+    <ClInclude Include="lootTable.h">
+      <Filter>Source Files\drop\lootTable</Filter>
+    </ClInclude>
+    <ClInclude Include="itemStack.h">
+      <Filter>Source Files\inventory\itemStack</Filter>
+    </ClInclude>
+    <ClInclude Include="idList.h">
+      <Filter>Source Files\ID\idList</Filter>
+    </ClInclude>
+    <ClInclude Include="overWorld.h">
+      <Filter>Source Files\world\dimension\overWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="end.h">
+      <Filter>Source Files\world\dimension\end</Filter>
+    </ClInclude>
+    <ClInclude Include="incompatibleEnchantments.h">
+      <Filter>Source Files\enchantment</Filter>
+    </ClInclude>
+    <ClInclude Include="idConverter.h">
+      <Filter>Source Files\NBT\idConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="enderDragonCirclingAI.h">
+      <Filter>Source Files\entity\AI\enderDragon\enderDragonCirclingAI</Filter>
+    </ClInclude>
+    <ClInclude Include="enderDragonStrafingAI.h">
+      <Filter>Source Files\entity\AI\enderDragon\enderDragonStrafingAI</Filter>
+    </ClInclude>
+    <ClInclude Include="blazeFireBallAI.h">
+      <Filter>Source Files\entity\AI\fireBallAI\blazeFireBallAI</Filter>
+    </ClInclude>
+    <ClInclude Include="ghastFireBallAI.h">
+      <Filter>Source Files\entity\AI\fireBallAI\ghastFireBallAI</Filter>
+    </ClInclude>
+    <ClInclude Include="explodeAI.h">
+      <Filter>Source Files\entity\AI\targetAI\attackOnCollideAI\explodeAI</Filter>
+    </ClInclude>
+    <ClInclude Include="brewingStandData.h">
+      <Filter>Source Files\block\blockData\brewingStandData</Filter>
+    </ClInclude>
+    <ClInclude Include="rollDrop.h">
+      <Filter>Source Files\drop\lootTable\rollDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="chat.h">
+      <Filter>Source Files\world\chat</Filter>
+    </ClInclude>
+    <ClInclude Include="magmaCube.h">
+      <Filter>Source Files\entity\mob\slime\magmaCube</Filter>
+    </ClInclude>
+    <ClInclude Include="arrowAttackAI.h">
+      <Filter>Source Files\entity\AI\targetAI\attackOnCollideAI\arrowAttackAI</Filter>
+    </ClInclude>
+    <ClInclude Include="idAnalysis.h">
+      <Filter>Source Files\ID\idAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="lightLevel.h">
+      <Filter>Source Files\lightLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="nbtValue.h">
+      <Filter>Source Files\NBT\nbtValue</Filter>
+    </ClInclude>
+    <ClInclude Include="renderBrewingStand.h">
+      <Filter>Source Files\block\brewingStand</Filter>
+    </ClInclude>
+    <ClInclude Include="gameForm.h">
+      <Filter>Source Files\UI\gameForm</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Source Files\chunk</Filter>
+    </ClInclude>
+    <ClInclude Include="colors.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Source Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
+      <Filter>Source Files\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\neuralnetwork\aiblueprint.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\neuralnetwork\aiinputdata.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\alignment.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\application.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\applicationrunner.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compiler\area.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\arrayfunctions.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\arraynd.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\axis.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\optimization\benchmark.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\bodypart2d.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\brush\brush.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\brush\brushes.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\button.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\checkbox.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\collisions.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\color\color.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\colorpicker.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compiler\compiler.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\control.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\type\conversion.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\coordinatesystem.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\cropline.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\cursorhandling.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\optimization\debug.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\dimension\dimensionalindex.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\direction.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\file\endian.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\endlessPrecision.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compiler\errors.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\eventargs.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\eventhandler.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\fastarray.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\neuralnetwork\fastlayer.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\fastlist.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\file\fastStream.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\filedialog.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\fileio.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\filemanager.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\font.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\fontfamily.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\form.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\frustum.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compiler\function.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GlobalFunctions.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\graphics.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\physics\gravity\gravity.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\hashing.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interface\idestructable.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interface\inamable.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\interaction.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\intersectable.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\intersectablecuboid.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\intersection.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\iserializable.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\iserializer.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\jsonReader.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\keyframe.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\label.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\LayerNoiseSimplex.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\listcontrol.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\optimization\macrotricks.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\MarchingCubes.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\mathfunctions.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\matt3x3.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\mattnxn.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compiler\memorymanagement.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\meshConstants.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\meshfunctions.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\neuralnetwork\neuralnetwork.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\octreenode.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compiler\operators.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\optimization\optimization.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\physics.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\picturebox.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\point3.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\random\random.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\ray.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\raycast.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\raycastIterator.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\rectangletn.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\rectiteratortn.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\resolutiontexture.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\serialization.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\serializer.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\random\shufflerandom.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\SimplexNoise.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\skiplist.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\slider.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\sound\sound.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compiler\standardarea.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\stbincluder.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\swingsynchronizer.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\control\TextBox.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\textfile.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\texture.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\textures.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\theme.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\tile.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\tileList.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\timemath.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\brush\transformbrush.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\treenodeiterator.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\triangle.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\triangulationtable.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\type\types.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\uuid.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\vectn.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\vectorrandom.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\wstring.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\array\zipiterator.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source Files\stdafx</Filter>
+    </ClInclude>
+    <ClInclude Include="IItemComparable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="slabType.h">
+      <Filter>Source Files\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="playerControlledAI.h">
+      <Filter>Source Files\entity\AI\entityAI\playerControlledAI</Filter>
+    </ClInclude>
+    <ClInclude Include="rectangularSlotContainer.h">
+      <Filter>Source Files\inventory\rectangularSlotContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="soundCollection.h">
+      <Filter>Source Files\sound\soundCollection</Filter>
+    </ClInclude>
+    <ClInclude Include="enchantment.h">
+      <Filter>Source Files\item\enchantment</Filter>
+    </ClInclude>
+    <ClInclude Include="musicCollection.h">
+      <Filter>Source Files\sound\musicCollection</Filter>
+    </ClInclude>
+    <ClInclude Include="pressurePlateData.h">
+      <Filter>Source Files\block\blockData\pressurePlateData</Filter>
+    </ClInclude>
+    <ClInclude Include="damageSource.h">
+      <Filter>Source Files\damage\damageSource</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionEdgeData.h">
+      <Filter>Source Files\physics\collisionEdgeData</Filter>
+    </ClInclude>
+    <ClInclude Include="leavesData.h">
+      <Filter>Source Files\block\blockData\leavesData</Filter>
+    </ClInclude>
+    <ClInclude Include="renderBlockContainer.h">
+      <Filter>Source Files\blockContainer\renderBlockContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="blockArrayContainer.h">
+      <Filter>Source Files\blockArrayContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="fourLeggedPassiveMob.h">
+      <Filter>Source Files\entity\mob\fourLeggedMob\fourleggedPassiveMob</Filter>
+    </ClInclude>
+    <ClInclude Include="gzipIncluder.h">
+      <Filter>Source Files\NBT\gzipIncluder</Filter>
+    </ClInclude>
+    <ClInclude Include="packageCreator.h">
+      <Filter>Source Files\packageCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionData.h">
+      <Filter>Source Files\physics\collisionData</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionDataCollection.h">
+      <Filter>Source Files\physics\collisionData</Filter>
+    </ClInclude>
+    <ClInclude Include="serverSelector.h">
+      <Filter>Source Files\UI\gameSelector\serverSelector</Filter>
+    </ClInclude>
+    <ClInclude Include="gameSelector.h">
+      <Filter>Source Files\UI\gameSelector</Filter>
+    </ClInclude>
+    <ClInclude Include="serverEditor.h">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="serverControl.h">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverControl</Filter>
+    </ClInclude>
+    <ClInclude Include="serverData.h">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverData</Filter>
+    </ClInclude>
+    <ClInclude Include="server.h">
+      <Filter>Source Files\network\server</Filter>
+    </ClInclude>
+    <ClInclude Include="playerSocket.h">
+      <Filter>Source Files\network\playerSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>Source Files\network\client</Filter>
+    </ClInclude>
+    <ClInclude Include="experienceDrop.h">
+      <Filter>Source Files\drop\experienceDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="mobDamageSource.h">
+      <Filter>Source Files\damage\mobDamageSource</Filter>
+    </ClInclude>
+    <ClInclude Include="socketContainer.h">
+      <Filter>Source Files\network\socketContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filesystem\file\tcpSerializer.h">
+      <Filter>Source Files\network\tcpSerializer</Filter>
+    </ClInclude>
+    <ClInclude Include="clientInput.h">
+      <Filter>Source Files\network\clientInput</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application\mouseButton.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="soundPacket.h">
+      <Filter>Source Files\network\soundPacket</Filter>
+    </ClInclude>
+    <ClInclude Include="gameTile.h">
+      <Filter>Source Files\UI\gameSelector\gameTile</Filter>
+    </ClInclude>
+    <ClInclude Include="playerData.h">
+      <Filter>Source Files\network\playerData</Filter>
+    </ClInclude>
+    <ClInclude Include="serverDataList.h">
+      <Filter>Source Files\UI\gameSelector\serverSelector\serverData\serverDataList</Filter>
+    </ClInclude>
+    <ClInclude Include="include\network\compressedPacket.h">
+      <Filter>Source Files\network\compressedPacket</Filter>
+    </ClInclude>
+    <ClInclude Include="include\optimization\stableTickLoop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="keyHistoryEvent.h">
+      <Filter>Source Files\network\clientInput\keyHistory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="README.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="issues.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="suggestions.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="tips.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis">
+      <Filter>Resource Files\debug</Filter>
+    </Natvis>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,1036 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{6058bf66-4448-42fe-8a5b-ef7a7f3a111f}</ProjectGuid>
+    <RootNamespace>MoleculeUniverse</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>MedievalSurvival</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="additiveDrop.cpp" />
+    <ClCompile Include="ageData.cpp" />
+    <ClCompile Include="alternativeDropCondition.cpp" />
+    <ClCompile Include="alternativesDrop.cpp" />
+    <ClCompile Include="amountDistribution.cpp" />
+    <ClCompile Include="amountDrop.cpp" />
+    <ClCompile Include="angerAI.cpp" />
+    <ClCompile Include="animatedParticleData.cpp" />
+    <ClCompile Include="anvilSlotContainer.cpp" />
+    <ClCompile Include="arrow.cpp" />
+    <ClCompile Include="arrowAttackAI.cpp" />
+    <ClCompile Include="attachedBlockData.cpp" />
+    <ClCompile Include="attachedData.cpp" />
+    <ClCompile Include="attachmentDirectionData.cpp" />
+    <ClCompile Include="attackOnCollideAI.cpp" />
+    <ClCompile Include="avoidEntityAI.cpp" />
+    <ClCompile Include="badlands.cpp" />
+    <ClCompile Include="bambooData.cpp" />
+    <ClCompile Include="basaltDeltas.cpp" />
+    <ClCompile Include="bedData.cpp" />
+    <ClCompile Include="benchmark.cpp" />
+    <ClCompile Include="binomialAmountDistribution.cpp" />
+    <ClCompile Include="binomialWithBonusCountDistribution.cpp" />
+    <ClCompile Include="biomeData.cpp" />
+    <ClCompile Include="biomeGenerator.cpp" />
+    <ClCompile Include="blaze.cpp" />
+    <ClCompile Include="blazeFireBallAI.cpp" />
+    <ClCompile Include="block.cpp" />
+    <ClCompile Include="blockContainer.cpp" />
+    <ClCompile Include="blockData.cpp" />
+    <ClCompile Include="blockParticleBrush.cpp" />
+    <ClCompile Include="blockStateCondition.cpp" />
+    <ClCompile Include="boat.cpp" />
+    <ClCompile Include="boidsAI.cpp" />
+    <ClCompile Include="breedableMob.cpp" />
+    <ClCompile Include="brewingStandData.cpp" />
+    <ClCompile Include="brewingStandSlotContainer.cpp" />
+    <ClCompile Include="bucketData.cpp" />
+    <ClCompile Include="buttonData.cpp" />
+    <ClCompile Include="chanceCondition.cpp" />
+    <ClCompile Include="chat.cpp" />
+    <ClCompile Include="chestData.cpp" />
+    <ClCompile Include="chestSlotContainer.cpp" />
+    <ClCompile Include="chicken.cpp" />
+    <ClCompile Include="choiceDrop.cpp" />
+    <ClCompile Include="chunk.cpp" />
+    <ClCompile Include="clientInput.cpp" />
+    <ClCompile Include="include\network\compressedPacket.cpp" />
+    <ClCompile Include="gameTile.cpp" />
+    <ClCompile Include="include\math\random\random.cpp" />
+    <ClCompile Include="playerData.cpp" />
+    <ClCompile Include="playerSocket.cpp" />
+    <ClCompile Include="cod.cpp" />
+    <ClCompile Include="collisionData.cpp" />
+    <ClCompile Include="collisionDataCollection.cpp" />
+    <ClCompile Include="collisionEdgeData.cpp" />
+    <ClCompile Include="comparatorData.cpp" />
+    <ClCompile Include="conditionDrop.cpp" />
+    <ClCompile Include="connectedBlock.cpp" />
+    <ClCompile Include="constantAmountDistribution.cpp" />
+    <ClCompile Include="constants.cpp" />
+    <ClCompile Include="cow.cpp" />
+    <ClCompile Include="craftableSlotContainer.cpp" />
+    <ClCompile Include="craftingGridSlotContainer.cpp" />
+    <ClCompile Include="craftingTableSlotContainer.cpp" />
+    <ClCompile Include="creditsForm.cpp" />
+    <ClCompile Include="creeper.cpp" />
+    <ClCompile Include="crimsonForest.cpp" />
+    <ClCompile Include="cropBlock.cpp" />
+    <ClCompile Include="cropData.cpp" />
+    <ClCompile Include="damageSource.cpp" />
+    <ClCompile Include="darkForest.cpp" />
+    <ClCompile Include="decayedStructureFeature.cpp" />
+    <ClCompile Include="desert.cpp" />
+    <ClCompile Include="dimension.cpp" />
+    <ClCompile Include="dispenserData.cpp" />
+    <ClCompile Include="dispenserSlotContainer.cpp" />
+    <ClCompile Include="experienceDrop.cpp" />
+    <ClCompile Include="facingData.cpp" />
+    <ClCompile Include="client.cpp" />
+    <ClCompile Include="gameSelector.cpp" />
+    <ClCompile Include="generationData.cpp" />
+    <ClCompile Include="mainMenu.cpp" />
+    <ClCompile Include="mobDamageSource.cpp" />
+    <ClCompile Include="overWorldGenerationData.cpp" />
+    <ClCompile Include="renderBlockContainer.cpp" />
+    <ClCompile Include="sapSpreadData.cpp" />
+    <ClCompile Include="doorData.cpp" />
+    <ClCompile Include="doubleAttachedBlockData.cpp" />
+    <ClCompile Include="doubleBlock.cpp" />
+    <ClCompile Include="doubleBlockData.cpp" />
+    <ClCompile Include="dragonFireBall.cpp" />
+    <ClCompile Include="dropCondition.cpp" />
+    <ClCompile Include="dropperData.cpp" />
+    <ClCompile Include="durabilityData.cpp" />
+    <ClCompile Include="eatGrassAI.cpp" />
+    <ClCompile Include="egg.cpp" />
+    <ClCompile Include="enchantingTableSlotContainer.cpp" />
+    <ClCompile Include="enchantment.cpp" />
+    <ClCompile Include="end.cpp" />
+    <ClCompile Include="endBiomeGenerator.cpp" />
+    <ClCompile Include="endCrystal.cpp" />
+    <ClCompile Include="enderDragon.cpp" />
+    <ClCompile Include="enderDragonCirclingAI.cpp" />
+    <ClCompile Include="enderDragonPortalFlyingAI.cpp" />
+    <ClCompile Include="enderDragonStrafingAI.cpp" />
+    <ClCompile Include="enderman.cpp" />
+    <ClCompile Include="enderPearl.cpp" />
+    <ClCompile Include="endGenerationData.cpp" />
+    <ClCompile Include="endLands.cpp" />
+    <ClCompile Include="endPortalFrameData.cpp" />
+    <ClCompile Include="endVoid.cpp" />
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="entityData.cpp" />
+    <ClCompile Include="experienceOrb.cpp" />
+    <ClCompile Include="explodeAI.cpp" />
+    <ClCompile Include="explosionDecayDrop.cpp" />
+    <ClCompile Include="explosionDrop.cpp" />
+    <ClCompile Include="eyeOfEnder.cpp" />
+    <ClCompile Include="fallingBlock.cpp" />
+    <ClCompile Include="fallingBlockData.cpp" />
+    <ClCompile Include="fenceGateData.cpp" />
+    <ClCompile Include="fireBall.cpp" />
+    <ClCompile Include="fireBallAI.cpp" />
+    <ClCompile Include="fireData.cpp" />
+    <ClCompile Include="fireworkData.cpp" />
+    <ClCompile Include="fireworkRocket.cpp" />
+    <ClCompile Include="fireworkStarData.cpp" />
+    <ClCompile Include="fishingHook.cpp" />
+    <ClCompile Include="floatingSlot.cpp" />
+    <ClCompile Include="fluidData.cpp" />
+    <ClCompile Include="forest.cpp" />
+    <ClCompile Include="fourLeggedMob.cpp" />
+    <ClCompile Include="frostedIceData.cpp" />
+    <ClCompile Include="fungusData.cpp" />
+    <ClCompile Include="furnaceData.cpp" />
+    <ClCompile Include="furnaceRecipe.cpp" />
+    <ClCompile Include="furnaceSlotContainer.cpp" />
+    <ClCompile Include="gameControl.cpp" />
+    <ClCompile Include="gameform.cpp" />
+    <ClCompile Include="ghast.cpp" />
+    <ClCompile Include="ghastFireBall.cpp" />
+    <ClCompile Include="ghastFireBallAI.cpp" />
+    <ClCompile Include="grassBlockData.cpp" />
+    <ClCompile Include="hollowRidableEntity.cpp" />
+    <ClCompile Include="human.cpp" />
+    <ClCompile Include="humanoid.cpp" />
+    <ClCompile Include="humanSlotContainerUI.cpp" />
+    <ClCompile Include="hurtByTargetAI.cpp" />
+    <ClCompile Include="iceSpikes.cpp" />
+    <ClCompile Include="idAnalysis.cpp" />
+    <ClCompile Include="idConverter.cpp" />
+    <ClCompile Include="idList.cpp" />
+    <ClCompile Include="IItemComparable.cpp" />
+    <ClCompile Include="include\application\application.cpp" />
+    <ClCompile Include="include\application\control\button.cpp" />
+    <ClCompile Include="include\application\control\checkbox.cpp" />
+    <ClCompile Include="include\application\control\colorpicker.cpp" />
+    <ClCompile Include="include\application\control\control.cpp" />
+    <ClCompile Include="include\application\control\filedialog.cpp" />
+    <ClCompile Include="include\application\control\form.cpp" />
+    <ClCompile Include="include\application\control\label.cpp" />
+    <ClCompile Include="include\application\control\listcontrol.cpp" />
+    <ClCompile Include="include\application\control\picturebox.cpp" />
+    <ClCompile Include="include\application\control\slider.cpp" />
+    <ClCompile Include="include\application\control\TextBox.cpp" />
+    <ClCompile Include="include\application\interaction.cpp" />
+    <ClCompile Include="include\array\wstring.cpp" />
+    <ClCompile Include="include\compiler\area.cpp" />
+    <ClCompile Include="include\compiler\compiler.cpp" />
+    <ClCompile Include="include\compiler\errors.cpp" />
+    <ClCompile Include="include\compiler\memorymanagement.cpp" />
+    <ClCompile Include="include\filesystem\file\fastStream.cpp" />
+    <ClCompile Include="include\filesystem\iserializable.cpp" />
+    <ClCompile Include="include\filesystem\jsonReader.cpp" />
+    <ClCompile Include="include\interface\idestructable.cpp" />
+    <ClCompile Include="include\math\bodypart2d.cpp" />
+    <ClCompile Include="include\math\collisions.cpp" />
+    <ClCompile Include="include\math\frustum.cpp" />
+    <ClCompile Include="include\math\graphics\brush\brush.cpp" />
+    <ClCompile Include="include\math\graphics\brush\brushes.cpp" />
+    <ClCompile Include="include\math\graphics\color\color.cpp" />
+    <ClCompile Include="include\math\graphics\font.cpp" />
+    <ClCompile Include="include\math\graphics\fontfamily.cpp" />
+    <ClCompile Include="include\math\graphics\graphics.cpp" />
+    <ClCompile Include="include\math\intersectable.cpp" />
+    <ClCompile Include="include\math\intersectablecuboid.cpp" />
+    <ClCompile Include="include\math\keyframe.cpp" />
+    <ClCompile Include="include\math\LayerNoiseSimplex.cpp" />
+    <ClCompile Include="include\math\meshfunctions.cpp" />
+    <ClCompile Include="include\math\neuralnetwork\neuralnetwork.cpp" />
+    <ClCompile Include="include\math\neuralnetwork\fastlayer.cpp" />
+    <ClCompile Include="include\math\graphics\resolutiontexture.cpp" />
+    <ClCompile Include="include\math\SimplexNoise.cpp" />
+    <ClCompile Include="include\math\sound\sound.cpp" />
+    <ClCompile Include="include\math\standardarea.cpp" />
+    <ClCompile Include="include\math\swingsynchronizer.cpp" />
+    <ClCompile Include="include\math\graphics\texture.cpp" />
+    <ClCompile Include="include\math\timemath.cpp" />
+    <ClCompile Include="include\math\triangle.cpp" />
+    <ClCompile Include="incompatibleEnchantments.cpp" />
+    <ClCompile Include="inputData.cpp" />
+    <ClCompile Include="inventory.cpp" />
+    <ClCompile Include="inventoryForm.cpp" />
+    <ClCompile Include="invertedCondition.cpp" />
+    <ClCompile Include="ironDoorData.cpp" />
+    <ClCompile Include="ironTrapDoorData.cpp" />
+    <ClCompile Include="itemData.cpp" />
+    <ClCompile Include="itemDrop.cpp" />
+    <ClCompile Include="itemParticleBrush.cpp" />
+    <ClCompile Include="itemStack.cpp" />
+    <ClCompile Include="itemTag.cpp" />
+    <ClCompile Include="jigsawData.cpp" />
+    <ClCompile Include="jigsawPool.cpp" />
+    <ClCompile Include="jigsawUI.cpp" />
+    <ClCompile Include="jukeBoxData.cpp" />
+    <ClCompile Include="jungle.cpp" />
+    <ClCompile Include="lastPowerLevelData.cpp" />
+    <ClCompile Include="leavesData.cpp" />
+    <ClCompile Include="lightLevel.cpp" />
+    <ClCompile Include="lootTable.cpp" />
+    <ClCompile Include="loveModeAI.cpp" />
+    <ClCompile Include="magmaCube.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="minecart.cpp" />
+    <ClCompile Include="mob.cpp" />
+    <ClCompile Include="mobData.cpp" />
+    <ClCompile Include="mountains.cpp" />
+    <ClCompile Include="movableBlockContainer.cpp" />
+    <ClCompile Include="mushroomData.cpp" />
+    <ClCompile Include="mushroomFeature.cpp" />
+    <ClCompile Include="mushroomFields.cpp" />
+    <ClCompile Include="musicCollection.cpp" />
+    <ClCompile Include="musicList.cpp" />
+    <ClCompile Include="musicManager.cpp" />
+    <ClCompile Include="nbtCompound.cpp" />
+    <ClCompile Include="nbtData.cpp" />
+    <ClCompile Include="nbtSerializable.cpp" />
+    <ClCompile Include="nbtSerializer.cpp" />
+    <ClCompile Include="nether.cpp" />
+    <ClCompile Include="netherBiomeGenerator.cpp" />
+    <ClCompile Include="netherForest.cpp" />
+    <ClCompile Include="netherFortressFeature.cpp" />
+    <ClCompile Include="netherGenerationData.cpp" />
+    <ClCompile Include="netherWastes.cpp" />
+    <ClCompile Include="noteBlockData.cpp" />
+    <ClCompile Include="ocean.cpp" />
+    <ClCompile Include="openData.cpp" />
+    <ClCompile Include="oreDropsDistribution.cpp" />
+    <ClCompile Include="overWorld.cpp" />
+    <ClCompile Include="overWorldBiomeGenerator.cpp" />
+    <ClCompile Include="panicAI.cpp" />
+    <ClCompile Include="particle.cpp" />
+    <ClCompile Include="passiveMob.cpp" />
+    <ClCompile Include="pig.cpp" />
+    <ClCompile Include="piston.cpp" />
+    <ClCompile Include="pistonData.cpp" />
+    <ClCompile Include="plains.cpp" />
+    <ClCompile Include="playerControlledAI.cpp" />
+    <ClCompile Include="pollen.cpp" />
+    <ClCompile Include="pollenData.cpp" />
+    <ClCompile Include="potionData.cpp" />
+    <ClCompile Include="pressurePlateData.cpp" />
+    <ClCompile Include="recipe.cpp" />
+    <ClCompile Include="rectangularSlotContainer.cpp" />
+    <ClCompile Include="rectParticleBrush.cpp" />
+    <ClCompile Include="redstoneLampData.cpp" />
+    <ClCompile Include="redstoneTorchData.cpp" />
+    <ClCompile Include="renderBrush.cpp" />
+    <ClCompile Include="repeaterData.cpp" />
+    <ClCompile Include="resourcePack.cpp" />
+    <ClCompile Include="ridableEntity.cpp" />
+    <ClCompile Include="rollDrop.cpp" />
+    <ClCompile Include="saplingData.cpp" />
+    <ClCompile Include="savanna.cpp" />
+    <ClCompile Include="saveFileControl.cpp" />
+    <ClCompile Include="server.cpp" />
+    <ClCompile Include="serverControl.cpp" />
+    <ClCompile Include="serverData.cpp" />
+    <ClCompile Include="serverDataList.cpp" />
+    <ClCompile Include="serverEditor.cpp" />
+    <ClCompile Include="serverSelector.cpp" />
+    <ClCompile Include="settings.cpp" />
+    <ClCompile Include="settingsForm.cpp" />
+    <ClCompile Include="shapedRecipe.cpp" />
+    <ClCompile Include="shapeLessRecipe.cpp" />
+    <ClCompile Include="sheep.cpp" />
+    <ClCompile Include="shortGrassData.cpp" />
+    <ClCompile Include="shulker.cpp" />
+    <ClCompile Include="skeleton.cpp" />
+    <ClCompile Include="slabData.cpp" />
+    <ClCompile Include="slime.cpp" />
+    <ClCompile Include="slotContainer.cpp" />
+    <ClCompile Include="smallFireBall.cpp" />
+    <ClCompile Include="smithingTableSlotContainer.cpp" />
+    <ClCompile Include="snowBall.cpp" />
+    <ClCompile Include="snowLayerData.cpp" />
+    <ClCompile Include="soulSandValley.cpp" />
+    <ClCompile Include="soundCollection.cpp" />
+    <ClCompile Include="soundPacket.cpp" />
+    <ClCompile Include="soundhandler.cpp" />
+    <ClCompile Include="soundhandler2d.cpp" />
+    <ClCompile Include="soundList.cpp" />
+    <ClCompile Include="soundSettingsForm.cpp" />
+    <ClCompile Include="spawnerData.cpp" />
+    <ClCompile Include="spongeData.cpp" />
+    <ClCompile Include="stairsData.cpp" />
+    <ClCompile Include="statusEffect.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stemPlantData.cpp" />
+    <ClCompile Include="structure.cpp" />
+    <ClCompile Include="structureBlockData.cpp" />
+    <ClCompile Include="structureBlockLoadModeUI.cpp" />
+    <ClCompile Include="structureBlockModeUI.cpp" />
+    <ClCompile Include="structureBlockSaveModeUI.cpp" />
+    <ClCompile Include="structureBlockUI.cpp" />
+    <ClCompile Include="structureFeature.cpp" />
+    <ClCompile Include="sugarCaneData.cpp" />
+    <ClCompile Include="swamp.cpp" />
+    <ClCompile Include="tableBonusCondition.cpp" />
+    <ClCompile Include="tag.cpp" />
+    <ClCompile Include="taiga.cpp" />
+    <ClCompile Include="targetAI.cpp" />
+    <ClCompile Include="taskAI.cpp" />
+    <ClCompile Include="taskList.cpp" />
+    <ClCompile Include="teleportOnDamageAI.cpp" />
+    <ClCompile Include="teleportToAttachAI.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="textureList.cpp" />
+    <ClCompile Include="textureParticleBrush.cpp" />
+    <ClCompile Include="theEnd.cpp" />
+    <ClCompile Include="throwable.cpp" />
+    <ClCompile Include="throwableData.cpp" />
+    <ClCompile Include="tickableBlockContainer.cpp" />
+    <ClCompile Include="tnt.cpp" />
+    <ClCompile Include="tntData.cpp" />
+    <ClCompile Include="toolDrop.cpp" />
+    <ClCompile Include="trapDoorData.cpp" />
+    <ClCompile Include="treeFeature.cpp" />
+    <ClCompile Include="uiSlotContainer.cpp" />
+    <ClCompile Include="uniformAmountDistribution.cpp" />
+    <ClCompile Include="uniformBonusAmountDistribution.cpp" />
+    <ClCompile Include="uniformChoiceDrop.cpp" />
+    <ClCompile Include="upsideDownData.cpp" />
+    <ClCompile Include="videoSettingsForm.cpp" />
+    <ClCompile Include="wanderAI.cpp" />
+    <ClCompile Include="warpedForest.cpp" />
+    <ClCompile Include="wolf.cpp" />
+    <ClCompile Include="world.cpp" />
+    <ClCompile Include="worldCreator.cpp" />
+    <ClCompile Include="worldSelector.cpp" />
+    <ClCompile Include="zombie.cpp" />
+    <ClCompile Include="zombifiedPiglin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="additiveDrop.h" />
+    <ClInclude Include="ageData.h" />
+    <ClInclude Include="alternativeDropCondition.h" />
+    <ClInclude Include="alternativesDrop.h" />
+    <ClInclude Include="amountDistribution.h" />
+    <ClInclude Include="amountDrop.h" />
+    <ClInclude Include="angerAI.h" />
+    <ClInclude Include="animatedParticleData.h" />
+    <ClInclude Include="anvilSlotContainer.h" />
+    <ClInclude Include="armorTier.h" />
+    <ClInclude Include="armorType.h" />
+    <ClInclude Include="arrayDataType.h" />
+    <ClInclude Include="arrow.h" />
+    <ClInclude Include="arrowAttackAI.h" />
+    <ClInclude Include="attachedBlockData.h" />
+    <ClInclude Include="attachedBlockPollenData.h" />
+    <ClInclude Include="attachedCropData.h" />
+    <ClInclude Include="attachedData.h" />
+    <ClInclude Include="attachmentDirectionData.h" />
+    <ClInclude Include="attachmentID.h" />
+    <ClInclude Include="attackOnCollideAI.h" />
+    <ClInclude Include="audioCollection.h" />
+    <ClInclude Include="avoidEntityAI.h" />
+    <ClInclude Include="badLands.h" />
+    <ClInclude Include="bambooData.h" />
+    <ClInclude Include="basaltDeltas.h" />
+    <ClInclude Include="bedData.h" />
+    <ClInclude Include="benchMark.h" />
+    <ClInclude Include="binomialAmountDistribution.h" />
+    <ClInclude Include="binomialWithBonusCountDistribution.h" />
+    <ClInclude Include="biomeData.h" />
+    <ClInclude Include="biomeGenerator.h" />
+    <ClInclude Include="biomeID.h" />
+    <ClInclude Include="blaze.h" />
+    <ClInclude Include="blazeFireBallAI.h" />
+    <ClInclude Include="block.h" />
+    <ClInclude Include="blockArrayContainer.h" />
+    <ClInclude Include="blockContainer.h" />
+    <ClInclude Include="blockData.h" />
+    <ClInclude Include="blockID.h" />
+    <ClInclude Include="blockParticleBrush.h" />
+    <ClInclude Include="blockStateCondition.h" />
+    <ClInclude Include="boat.h" />
+    <ClInclude Include="boidsAI.h" />
+    <ClInclude Include="bonusAmountDistribution.h" />
+    <ClInclude Include="breedableMob.h" />
+    <ClInclude Include="brewingStandData.h" />
+    <ClInclude Include="brewingStandSlotContainer.h" />
+    <ClInclude Include="bucketData.h" />
+    <ClInclude Include="buttonData.h" />
+    <ClInclude Include="chanceCondition.h" />
+    <ClInclude Include="chat.h" />
+    <ClInclude Include="chestData.h" />
+    <ClInclude Include="chestSlotContainer.h" />
+    <ClInclude Include="chicken.h" />
+    <ClInclude Include="choiceDrop.h" />
+    <ClInclude Include="Chunk.h" />
+    <ClInclude Include="chunkLoadLevel.h" />
+    <ClInclude Include="clientInput.h" />
+    <ClInclude Include="include\network\compressedPacket.h" />
+    <ClInclude Include="gameTile.h" />
+    <ClInclude Include="include\application\mouseButton.h" />
+    <ClInclude Include="include\filesystem\file\tcpSerializer.h" />
+    <ClInclude Include="include\optimization\stableTickLoop.h" />
+    <ClInclude Include="keyHistoryEvent.h" />
+    <ClInclude Include="playerData.h" />
+    <ClInclude Include="playerSocket.h" />
+    <ClInclude Include="cod.h" />
+    <ClInclude Include="collisionData.h" />
+    <ClInclude Include="collisionEdgeData.h" />
+    <ClInclude Include="collisionTypeID.h" />
+    <ClInclude Include="colorID.h" />
+    <ClInclude Include="colors.h" />
+    <ClInclude Include="comparatorData.h" />
+    <ClInclude Include="conditionDrop.h" />
+    <ClInclude Include="connectedBlock.h" />
+    <ClInclude Include="constantAmountDistribution.h" />
+    <ClInclude Include="constants.h" />
+    <ClInclude Include="coralColorID.h" />
+    <ClInclude Include="coralColorNames.h" />
+    <ClInclude Include="coralStateID.h" />
+    <ClInclude Include="coralstateNames.h" />
+    <ClInclude Include="coralTypeID.h" />
+    <ClInclude Include="coralTypeNames.h" />
+    <ClInclude Include="cow.h" />
+    <ClInclude Include="cpuUsageID.h" />
+    <ClInclude Include="craftableSlotContainer.h" />
+    <ClInclude Include="craftingGridSlotContainer.h" />
+    <ClInclude Include="craftingTableSlotContainer.h" />
+    <ClInclude Include="creditsForm.h" />
+    <ClInclude Include="creeper.h" />
+    <ClInclude Include="crimsonForest.h" />
+    <ClInclude Include="cropBlock.h" />
+    <ClInclude Include="cropData.h" />
+    <ClInclude Include="damageSource.h" />
+    <ClInclude Include="damageType.h" />
+    <ClInclude Include="darkForest.h" />
+    <ClInclude Include="decayedStructureFeature.h" />
+    <ClInclude Include="desert.h" />
+    <ClInclude Include="dimension.h" />
+    <ClInclude Include="dimensionData.h" />
+    <ClInclude Include="dimensionID.h" />
+    <ClInclude Include="dispenserData.h" />
+    <ClInclude Include="dispenserSlotContainer.h" />
+    <ClInclude Include="fourLeggedPassiveMob.h" />
+    <ClInclude Include="client.h" />
+    <ClInclude Include="gameSelector.h" />
+    <ClInclude Include="gzipIncluder.h" />
+    <ClInclude Include="packageCreator.h" />
+    <ClInclude Include="renderBlockContainer.h" />
+    <ClInclude Include="sapSpreadData.h" />
+    <ClInclude Include="doorData.h" />
+    <ClInclude Include="doubleAttachedBlockData.h" />
+    <ClInclude Include="doubleAttachedBlockPollenData.h" />
+    <ClInclude Include="doubleBlock.h" />
+    <ClInclude Include="doubleBlockData.h" />
+    <ClInclude Include="dragonBeamBrush.h" />
+    <ClInclude Include="dragonFireBall.h" />
+    <ClInclude Include="dragonPhase.h" />
+    <ClInclude Include="dropCondition.h" />
+    <ClInclude Include="dropData.h" />
+    <ClInclude Include="dropperData.h" />
+    <ClInclude Include="durabilityData.h" />
+    <ClInclude Include="eatGrassAI.h" />
+    <ClInclude Include="egg.h" />
+    <ClInclude Include="enchantingTableSlotContainer.h" />
+    <ClInclude Include="enchantment.h" />
+    <ClInclude Include="enchantmentData.h" />
+    <ClInclude Include="enchantmentID.h" />
+    <ClInclude Include="end.h" />
+    <ClInclude Include="endBiomeGenerator.h" />
+    <ClInclude Include="endCrystal.h" />
+    <ClInclude Include="enderDragon.h" />
+    <ClInclude Include="enderDragonCirclingAI.h" />
+    <ClInclude Include="enderDragonPortalFlyingAI.h" />
+    <ClInclude Include="enderDragonStrafingAI.h" />
+    <ClInclude Include="enderman.h" />
+    <ClInclude Include="enderPearl.h" />
+    <ClInclude Include="endGenerationData.h" />
+    <ClInclude Include="endLands.h" />
+    <ClInclude Include="endPortalFrameData.h" />
+    <ClInclude Include="endVoid.h" />
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="EntityAI.h" />
+    <ClInclude Include="entityData.h" />
+    <ClInclude Include="entityID.h" />
+    <ClInclude Include="experienceDrop.h" />
+    <ClInclude Include="experienceOrb.h" />
+    <ClInclude Include="explodeAI.h" />
+    <ClInclude Include="explosionDecayDrop.h" />
+    <ClInclude Include="explosionDrop.h" />
+    <ClInclude Include="eyeOfEnder.h" />
+    <ClInclude Include="facingData.h" />
+    <ClInclude Include="fallingBlock.h" />
+    <ClInclude Include="fallingBlockData.h" />
+    <ClInclude Include="fenceGateData.h" />
+    <ClInclude Include="fireBall.h" />
+    <ClInclude Include="fireBallAI.h" />
+    <ClInclude Include="fireData.h" />
+    <ClInclude Include="fireworkData.h" />
+    <ClInclude Include="fireworkRocket.h" />
+    <ClInclude Include="fireworkShapeData.h" />
+    <ClInclude Include="fireworkShapeID.h" />
+    <ClInclude Include="fireworkStarData.h" />
+    <ClInclude Include="fishingHook.h" />
+    <ClInclude Include="floatingSlot.h" />
+    <ClInclude Include="fluidData.h" />
+    <ClInclude Include="fluidList.h" />
+    <ClInclude Include="folderList.h" />
+    <ClInclude Include="forest.h" />
+    <ClInclude Include="fourLeggedMob.h" />
+    <ClInclude Include="frostedIceData.h" />
+    <ClInclude Include="fungusData.h" />
+    <ClInclude Include="furnaceData.h" />
+    <ClInclude Include="furnaceRecipe.h" />
+    <ClInclude Include="furnaceSlotContainer.h" />
+    <ClInclude Include="gameControl.h" />
+    <ClInclude Include="gameForm.h" />
+    <ClInclude Include="gameModeData.h" />
+    <ClInclude Include="GamemodeID.h" />
+    <ClInclude Include="collisionDataCollection.h" />
+    <ClInclude Include="generationData.h" />
+    <ClInclude Include="ghast.h" />
+    <ClInclude Include="ghastFireBall.h" />
+    <ClInclude Include="ghastFireBallAI.h" />
+    <ClInclude Include="graphicsMode.h" />
+    <ClInclude Include="grassBlockData.h" />
+    <ClInclude Include="harvestTier.h" />
+    <ClInclude Include="harvestType.h" />
+    <ClInclude Include="hollowRidableEntity.h" />
+    <ClInclude Include="human.h" />
+    <ClInclude Include="humanoid.h" />
+    <ClInclude Include="humanSlotContainerUI.h" />
+    <ClInclude Include="hurtByTargetAI.h" />
+    <ClInclude Include="iceSpikes.h" />
+    <ClInclude Include="idAnalysis.h" />
+    <ClInclude Include="idConverter.h" />
+    <ClInclude Include="idList.h" />
+    <ClInclude Include="IItemComparable.h" />
+    <ClInclude Include="include\application\application.h" />
+    <ClInclude Include="include\application\applicationrunner.h" />
+    <ClInclude Include="include\application\control\button.h" />
+    <ClInclude Include="include\application\control\checkbox.h" />
+    <ClInclude Include="include\application\control\colorpicker.h" />
+    <ClInclude Include="include\application\control\control.h" />
+    <ClInclude Include="include\application\control\filedialog.h" />
+    <ClInclude Include="include\application\control\form.h" />
+    <ClInclude Include="include\application\control\label.h" />
+    <ClInclude Include="include\application\control\listcontrol.h" />
+    <ClInclude Include="include\application\control\picturebox.h" />
+    <ClInclude Include="include\application\control\slider.h" />
+    <ClInclude Include="include\application\control\TextBox.h" />
+    <ClInclude Include="include\application\cursorhandling.h" />
+    <ClInclude Include="include\application\interaction.h" />
+    <ClInclude Include="include\array\arrayfunctions.h" />
+    <ClInclude Include="include\array\arraynd.h" />
+    <ClInclude Include="include\array\fastarray.h" />
+    <ClInclude Include="include\array\fastlist.h" />
+    <ClInclude Include="include\array\rectiteratortn.h" />
+    <ClInclude Include="include\array\skiplist.h" />
+    <ClInclude Include="include\array\tileList.h" />
+    <ClInclude Include="include\array\wstring.h" />
+    <ClInclude Include="include\array\zipiterator.h" />
+    <ClInclude Include="include\compiler\area.h" />
+    <ClInclude Include="include\compiler\compiler.h" />
+    <ClInclude Include="include\compiler\errors.h" />
+    <ClInclude Include="include\compiler\function.h" />
+    <ClInclude Include="include\compiler\memorymanagement.h" />
+    <ClInclude Include="include\compiler\operators.h" />
+    <ClInclude Include="include\compiler\standardarea.h" />
+    <ClInclude Include="include\event\eventargs.h" />
+    <ClInclude Include="include\event\eventhandler.h" />
+    <ClInclude Include="include\filesystem\fileio.h" />
+    <ClInclude Include="include\filesystem\filemanager.h" />
+    <ClInclude Include="include\filesystem\file\endian.h" />
+    <ClInclude Include="include\filesystem\file\fastStream.h" />
+    <ClInclude Include="include\filesystem\iserializable.h" />
+    <ClInclude Include="include\filesystem\iserializer.h" />
+    <ClInclude Include="include\filesystem\jsonReader.h" />
+    <ClInclude Include="include\filesystem\serialization.h" />
+    <ClInclude Include="include\filesystem\serializer.h" />
+    <ClInclude Include="include\filesystem\textfile.h" />
+    <ClInclude Include="include\GlobalFunctions.h" />
+    <ClInclude Include="include\interface\idestructable.h" />
+    <ClInclude Include="include\interface\inamable.h" />
+    <ClInclude Include="include\math\axis.h" />
+    <ClInclude Include="include\math\bodypart2d.h" />
+    <ClInclude Include="include\math\collisions.h" />
+    <ClInclude Include="include\math\coordinatesystem.h" />
+    <ClInclude Include="include\math\cropline.h" />
+    <ClInclude Include="include\math\dimension\dimensionalindex.h" />
+    <ClInclude Include="include\math\direction.h" />
+    <ClInclude Include="include\math\endlessPrecision.h" />
+    <ClInclude Include="include\math\neuralnetwork\fastlayer.h" />
+    <ClInclude Include="include\math\font.h" />
+    <ClInclude Include="include\math\graphics\alignment.h" />
+    <ClInclude Include="include\math\graphics\brush\brush.h" />
+    <ClInclude Include="include\math\graphics\brush\brushes.h" />
+    <ClInclude Include="include\math\graphics\brush\transformbrush.h" />
+    <ClInclude Include="include\math\graphics\color\color.h" />
+    <ClInclude Include="include\math\graphics\fontfamily.h" />
+    <ClInclude Include="include\math\graphics\frustum.h" />
+    <ClInclude Include="include\math\graphics\graphics.h" />
+    <ClInclude Include="include\math\hashing.h" />
+    <ClInclude Include="include\math\intersectable.h" />
+    <ClInclude Include="include\math\intersectablecuboid.h" />
+    <ClInclude Include="include\math\intersection.h" />
+    <ClInclude Include="include\math\keyframe.h" />
+    <ClInclude Include="include\math\LayerNoiseSimplex.h" />
+    <ClInclude Include="include\math\MarchingCubes.h" />
+    <ClInclude Include="include\math\mathfunctions.h" />
+    <ClInclude Include="include\math\matt3x3.h" />
+    <ClInclude Include="include\math\mattnxn.h" />
+    <ClInclude Include="include\math\meshConstants.h" />
+    <ClInclude Include="include\math\meshfunctions.h" />
+    <ClInclude Include="include\math\neuralnetwork\neuralnetwork.h" />
+    <ClInclude Include="include\math\neuralnetwork\aiblueprint.h" />
+    <ClInclude Include="include\math\neuralnetwork\aiinputdata.h" />
+    <ClInclude Include="include\math\octreenode.h" />
+    <ClInclude Include="include\math\physics.h" />
+    <ClInclude Include="include\math\physics\gravity\gravity.h" />
+    <ClInclude Include="include\math\point3.h" />
+    <ClInclude Include="include\math\random\random.h" />
+    <ClInclude Include="include\math\random\shufflerandom.h" />
+    <ClInclude Include="include\math\ray.h" />
+    <ClInclude Include="include\math\raycast.h" />
+    <ClInclude Include="include\math\raycastIterator.h" />
+    <ClInclude Include="include\math\rectangletn.h" />
+    <ClInclude Include="include\math\graphics\resolutiontexture.h" />
+    <ClInclude Include="include\math\SimplexNoise.h" />
+    <ClInclude Include="include\math\sound\sound.h" />
+    <ClInclude Include="include\math\graphics\stbincluder.h" />
+    <ClInclude Include="include\math\swingsynchronizer.h" />
+    <ClInclude Include="include\math\graphics\texture.h" />
+    <ClInclude Include="include\math\graphics\textures.h" />
+    <ClInclude Include="include\math\theme.h" />
+    <ClInclude Include="include\math\tile.h" />
+    <ClInclude Include="include\math\timemath.h" />
+    <ClInclude Include="include\math\treenodeiterator.h" />
+    <ClInclude Include="include\math\triangle.h" />
+    <ClInclude Include="include\math\triangulationtable.h" />
+    <ClInclude Include="include\math\uuid.h" />
+    <ClInclude Include="include\math\vectn.h" />
+    <ClInclude Include="include\math\vectorrandom.h" />
+    <ClInclude Include="include\optimization\benchmark.h" />
+    <ClInclude Include="include\optimization\debug.h" />
+    <ClInclude Include="include\optimization\macrotricks.h" />
+    <ClInclude Include="include\optimization\optimization.h" />
+    <ClInclude Include="include\type\conversion.h" />
+    <ClInclude Include="include\type\types.h" />
+    <ClInclude Include="incompatibleEnchantments.h" />
+    <ClInclude Include="inputData.h" />
+    <ClInclude Include="inventory.h" />
+    <ClInclude Include="inventoryForm.h" />
+    <ClInclude Include="invertedCondition.h" />
+    <ClInclude Include="ironDoorData.h" />
+    <ClInclude Include="ironTrapDoorData.h" />
+    <ClInclude Include="itemData.h" />
+    <ClInclude Include="itemDrop.h" />
+    <ClInclude Include="itemID.h" />
+    <ClInclude Include="itemParticleBrush.h" />
+    <ClInclude Include="itemStack.h" />
+    <ClInclude Include="itemTag.h" />
+    <ClInclude Include="jigsawData.h" />
+    <ClInclude Include="jigsawPool.h" />
+    <ClInclude Include="jigsawUI.h" />
+    <ClInclude Include="jukeBoxData.h" />
+    <ClInclude Include="jungle.h" />
+    <ClInclude Include="keyID.h" />
+    <ClInclude Include="lastPowerLevelData.h" />
+    <ClInclude Include="leavesData.h" />
+    <ClInclude Include="levelID.h" />
+    <ClInclude Include="leverData.h" />
+    <ClInclude Include="lightLevel.h" />
+    <ClInclude Include="lightLevelID.h" />
+    <ClInclude Include="lootTable.h" />
+    <ClInclude Include="loveModeAI.h" />
+    <ClInclude Include="magmaCube.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="mainMenu.h" />
+    <ClInclude Include="minecart.h" />
+    <ClInclude Include="mob.h" />
+    <ClInclude Include="mobDamageSource.h" />
+    <ClInclude Include="mobData.h" />
+    <ClInclude Include="mobList.h" />
+    <ClInclude Include="mountains.h" />
+    <ClInclude Include="movableBlockContainer.h" />
+    <ClInclude Include="mushroomColorData.h" />
+    <ClInclude Include="mushroomColorID.h" />
+    <ClInclude Include="mushroomData.h" />
+    <ClInclude Include="mushroomFeature.h" />
+    <ClInclude Include="mushroomFields.h" />
+    <ClInclude Include="musicCollection.h" />
+    <ClInclude Include="musicList.h" />
+    <ClInclude Include="musicManager.h" />
+    <ClInclude Include="nbtCompound.h" />
+    <ClInclude Include="nbtData.h" />
+    <ClInclude Include="nbtDataArray.h" />
+    <ClInclude Include="nbtDataTag.h" />
+    <ClInclude Include="nbtSerializable.h" />
+    <ClInclude Include="nbtSerializer.h" />
+    <ClInclude Include="nbtValue.h" />
+    <ClInclude Include="nether.h" />
+    <ClInclude Include="netherBiomeGenerator.h" />
+    <ClInclude Include="netherForest.h" />
+    <ClInclude Include="netherFortressFeature.h" />
+    <ClInclude Include="netherGenerationData.h" />
+    <ClInclude Include="netherOreList.h" />
+    <ClInclude Include="netherVineTypeData.h" />
+    <ClInclude Include="netherVineTypeID.h" />
+    <ClInclude Include="netherWastes.h" />
+    <ClInclude Include="noteBlockData.h" />
+    <ClInclude Include="noteData.h" />
+    <ClInclude Include="noteTypeID.h" />
+    <ClInclude Include="ocean.h" />
+    <ClInclude Include="openData.h" />
+    <ClInclude Include="oreBlockList.h" />
+    <ClInclude Include="oreDropsDistribution.h" />
+    <ClInclude Include="overWorld.h" />
+    <ClInclude Include="overWorldBiomeGenerator.h" />
+    <ClInclude Include="overWorldGenerationData.h" />
+    <ClInclude Include="overWorldOreList.h" />
+    <ClInclude Include="panicAI.h" />
+    <ClInclude Include="particle.h" />
+    <ClInclude Include="particleBrush.h" />
+    <ClInclude Include="particleID.h" />
+    <ClInclude Include="particleTypeData.h" />
+    <ClInclude Include="passiveMob.h" />
+    <ClInclude Include="pig.h" />
+    <ClInclude Include="piston.h" />
+    <ClInclude Include="pistonBehaviour.h" />
+    <ClInclude Include="pistonData.h" />
+    <ClInclude Include="plains.h" />
+    <ClInclude Include="playerControlledAI.h" />
+    <ClInclude Include="pollen.h" />
+    <ClInclude Include="pollenData.h" />
+    <ClInclude Include="potionData.h" />
+    <ClInclude Include="pressurePlateData.h" />
+    <ClInclude Include="recipe.h" />
+    <ClInclude Include="rectangularSlotContainer.h" />
+    <ClInclude Include="rectParticleBrush.h" />
+    <ClInclude Include="redstoneLampData.h" />
+    <ClInclude Include="redstoneTorchData.h" />
+    <ClInclude Include="renderBrewingStand.h" />
+    <ClInclude Include="renderBrush.h" />
+    <ClInclude Include="renderData.h" />
+    <ClInclude Include="repeaterData.h" />
+    <ClInclude Include="resourcePack.h" />
+    <ClInclude Include="ridableEntity.h" />
+    <ClInclude Include="rollDrop.h" />
+    <ClInclude Include="sandstoneColorID.h" />
+    <ClInclude Include="sandstoneTypeID.h" />
+    <ClInclude Include="saplingData.h" />
+    <ClInclude Include="savanna.h" />
+    <ClInclude Include="saveFileControl.h" />
+    <ClInclude Include="server.h" />
+    <ClInclude Include="serverControl.h" />
+    <ClInclude Include="serverData.h" />
+    <ClInclude Include="serverDataList.h" />
+    <ClInclude Include="serverEditor.h" />
+    <ClInclude Include="serverSelector.h" />
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="settingsForm.h" />
+    <ClInclude Include="shapedRecipe.h" />
+    <ClInclude Include="shapeLessRecipe.h" />
+    <ClInclude Include="sheep.h" />
+    <ClInclude Include="shortGrassData.h" />
+    <ClInclude Include="shulker.h" />
+    <ClInclude Include="skeleton.h" />
+    <ClInclude Include="slabData.h" />
+    <ClInclude Include="slabType.h" />
+    <ClInclude Include="slime.h" />
+    <ClInclude Include="slotContainer.h" />
+    <ClInclude Include="smallFireBall.h" />
+    <ClInclude Include="smithingTableSlotContainer.h" />
+    <ClInclude Include="snowBall.h" />
+    <ClInclude Include="snowLayerData.h" />
+    <ClInclude Include="socketContainer.h" />
+    <ClInclude Include="soulSandValley.h" />
+    <ClInclude Include="soundCollection.h" />
+    <ClInclude Include="soundPacket.h" />
+    <ClInclude Include="soundhandler.h" />
+    <ClInclude Include="soundhandler2d.h" />
+    <ClInclude Include="soundList.h" />
+    <ClInclude Include="soundSettingsForm.h" />
+    <ClInclude Include="spawnerData.h" />
+    <ClInclude Include="spongeData.h" />
+    <ClInclude Include="stairsData.h" />
+    <ClInclude Include="statusEffect.h" />
+    <ClInclude Include="statusEffectData.h" />
+    <ClInclude Include="statusEffectID.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stemPlantData.h" />
+    <ClInclude Include="structure.h" />
+    <ClInclude Include="structureBlockData.h" />
+    <ClInclude Include="structureBlockLoadModeUI.h" />
+    <ClInclude Include="structureBlockMode.h" />
+    <ClInclude Include="structureBlockModeUI.h" />
+    <ClInclude Include="structureBlockSaveModeUI.h" />
+    <ClInclude Include="structureBlockUI.h" />
+    <ClInclude Include="structureData.h" />
+    <ClInclude Include="structureFeature.h" />
+    <ClInclude Include="structureID.h" />
+    <ClInclude Include="structurePlacementBlueprint.h" />
+    <ClInclude Include="sugarCaneData.h" />
+    <ClInclude Include="swamp.h" />
+    <ClInclude Include="tableBonusCondition.h" />
+    <ClInclude Include="tag.h" />
+    <ClInclude Include="taiga.h" />
+    <ClInclude Include="targetAI.h" />
+    <ClInclude Include="taskAI.h" />
+    <ClInclude Include="taskList.h" />
+    <ClInclude Include="teleportOnDamageAI.h" />
+    <ClInclude Include="teleportToAttachAI.h" />
+    <ClInclude Include="test.h" />
+    <ClInclude Include="textureList.h" />
+    <ClInclude Include="textureParticleBrush.h" />
+    <ClInclude Include="theEnd.h" />
+    <ClInclude Include="throwable.h" />
+    <ClInclude Include="throwableData.h" />
+    <ClInclude Include="tickableBlockContainer.h" />
+    <ClInclude Include="tnt.h" />
+    <ClInclude Include="tntData.h" />
+    <ClInclude Include="toolDrop.h" />
+    <ClInclude Include="toolTypeID.h" />
+    <ClInclude Include="trapDoorData.h" />
+    <ClInclude Include="treeFeature.h" />
+    <ClInclude Include="treeItemTypeID.h" />
+    <ClInclude Include="uiSlotContainer.h" />
+    <ClInclude Include="uniformAmountDistribution.h" />
+    <ClInclude Include="uniformBonusAmountDistribution.h" />
+    <ClInclude Include="uniformChoiceDrop.h" />
+    <ClInclude Include="upsideDownData.h" />
+    <ClInclude Include="videoSettingsForm.h" />
+    <ClInclude Include="wanderAI.h" />
+    <ClInclude Include="warpedForest.h" />
+    <ClInclude Include="wolf.h" />
+    <ClInclude Include="woodTypeData.h" />
+    <ClInclude Include="woodtypeID.h" />
+    <ClInclude Include="world.h" />
+    <ClInclude Include="worldCreator.h" />
+    <ClInclude Include="worldSelector.h" />
+    <ClInclude Include="zombie.h" />
+    <ClInclude Include="zombifiedPiglin.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="issues.txt" />
+    <Text Include="README.txt" />
+    <Text Include="suggestions.txt" />
+    <Text Include="tips.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

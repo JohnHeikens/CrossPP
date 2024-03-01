@@ -1,0 +1,44 @@
+#pragma once
+#include "include/interface/idestructable.h"
+#include "nbtSerializable.h"
+#include "itemID.h"
+#include "itemTag.h"
+#include "enchantment.h"
+struct itemStack : IDestructable, nbtSerializable
+{
+	itemStack(itemID stackItemID = (itemID)0, cint& count = 0, itemTag* data = nullptr, std::vector<enchantment*> enchantments = std::vector<enchantment*>()) :
+		stackItemID(stackItemID), data(data ? data : createItemTag(stackItemID)), enchantments(enchantments), count(count) {}
+
+	itemStack(const itemStack& other);
+
+	//can also be a negative value
+	void add(cint& count);
+	bool addStack(itemStack& s, int amount);
+	bool addStack(itemStack& s);
+
+	inline itemStack& operator=(itemStack copy)
+	{
+		this->swap(copy);
+		return *this;
+	}
+
+	void swap(itemStack& with);
+
+	bool compare(const itemStack& other) const;
+
+	void clearData();
+	virtual ~itemStack() override;
+
+	itemID stackItemID = (itemID)0;
+	int count = 0;
+
+	itemTag* data = nullptr;
+	std::vector<enchantment*> enchantments = std::vector<enchantment*>();
+
+	void render(crectangle2& rect, const texture& renderTarget) const;
+	void renderSingleItem(cmat3x3& transform, const texture& renderTarget) const;
+
+	int getEnchantmentLevel(const enchantmentID& identifier) const;
+	void drawToolTips(cveci2& position, const texture& renderTarget) const;
+	virtual void serializeValue(nbtSerializer& s) override;
+};
