@@ -529,21 +529,6 @@
     <Filter Include="Source Files\entityData\mobData">
       <UniqueIdentifier>{d41854c8-e63f-4dcb-a683-2b3b2a556669}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\particleBrush">
-      <UniqueIdentifier>{f12e87d3-0e4a-4917-a68e-081fc8bca563}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\particleBrush\rectParticleBrush">
-      <UniqueIdentifier>{eac7dc6b-2b21-4b0f-99cc-f26575d8765f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\particleBrush\rectParticleBrush\blockParticleBrush">
-      <UniqueIdentifier>{148aac82-532c-44bb-a385-d12de1801382}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\particleBrush\rectParticleBrush\itemParticleBrush">
-      <UniqueIdentifier>{76386e8b-f038-4efd-ac7a-ac9c08d88431}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\particleBrush\textureParticleBrush">
-      <UniqueIdentifier>{c9deca0c-9678-4103-ac13-cf53ff656fc9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\settings">
       <UniqueIdentifier>{a9bd57dd-15cd-431d-8fb3-dc74b0155ce8}</UniqueIdentifier>
     </Filter>
@@ -1066,6 +1051,30 @@
     <Filter Include="Source Files\network\clientInput\keyHistory">
       <UniqueIdentifier>{b8b4f772-8914-4b91-a9fb-744b3a22f8e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entity\particle\particleBrush">
+      <UniqueIdentifier>{f12e87d3-0e4a-4917-a68e-081fc8bca563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\particle\particleBrush\rectParticleBrush">
+      <UniqueIdentifier>{eac7dc6b-2b21-4b0f-99cc-f26575d8765f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\particle\particleBrush\rectParticleBrush\blockParticleBrush">
+      <UniqueIdentifier>{148aac82-532c-44bb-a385-d12de1801382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\particle\particleBrush\rectParticleBrush\itemParticleBrush">
+      <UniqueIdentifier>{76386e8b-f038-4efd-ac7a-ac9c08d88431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\particle\particleBrush\textureParticleBrush">
+      <UniqueIdentifier>{c9deca0c-9678-4103-ac13-cf53ff656fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\particle\particleBrush\textureParticleBrush\effectParticleBrush">
+      <UniqueIdentifier>{e29ac353-7f4e-4426-950a-9401a8877cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\font">
+      <UniqueIdentifier>{9d511ffa-9591-4050-afbf-876bd32fd07f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network\packetSerializer">
+      <UniqueIdentifier>{a1698195-206a-4848-a1b0-2ecd18205f39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
@@ -1119,10 +1128,10 @@
     <ClCompile Include="include\application\control\filedialog.cpp">
       <Filter>Source Files\include</Filter>
     </ClCompile>
-    <ClCompile Include="include\math\graphics\font.cpp">
+    <ClCompile Include="include\math\graphics\brush\font\font.cpp">
       <Filter>Source Files\include</Filter>
     </ClCompile>
-    <ClCompile Include="include\math\graphics\fontfamily.cpp">
+    <ClCompile Include="include\math\graphics\brush\font\fontfamily.cpp">
       <Filter>Source Files\include</Filter>
     </ClCompile>
     <ClCompile Include="include\application\control\form.cpp">
@@ -1849,7 +1858,7 @@
       <Filter>Source Files\biome\netherBiomeGenerator</Filter>
     </ClCompile>
     <ClCompile Include="blockParticleBrush.cpp">
-      <Filter>Source Files\particleBrush\rectParticleBrush\blockParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\rectParticleBrush\blockParticleBrush</Filter>
     </ClCompile>
     <ClCompile Include="enchantingTableSlotContainer.cpp">
       <Filter>Source Files\inventory\slotContainer\inventory\enchantingTableSlotContainer</Filter>
@@ -1858,10 +1867,10 @@
       <Filter>Source Files\entity\experienceOrb</Filter>
     </ClCompile>
     <ClCompile Include="itemParticleBrush.cpp">
-      <Filter>Source Files\particleBrush\rectParticleBrush\itemParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\rectParticleBrush\itemParticleBrush</Filter>
     </ClCompile>
     <ClCompile Include="rectParticleBrush.cpp">
-      <Filter>Source Files\particleBrush\rectParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\rectParticleBrush</Filter>
     </ClCompile>
     <ClCompile Include="grassBlockData.cpp">
       <Filter>Source Files\block\blockData\grassBlockData</Filter>
@@ -1891,7 +1900,7 @@
       <Filter>Source Files\item\itemTag\fireworkData</Filter>
     </ClCompile>
     <ClCompile Include="textureParticleBrush.cpp">
-      <Filter>Source Files\particleBrush\textureParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\textureParticleBrush</Filter>
     </ClCompile>
     <ClCompile Include="animatedParticleData.cpp">
       <Filter>Source Files\data\animatedParticleData</Filter>
@@ -2126,6 +2135,12 @@
     </ClCompile>
     <ClCompile Include="include\network\compressedPacket.cpp">
       <Filter>Source Files\network\compressedPacket</Filter>
+    </ClCompile>
+    <ClCompile Include="effectParticleBrush.cpp">
+      <Filter>Source Files\entity\particle\particleBrush\textureParticleBrush\effectParticleBrush</Filter>
+    </ClCompile>
+    <ClCompile Include="particleTypeData.cpp">
+      <Filter>Source Files\data\particleTypeData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2766,19 +2781,19 @@
       <Filter>Source Files\entityData\mobData</Filter>
     </ClInclude>
     <ClInclude Include="particleBrush.h">
-      <Filter>Source Files\particleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush</Filter>
     </ClInclude>
     <ClInclude Include="rectParticleBrush.h">
-      <Filter>Source Files\particleBrush\rectParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\rectParticleBrush</Filter>
     </ClInclude>
     <ClInclude Include="blockParticleBrush.h">
-      <Filter>Source Files\particleBrush\rectParticleBrush\blockParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\rectParticleBrush\blockParticleBrush</Filter>
     </ClInclude>
     <ClInclude Include="itemParticleBrush.h">
-      <Filter>Source Files\particleBrush\rectParticleBrush\itemParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\rectParticleBrush\itemParticleBrush</Filter>
     </ClInclude>
     <ClInclude Include="textureParticleBrush.h">
-      <Filter>Source Files\particleBrush\textureParticleBrush</Filter>
+      <Filter>Source Files\entity\particle\particleBrush\textureParticleBrush</Filter>
     </ClInclude>
     <ClInclude Include="settings.h">
       <Filter>Source Files\settings</Filter>
@@ -3305,10 +3320,10 @@
     <ClInclude Include="include\filesystem\filemanager.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\math\font.h">
+    <ClInclude Include="include\math\graphics\brush\font\font.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\math\graphics\fontfamily.h">
+    <ClInclude Include="include\math\graphics\brush\font\fontfamily.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
     <ClInclude Include="include\application\control\form.h">
@@ -3640,6 +3655,18 @@
     </ClInclude>
     <ClInclude Include="keyHistoryEvent.h">
       <Filter>Source Files\network\clientInput\keyHistory</Filter>
+    </ClInclude>
+    <ClInclude Include="effectParticleBrush.h">
+      <Filter>Source Files\entity\particle\particleBrush\textureParticleBrush\effectParticleBrush</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\graphics\brush\font\baseFont.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="minecraftFont.h">
+      <Filter>Source Files\font</Filter>
+    </ClInclude>
+    <ClInclude Include="packetSerializer.h">
+      <Filter>Source Files\network\packetSerializer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

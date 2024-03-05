@@ -42,9 +42,9 @@ calculationLayer::~calculationLayer()
 	}
 }
 
-size_t calculationLayer::weightCountWithoutBias() const
+fsize_t calculationLayer::weightCountWithoutBias() const
 {
-	size_t result = 0;
+	fsize_t result = 0;
 
 	for (auto it : sourceLayersConnections)
 	{
@@ -131,7 +131,7 @@ void calculationLayer::Evaluate() const
 
 fastLayer::fastLayer(const std::vector<aiRawInputData*>& data)
 {
-	size_t totalSize = 0;
+	fsize_t totalSize = 0;
 	for (aiRawInputData* const& d : data)
 	{
 		totalSize += d->size;

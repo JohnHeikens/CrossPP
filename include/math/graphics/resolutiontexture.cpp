@@ -4,7 +4,7 @@
 resolutionTexture::resolutionTexture(const texture& highestResolution, cvec2& size)
 {
 	size_t resolutionSteps = 1;
-	for (int i = 1; i < highestResolution.size.x() && i < highestResolution.size.y(); i *= 2)
+	for (fsize_t i = 1; i < highestResolution.size.x() && i < highestResolution.size.y(); i *= 2)
 	{
 		resolutionSteps++;
 	}
@@ -67,11 +67,11 @@ texture resolutionTexture::getHalfResolution(const texture& doubleResolution)
 	texture result = texture(doubleResolution.size / 2);
 
 	//average colors
-	for (int y = 0; y < result.size.y(); y++)
+	for (fsize_t y = 0; y < result.size.y(); y++)
 	{
 		const color* srcY = doubleResolution.baseArray + doubleResolution.size.x() * (y + y);
 		color* destY = result.baseArray + result.size.x() * y;
-		for (int x = 0; x < result.size.x(); x++)
+		for (fsize_t x = 0; x < result.size.x(); x++)
 		{
 			const color* srcX = srcY + (x + x);
 			*(destY + x) = color::Average(

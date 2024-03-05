@@ -4,6 +4,7 @@
 #include "idList.h"
 struct particleTypeData : INamable
 {
-	particleTypeData(const std::wstring& name) : INamable(name) {}
+	particleTypeData(const std::wstring& name);
+	std::vector<resolutionTexture*> textures;
 };
 extern idList<particleTypeData*, particleID> particleTypeDataList;

@@ -45,6 +45,7 @@
 #include "playerControlledAI.h"
 #include "folderList.h"
 #include <filesystem/filemanager.h>
+#include "minecraftFont.h"
 constexpr int pickUpDelayInTicks = ticksPerRealLifeSecond / 2;//2 seconds
 std::shared_ptr<audio2d> currentWindSound;
 
@@ -504,6 +505,21 @@ void human::render(const renderData& targetData) const
 	{
 		head->hasTransparency = false;
 		humanoid::render(targetData);
+		if (!sneaking) {
+			//render nametag
+			crectangle2& hitbox = calculateHitBox();
+			constexpr fp averageLetterRelativeWidth = 0.7;
+			constexpr fp averageNameLetterCount = 7.0;
+			constexpr fp averageNameTagSize = 1.0;
+			constexpr fp letterSize = averageNameTagSize / (averageNameLetterCount * averageLetterRelativeWidth);
+			constexpr fp maxNameLength = 2.0;
+			minecraftFont clonedFont = minecraftFont(letterSize);
+			cvec2& nameTagMiddleBottom = hitbox.pos0 + cvec2(hitbox.size.x() * 0.5, hitbox.size.y());
+			cvec2& movedBottom = nameTagMiddleBottom + cvec2(clonedFont.measureStringSize(cvec2(maxNameLength, letterSize), name) * -0.5, 0);
+
+			rectangle2 nameTagRect = crectangle2(movedBottom, cvec2(maxNameLength, letterSize));
+			clonedFont.DrawString(name, nameTagRect, targetData.renderTarget, targetData.worldToRenderTargetTransform);
+		}
 	}
 }
 
@@ -613,7 +629,7 @@ bool human::canSleep() const
 {
 	return timeToLightLevel.getValue(currentWorld->getTimeOfDay()) < maxLightLevel && immunityFrameCount == 0;
 }
-human::human(dimension* dimensionIn, cvec2& position, gameControl& screen) :humanoid(dimensionIn, position, entityID::human),
+human::human(dimension* dimensionIn, cvec2& position, gameControl& screen, const std::wstring& name) :humanoid(dimensionIn, position, entityID::human), INamable(name),
 screen(screen)
 {
 	initializeBodyParts(humanHeadTextureRect, humanBodyTextureRect, humanLeftLegTextureRect, humanRightLegTextureRect, humanLeftArmTextureRect, humanRightArmTextureRect);

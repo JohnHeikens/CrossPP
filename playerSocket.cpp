@@ -81,9 +81,7 @@ void renderAsync(playerSocket* socket)
 	}
 	socket->screen->dataToSend.clear();
 
-	//TODO: serialize the screen in 'sendrenderresultasync'
-	socket->serialize((color::channelType*)socket->lastRenderResult->baseArray, socket->screen->rect.size.volume() * bgraColorChannelCount);
-
+	
 	socket->sendRenderResultThread = new std::thread(sendRenderResultAsync, socket);
 
 	//finally, send the packet with all the data of this render cycle to the player
@@ -103,6 +101,10 @@ void renderAsync(playerSocket* socket)
 void sendRenderResultAsync(playerSocket* socket)
 {
 	//serialize screen and finally, send the packet
+
+	//TODO: serialize the screen in 'sendrenderresultasync'. this is hard because s->write = false
+	//we don't use the normal 'serialize' function so we don't have to use the 'write' boolean
+	socket->s.write((char*)(color::channelType*)socket->lastRenderResult->baseArray, socket->screen->rect.size.volume() * bgraColorChannelCount * sizeof(color::channelType));
 
 	socket->s.sendPacket();
 }

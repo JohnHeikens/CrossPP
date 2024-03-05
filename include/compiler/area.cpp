@@ -160,7 +160,7 @@ calculation* area::GetCalculation(std::wstring equation, variable** result)
 		i = find(equation, 0, std::wstring(L"["), skip);
 		if (i != std::wstring::npos)
 		{
-			cfsize_t& j = find(equation, i + 1, std::wstring(L"]"), skip);
+			csize_t& j = find(equation, i + 1, std::wstring(L"]"), skip);
 			if (j == std::wstring::npos)
 			{
 				ShowCompilerError(errortypes::noclosingsquarebracket, equation);
@@ -190,7 +190,7 @@ calculation* area::GetCalculation(std::wstring equation, variable** result)
 		i = find(equation, 0, std::wstring(L"("), skip);
 		if (i != std::wstring::npos)
 		{
-			cfsize_t& j = find(equation, i + 1, std::wstring(L")"), skip);
+			csize_t& j = find(equation, i + 1, std::wstring(L")"), skip);
 			if (j == std::wstring::npos)
 			{
 				ShowCompilerError(errortypes::noclosingbrace, equation);

@@ -15,7 +15,9 @@ const std::wstring resourcePackFolder = dataFolder + std::wstring(L"resourcepack
 
 const std::wstring assetsFolder = std::wstring(L"assets\\minecraft\\");
 const std::wstring optifineFolder = assetsFolder + std::wstring(L"optifine\\");
+const std::wstring particleDataFolder = assetsFolder + std::wstring(L"particles\\");
 const std::wstring generalTextureFolder = assetsFolder + std::wstring(L"textures\\");
+const std::wstring particleTexturesFolder = generalTextureFolder + std::wstring(L"particle\\");
 const std::wstring guiTextureFolder = generalTextureFolder + std::wstring(L"gui\\");
 const std::wstring blockTextureFolder = generalTextureFolder + std::wstring(L"block\\");
 const std::wstring environmentTextureFolder = generalTextureFolder + std::wstring(L"environment\\");

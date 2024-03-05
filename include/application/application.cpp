@@ -3,6 +3,7 @@
 #include "interaction.h"
 #include "math/graphics/graphics.h"
 #include "optimization/stableTickLoop.h"
+#include "control/control.h"
 
 void application::changeKeyboardLayout()
 {
@@ -341,11 +342,6 @@ application* application::getApplicationConnected(HWND mainWindow)
 application::~application()
 {
 	delete mainForm;
-
-	delete defaultTheme()->font->family->tex;
-	delete defaultTheme()->font->family;
-	delete defaultTheme()->font;
-	delete defaultTheme();
 
 	//we dont have to delete its colors because they are part of the DIBSection
 

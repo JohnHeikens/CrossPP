@@ -4,7 +4,7 @@
 #include "include/math/vectn.h"
 #include <random>
 #include "include/math/graphics/color/color.h"
-#include "include/math/font.h"
+#include "include/math/graphics/brush/font/font.h"
 #include "include/math/theme.h"
 #include "GlobalFunctions.h"
 #include "array/wstring.h"

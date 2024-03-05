@@ -83,7 +83,7 @@ block::block(blockID identifier, fp hardness, fp blastResistance, cfp& weightPer
 	std::copy(filterStrength, filterStrength + (size_t)levelID::count, this->filterStrength);
 	std::copy(emittanceLevel, emittanceLevel + (size_t)levelID::count, this->emittanceLevel);
 }
-bool block::correctTool(const itemID& tool)
+bool block::correctTool(const itemID& tool) const
 {
 	return bestTool == withHand || ((int)tool && bestTool == itemList[(int)tool]->harvestType);
 }
@@ -709,7 +709,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 
 
 template<typename brush0Type>
-void block::render(const brush0Type& currentBrush, crectangle2& brushRect, crectangle2& blockRect, const renderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation, const std::optional<vec2>& rotationCentre) const
+void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectangle2& blockRect, const renderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation, const std::optional<vec2>& rotationCentre) const
 {
 	mat3x3 transform;
 	if (renderAnimation)
@@ -732,11 +732,39 @@ void block::render(const brush0Type& currentBrush, crectangle2& brushRect, crect
 			//multiply by the biome color
 			const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition.x())]->grassColor);
 			//const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->getBiome(blockRect.getCenter().x())]->grassColor);
-			const auto& mult = colorMultiplier<brush0Type, solidColorBrush>(currentBrush, biomeColorBrush);
+
+			constexpr bool mipmap = std::is_same<brush0Type, resolutionTexture>::value;
+			using finalBrushType = std::conditional<mipmap, texture, brush0Type>::type;
+
+			auto mipmapfunc = [&currentBrush, &transform, &brushRect]() -> const finalBrushType& {
+				if constexpr (mipmap)
+				{
+					//modify transform and change brush
+					//rectangle2 mipmappedRect = brushRect;
+					return (const finalBrushType&)(((const resolutionTexture&)currentBrush).mipmap(transform, brushRect));
+					//renderBrush(mipmappedRect, transform, rotationCentreOnScreen, true, facingDirection, tex, targetData.renderTarget, renderAnimation);
+				}
+				else {
+					return (const finalBrushType&)currentBrush;
+				}
+				};
+			const finalBrushType& finalBrush = mipmapfunc();
+			const auto& mult = colorMultiplier<finalBrushType, solidColorBrush>(finalBrush, biomeColorBrush);
+			//if constexpr (std::is_same<brush0Type, resolutionTexture>::value)
+			//{
+			//	//modify transform and change brush
+			//	rectangle2 mipmappedRect = brushRect;
+			//	const texture& tex = ((const resolutionTexture&)currentBrush).mipmap(transform, mipmappedRect);
+			//	renderBrush(mipmappedRect, transform, rotationCentreOnScreen, true, facingDirection, tex, targetData.renderTarget, renderAnimation);
+			//}
+			//else {
+			//	renderBrush(brushRect, transform, rotationCentreOnScreen, true, facingDirection, currentBrush, targetData.renderTarget, renderAnimation);
+			//}
+
 			if (identifier == blockID::grass_block)
 			{
 				//fill back texture
-				fillTransformedBrushRectangle(brushRect, transform, currentBrush, targetData.renderTarget);
+				fillTransformedBrushRectangle(brushRect, transform, finalBrush, targetData.renderTarget);
 
 				//transparent overlay
 				fillTransparentRectangle(crectangle2(grassOverlay->getClientRect()), transform, colorMultiplier<resolutionTexture, solidColorBrush>(*grassOverlay, biomeColorBrush), targetData.renderTarget);
@@ -762,16 +790,8 @@ void block::render(const brush0Type& currentBrush, crectangle2& brushRect, crect
 			transform = mat3x3::cross(mat3x3::mirror(axisID::x, rotationCentreOnScreen.x()), transform);
 		}
 	}
-	if constexpr (std::is_same<brush0Type, resolutionTexture>::value)
-	{
-		//modify transform and change brush
-		rectangle2 mipmappedRect = brushRect;
-		const texture& tex = ((const resolutionTexture&)currentBrush).mipmap(transform, mipmappedRect);
-		renderBrush(mipmappedRect, transform, rotationCentreOnScreen, true, facingDirection, tex, targetData.renderTarget, renderAnimation);
-	}
-	else {
-		renderBrush(brushRect, transform, rotationCentreOnScreen, true, facingDirection, currentBrush, targetData.renderTarget, renderAnimation);
-	}
+	renderBrush(brushRect, transform, rotationCentreOnScreen, true, facingDirection, currentBrush, targetData.renderTarget, renderAnimation);
+
 }
 
 void renderTorch(cveci2& blockPosition, cvec2& relativeRotationCentre, cfp& angle, const resolutionTexture& tex, const renderData& targetData)

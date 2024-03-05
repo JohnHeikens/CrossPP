@@ -167,7 +167,7 @@ bool world::serialize(cbool& write)
 
 human* world::joinPlayer(const uuid& identifier, const std::wstring& playerName, gameControl& screen)
 {
-	human* h = new human(dimensions[(int)worldSpawnDimension], cvec2(), screen);
+	human* h = new human(dimensions[(int)worldSpawnDimension], cvec2(), screen, playerName);
 	h->identifier = identifier;
 
 	crectangle2& relativeHitbox = h->calculateHitBox();

@@ -5,6 +5,7 @@
 #include "dimensionID.h"
 #include "itemID.h"
 #include "textureList.h"
+#include "minecraftFont.h"
 
 resolutionTexture* mainMenuBackgroundTexture = nullptr;
 resolutionTexture* widgetsTexture = nullptr;

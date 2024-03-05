@@ -836,9 +836,9 @@ void serializeBlocks(nbtSerializer& s, const array2d<blockID>& blockIDArray, con
 		if (s.write)
 		{
 			auto it = blockDataArray.begin();
-			for (int relativeY = 0; relativeY < blockDataArray.size.y(); relativeY++)
+			for (fsize_t relativeY = 0; relativeY < blockDataArray.size.y(); relativeY++)
 			{
-				for (int relativeX = 0; relativeX < blockDataArray.size.x(); relativeX++, it++)
+				for (fsize_t relativeX = 0; relativeX < blockDataArray.size.x(); relativeX++, it++)
 				{
 					if (*it)
 					{
@@ -858,7 +858,7 @@ void serializeBlocks(nbtSerializer& s, const array2d<blockID>& blockIDArray, con
 		{
 			//create block data for all blocks
 			//necessary so files converted to newer versions with more block data have block data generated
-			for (int i = 0; i < blockDataArray.size.volume(); i++)
+			for (fsize_t i = 0; i < blockDataArray.size.volume(); i++)
 			{
 				blockDataArray.baseArray[i] = createBlockData(blockIDArray.baseArray[i]);
 			}

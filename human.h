@@ -25,7 +25,7 @@
 extern std::shared_ptr<audio2d> currentWindSound;
 struct playerSocket;
 struct gameControl;
-struct human :public humanoid
+struct human :public humanoid, public INamable
 {
 	//containers
 	humanSlotContainerUI* humanSlots = nullptr;
@@ -77,7 +77,7 @@ struct human :public humanoid
 
 	void pickUpFloatingSlots();
 	bool canSleep() const;
-	human(dimension* dimensionIn, cvec2& position, gameControl& screen);
+	human(dimension* dimensionIn, cvec2& position, gameControl& screen, const std::wstring& name);
 	virtual void tick() override;
 	virtual void applyStatusEffect(const statusEffect& effect) override;
 	virtual void onDeath() override;

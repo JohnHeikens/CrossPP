@@ -113,6 +113,12 @@
 #include "sandstoneColorID.h"
 #include "treeItemTypeID.h"
 #include "woodtypeID.h"
+#include "minecraftFont.h"
+
+
+minecraftFont* currentMinecraftFont = nullptr;
+fontFamily* currentMinecraftFontFamily = nullptr;
+
 std::vector<resolutionTexture*> loadedTextures = std::vector<resolutionTexture*>();
 std::wstring creditsText = std::wstring(L"");
 
@@ -475,6 +481,9 @@ void loadResourcePacks() {
 		new structureData(std::wstring(L"floating_ship")),
 		});
 	//load textures
+
+	currentMinecraftFontFamily = new fontFamily(loadTextureFromResourcePack(guiTextureFolder + L"ascii shadow.png"));
+	currentMinecraftFont = new minecraftFont();
 
 	mainMenuBackgroundTexture = loadTextureFromResourcePack(guiTextureFolder + std::wstring(L"title\\background\\2d.png"));
 
@@ -2402,7 +2411,7 @@ void loadResourcePacks() {
 
 	for (size_t i = 0; i < (size_t)particleID::count; i++)
 	{
-		entityDataList.push_back(new entityData((entityID)currentEntityID, particleTypeDataList[(particleID)i]->name + std::wstring(L"_particle"), 5, relativeParticleHitbox, 0.002, 0.001, false)); currentEntityID++;
+		entityDataList.push_back(new entityData((entityID)currentEntityID, particleTypeDataList[(particleID)i]->name + std::wstring(L"_particle"), 5, relativeParticleHitbox, 0.002, 0.1, false)); currentEntityID++;
 	}
 
 	cfp arrowPower = 0x20;

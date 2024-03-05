@@ -190,7 +190,7 @@ struct calculationLayer : fastLayer
 
 	~calculationLayer();
 
-	size_t weightCountWithoutBias() const;
+	fsize_t weightCountWithoutBias() const;
 
 	void setRandomWeights(std::mt19937& randomToUse) const;
 	//void setRandomWeights(const array2d<fp>& weightMatrixToReproduceFrom, cfp& alpha, std::mt19937& randomToUse) const;
@@ -274,9 +274,9 @@ struct calculationLayer : fastLayer
 			std::fill(sourceLayerIt.val<1>().begin(), sourceLayerIt.val<1>().end(), fastArray<fp>(outputLayerSize));
 			std::fill(sourceLayerIt.val<2>().begin(), sourceLayerIt.val<2>().end(), fastArray<fp>(outputLayerSize));
 
-			for (size_t sourceLayerIndex = 0; sourceLayerIndex < sourceLayerIt.val<0>()->sourceLayer->values.size; ++sourceLayerIndex)
+			for (fsize_t sourceLayerIndex = 0; sourceLayerIndex < sourceLayerIt.val<0>()->sourceLayer->values.size; ++sourceLayerIndex)
 			{
-				for (size_t currentLayerIndex = 0; currentLayerIndex < values.size; ++currentLayerIndex)
+				for (fsize_t currentLayerIndex = 0; currentLayerIndex < values.size; ++currentLayerIndex)
 				{
 					sourceLayerIt.val<1>()[sourceLayerIndex][currentLayerIndex] = totalSumsImpacts[currentLayerIndex] * sourceLayerIt.val<0>()->sourceLayer->values[sourceLayerIndex];
 					sourceLayerIt.val<2>()[sourceLayerIndex] += totalSumsImpacts[currentLayerIndex] * sourceLayerIt.val<0>()->weightMatrix[sourceLayerIndex][currentLayerIndex];

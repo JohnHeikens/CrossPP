@@ -10,6 +10,7 @@
 #include "statusEffectData.h"
 #include "idConverter.h"
 #include "renderBlockContainer.h"
+#include "minecraftFont.h"
 itemStack::itemStack(const itemStack& other)
 {
 	enchantments = std::vector<enchantment*>();
@@ -168,9 +169,9 @@ void itemStack::render(crectangle2& rect, const texture& renderTarget) const
 		{
 			//draw text
 			std::wstring s = std::to_wstring(count);
-			cveci2 size = cveci2((int)(s.size() * defaultTheme()->font->fontSize), (int)defaultTheme()->font->fontSize);
+			cveci2 size = cveci2((int)(s.size() * defaultTheme().font->fontSize), (int)defaultTheme().font->fontSize);
 			cvec2 topRight = rect.pos1();
-			defaultTheme()->font->DrawString(s, rectangle2(topRight.x() - size.x(), rect.pos0.y(), size.x(), size.y()), renderTarget);
+			defaultTheme().font->DrawString(s, rectangle2(topRight.x() - size.x(), rect.pos0.y(), size.x(), size.y()), renderTarget);
 		}
 
 		if (hasDurability(stackItemID))
@@ -294,13 +295,13 @@ void itemStack::drawToolTips(cveci2& position, const texture& renderTarget) cons
 	stringToDraw += enchantmentsString;
 
 	cvec2 maximumSize = cvec2(0x200, 0x300);
-	cvec2 rectangleSize = defaultTheme()->font->measureStringSize(maximumSize, stringToDraw);
+	cvec2 rectangleSize = defaultTheme().font->measureStringSize(maximumSize, stringToDraw);
 	crectangle2 stringRect = crectangle2(position.x(), position.y() - rectangleSize.y(), rectangleSize.x(), rectangleSize.y());
-	renderTarget.fillRectangle(stringRect.expanded(defaultTheme()->borderSize), brushes::black);
-	const font nameFont = font(defaultTheme()->font->family, defaultTheme()->font->fontSize, &brushes::cyan);
+	renderTarget.fillRectangle(stringRect.expanded(defaultTheme().borderSize), brushes::black);
+	const minecraftFont nameFont = minecraftFont();
 	nameFont.DrawString(nameText, stringRect, renderTarget);
-	crectangle2 enchantmentsStringrect = crectangle2(stringRect.x(), stringRect.y(), stringRect.w(), stringRect.h() - defaultTheme()->font->fontSize);
-	defaultTheme()->font->DrawString(enchantmentsString, enchantmentsStringrect, renderTarget);
+	crectangle2 enchantmentsStringrect = crectangle2(stringRect.x(), stringRect.y(), stringRect.w(), stringRect.h() - defaultTheme().font->fontSize);
+	defaultTheme().font->DrawString(enchantmentsString, enchantmentsStringrect, renderTarget);
 }
 
 void itemStack::serializeValue(nbtSerializer& s)

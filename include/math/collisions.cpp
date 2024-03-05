@@ -23,9 +23,9 @@ bool collides2d(texture* tex1, mat3x3 transform1, texture* img2, mat3x3 transfor
 	mat3x3 tr1to2 = mat3x3::cross(inverse2, transform1);//image1 to graphics to image2
 	cint precision = 5;
 	//now check for every 5 pixels
-	for (int j = 0; j < tex1->size.y(); j += precision)
+	for (fsize_t j = 0; j < tex1->size.y(); j += precision)
 	{
-		for (int i = 0; i < tex1->size.x(); i += precision)
+		for (fsize_t i = 0; i < tex1->size.x(); i += precision)
 		{
 			color* imgi = tex1->baseArray + i + j * tex1->size.x();
 			if (imgi->a()) {//filled at img1

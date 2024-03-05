@@ -10,7 +10,7 @@ void jigsawUI::layout(crectanglei2& rect)
 	form::layout(rect);
 	cint middle = rect.w() / 2;
 	int currentY = rect.h() - buttonSize.y();
-	cint jointTypeLabelWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, jointTypeLabel->text).x() + defaultTheme()->borderSize * 2;
+	cint jointTypeLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, jointTypeLabel->text).x() + defaultTheme().borderSize * 2;
 	cint w3 = rect.w() / 3;
 	targetPoolLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
 	currentY -= buttonSize.y();

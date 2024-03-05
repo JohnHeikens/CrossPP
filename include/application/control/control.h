@@ -128,7 +128,7 @@ public:
 	control* focusedChild = nullptr;
 	fastList<control*>* children = nullptr;
 
-	font* currentFont = nullptr;
+	baseFont* currentFont = nullptr;
 
 	std::wstring text = std::wstring(L"");
 	verticalAlignment textVerticalAlignment = verticalAlignment::top;
@@ -139,4 +139,4 @@ public:
 	color borderColor = colorPalette::white;
 };
 
-theme*& defaultTheme();
+theme& defaultTheme();

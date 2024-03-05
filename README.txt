@@ -22,6 +22,8 @@ unresolved external: cpp file not added to solution?
 Cyclic build dependency detected: IItemComparable.h depends on slabType.h depends on IItemComparable.h
 exclude the files from the project, then reinclude them
 
+no copy constructor available or copy constructor is declared 'explicit': don't only check return values. check all passed values! in lambdas they should have an '&' in front
+
 delete gets called randomly: do NOT copy, but create a reference! const &
 
 why is serializeValue not const? because when const is used, serializeValue() can not read.

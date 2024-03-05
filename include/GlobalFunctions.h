@@ -34,7 +34,7 @@ typedef wchar_t letter;//unicode charachter
 //virtual keycode
 typedef byte vk;
 
-typedef size_t fsize_t;//fast size type, will result in sse instructions and loop unrolling
+typedef uint fsize_t;//fast size type, will result in sse instructions and loop unrolling
 typedef const fsize_t cfsize_t;//fast size type, will result in sse instructions and loop unrolling
 
 typedef const ll cll;

@@ -36,7 +36,7 @@ void structureBlockUI::serializeWithTemporaryData(cbool& write)
 void structureBlockUI::layout(crectanglei2& rect)
 {
 	form::layout(rect);
-	cint structureBlocklabelWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, structureBlockLabel->text).x() + defaultTheme()->borderSize * 2;
+	cint structureBlocklabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, structureBlockLabel->text).x() + defaultTheme().borderSize * 2;
 	cint middle = rect.w() / 2;
 	int descendingY = rect.h() - buttonSize.y();
 
@@ -88,7 +88,7 @@ void structureBlockUI::render(cveci2& position, const texture& renderTarget)
 	}
 	}
 	temporaryStructureBlockData->structureName = nameTextbox->text;
-	cint modeLabelWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, modeLabel->text).x() + defaultTheme()->borderSize * 2;
+	cint modeLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, modeLabel->text).x() + defaultTheme().borderSize * 2;
 	modeLabel->layout(crectanglei2(modeLabel->rect.x(), modeLabel->rect.y(), modeLabelWidth, modeLabel->rect.h()));
 	renderChildren(position, renderTarget);
 }

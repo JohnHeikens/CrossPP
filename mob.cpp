@@ -16,6 +16,9 @@
 #include "furnaceRecipe.h"
 #include "world.h"
 #include "server.h"
+#include "textureParticleBrush.h"
+#include "statusEffectData.h"
+#include "effectParticleBrush.h"
 
 constexpr fp verticalSwimSpeedSeconds = 1.0f;
 constexpr fp verticalSwimSpeed = verticalSwimSpeedSeconds;
@@ -168,7 +171,10 @@ void mob::tick()
 					{
 						if (criticalDamage)
 						{
-							criticalAttackSound->playRandomSound(dimensionIn, exactEntityIntersection);
+ 							criticalAttackSound->playRandomSound(dimensionIn, exactEntityIntersection);
+							for (int i = 0; i < 5; i++) {
+								particle* p = summonParticle(dimensionIn, exactEntityIntersection, new textureParticleBrush(particleID::crit), 4);
+							}
 						}
 						else
 						{
@@ -407,6 +413,15 @@ void mob::tick()
 			{
 				((endCrystal*)selectedEntity)->explode();
 			}
+		}
+	}
+
+	//add particles for potions
+	for (int i = 0; i < activeEffects.size(); i++) {
+		if (randChance(currentRandom, (ticksPerRealLifeSecond / activeEffects[i].potency))) {
+			summonParticle(dimensionIn, getrandomPosition(currentRandom, calculateHitBox()), new effectParticleBrush(statusEffectDataList[activeEffects[i].identifier]->particleColor));
+			activeEffects[i].identifier;
+
 		}
 	}
 

@@ -709,8 +709,8 @@ void chat::render(const texture& renderTarget, const gameControl& screen) const
 		if (((timesSaid[i] + chatTime) > currentWorld->ticksSinceStart) || showMoreChat)
 		{
 			//this applies even in the top left
-			veci2 size = defaultTheme()->font->measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
-			defaultTheme()->font->DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
+			veci2 size = defaultTheme().font->measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
+			defaultTheme().font->DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
 			lineCount++;
 			offset.y() += size.y();
 		}

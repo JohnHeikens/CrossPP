@@ -7,3 +7,4 @@ models
 *.ipch
 .vs/MedievalSurvival
 Debug
+enc_temp_folder

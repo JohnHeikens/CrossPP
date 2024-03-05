@@ -12,9 +12,9 @@ struct aiBluePrint
 	//layer 0: input layer
 	//layer (layerCount - 1): outputlayer
 	//neuroncount: array with the amount of neurons per layer. MEMORY NEURONS HAVE TO BE INCLUDED!
-	fastArray<size_t> hiddenNeuronCounts = fastArray<size_t>();
+	fastArray<fsize_t> hiddenNeuronCounts = fastArray<fsize_t>();
 
-	inline aiBluePrint(const fastArray<size_t>& hiddenNeuronCounts, cbool& regression) :
+	inline aiBluePrint(const fastArray<fsize_t>& hiddenNeuronCounts, cbool& regression) :
 		hiddenNeuronCounts(hiddenNeuronCounts), regression(regression){  }
 	inline aiBluePrint(){}
 };

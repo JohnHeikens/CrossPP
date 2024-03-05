@@ -11,9 +11,9 @@ template<typename t>
 struct fastArray :IDestructable
 {
 	t* baseArray = nullptr;
-	size_t size = 0;
+	fsize_t size = 0;
 	//template<typename t>
-	inline fastArray(const std::initializer_list<t>& list) : baseArray(new t[list.size()]), size(list.size())
+	inline fastArray(const std::initializer_list<t>& list) : baseArray(new t[list.size()]), size((fsize_t)list.size())
 	{
 		std::copy(list.begin(), list.end(), begin());
 	}

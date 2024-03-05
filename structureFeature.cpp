@@ -315,9 +315,9 @@ void structureFeature::placeStructurePart(structure* s, tickableBlockContainer* 
 	cmat3x3i& structureToWorldTransform = s->getBlocksToWorldTransform(pos00, flipX);
 
 	std::vector<veci2> connectedStructurePositions;
-	for (veci2 pos = veci2(); pos.y() < s->blockIDArray.size.y(); pos.y()++)
+	for (veci2 pos = veci2(); pos.y() < (int)s->blockIDArray.size.y(); pos.y()++)
 	{
-		for (pos.x() = 0; pos.x() < s->blockIDArray.size.x(); pos.x()++)
+		for (pos.x() = 0; pos.x() < (int)s->blockIDArray.size.x(); pos.x()++)
 		{
 			cveci2& worldPos = structureToWorldTransform.multPointMatrix(pos);
 
@@ -389,7 +389,7 @@ void structureFeature::placeStructurePart(structure* s, tickableBlockContainer* 
 
 veci2 structureFeature::getStructureBottom(structure* s)
 {
-	for (int height = 0; height < s->blockIDArray.size.y(); height++)
+	for (fsize_t height = 0; height < s->blockIDArray.size.y(); height++)
 	{
 		std::vector<veci2> bottomPositions = s->getAffectedPositions(crectanglei2(0, height, (int)s->blockIDArray.size.x(), 1), [this, s](cveci2& pos)
 			{

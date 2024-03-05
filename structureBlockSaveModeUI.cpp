@@ -50,9 +50,9 @@ void structureBlockSaveModeUI::serializeWithTemporaryData(cbool& write)
 void structureBlockSaveModeUI::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	cint showInvisibleBlocksWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, showInvisibleBlocksLabel->text).x() + defaultTheme()->borderSize * 2;
-	cint detectLabelWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, detectLabel->text).x() + defaultTheme()->borderSize * 2;
-	cint includeEntitiesLabelWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x() + defaultTheme()->borderSize * 2;
+	cint showInvisibleBlocksWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, showInvisibleBlocksLabel->text).x() + defaultTheme().borderSize * 2;
+	cint detectLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, detectLabel->text).x() + defaultTheme().borderSize * 2;
+	cint includeEntitiesLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x() + defaultTheme().borderSize * 2;
 	cint smallRightButtonX = rect.w() - smallRightButtonSize;
 	int currentY = rect.h() - buttonSize.y();
 

@@ -155,7 +155,7 @@ void neuralNetwork::reviveDeadNeurons(std::mt19937& randomToUse)
 		it.val<0>() = fastArray<bool>(it.val<1>());
 	}
 
-	for (size_t layerIndex = 0; layerIndex < bluePrint.hiddenNeuronCounts.size + 1; layerIndex++)
+	for (fsize_t layerIndex = 0; layerIndex < bluePrint.hiddenNeuronCounts.size + 1; layerIndex++)
 	{
 		cbool& isOutputLayer = layerIndex == bluePrint.hiddenNeuronCounts.size;
 		calculationLayer* currentLayer = isOutputLayer ? outputLayer : hiddenLayers[layerIndex];
@@ -416,10 +416,10 @@ void neuralNetwork::renderBlobs(const texture& renderTarget, crectangle2& rect, 
 	crectangle2& innerRect = rect.expanded(blobSize * -0.5);
 
 	//render the last hidden layer twice (once below the inputs, once below the last layer)
-	for (size_t layerIndex = 0; layerIndex < bluePrint.hiddenNeuronCounts.size + 2; layerIndex++)
+	for (fsize_t layerIndex = 0; layerIndex < bluePrint.hiddenNeuronCounts.size + 2; layerIndex++)
 	{
 		const fastLayer* currentLayer = getLayerToRender(layerIndex);
-		for (size_t neuronIndex = 0; neuronIndex < currentLayer->values.size; neuronIndex++)
+		for (fsize_t neuronIndex = 0; neuronIndex < currentLayer->values.size; neuronIndex++)
 		{
 			cvec2& absolutePosition = getAbsolutePosition(rect, getRelativeNeuronPos(layerIndex, neuronIndex));
 
@@ -433,25 +433,25 @@ void neuralNetwork::renderBlobs(const texture& renderTarget, crectangle2& rect, 
 
 	//render connections
 
-	for (size_t layerIndex = 1; layerIndex < bluePrint.hiddenNeuronCounts.size + 2; layerIndex++)
+	for (fsize_t layerIndex = 1; layerIndex < bluePrint.hiddenNeuronCounts.size + 2; layerIndex++)
 	{
 		const calculationLayer* const& currentLayer = (calculationLayer*)getLayerToRender(layerIndex);
 
 
 
-		for (size_t sourceLayerIndex = 0; sourceLayerIndex < currentLayer->sourceLayersConnections.size; sourceLayerIndex++)
+		for (fsize_t sourceLayerIndex = 0; sourceLayerIndex < currentLayer->sourceLayersConnections.size; sourceLayerIndex++)
 		{
-			size_t sourceNeuronHeight = (sourceLayerIndex == currentLayer->sourceLayersConnections.size - 1) ? 0 : currentLayer->sourceLayersConnections[1]->sourceLayer->values.size;
+			fsize_t sourceNeuronHeight = (sourceLayerIndex == currentLayer->sourceLayersConnections.size - 1) ? 0 : currentLayer->sourceLayersConnections[1]->sourceLayer->values.size;
 
 			const fastLayer* const& sourceLayer = currentLayer->sourceLayersConnections[sourceLayerIndex]->sourceLayer;
 
 			//render weight matrix
 
-			for (size_t sourceNeuronIndex = 0; sourceNeuronIndex < sourceLayer->values.size; sourceNeuronIndex++, sourceNeuronHeight++)
+			for (fsize_t sourceNeuronIndex = 0; sourceNeuronIndex < sourceLayer->values.size; sourceNeuronIndex++, sourceNeuronHeight++)
 			{
 				cvec2& absolutePosition0 = getAbsolutePosition(rect, getRelativeNeuronPos(layerIndex - 1, sourceNeuronHeight));
 
-				for (size_t currentNeuronIndex = 0; currentNeuronIndex < currentLayer->values.size; currentNeuronIndex++)
+				for (fsize_t currentNeuronIndex = 0; currentNeuronIndex < currentLayer->values.size; currentNeuronIndex++)
 				{
 					cvec2& absolutePosition1 = getAbsolutePosition(rect, getRelativeNeuronPos(layerIndex, currentNeuronIndex));
 

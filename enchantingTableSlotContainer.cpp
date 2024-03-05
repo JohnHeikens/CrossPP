@@ -108,9 +108,9 @@ void enchantingTableSlotContainer::drawExtraData(cmat3x3& transform, const textu
 			crectangle2& optionBrushRect = crectangle2(i * 0x10, available ? 0x10 : 0, 0x10, 0x10);
 			inventory::drawExtraData(crectanglei2(i * 0x10, available ? 0x10 : 0, 0x10, 0x10), optionPosition, transform, renderTarget);
 
-			textRect.expand(-defaultTheme()->borderSize);
+			textRect.expand(-defaultTheme().borderSize);
 			std::wstring enchantmentName = enchantmentOptions[i][0].toWString();
-			defaultTheme()->font->DrawString(enchantmentName, transform.multRectMatrix((crectangle2)textRect), renderTarget);
+			defaultTheme().font->DrawString(enchantmentName, transform.multRectMatrix((crectangle2)textRect), renderTarget);
 		}
 	}
 }

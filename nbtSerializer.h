@@ -7,8 +7,24 @@
 #include "include/math/rectangletn.h"
 #include "nbtValue.h"
 #include "nbtDataArray.h"
+#include <concepts>
+#include <cstdint>
+#include <string>
+#include <type_traits>
+#include <vector>
+#include "constants.h"
+#include "GlobalFunctions.h"
+#include "math/axis.h"
+#include "math/vectn.h"
+#include "optimization/debug.h"
+#include "nbtData.h"
+#include "nbtDataTag.h"
+
 
 template<typename t>
+concept nbtType = std::signed_integral<t> || std::is_same_v<t, float> || std::is_same_v<t, double> || std::is_same_v<t, int8_t*> || std::is_same_v<t, int32_t*> || std::is_same_v<t, int64_t*> || std::is_same_v<t, std::wstring>;
+
+template<nbtType t>
 constexpr nbtDataTag getNBTDataTag()
 {
 	if constexpr (std::is_same<t, int8_t>())
@@ -279,13 +295,13 @@ struct nbtSerializer :iSerializer
 		}
 	}
 	
-	template<typename t>
+	template<nbtType t>
 	inline nbtData* getNBTData(const std::wstring& memberName)
 	{
 		return getNBTData<getNBTDataTag<t>()>(memberName);
 	}
 
-	template<typename t>
+	template<nbtType t>
 	inline bool serializeVariableArray(const std::wstring& memberName, t*& value, int& count)
 	{
 		nbtData* currentChild = getNBTData<t*>(memberName);
@@ -299,7 +315,7 @@ struct nbtSerializer :iSerializer
 			return false;
 		}
 	}
-	template<typename t>
+	template<nbtType t>
 	inline bool serializeValue(const std::wstring& memberName, t& value)
 	{
 		nbtData* currentChild = getNBTData<t>(memberName);
@@ -361,22 +377,27 @@ struct nbtSerializer :iSerializer
 	{
 		return serializeVariableArray(memberName, value, count);
 	}
-	inline bool serializeValue(const std::wstring& memberName, byte& value)
-	{
-		return serializeValue(memberName, (sbyte&)value);
-	}
+	//inline bool serializeValue(const std::wstring& memberName, byte& value)
+	//{
+	//	return serializeValue(memberName, (sbyte&)value);
+	//}
 	inline bool serializeValue(const std::wstring& memberName, bool& value)
 	{
 		return serializeValue(memberName, (sbyte&)value);
 	}
-	inline bool serializeValue(const std::wstring& memberName, ull& value)
+	template<typename t, typename = std::enable_if_t<std::is_unsigned_v<t>>>
+	inline bool serializeValue(const std::wstring& memberName, t& value)
 	{
-		return serializeValue(memberName, (ll&)value);
+		return serializeValue(memberName, (std::make_signed_t<t>&)value);
 	}
-	inline bool serializeValue(const std::wstring& memberName, ushort& value)
-	{
-		return serializeValue(memberName, (short&)value);
-	}
+	//inline bool serializeValue(const std::wstring& memberName, ushort& value)
+	//{
+	//	return serializeValue(memberName, (short&)value);
+	//}
+	//inline bool serializeValue(const std::wstring& memberName, uint& value)
+	//{
+	//	return serializeValue(memberName, (uint&)value);
+	//}
 	inline bool serializeValue(const std::wstring& memberName, directionID& direction)
 	{
 		return serializeValue(memberName, (sbyte&)direction);

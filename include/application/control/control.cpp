@@ -3,9 +3,11 @@
 
 //to make sure its initialized
 //https://stackoverflow.com/questions/9092479/why-isnt-my-extern-variable-initialized-yet
-theme*& defaultTheme()
+theme& defaultTheme()
 {
-	static theme* privateDefaultTheme = new theme(new font(new fontFamily(new texture(L"data\\ascii.png", true))));
+	static fontFamily privateDefaultFontFamily = fontFamily(new resolutionTexture(texture( L"data\\ascii.png", true), cvec2(asciiRowWidth, asciiColumnHeight)));
+	static font privateFont = font(privateDefaultFontFamily);
+	static theme privateDefaultTheme = theme(&privateFont);
 	return privateDefaultTheme;
 }
 
@@ -14,7 +16,10 @@ void control::render(cveci2& position, const texture& renderTarget)
 {
 	renderBackGround(position, renderTarget);
 	renderBorder(position, renderTarget);
-	renderText(position, renderTarget);
+	if (text.length())
+	{
+		renderText(position, renderTarget);
+	}
 	renderChildren(position, renderTarget);
 }
 
@@ -50,10 +55,10 @@ void control::renderChildren(cveci2& position, const texture& renderTarget)
 control::control()
 {
 	children = new fastList<control*>();
-	this->currentFont = defaultTheme()->font;
-	this->borderSize = defaultTheme()->borderSize;
-	this->borderColor = defaultTheme()->borderColor;
-	this->backGroundColor = defaultTheme()->backGroundColor;
+	this->currentFont = defaultTheme().font;
+	this->borderSize = defaultTheme().borderSize;
+	this->borderColor = defaultTheme().borderColor;
+	this->backGroundColor = defaultTheme().backGroundColor;
 }
 
 void control::keyDown(cvk& keyCode)

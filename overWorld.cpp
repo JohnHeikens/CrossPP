@@ -538,8 +538,9 @@ void overWorld::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const 
 
 	//color(40, 94, 181);
 	const colorf& airColorHSV = colorf(
-		math::lerp(215, 230, math::clamp((fp)(1.5 - temperature * 2), (fp)0, (fp)1)),
-		math::clamp(math::mapValue(height, (fp)seaLevel, (fp)maximumHillHeight, (fp)1, (fp)0), (fp)0, (fp)1),
+		//math::lerp((fp)215, (fp)230, math::clamp((fp)(2 - temperature * 3), (fp)0, (fp)1)),
+		math::lerp((fp)215, (fp)230, (fp)(10 - temperature * 21)),
+		math::clamp(math::mapValue(height, (fp)seaLevel, (fp)maximumHillHeight, (fp)0.8, (fp)0), (fp)0, (fp)1),
 		math::clamp(math::minimum(math::mapValue(height, (fp)seaLevel, (fp)maximumHillHeight, (fp)1, (fp)0.4), math::lerp((fp)1, (fp)0.7, math::squared(cloudThickness))), (fp)0, (fp)1));
 	const color airColor = color(hsv2rgb(airColorHSV));
 

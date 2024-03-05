@@ -30,9 +30,12 @@ void server::execute()
 		//render
 		renderClients();
 		currentBenchmark->addBenchmarkPoint(cpuUsageID::networking);
-		for (auto it = clients.begin(); it < clients.end(); it++) {
-			if ((*it)->shouldDisconnect) {
-				kick(*it);
+		for (int i = 0; i < clients.size();) {
+			if (clients[i]->shouldDisconnect) {
+				kick(clients[i]);
+			}
+			else {
+				i++;
 			}
 		}
 
@@ -107,6 +110,8 @@ void server::renderClients()
 void server::stop()
 {
 	stopping = true;
+	//wait until the server has stopped
+	serverThread->join();
 }
 
 void server::tick()
@@ -182,8 +187,8 @@ void server::kick(playerSocket* socket)
 {
 	socket->player->serialize(true);
 	socket->player->despawn = true;
-	clients.erase(find(clients, socket));
 	selector.remove(*(socket)->s.socket);
+	clients.erase(find(clients, socket));
 }
 
 microseconds server::msPerTick() const

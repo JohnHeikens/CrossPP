@@ -106,7 +106,7 @@ void movableBlockContainer::serializeValue(nbtSerializer& s)
 
 movableBlockContainer::~movableBlockContainer()
 {
-	for (int i = 0; i < blockDataArray.size.volume(); i++)
+	for (fsize_t i = 0; i < blockDataArray.size.volume(); i++)
 	{
 		if (blockDataArray.baseArray[i])
 		{

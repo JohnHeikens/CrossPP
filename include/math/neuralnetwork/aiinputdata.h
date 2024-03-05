@@ -9,7 +9,7 @@ constexpr fp sigmoidMid = (sigmoidMax + sigmoidMin) * 0.5;
 struct aiRawInputData
 {
 	fp* values = nullptr;
-	size_t size = 0;
+	fsize_t size = 0;
 
 	aiRawInputData(cfsize_t& size = 1) : size(size) {}
 

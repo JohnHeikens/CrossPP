@@ -85,9 +85,9 @@ void gameSelector::keyPress(cvk& key)
 void gameSelector::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	openButton->layout(crectanglei2(0, 0, rect.w() / 2, (int)defaultTheme()->font->fontSize + defaultTheme()->borderSize * 2));
+	openButton->layout(crectanglei2(0, 0, rect.w() / 2, (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2));
 	newButton->layout(crectanglei2(openButton->rect.w(), 0, rect.w() - openButton->rect.w(), openButton->rect.h()));
-	deleteButton->layout(crectanglei2(0, openButton->rect.h(), rect.w() / 2, (int)defaultTheme()->font->fontSize + defaultTheme()->borderSize * 2));
+	deleteButton->layout(crectanglei2(0, openButton->rect.h(), rect.w() / 2, (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2));
 	refreshButton->layout(crectanglei2(openButton->rect.w(), openButton->rect.h(), rect.w() - openButton->rect.w(), openButton->rect.h()));
 
 	cint optionSpace = openButton->rect.h() * 2;

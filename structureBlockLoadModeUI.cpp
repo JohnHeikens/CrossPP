@@ -11,8 +11,8 @@
 void structureBlockLoadModeUI::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	cint showBoundingBoxWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, showBoundingBoxLabel->text).x() + defaultTheme()->borderSize * 2;
-	cint includeEntitiesLabelWidth = (int)defaultTheme()->font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x() + defaultTheme()->borderSize * 2;
+	cint showBoundingBoxWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, showBoundingBoxLabel->text).x() + defaultTheme().borderSize * 2;
+	cint includeEntitiesLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x() + defaultTheme().borderSize * 2;
 	cint smallRightButtonSize = buttonSize.y() * 4;
 	cint smallRightButtonX = rect.w() - smallRightButtonSize;
 	cint modeButtonSize = rect.w() - smallRightButtonSize;

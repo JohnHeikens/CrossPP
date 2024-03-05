@@ -16,6 +16,8 @@ struct solidBrush final :public brush<resultingType, inputType>
 
 typedef solidBrush<color, vec2> solidColorBrush;
 
+constexpr bool testB = is_brush_v<solidColorBrush>;
+
 template<typename brush0Type>
 struct saturator final :public colorBrush
 {
@@ -230,7 +232,18 @@ template<typename brush0Type, typename targetType>
 inline void fillTransformedBrushRectangle(crectangle2& brushRect, cmat3x3& transform, const brush0Type& b, const targetType& renderTarget)
 {
 	//+0.5, * transform, -0.5
-	const transformBrush<brush0Type>& brush = transformBrush<brush0Type>(transform.inverse() , b);
+
+	//vec2 testSize = vec2(1, 0);
+	//if (result.x() < 0) {
+	//	roundUp[0] = true;
+	//}
+	//vec2 testSizeY = vec2(1, 0);
+	//vec2 result = transform.multSizeMatrix(testSize);
+	//if (result.x() < 0) {
+	//	roundUp[0] = true;
+	//}
+
+	const transformBrush<brush0Type>& brush = transformBrush<brush0Type>(transform.inverse(), b);
 	renderTarget.fillTransformedRectangle(brushRect, transform, brush);
 }
 

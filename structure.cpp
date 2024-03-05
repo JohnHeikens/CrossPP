@@ -103,7 +103,7 @@ bool structure::serialize(const std::wstring& path, cbool& write)
 		if (write)
 		{
 			//count blockdata
-			for (veci2 relativePosition = veci2(); relativePosition.y() < blockIDArray.size.y(); relativePosition.y()++)
+			for (vect2<fsize_t> relativePosition = vect2<fsize_t>(); relativePosition.y() < blockIDArray.size.y(); relativePosition.y()++)
 			{
 				for (relativePosition.x() = 0; relativePosition.x() < blockIDArray.size.x(); relativePosition.x()++)
 				{

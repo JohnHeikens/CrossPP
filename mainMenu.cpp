@@ -12,7 +12,7 @@ mainMenu::mainMenu() :form()
 	gameNameLabel = new label(gameName);
 	gameNameLabel->backGroundColor = colorPalette::transparent;
 	gameNameLabel->borderSize = 0;
-	gameNameLabel->currentFont = new font(defaultTheme()->font->family, 0, &brushes::white);
+	gameNameLabel->currentFont = new baseFont(defaultTheme().font->family, 0);
 	addChildren({ backgroundPicture, gameNameLabel, playOfflineButton , playOnlineButton });
 }
 
@@ -38,7 +38,7 @@ void mainMenu::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
 	backgroundPicture->layout(newRect);
-	cint& buttonHeight = (int)defaultTheme()->font->fontSize + defaultTheme()->borderSize * 2;
+	cint& buttonHeight = (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2;
 	rectanglei2 playButtonRect = rectanglei2(0, 0, 0x200, buttonHeight);
 	cint& buttonMargin = 5;
 	playButtonRect.pos0 = rect.rectPos0Centered(playButtonRect.size) - buttonHeight - buttonMargin / 2;
@@ -46,7 +46,7 @@ void mainMenu::layout(crectanglei2& newRect)
 	playButtonRect.pos0.y() -= buttonHeight + buttonMargin;
 	playOnlineButton->layout(playButtonRect);
 
-	cfp stringLength = defaultTheme()->font->measureStringSize(cvec2(rect.size), gameName).x() / defaultTheme()->font->fontSize;
+	cfp stringLength = defaultTheme().font->measureStringSize(cvec2(rect.size), gameName).x() / defaultTheme().font->fontSize;
 	gameNameLabel->currentFont->fontSize = rect.w() / (stringLength * 2);
 	rectanglei2 gameNameRect = rectanglei2(rect.w() / 4, rect.h() - (int)(gameNameLabel->currentFont->fontSize * 2), rect.w() / 2, (int)gameNameLabel->currentFont->fontSize);
 	gameNameLabel->layout(gameNameRect);

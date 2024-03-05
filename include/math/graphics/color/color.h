@@ -149,7 +149,7 @@ struct colortn : public vectn<t, channelCount>
 	}
 
 	template<size_t colorCount>
-	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount> colorsToInterpolate[colorCount], cfp weight[colorCount])
+	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount> (&colorsToInterpolate)[colorCount], cfp weight[colorCount])
 	{
 		colortn<fp, channelCount> result = colortn();
 		for (size_t i = 0; i < colorCount; i++)
@@ -162,7 +162,7 @@ struct colortn : public vectn<t, channelCount>
 	}
 
 	//https://en.wikipedia.org/wiki/Bilinear_interpolation
-	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount> colorsToInterpolate[4], cvec2& weights)
+	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount> (&colorsToInterpolate)[4], cvec2& weights)
 	{
 		cvec2& invertedWeigths = 1 - weights;
 		cfp weightArray[4]
@@ -249,7 +249,7 @@ struct colortn : public vectn<t, channelCount>
 	inline static constexpr ccolort transition(ccolort& topcolor, ccolort& bottomcolor)
 	{
 		return ccolort(
-			maxValue - multiplyColorChannels(maxValue - bottomcolor.b(), maxValue - topcolor.a()),
+			maxValue - multiplyColorChannels(maxValue - bottomcolor.a(), maxValue - topcolor.a()),
 			bottomcolor.r() + multiplyColorChannels(topcolor.a(), topcolor.r() - bottomcolor.r()),
 			bottomcolor.g() + multiplyColorChannels(topcolor.a(), topcolor.g() - bottomcolor.g()),
 			bottomcolor.b() + multiplyColorChannels(topcolor.a(), topcolor.b() - bottomcolor.b())

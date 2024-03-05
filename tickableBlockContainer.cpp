@@ -391,18 +391,18 @@ void tickableBlockContainer::createExplosion(cvec2& position, cfp& explosionPowe
 	//damage entities
 	const std::vector<entity*> nearEntities = findNearEntities(position, maximumBlastRadius);
 
-	fastArray<rectangle2> hitboxes = fastArray<rectangle2>(nearEntities.size());
+	fastArray<rectangle2> hitboxes = fastArray<rectangle2>((fsize_t)nearEntities.size());
 	for (int i = 0; i < nearEntities.size(); i++)
 	{
 		hitboxes[i] = nearEntities[i]->calculateHitBox();
 	}
 
-	auto exposureArray = fastArray<fp>(nearEntities.size(), true);
+	auto exposureArray = fastArray<fp>((fsize_t)nearEntities.size(), true);
 
-	auto exposureDivisionArray = fastArray<int>(nearEntities.size(), true);
-	auto distanceArray = fastArray<fp>(nearEntities.size(), true);
+	auto exposureDivisionArray = fastArray<int>((fsize_t)nearEntities.size(), true);
+	auto distanceArray = fastArray<fp>((fsize_t)nearEntities.size(), true);
 
-	fastArray<vec2> knockBackArray = fastArray<vec2>(nearEntities.size(), true);
+	fastArray<vec2> knockBackArray = fastArray<vec2>((fsize_t)nearEntities.size(), true);
 
 	cfp rayAngleOffset = randFp();
 

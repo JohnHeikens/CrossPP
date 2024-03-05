@@ -236,7 +236,7 @@ struct arraynd :IDestructable
 	{
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
-			if ((pos[i] < 0) || (pos[i] >= size[i]))
+			if ((pos[i] < 0) || ((fsize_t)pos[i] >= size[i]))
 			{
 				return false;
 			}
@@ -657,9 +657,9 @@ struct arraynd :IDestructable
 		cfsize_t sideCount = 0x2;
 		fp currentX[2]{ 0,0 };
 
-		cfsize_t maxYCropped = math::minimum((fsize_t)ceil(maxY), size.y());
+		cfsize_t maxYCropped = (fsize_t)math::minimum(math::ceil<fp, fsize_t>(maxY), size.y());
 		//initialize the first two lines by default
-		for (int currentY = math::maximum((int)ceil(minY), 0); currentY < maxYCropped; currentY++)
+		for (fsize_t currentY = (fsize_t)math::maximum((int)ceil(minY), 0); currentY < maxYCropped; currentY++)
 		{
 			for (fsize_t side = 0; side < sideCount; side++)
 			{

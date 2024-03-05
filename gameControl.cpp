@@ -43,7 +43,6 @@
 #include "array/fastarray.h"
 #include "GlobalFunctions.h"
 #include "math/axis.h"
-#include "math/font.h"
 #include "math/graphics/brush/brushes.h"
 #include "math/graphics/brush/transformbrush.h"
 #include "math/graphics/color/color.h"
@@ -62,6 +61,7 @@
 #include "renderData.h"
 #include "soundhandler2d.h"
 #include "keyHistoryEvent.h"
+#include "minecraftFont.h"
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
@@ -695,8 +695,8 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 
 						if (currentLevel)
 						{
-							const font f = font(defaultTheme()->font->family, defaultTheme()->font->fontSize, &brushes::green);
-							std::wstring str = std::to_wstring(currentLevel);
+							const minecraftFont f = minecraftFont(iconSize * hudScale);
+							std::wstring str = L"§a" + std::to_wstring(currentLevel);
 							cvec2& size = f.fontSize * vec2(1, (fp)str.length());
 							f.DrawString(str, crectangle2((rect.w() - size.x()) * 0.5, currentYrowOffset + expBarSize.y() - scaledBarOffset, size.x(), size.y()), targetData.renderTarget);
 							attackIndicatorOffset += iconSize * hudScale + scaledBarOffset;
@@ -818,7 +818,7 @@ void gameControl::layout(crectanglei2& newRect)
 	bigUIRect.moveToCenter(rect);
 	structureBlockOptions->layout(bigUIRect);
 	jigsawOptions->layout(bigUIRect);
-	rectanglei2 commandLineRect = rectanglei2(0, 0, rect.size.x(), (int)defaultTheme()->font->fontSize + defaultTheme()->borderSize * 2);
+	rectanglei2 commandLineRect = rectanglei2(0, 0, rect.size.x(), (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2);
 	commandLineTextbox->layout(commandLineRect);
 }
 
