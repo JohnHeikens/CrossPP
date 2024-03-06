@@ -15,7 +15,8 @@
 #include "human.h"
 #include "server.h"
 #include <future>
-
+#include "fpng.h"
+#pragma optimize("", off)
 playerSocket::playerSocket(sf::TcpSocket* socket)
 {
 	screen = new gameControl(*this);
@@ -101,7 +102,7 @@ void renderAsync(playerSocket* socket)
 		else {
 			//selector should continue looking if the socket is still ready
 			socket->write = false;
-			
+
 			//read input while sending
 			socket->screen->mostRecentInput.serialize(*socket);
 			//socket->s.socket->setBlocking(true);
@@ -118,7 +119,43 @@ void sendRenderResultAsync(playerSocket* socket)
 
 	//TODO: serialize the screen in 'sendrenderresultasync'. this is hard because s->write = false
 	//we don't use the normal 'serialize' function so we don't have to use the 'write' boolean
-	socket->s.write((char*)(color::channelType*)socket->lastRenderResult->baseArray, socket->screen->rect.size.volume() * bgraColorChannelCount * sizeof(color::channelType));
+	//std::stringstream compressedScreenPacket = std::stringstream();
+	std::vector<byte> compressedBuf;
+	fpng::fpng_encode_image_to_memory(socket->lastRenderResult->baseArray, socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y(), bgraColorChannelCount, compressedBuf);
+	//color* ptr = socket->lastRenderResult->baseArray;
+	//std::vector<colorChannel> channels[rgbColorChannelCount]{};
+	//
+	////for (int i = 0; i < rgbColorChannelCount; i++) {
+	////	channels[i] = new colorChannel[];
+	////}
+	////[socket->screen->rect.size.volume()] ;
+	//for (int i = 0; i < socket->screen->rect.size.volume(); i++, ptr++) {
+	//	channels[0].push_back(ptr->axis[0]);//b
+	//	channels[1].push_back(ptr->axis[1]);//g
+	//	channels[2].push_back(ptr->axis[2]);//r
+	//	//compressedScreenPacket..write(ptr->r(), ptr->g(), ptr->b())
+	//
+	//}
+	//for (int channelIndex = 0; channelIndex < rgbColorChannelCount; channelIndex++) {
+	//	size_t s = channels[channelIndex].size();
+	//	socket->s.write((const char*)&s, sizeof(size_t));
+	//	socket->s.write((const char*)&(*channels[channelIndex].begin()), channels[channelIndex].size());
+	//}
+
+	//socket->s.write((char*)(color::channelType*)socket->lastRenderResult->baseArray, socket->screen->rect.size.volume() * bgraColorChannelCount * sizeof(color::channelType));
+
+	size_t s = compressedBuf.size();//TODO: video streaming
+	socket->s.write((const char*)&s, sizeof(size_t));
+	socket->s.write((const char*)&(*compressedBuf.begin()), compressedBuf.size());
+	if (socket->sendPacketThread) {
+		socket->sendPacketThread->join();
+		delete socket->sendPacketThread;
+	}
+	socket->sendPacketThread = new std::thread(sendPacketAsync, socket);
+}
+
+void sendPacketAsync(playerSocket* socket) {
 
 	socket->s.sendPacket();
 }
+#pragma optimize("", on)

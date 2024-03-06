@@ -3,17 +3,50 @@
 #include "world.h"
 #include "chat.h"
 #include "human.h"
-#include "dimension.h"
 #include "dimensionData.h"
 #include "block.h"
 #include "chunk.h"
 #include "statusEffectData.h"
 #include "structureData.h"
-#include "idList.h"
-#include "structureData.h"
 #include "itemData.h"
 #include "enchantmentData.h"
 #include "gameModeData.h"
+#include <math.h>
+#include <string>
+#include <utility>
+#include <vector>
+#include <SFML/Network/IpAddress.hpp>
+#include "biomeData.h"
+#include "biomeID.h"
+#include "blockID.h"
+#include "chunkLoadLevel.h"
+#include "constants.h"
+#include "dimensionID.h"
+#include "enchantment.h"
+#include "enchantmentID.h"
+#include "entity.h"
+#include "entityID.h"
+#include "GamemodeID.h"
+#include "humanoid.h"
+#include "idAnalysis.h"
+#include "application/control/control.h"
+#include "array/wstring.h"
+#include "GlobalFunctions.h"
+#include "math/graphics/texture.h"
+#include "math/mathfunctions.h"
+#include "math/rectangletn.h"
+#include "math/vectn.h"
+#include "type/conversion.h"
+#include "itemID.h"
+#include "itemStack.h"
+#include "itemTag.h"
+#include "mob.h"
+#include "nbtCompound.h"
+#include "nbtSerializable.h"
+#include "nbtSerializer.h"
+#include "statusEffect.h"
+#include "statusEffectID.h"
+#include "structureID.h"
 
 constexpr int selectedPositionCount = 2;
 vec2 selectedPositions[selectedPositionCount]{};
@@ -509,6 +542,11 @@ void chat::say(human& sender, std::wstring line)
 					else if (getWord(lines, 0) == std::wstring(L"seed"))
 					{
 						addLine(std::wstring(L"Seed: ") + std::to_wstring(currentWorld->seed));
+					}
+					else if (getWord(lines, 0) == std::wstring(L"ip")) {
+						addLine(std::wstring(L"private ip: ") + stringToWString(sf::IpAddress::getLocalAddress().toString()));
+						//public ip adress takes a while as it needs to connect to an outside server to check
+						addLine(std::wstring(L"public ip: ") + stringToWString(sf::IpAddress::getPublicAddress().toString()));
 					}
 					else if (getWord(lines, 0) == std::wstring(L"tp"))
 					{

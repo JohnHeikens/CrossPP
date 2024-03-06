@@ -14,6 +14,8 @@ struct playerSocket : socketContainer {
 	~playerSocket();
 	bool shouldDisconnect = false;
 	std::thread* sendRenderResultThread = nullptr;
+	std::thread* sendPacketThread = nullptr;
 };
 void renderAsync(playerSocket* socket);
 void sendRenderResultAsync(playerSocket* socket);
+void sendPacketAsync(playerSocket* socket);

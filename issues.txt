@@ -1,17 +1,24 @@
 
 van meest irritant naar minst irritant / nodig:
 middle click not working
+als je rechtermuisknop doet in een crafting table met een stack blokjes denkt hij soms dat je meerdere keren achter elkaar klikt, en stopt hij er meerdere op 1 slot
 caps lock not working
+enderpearl gooien = error
 opslaan lukt niet want human wordt mee opgeslagen
 can't craft/ je kan niet 1 blockje tegelijk plaatsen in de hotbar/crafting slots
 installer stays open on first launch
 keyboard can't paste
+infinity op een bow werkt niet
+armor texture glitcht hot bar en op de pop
 boats sink in water
 je gaat uit je inv. als je word geduwd door een piston
 rechter muisknop pakt alles van een stack
 placing bed removes crafting table
 water can be placed in the nether
 double slabs
+sugarcane breekt niet als je het onderste blockje breekt
+armor equip geluid hoor je niet als je rechter muisknop doet, maar wel als je het in je inventory doet.
+Flame enchant werkt niet
 piston extanding side ways
 rightclicking on spawner with spawn egg doesn't set entity
 crashing whem igniting a lot of tnt in the end while being stuck in an ender dragon: dimensionIn could not be read

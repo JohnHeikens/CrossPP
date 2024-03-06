@@ -10,6 +10,7 @@
 #include "server.h"
 #include "worldSelector.h"
 #include "keyHistoryEvent.h"
+#include "fpng.h"
 
 void client::render(cveci2& position, const texture& renderTarget)
 {
@@ -42,10 +43,28 @@ void client::render(cveci2& position, const texture& renderTarget)
 		handler->playAudio(soundToPlay);
 	}
 	//screen
-	if (serialize((color::channelType*)renderTarget.baseArray, renderTarget.size.volume() * bgraColorChannelCount)) {
 
+	//std::vector<colorChannel> channels[rgbColorChannelCount];
+	////unpack
+	//for (int i = 0; i < rgbColorChannelCount; i++) {
+	//	serialize(channels[i]);
+	//}
+	//color* ptr = renderTarget.baseArray;
+	//for (fsize_t i = 0; i < renderTarget.size.volume(); i++, ptr++) {
+	//	*ptr = color(channels[2][i], channels[1][i], channels[0][i]);
+	//}
+
+	//if (serialize((color::channelType*)renderTarget.baseArray, renderTarget.size.volume() * bgraColorChannelCount)) {
+	//
+	//}
+	std::vector<byte> compressedScreen;
+	if (serialize(compressedScreen)) {
+		std::vector<byte> decompressedScreen;
+		vectn<fsize_t, 2> size;
+		uint32_t channelCount;
+		fpng::fpng_decode_memory((const char*)&(*compressedScreen.begin()), (uint32_t)compressedScreen.size(), decompressedScreen, size.x(), size.y(), channelCount, bgraColorChannelCount);
+		std::copy(decompressedScreen.begin(), decompressedScreen.end(), (byte*)renderTarget.baseArray);
 	}
-
 }
 
 client::client()

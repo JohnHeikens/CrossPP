@@ -204,6 +204,7 @@
     <ClCompile Include="chunk.cpp" />
     <ClCompile Include="clientInput.cpp" />
     <ClCompile Include="effectParticleBrush.cpp" />
+    <ClCompile Include="fpng.cpp" />
     <ClCompile Include="include\network\compressedPacket.cpp" />
     <ClCompile Include="gameTile.cpp" />
     <ClCompile Include="include\math\random\random.cpp" />
@@ -578,6 +579,7 @@
     <ClInclude Include="chunkLoadLevel.h" />
     <ClInclude Include="clientInput.h" />
     <ClInclude Include="effectParticleBrush.h" />
+    <ClInclude Include="fpng.h" />
     <ClInclude Include="include\math\graphics\brush\font\baseFont.h" />
     <ClInclude Include="minecraftFont.h" />
     <ClInclude Include="include\network\compressedPacket.h" />

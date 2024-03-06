@@ -12,7 +12,7 @@ void enderPearl::onCollision(const std::vector<entity*>& collidingEntities)
 	vec2 teleportPosition;
 
 	constexpr fp maxTeleportDistance = 0x100;
-	entity* entityTeleporting = dimensionIn->findUUID(position, maxTeleportDistance, uuidTeleporting);
+	entity* entityTeleporting = dimensionIn->findUUID(position, maxTeleportDistance, thrownFrom);
 
 	if (dimensionIn->fitExpandingHitbox(entityTeleporting->relativeHitbox, position, teleportPosition))
 	{

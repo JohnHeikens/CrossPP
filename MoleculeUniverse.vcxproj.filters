@@ -1075,6 +1075,9 @@
     <Filter Include="Source Files\network\packetSerializer">
       <UniqueIdentifier>{a1698195-206a-4848-a1b0-2ecd18205f39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\network\compression">
+      <UniqueIdentifier>{0b7ebc50-4978-4b7c-b016-2d43f3ed4346}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
@@ -2141,6 +2144,9 @@
     </ClCompile>
     <ClCompile Include="particleTypeData.cpp">
       <Filter>Source Files\data\particleTypeData</Filter>
+    </ClCompile>
+    <ClCompile Include="fpng.cpp">
+      <Filter>Source Files\network\compression</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3667,6 +3673,9 @@
     </ClInclude>
     <ClInclude Include="packetSerializer.h">
       <Filter>Source Files\network\packetSerializer</Filter>
+    </ClInclude>
+    <ClInclude Include="fpng.h">
+      <Filter>Source Files\network\compression</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

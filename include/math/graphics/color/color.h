@@ -1,6 +1,7 @@
 #pragma once
 #include "math/vectn.h"
 constexpr int bgraColorChannelCount = 4;
+constexpr int rgbColorChannelCount = 3;
 //bgra structure
 template<typename t, size_t channelCount>
 struct colortn : public vectn<t, channelCount>
