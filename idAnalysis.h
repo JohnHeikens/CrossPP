@@ -23,7 +23,7 @@
 #pragma once
 
 //declarations
-
+constexpr bool isSerializable(const entityID& identifier) noexcept;
 constexpr bool isFire(const blockID& identifier) noexcept;
 constexpr bool isSponge(const blockID& identifier) noexcept;
 constexpr bool hasFluidData(const blockID& identifier) noexcept;
@@ -186,6 +186,11 @@ constexpr bool isLevelDataType(const arrayDataType& type);
 constexpr bool isLightLevel(const levelID& identifier);
 
 //definitions
+
+constexpr bool isSerializable(const entityID& identifier) noexcept
+{
+	return !is_in(identifier, entityID::human, entityID::particle);
+}
 
 constexpr bool willBeNoticedByMobs(const gameModeID& identifier) noexcept
 {

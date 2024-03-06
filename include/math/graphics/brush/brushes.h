@@ -203,7 +203,7 @@ struct bilinearInterpolator final :colorBrush
 			baseTexture.getValueUnsafe(pos11)
 		};
 
-		cvec2 weight = pos - cvec2(pos00);
+		cvec2& weight = pos - cvec2(pos00);
 		return color::interpolateColor(colorsToInterpolate, weight);
 	}
 	bilinearInterpolator(const texture& baseTexture) :baseTexture(baseTexture) {}

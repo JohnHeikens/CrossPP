@@ -42,6 +42,7 @@
 #include "nbtSerializer.h"
 #include "structureID.h"
 #include "server.h"
+#include "human.h"
 bool chunk::inBounds(cveci2& position) const
 {
 	return blockIDArray.inBounds(position - worldPos);
@@ -281,7 +282,7 @@ void chunk::serializeValue(nbtSerializer& s)
 			//mob types
 			for (int i = 0; i < entityList.size; i++)
 			{
-				if (!is_in(entityList[i]->entityType, entityID::human, entityID::particle))
+				if (isSerializable(entityList[i]->entityType))
 				{
 					if (s.push<nbtDataTag::tagCompound>())
 					{
@@ -307,19 +308,42 @@ void chunk::serializeValue(nbtSerializer& s)
 					{
 						vec2 position;
 						s.serializeValue(std::wstring(L"position"), position);
-						entity* e = createEntity(entityType, dimensionIn, position);
-						e->serializeValue(s);
-						if (!e->identifier)
-						{
-							e->identifier = randomUUID(currentRandom);
-						}
-						entityList.push_back(e);
+						if (isSerializable(entityType)) {
 
-						//TODO: add players in through separate files
-						//if (e->identifier == currentWorld->playableCharachterUUID)
-						//{
-						//	e->setAsPlayableCharachter();
-						//}
+							entity* e = createEntity(entityType, dimensionIn, position);
+							e->serializeValue(s);
+							if (!e->identifier)
+							{
+								e->identifier = randomUUID(currentRandom);
+							}
+							entityList.push_back(e);
+
+							//TODO: add players in through separate files
+							//if (e->identifier == currentWorld->playableCharachterUUID)
+							//{
+							//	e->setAsPlayableCharachter();
+							//}
+						}
+						else if (entityType == entityID::human) {
+							//save human separate
+
+							gameControl* fakeControl = nullptr;
+							human h = human(dimensionIn, position, *fakeControl, L"joe");
+							h.serializeValue(s);
+							h.hotbarSlots->dropContent(dimensionIn, position);
+							h.inventorySlots->dropContent(dimensionIn, position);
+							h.leftHandSlot->dropContent(dimensionIn, position);
+							//rectangularSlotContainer c =rectangularSlotContainer(cveci2());
+							//c.serialize(s, std::wstring(L"hotbar slots"));
+							//c.dropContent(dimensionIn, position);
+							//c.serialize(s, std::wstring(L"inventory slots"));
+							//c.dropContent(dimensionIn, position);
+							//c.serialize(s, std::wstring(L"left hand slot"));
+							//c.dropContent(dimensionIn, position);
+							//inventorySlots->serialize(s, std::wstring(L"inventory slots"));
+							//leftHandSlot->serialize(s, std::wstring(L"left hand slot"));
+							//human h = human(dimensionIn, position, gameControl(), L"jamey");
+						}
 					}
 					s.pop();
 				}

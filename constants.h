@@ -405,7 +405,7 @@ constexpr fp maxEatingParticleSpeed = maxFloatingSlotSpeed;
 const color leatherColor = color::FromHex(0xA06540);
 
 
-constexpr int openDoorDrawPixels = 6;
+constexpr int openDoorDrawPixels = 3;
 constexpr fp openDoorBlockSize = openDoorDrawPixels / (fp)blockTextureSize;
 
 constexpr fp armRange = 4;//4 blocks range

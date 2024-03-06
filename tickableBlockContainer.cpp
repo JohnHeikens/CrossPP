@@ -132,12 +132,22 @@ bool tickableBlockContainer::findRaycastRecursive(cvec2& absolutePosition, cvec2
 
 	if (cropRelativeLineToContainer(croppedP0, croppedP1)) {
 		fp closestDistanceSquared = INFINITY;
+		fp tMin = 0;
 		if (findRayCast(croppedP0, croppedP1, resultingBlockPosition, adjacentBlockPosition, exactBlockIntersection,
-			[this](cveci2& position)
+			[this, croppedP0, croppedP1, &tMin](cveci2& position)
 			{
-				return this->getBlock(position)->blockCollisionType == collisionTypeID::willCollide;
+				const auto rectsToTest = this->getBlock(position)->getCollisionData(this, position).getCollisions(collisionTypeID::willCollide);
+				for (const auto& coll : rectsToTest) {
+					fp tMax = 0;
+					if (collidedistance2d(croppedP0, croppedP1, coll.hitboxCollidingWith, tMin, tMax)) {
+						return true;
+					}
+
+				}
+				return false;
 			}
 		)) {
+			exactBlockIntersection = croppedP0 + tMin * (croppedP1 - croppedP0).normalized();
 			closestDistanceSquared = (exactBlockIntersection - croppedP0).lengthSquared();
 			resultingContainer = this;
 		}

@@ -13,6 +13,8 @@
 #include "math/uuid.h"
 #include "math/vectn.h"
 #include "human.h"
+#include "server.h"
+#include <future>
 
 playerSocket::playerSocket(sf::TcpSocket* socket)
 {
@@ -57,14 +59,16 @@ playerSocket::~playerSocket()
 
 void renderAsync(playerSocket* socket)
 {
+	texture* newRenderResult = new texture(socket->screen->rect.size);
+	socket->screen->render(cveci2(), *newRenderResult);
+	socket->screen->player->updateBodyParts();//update body parts so the correct ear position can be obtained
+
 	if (socket->lastRenderResult) {
 		socket->sendRenderResultThread->join();//wait until the last image has finished sending
 		delete socket->lastRenderResult;//then delete the last render result
 		delete socket->sendRenderResultThread;
 	}
-	socket->lastRenderResult = new texture(socket->screen->rect.size);
-	socket->screen->render(cveci2(), *socket->lastRenderResult);
-	socket->screen->player->updateBodyParts();//update body parts so the correct ear position can be obtained
+	socket->lastRenderResult = newRenderResult;
 	socket->write = true;
 
 	//don't serialize this part async, as it doesn't take much time and might cause corruption when for example sounds are added mid-sending
@@ -81,20 +85,30 @@ void renderAsync(playerSocket* socket)
 	}
 	socket->screen->dataToSend.clear();
 
-	
+
 	socket->sendRenderResultThread = new std::thread(sendRenderResultAsync, socket);
 
-	//finally, send the packet with all the data of this render cycle to the player
-	if (is_in(socket->s.receivePacket(), sf::Socket::Status::Disconnected, sf::Socket::Status::Error)) {//client disconnected?
-		socket->shouldDisconnect = true;
-	}
-	else {
-		socket->write = false;
-		//read input while sending
-		socket->screen->mostRecentInput.serialize(*socket);
-		//socket->s.socket->setBlocking(true);
-		socket->screen->addClientInput(socket->screen->mostRecentInput);
-		socket->screen->processInput();
+	sf::SocketSelector selector;
+	selector.add(*socket->s.socket);
+	selector.wait(sf::microseconds(1));
+	//we don't wait for input, we just process the input in the next frame. too bad, it would cause server lag
+	while (selector.isReady(*socket->s.socket)) {//the wait() of the socket is called in the main server loop once a tick
+		//finally, send the packet with all the data of this render cycle to the player
+		if (is_in(socket->s.receivePacket(), sf::Socket::Status::Disconnected, sf::Socket::Status::Error)) {//client disconnected?
+			socket->shouldDisconnect = true;
+			return;
+		}
+		else {
+			//selector should continue looking if the socket is still ready
+			socket->write = false;
+			
+			//read input while sending
+			socket->screen->mostRecentInput.serialize(*socket);
+			//socket->s.socket->setBlocking(true);
+			socket->screen->addClientInput(socket->screen->mostRecentInput);
+			socket->screen->processInput();
+			selector.wait(sf::microseconds(1));
+		}
 	}
 }
 

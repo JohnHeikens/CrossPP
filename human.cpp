@@ -226,11 +226,11 @@ void human::tick()
 						if (canSleep())
 						{
 							sleeping = true;
-							cvec2 backPosition = selectedBlockPosition + getOtherPartRelativeLocation(selectedBlockID, data->isPart0, data->directionFacing);
+							cvec2 middlePosition = cvec2(selectedBlockPosition.x() + getOtherPartRelativeLocation(selectedBlockID, data->isPart0, data->directionFacing).x() * 0.5 + 0.5, selectedBlockPosition.y());
 							//set respawn point
-							currentWorld->worldSpawnPoint = backPosition;
+							currentWorld->worldSpawnPoint = middlePosition;
 							currentWorld->worldSpawnDimension = dimensionIn->identifier;
-							teleportTo(dimensionIn, selectedBlockContainer->containerToRootTransform.multPointMatrix(backPosition + cvec2(1, 0)), false);
+							teleportTo(dimensionIn, selectedBlockContainer->containerToRootTransform.multPointMatrix(middlePosition), false);
 							goto rightClickUsed;
 						}
 					}

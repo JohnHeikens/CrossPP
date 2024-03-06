@@ -53,7 +53,7 @@ struct baseFont
 	inline vec2 MeasureStringOffset(crectangle2& bounds, const std::wstring& text) const
 	{
 		//start at top left
-		vec2 offset = vec2(bounds.pos0.x(), bounds.pos0.y() + bounds.h());
+		vec2 offset = vec2(bounds.pos0.x(), bounds.pos0.y() + bounds.h() - fontSize);
 		for (int i = 0; i < text.size(); i++)
 		{
 			offset = MeasureLetterOffset(bounds, offset, text[i]);
@@ -87,7 +87,7 @@ struct baseFont
 			{
 				if (drawable(*textptr))
 				{
-					family.DrawLetter(*textptr, vec2(offset.x(), offset.y() - fontSize), fontSize, renderTarget, b, matrix);
+					family.DrawLetter(*textptr, vec2(offset.x(), offset.y()), fontSize, renderTarget, b, matrix);
 				}
 				offset = MeasureLetterOffset(rect, offset, *textptr);
 				textptr++;
