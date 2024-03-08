@@ -51,6 +51,7 @@ constexpr vect2<size_t> chunkSize = cvect2<size_t>(0x100, 0x100);
 constexpr veci2 getChunkCoordinates(cvec2& worldPos) noexcept {
 	return floorVector<int>(worldPos / cvec2(chunkSize));
 }
+constexpr int maxNameLetterCount = 0x10;
 constexpr int StandardInventoryRowCount = 3;
 constexpr int StandardInventoryColumnCount = 9;
 constexpr fp netherToOverWorldScale = 0x8;
@@ -219,6 +220,8 @@ constexpr fp dragonNoticeDistance = 0x80;
 constexpr fp visibleRangeTransitionSpeedPerSecond = 0.9;//in 1 second, it's 10x nearer to the final transition point
 
 constexpr int iconSize = 8;
+
+constexpr int buttonMargin = 5;
 constexpr veci2 buttonSize = cveci2(0x200, (int)defaultFontSize + defaultBorderSize * 2);
 constexpr int smallRightButtonSize = buttonSize.y() * 4;
 

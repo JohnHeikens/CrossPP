@@ -3,16 +3,16 @@
 #pragma once
 const std::vector<enchantmentID> incompatibleEnchantments[]
 {
-	{enchantmentID::sharpnessEnchantment, enchantmentID::smiteEnchantment, enchantmentID::baneOfArthropodsEnchantment},
-	{enchantmentID::fortuneEnchantment, enchantmentID::silkTouchEnchantment},
-	{enchantmentID::protectionEnchantment, enchantmentID::blastProtectionEnchantment, enchantmentID::fireProtectionEnchantment, enchantmentID::projectileProtectionEnchantment},
-	{enchantmentID::depthStriderEnchantment, enchantmentID::frostWalkerEnchantment},
-	{enchantmentID::infinityEnchantment, enchantmentID::mendingEnchantment},
-	{enchantmentID::multiShotEnchantment, enchantmentID::piercingEnchantment},
-	{enchantmentID::loyaltyEnchantment, enchantmentID::riptideEnchantment},
-	{enchantmentID::channelingEnchantment, enchantmentID::riptideEnchantment},
-	{enchantmentID::silkTouchEnchantment, enchantmentID::lootingEnchantment},
-	{enchantmentID::silkTouchEnchantment, enchantmentID::luckOfTheSeaEnchantment},
+	{enchantmentID::sharpness, enchantmentID::smite, enchantmentID::baneOfArthropods },
+	{enchantmentID::fortune, enchantmentID::silkTouch },
+	{enchantmentID::protection, enchantmentID::blastProtection, enchantmentID::fireProtection, enchantmentID::projectileProtection },
+	{enchantmentID::depthStrider, enchantmentID::frostWalker },
+	{enchantmentID::infinity, enchantmentID::mending },
+	{enchantmentID::multiShot, enchantmentID::piercing },
+	{enchantmentID::loyalty, enchantmentID::riptide },
+	{enchantmentID::channeling, enchantmentID::riptide },
+	{enchantmentID::silkTouch, enchantmentID::looting },
+	{enchantmentID::silkTouch, enchantmentID::luckOfTheSea },
 };
 
 

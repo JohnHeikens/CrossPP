@@ -28,7 +28,7 @@ void worldSelector::addGameControls()
 	//generate save folder controls
 	for (const auto& folderIterator : stdFileSystem::directory_iterator(savesFolder))
 	{
-		gameListControl->children->push_back(new saveFileControl(folderIterator.path().filename().wstring()));
+		gameListControl->children.push_back(new saveFileControl(folderIterator.path().filename().wstring()));
 	}
 }
 

@@ -1,16 +1,15 @@
 #include "GlobalFunctions.h"
 #pragma once
 enum mouseButton : byte {
-	left = 0,
-	right = 1,
-	middle = 2,
+	left,
+	right,
+	cancel,
+	middle,
 	count
 };
-constexpr vk mouseButtonKeyCode[(byte)mouseButton::count]{
-	VK_LBUTTON,
-	VK_RBUTTON,
-	VK_MBUTTON
-};
-constexpr mouseButton keyCodeToButton(cvk& keyCode) {
+constexpr vk mouseButtonToKeyCode(const mouseButton& button) {
+	return (vk)button + VK_LBUTTON;
+}
+constexpr mouseButton keyCodeToMouseButton(cvk& keyCode) {
 	return (mouseButton)(keyCode - VK_LBUTTON);
 }

@@ -17,6 +17,8 @@
 
 #include <iostream>
 
+std::filesystem::path workingDirectory;
+
 std::wstring getCommonAppDataFolder() {
 	TCHAR szPath[MAX_PATH];
 	//https://stackoverflow.com/questions/2899013/how-do-i-get-the-application-data-path-in-windows-using-c
@@ -65,7 +67,6 @@ int WINAPI WinMain(
 
 	//check if the application is installed or if we're debugging
 
-	//auto path = std::filesystem::current_path(); //getting path
 	if (!std::filesystem::exists(L"data")) {//this application is not deployed
 		//change data folder to %appdata%/JohnHeikens/Medieval Survival/data
 
@@ -75,13 +76,7 @@ int WINAPI WinMain(
 			std::filesystem::current_path(newWorkingDirectory); //setting path
 		}
 		else {
-			std::wstring message = newWorkingDirectory + L" not found";
-			int msgboxID = MessageBox(
-				NULL,
-				(LPCWSTR)message.c_str(),
-				(LPCWSTR)L"Medieval Survival",
-				MB_ICONWARNING | MB_OK
-			);
+			handleError(newWorkingDirectory + L" not found");
 		}
 
 		//check if it worked
@@ -89,15 +84,10 @@ int WINAPI WinMain(
 			std::cout << "true";
 		}
 		else {
-			const std::wstring msg = L"data folder not found in " + commonAppDataFolder;
-			int msgboxID = MessageBox(
-				NULL,
-				(LPCWSTR)msg.c_str(),
-				(LPCWSTR)L"Medieval Survival",
-				MB_ICONWARNING | MB_OK
-			);
+			handleError(L"data folder not found in " + commonAppDataFolder);
 		}
 	}
+	workingDirectory = std::filesystem::current_path();
 	createFoldersIfNotExists(savesFolder);
 
 	//fontFamily* family = new fontFamily(new texture(std::wstring(L"data\\ascii.png"), true));

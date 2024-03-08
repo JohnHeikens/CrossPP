@@ -34,6 +34,7 @@
 #include "structure.h"
 #include "serverEditor.h"
 #include "client.h"
+#include "accountEditor.h"
 #include <numeric>
 
 application* currentApplication = nullptr;
@@ -45,6 +46,7 @@ serverEditor* currentServerEditor = nullptr;
 gameForm* mainForm = nullptr;
 worldCreator* currentWorldCreator = nullptr;
 mainMenu* currentMainMenu = nullptr;
+accountEditor* currentAccountEditor = nullptr;
 
 
 std::vector<structure*> structureList = std::vector<structure*>();
@@ -108,12 +110,16 @@ bool gameForm::close()
 void gameForm::layout(crectanglei2& rect)
 {
 	form::layout(rect);
-	currentMainMenu->layout(rect);
-	currentWorldSelector->layout(rect);
-	currentWorldCreator->layout(rect);
-	currentServerSelector->layout(rect);
-	currentServerEditor->layout(rect);
-	currentClient->layout(rect);
+	for (control* c : children) {
+		c->layout(rect);
+	}
+	//currentMainMenu->layout(rect);
+	//currentWorldSelector->layout(rect);
+	//currentWorldCreator->layout(rect);
+	//currentServerSelector->layout(rect);
+	//currentServerEditor->layout(rect);
+	//currentClient->layout(rect);
+	//currentAccountEditor->layout(rect);
 }
 
 gameForm::gameForm() :form()
@@ -133,23 +139,26 @@ gameForm::gameForm() :form()
 
 	currentMainMenu = new mainMenu();
 
+	currentClient = new client();
+
+	currentAccountEditor = new accountEditor();//initialize accounteditor after the client, as the account editor edits data which the client has to retrieve first
+
 	currentWorldSelector = new worldSelector();
 	currentWorldSelector->refresh();//can't put refresh() in base constructor because refresh() calls a virtual function
-	currentWorldSelector->visible = false;
 	currentWorldCreator = new worldCreator();
-	currentWorldCreator->visible = false;
 
 	currentServerSelector = new serverSelector();
 	currentServerSelector->refresh();//can't put refresh() in base constructor because refresh() calls a virtual function
-	currentServerSelector->visible = false;
 	currentServerEditor = new serverEditor();
-	currentServerEditor->visible = false;
-	currentClient = new client();
-	currentClient->visible = false;
-	addChildren({ currentMainMenu,
+
+	addChildren({ currentMainMenu, currentAccountEditor,
 		currentWorldSelector, currentWorldCreator,
 		currentServerSelector, currentServerEditor,
 		currentClient });
+	for (auto*& c : children) {
+		c->visible = false;
+	}
+	currentMainMenu->visible = true;
 	focusChild(currentMainMenu);
 }
 

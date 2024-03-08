@@ -145,6 +145,7 @@ void sendRenderResultAsync(playerSocket* socket)
 	//socket->s.write((char*)(color::channelType*)socket->lastRenderResult->baseArray, socket->screen->rect.size.volume() * bgraColorChannelCount * sizeof(color::channelType));
 
 	size_t s = compressedBuf.size();//TODO: video streaming
+	//TODO: fix endian
 	socket->s.write((const char*)&s, sizeof(size_t));
 	socket->s.write((const char*)&(*compressedBuf.begin()), compressedBuf.size());
 	if (socket->sendPacketThread) {

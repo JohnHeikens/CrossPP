@@ -22,7 +22,13 @@ unresolved external: cpp file not added to solution?
 Cyclic build dependency detected: IItemComparable.h depends on slabType.h depends on IItemComparable.h
 exclude the files from the project, then reinclude them
 
+installer not creating new files: maybe the installer script you're looking at is in another location!
+
+same goes for connection issues: maybe your project isn't updated enough
+
 no copy constructor available or copy constructor is declared 'explicit': don't only check return values. check all passed values! in lambdas they should have an '&' in front
+
+selector issues: a socket can't be in multiple selectors!
 
 delete gets called randomly: do NOT copy, but create a reference! const &
 

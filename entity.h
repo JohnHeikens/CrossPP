@@ -72,7 +72,8 @@ struct entity :IDestructable, nbtSerializable
 	virtual void addStatusEffects(const std::vector<statusEffect>& effectsToAdd);
 
 	void heal(cfp& health);
-	void addToWorld();
+	//identifier has to be added here, because from this point on other entities will be comparing UUIDS to differentiate entities
+	void addToWorld(const uuid& identifier = randomUUID(currentRandom));
 
 	virtual void onDeath();
 	void physics();

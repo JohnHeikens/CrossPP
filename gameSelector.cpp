@@ -55,17 +55,17 @@ void gameSelector::mouseDown(cveci2& position, cvk& button)
 
 void gameSelector::refresh()
 {
-	for (int i = 0; i < gameListControl->children->size; i++)
+	for (int i = 0; i < gameListControl->children.size; i++)
 	{
-		control* c = (*gameListControl->children)[i];
+		control* c = gameListControl->children[i];
 		if (c != gameListControl->sideSlider)
 		{
 			delete c;
-			gameListControl->children->erase(i);
+			gameListControl->children.erase(i);
 		}
 	}
 	addGameControls();
-	gameListControl->children->update();
+	gameListControl->children.update();
 	gameListControl->focusedChild = nullptr;
 	if (hasBeenLayout()) {
 		gameListControl->reOrganizeChildControls();

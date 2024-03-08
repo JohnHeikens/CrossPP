@@ -1,5 +1,11 @@
 
 van meest irritant naar minst irritant / nodig:
+
+playerdata copies to installation
+power op een bow werkt niet
+depth strider ook niet
+boat werkt niet
+
 middle click not working
 als je rechtermuisknop doet in een crafting table met een stack blokjes denkt hij soms dat je meerdere keren achter elkaar klikt, en stopt hij er meerdere op 1 slot
 caps lock not working

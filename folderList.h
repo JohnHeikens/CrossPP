@@ -66,3 +66,4 @@ const std::wstring chestLootTablesFolder = lootTablesFolder + std::wstring(L"che
 const std::wstring entityLootTablesFolder = lootTablesFolder + std::wstring(L"entities\\");
 const std::wstring structureFolder = dataFolder + std::wstring(L"structures\\");
 const std::wstring textFolder = minecraftAssetsFolder + std::wstring(L"texts\\");
+extern std::filesystem::path workingDirectory;

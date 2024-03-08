@@ -46,6 +46,72 @@
 #include "folderList.h"
 #include <filesystem/filemanager.h>
 #include "minecraftFont.h"
+#include <minwindef.h>
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+#include <SFML/Audio/SoundSource.hpp>
+#include "anvilSlotContainer.h"
+#include "armorType.h"
+#include "block.h"
+#include "blockData.h"
+#include "blockID.h"
+#include "brewingStandData.h"
+#include "brewingStandSlotContainer.h"
+#include "chestSlotContainer.h"
+#include "chunkLoadLevel.h"
+#include "collisionDataCollection.h"
+#include "collisionTypeID.h"
+#include "constants.h"
+#include "craftingTableSlotContainer.h"
+#include "damageSource.h"
+#include "damageType.h"
+#include "dimensionID.h"
+#include "dispenserData.h"
+#include "dispenserSlotContainer.h"
+#include "doubleBlockData.h"
+#include "enchantingTableSlotContainer.h"
+#include "enchantmentID.h"
+#include "entity.h"
+#include "entityData.h"
+#include "entityID.h"
+#include "furnaceSlotContainer.h"
+#include "GamemodeID.h"
+#include "harvestType.h"
+#include "humanoid.h"
+#include "humanSlotContainerUI.h"
+#include "GlobalFunctions.h"
+#include "interface/inamable.h"
+#include "math/collisions.h"
+#include "math/direction.h"
+#include "math/graphics/brush/brushes.h"
+#include "math/graphics/color/color.h"
+#include "math/graphics/resolutiontexture.h"
+#include "math/keyframe.h"
+#include "math/mathfunctions.h"
+#include "math/mattnxn.h"
+#include "math/random/random.h"
+#include "math/rectangletn.h"
+#include "math/uuid.h"
+#include "math/vectn.h"
+#include "inventory.h"
+#include "itemID.h"
+#include "itemStack.h"
+#include "lightLevel.h"
+#include "lootTable.h"
+#include "mob.h"
+#include "nbtSerializable.h"
+#include "nbtSerializer.h"
+#include "renderData.h"
+#include "smithingTableSlotContainer.h"
+#include "soundCollection.h"
+#include "soundhandler2d.h"
+#include "statusEffect.h"
+#include "statusEffectID.h"
+#include "treeItemTypeID.h"
+#include "woodtypeID.h"
 constexpr int pickUpDelayInTicks = ticksPerRealLifeSecond / 2;//2 seconds
 std::shared_ptr<audio2d> currentWindSound;
 
@@ -379,7 +445,7 @@ void human::onDeath()
 			{
 				if (container->slots[i].count)
 				{
-					if (container->slots[i].getEnchantmentLevel(enchantmentID::curseOfVanishingEnchantment) == 0)
+					if (container->slots[i].getEnchantmentLevel(enchantmentID::curseOfVanishing) == 0)
 					{
 						lootTable::dropLoot({ container->slots[i] }, dimensionIn, dropPosition, floatingSlotSpeedOnDeath);
 					}
@@ -435,12 +501,12 @@ void human::serializeValue(nbtSerializer& s)
 
 bool human::serialize(cbool& write)
 {
-	const std::wstring playersFolder = savesFolder + currentWorld->name + std::wstring(L"\\players\\");
+	const std::wstring& playersFolder = savesFolder + currentWorld->name + std::wstring(L"\\players\\");
 	if (write)
 	{
 		createFoldersIfNotExists(playersFolder);
 	}
-	std::wstring path = playersFolder + std::to_wstring(identifier);
+	const std::wstring& path = playersFolder + (std::wstring)identifier;
 	return nbtSerializable::serialize(L"player", path, write);
 }
 

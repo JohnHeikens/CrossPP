@@ -5,6 +5,7 @@
 #include "keyID.h"
 #include "serverSelector.h"
 #include "main.h"
+#include "accountEditor.h"
 mainMenu::mainMenu() :form()
 {
 	borderSize = 0;
@@ -13,7 +14,7 @@ mainMenu::mainMenu() :form()
 	gameNameLabel->backGroundColor = colorPalette::transparent;
 	gameNameLabel->borderSize = 0;
 	gameNameLabel->currentFont = new baseFont(defaultTheme().font->family, 0);
-	addChildren({ backgroundPicture, gameNameLabel, playOfflineButton , playOnlineButton });
+	addChildren({ backgroundPicture, gameNameLabel, playOfflineButton , playOnlineButton, accountButton });
 }
 
 void mainMenu::render(cveci2& position, const texture& renderTarget)
@@ -32,19 +33,17 @@ void mainMenu::mouseDown(cveci2& position, cvk& button)
 	{
 		mainForm->switchVisibleChild(currentServerSelector);
 	}
+	else if (highestChild == accountButton)
+	{
+		mainForm->switchVisibleChild(currentAccountEditor);
+	}
 }
 
 void mainMenu::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
 	backgroundPicture->layout(newRect);
-	cint& buttonHeight = (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2;
-	rectanglei2 playButtonRect = rectanglei2(0, 0, 0x200, buttonHeight);
-	cint& buttonMargin = 5;
-	playButtonRect.pos0 = rect.rectPos0Centered(playButtonRect.size) - buttonHeight - buttonMargin / 2;
-	playOfflineButton->layout(playButtonRect);
-	playButtonRect.pos0.y() -= buttonHeight + buttonMargin;
-	playOnlineButton->layout(playButtonRect);
+	layoutTableCentered(std::vector<control*>({playOfflineButton, playOnlineButton, accountButton}));
 
 	cfp stringLength = defaultTheme().font->measureStringSize(cvec2(rect.size), gameName).x() / defaultTheme().font->fontSize;
 	gameNameLabel->currentFont->fontSize = rect.w() / (stringLength * 2);
@@ -56,7 +55,6 @@ void mainMenu::focus()
 {
 	control::focus();
 	focusChild(playOfflineButton);
-	focusChild(playOnlineButton);
 }
 
 void mainMenu::keyDown(cvk& key)

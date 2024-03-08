@@ -21,13 +21,13 @@ void listControl::reOrganizeChildControls()
 	cveci2 arrangementRoom = rect.size - veci2(sideSlider->rect.w(), 0);
 	cint arrangementWidth = childSize.x() > 0 ? math::maximum((int)floor(arrangementRoom.x() / childSize.x()), 1) : 0;
 
-	cint totalSpaceHeight = (int)(children->size - 1) * childSize.y();
+	cint totalSpaceHeight = (int)(children.size - 1) * childSize.y();
 	cint invisibleSpaceHeight = math::maximum(totalSpaceHeight - arrangementRoom.y(), 0);
 	cint controlOffset = math::lerp(invisibleSpaceHeight, 0, sideSlider->value);
 	veci2 arrangementOffset = veci2(0, -1);
-	for (int i = 0; i < children->size; i++) 
+	for (int i = 0; i < children.size; i++) 
 	{
-		control* c = (*children)[i];
+		control* c = (children)[i];
 		if (c != sideSlider)
 		{
 			c->layout(crectanglei2(arrangementOffset * childSize + cveci2(0, rect.h() + controlOffset), childSize));

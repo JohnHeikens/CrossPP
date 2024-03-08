@@ -8,6 +8,7 @@ struct mainMenu : public form
 	mainMenu();
 	button* playOfflineButton = new button(L"Play Offline");
 	button* playOnlineButton = new button(L"Play Online");
+	button* accountButton = new button(L"Account");
 	pictureBox* backgroundPicture = nullptr;
 	label* gameNameLabel = nullptr;
 	virtual void render(cveci2& position, const texture& renderTarget) override;

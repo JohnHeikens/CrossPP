@@ -50,7 +50,7 @@ struct baseFont
 		}
 
 	}
-	inline vec2 MeasureStringOffset(crectangle2& bounds, const std::wstring& text) const
+	inline vec2 MeasureStringOffset(crectangle2& bounds, const std::wstring& text = L"") const
 	{
 		//start at top left
 		vec2 offset = vec2(bounds.pos0.x(), bounds.pos0.y() + bounds.h() - fontSize);

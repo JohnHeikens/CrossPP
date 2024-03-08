@@ -125,19 +125,19 @@ void mob::tick()
 				//enchantments
 				if (isHumanoid(entityType) && (int)((humanoid*)this)->itemHolding->stackItemID)
 				{
-					int sharpnessLevel = ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::sharpnessEnchantment);
+					int sharpnessLevel = ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::sharpness);
 					fp enchantmentDamage = sharpnessLevel ? 0.5 + sharpnessLevel * 0.5 : 0;
 					//undead mobs
 					if (isUndeadMob(entityToAttack->entityType))
 					{
-						enchantmentDamage += 2.5 * ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::smiteEnchantment);
+						enchantmentDamage += 2.5 * ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::smite);
 					}
 					//not squared
 					cfp enchantmentsCoolDownMultiplier = ticksSinceToolUsed < totalCoolDownTime ? math::lerp(1 - cooldownTreshold, (fp)1.0, (this->ticksSinceToolUsed + 0.5) / totalCoolDownTime) : 1.0;
 					enchantmentDamage *= enchantmentsCoolDownMultiplier;
 					attackDamage += enchantmentDamage;
 
-					entityToAttack->setOnFire(80 * ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::fireAspectEnchantment));
+					entityToAttack->setOnFire(80 * ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::fireAspect));
 
 					const itemID& idHolding = ((humanoid*)this)->itemHolding->stackItemID;
 
@@ -184,7 +184,7 @@ void mob::tick()
 				}
 				//mob is in the way, hit the mob instead
 
-				cint knockBackLevel = isHumanoid(entityType) ? ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::knockbackEnchantment) : 0;
+				cint knockBackLevel = isHumanoid(entityType) ? ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::knockback) : 0;
 				cfp difference = entityToAttack->position.x() - position.x();
 				cfp knockbackDistance = 0.5;//the mob has to be this amount of blocks away to recieve knockback
 				cfp baseKnockBackSpeed = 5;

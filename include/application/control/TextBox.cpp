@@ -16,7 +16,7 @@ void textBox::render(cveci2& position, const texture& renderTarget)
 		checkCursorIndex();
 		rectangle2 textRect = rectangle2(position, rect.size).expanded(-borderSize);
 		vec2 cursorPosition = currentFont->MeasureStringOffset(textRect, text.substr(0, cursorIndex));
-		renderTarget.fillRectangle(crectangle2(cursorPosition + vec2(0, -currentFont->fontSize), vec2(1, currentFont->fontSize)), brushes::white);
+		renderTarget.fillRectangle(crectangle2(cursorPosition, vec2(1, currentFont->fontSize)), brushes::white);
 	}
 }
 
@@ -163,6 +163,40 @@ void textBox::paste()
 	{
 		text.insert(cursorIndex, clipBoardText);
 		cursorIndex += clipBoardText.length();
+	}
+}
+
+void textBox::mouseDown(cveci2& position, cvk& button)
+{
+	//check position of cursor
+
+	crectangle2& relativeTextRect = crectangle2(rectanglei2(rect.size).expanded(-borderSize));
+	vec2 offset = currentFont->MeasureStringOffset(relativeTextRect, L"");
+	fp closestDistance = INFINITY;
+	fsize_t closestIndex = 0;
+	for (fsize_t i = 0; ; i++, offset = currentFont->MeasureLetterOffset(relativeTextRect, offset, text[i]))
+	{
+		if (position.y() > offset.y() && position.y() < offset.y() + currentFont->fontSize) {
+			cfp& distance = math::absolute(position.x() - offset.x());
+			if (distance < closestDistance) {
+				closestDistance = distance;
+				closestIndex = i;
+			}
+		}
+		if (i == text.length()) {
+			break;
+		}
+	}
+	if (closestDistance != INFINITY) {
+		cursorIndex = closestIndex;
+	}
+	else {
+		if (position.y() < offset.y() + currentFont->fontSize) {
+			cursorIndex = text.length();
+		}
+		else {
+			cursorIndex = 0;
+		}
 	}
 }
 

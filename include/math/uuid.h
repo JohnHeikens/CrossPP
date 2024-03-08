@@ -57,7 +57,7 @@ struct uuid
 		}
 		return *this;
 	}
-	operator std::wstring() {
+	inline operator std::wstring() const {
 		std::wstringstream ss;
 		ss << std::hex << 
 			idInts[0] << L"-" <<

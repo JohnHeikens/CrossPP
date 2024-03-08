@@ -14,7 +14,7 @@ WizardStyle=modern
 Source: "x64/release/MedievalSurvival.exe"; DestDir: "{app}"
 Source: "x64/release/*.dll"; DestDir: "{app}"
 Source: "x64/release/*.pdb"; DestDir: "{app}"
-Source: "Data\*"; DestDir: "{commonappdata}\JohnHeikens\Medieval Survival\data\"; Flags: recursesubdirs; Excludes: "Data\player\playerdata,saves,*.class,*.zip"; Permissions: users-full
+Source: "Data\*"; DestDir: "{commonappdata}\JohnHeikens\Medieval Survival\data\"; Flags: recursesubdirs; Excludes: "Data\player\playerdata.dat,saves,*.class,*.zip"; Permissions: users-full
 
 [Icons]
 Name: "{group}\Medieval Survival"; Filename: "{app}\MedievalSurvival.exe"

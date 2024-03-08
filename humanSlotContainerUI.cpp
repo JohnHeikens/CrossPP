@@ -39,7 +39,7 @@ void humanSlotContainerUI::clickedOnItem(cvk& button, itemStack& stackHolding, u
 		else
 		{
 			itemStack& stack = selectedSlotContainer->linkedContainer->slots[selectedSlot.y()];
-			if (stack.count && stack.getEnchantmentLevel(enchantmentID::curseOfBindingEnchantment))
+			if (stack.count && stack.getEnchantmentLevel(enchantmentID::curseOfBinding))
 			{
 				return;
 			}

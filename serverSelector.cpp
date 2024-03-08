@@ -30,7 +30,7 @@ void serverSelector::addGameControls()
 	//generate save folder controls
 	for (const auto& server : servers)
 	{
-		gameListControl->children->push_back(new serverControl(server));
+		gameListControl->children.push_back(new serverControl(server));
 	}
 }
 

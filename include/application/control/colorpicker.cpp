@@ -1,16 +1,16 @@
 #include "colorpicker.h"
 colorPicker::colorPicker()
 {
-	children->push_back(colorPlane);
-	children->push_back(sideSlider);
+	children.push_back(colorPlane);
+	children.push_back(sideSlider);
 	for (fsize_t channel = 0; channel < bgraColorChannelCount; channel++)
 	{
 		channelSliders[channel] = new slider(0, 255, 0);
 		channelBoxes[channel] = new textBox();
-		children->push_back(channelSliders[channel]);
-		children->push_back(channelBoxes[channel]);
+		children.push_back(channelSliders[channel]);
+		children.push_back(channelBoxes[channel]);
 	}
-	children->update();
+	children.update();
 }
 
 void colorPicker::layout(crectanglei2& newRect)

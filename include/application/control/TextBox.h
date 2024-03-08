@@ -11,5 +11,6 @@ public:
 	virtual void keyUp(cvk& keyCode) override;
 	virtual void lostFocus() override;
 	virtual void paste() override;
+	virtual void mouseDown(cveci2& position, cvk& button) override;
 	void checkCursorIndex();
 };

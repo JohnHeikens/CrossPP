@@ -3,8 +3,8 @@
 #include "constants.h"
 struct server {
 	sf::TcpListener listener = sf::TcpListener();
+	sf::SocketSelector listenerSelector = sf::SocketSelector();
 	std::vector<playerSocket*> clients = std::vector<playerSocket*>();
-	sf::SocketSelector selector = sf::SocketSelector();
 
 	bool everyoneSleeping = false;//to increase tick speed
 

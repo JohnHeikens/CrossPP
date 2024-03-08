@@ -18,7 +18,7 @@ void server::execute()
 	{
 		// error...
 	}
-	selector.add(listener);
+	listenerSelector.add(listener);
 
 
 	stableLoop loop = stableLoop(1000000 / 60);
@@ -42,41 +42,38 @@ void server::execute()
 
 		//seconds tickTimeLeft = lastTickTime + microsectosec(msPerTick()) - getSeconds();
 		//dummy time
-		if (selector.wait(sf::microseconds(1)))
-		{
+		if (listenerSelector.wait(sf::microseconds(1))) {
+
 			// received something
-			if (selector.isReady(listener))
-			{
+			//if (selector.isReady(listener))
+			//{
 				// accept a new connection
-				sf::TcpSocket* clientSocket = new sf::TcpSocket();
-				if (listener.accept(*clientSocket) != sf::Socket::Done)
-				{
-					// error...
-				}
-
-
-				playerSocket* socket = new playerSocket(clientSocket);
-				if (socket->authenticated)
-				{
-					clients.push_back(socket);
-					selector.add(*clientSocket);
-				}
-				else {
-					//this client didn't authenticate
-					delete socket;
-				}
+			sf::TcpSocket* clientSocket = new sf::TcpSocket();
+			if (listener.accept(*clientSocket) != sf::Socket::Done)
+			{
+				// error...
 			}
-			//for (auto c : clients) {
-			//	if (selector.isReady(*c->s.socket)) {
-			//		//the client has sent us data
-			//		c->processSocketInput();
-			//	}
+
+
+			playerSocket* socket = new playerSocket(clientSocket);
+			if (socket->authenticated)
+			{
+				clients.push_back(socket);
+				//selector.add(*clientSocket);
+			}
+			else {
+				//this client didn't authenticate
+				delete socket;
+			}
 			//}
 		}
-		else
-		{
-			// timeout reached, nothing was received...
-		}
+		//for (auto c : clients) {
+		//	if (selector.isReady(*c->s.socket)) {
+		//		//the client has sent us data
+		//		c->processSocketInput();
+		//	}
+		//}
+
 	}
 	const std::vector<playerSocket*> copy = clients;
 	for (playerSocket* const& c : copy) {
@@ -188,8 +185,9 @@ void server::kick(playerSocket* socket)
 {
 	socket->player->serialize(true);
 	socket->player->despawn = true;
-	selector.remove(*(socket)->s.socket);
+	//selector.remove(*(socket->s.socket));
 	clients.erase(find(clients, socket));
+	socket->s.socket->disconnect();
 }
 
 microseconds server::msPerTick() const

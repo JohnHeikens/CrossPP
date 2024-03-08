@@ -1078,6 +1078,9 @@
     <Filter Include="Source Files\network\compression">
       <UniqueIdentifier>{0b7ebc50-4978-4b7c-b016-2d43f3ed4346}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UI\accountEditor">
+      <UniqueIdentifier>{a1849b70-2a9e-4b14-a083-1a116ba6650c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
@@ -2147,6 +2150,9 @@
     </ClCompile>
     <ClCompile Include="fpng.cpp">
       <Filter>Source Files\network\compression</Filter>
+    </ClCompile>
+    <ClCompile Include="accountEditor.cpp">
+      <Filter>Source Files\UI\accountEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3676,6 +3682,9 @@
     </ClInclude>
     <ClInclude Include="fpng.h">
       <Filter>Source Files\network\compression</Filter>
+    </ClInclude>
+    <ClInclude Include="accountEditor.h">
+      <Filter>Source Files\UI\accountEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

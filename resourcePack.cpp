@@ -253,7 +253,7 @@ resolutionTexture* loadTextureFromResourcePack(const std::wstring& relativePath,
 	const auto locations = getResourceLocations(relativePath);
 	if (locations.size() == 0)
 	{
-		handleError(relativePath + std::wstring(L" not found in any of the resource packs"));
+		handleError(relativePath + std::wstring(L" not found in any of the resource packs. working directory: ") + workingDirectory.wstring());
 	}
 	csize_t& lastLocation = locations.size() - 1;
 	veci2 size = getImageSize(locations[0]);//the base size of the image will be the one of the lowest resource pack: the minecraft texture folder or the "default" resource pack.
@@ -1940,20 +1940,20 @@ void loadResourcePacks() {
 	}
 
 	//calculate possible enchantments
-	std::vector<enchantmentID> normalEnchantments = { enchantmentID::unBreakingEnchantment, enchantmentID::mendingEnchantment,enchantmentID::curseOfVanishingEnchantment };
-	std::vector<enchantmentID> armorEnchantments = { enchantmentID::protectionEnchantment,enchantmentID::fireProtectionEnchantment,enchantmentID::blastProtectionEnchantment, enchantmentID::projectileProtectionEnchantment,enchantmentID::thornsEnchantment,enchantmentID::curseOfBindingEnchantment };
+	std::vector<enchantmentID> normalEnchantments = { enchantmentID::unBreaking, enchantmentID::mending,enchantmentID::curseOfVanishing };
+	std::vector<enchantmentID> armorEnchantments = { enchantmentID::protection,enchantmentID::fireProtection,enchantmentID::blastProtection, enchantmentID::projectileProtection,enchantmentID::thorns,enchantmentID::curseOfBinding };
 	armorEnchantments.insert(armorEnchantments.end(), normalEnchantments.begin(), normalEnchantments.end());
-	std::vector<enchantmentID> helmetEnchantments = { enchantmentID::aquaAffinityEnchantment,enchantmentID::respirationEnchantment };
+	std::vector<enchantmentID> helmetEnchantments = { enchantmentID::aquaAffinity,enchantmentID::respiration };
 	helmetEnchantments.insert(helmetEnchantments.end(), armorEnchantments.begin(), armorEnchantments.end());
-	std::vector<enchantmentID> bootsEnchantments = { enchantmentID::depthStriderEnchantment,enchantmentID::frostWalkerEnchantment,enchantmentID::soulSpeedEnchantment,enchantmentID::featherFallingEnchantment };
+	std::vector<enchantmentID> bootsEnchantments = { enchantmentID::depthStrider,enchantmentID::frostWalker,enchantmentID::soulSpeed,enchantmentID::featherFalling };
 	bootsEnchantments.insert(bootsEnchantments.end(), armorEnchantments.begin(), armorEnchantments.end());
-	std::vector<enchantmentID> swordEnchantments = { enchantmentID::sharpnessEnchantment, enchantmentID::baneOfArthropodsEnchantment, enchantmentID::smiteEnchantment, enchantmentID::knockbackEnchantment,enchantmentID::fireAspectEnchantment,enchantmentID::lootingEnchantment,enchantmentID::sweepingEdgeEnchantment };
+	std::vector<enchantmentID> swordEnchantments = { enchantmentID::sharpness, enchantmentID::baneOfArthropods, enchantmentID::smite, enchantmentID::knockback,enchantmentID::fireAspect,enchantmentID::looting,enchantmentID::sweepingEdge };
 	swordEnchantments.insert(swordEnchantments.end(), normalEnchantments.begin(), normalEnchantments.end());
-	std::vector<enchantmentID> axeEnchantments = { enchantmentID::sharpnessEnchantment, enchantmentID::baneOfArthropodsEnchantment, enchantmentID::smiteEnchantment };
+	std::vector<enchantmentID> axeEnchantments = { enchantmentID::sharpness, enchantmentID::baneOfArthropods, enchantmentID::smite };
 	axeEnchantments.insert(axeEnchantments.end(), normalEnchantments.begin(), normalEnchantments.end());
-	std::vector<enchantmentID> toolEnchantments = { enchantmentID::efficiencyEnchantment,enchantmentID::fortuneEnchantment,enchantmentID::silkTouchEnchantment };
+	std::vector<enchantmentID> toolEnchantments = { enchantmentID::efficiency,enchantmentID::fortune,enchantmentID::silkTouch };
 	toolEnchantments.insert(toolEnchantments.end(), normalEnchantments.begin(), normalEnchantments.end());
-	std::vector<enchantmentID> shearsEnchantments = { enchantmentID::efficiencyEnchantment, enchantmentID::mendingEnchantment };
+	std::vector<enchantmentID> shearsEnchantments = { enchantmentID::efficiency, enchantmentID::mending };
 	shearsEnchantments.insert(shearsEnchantments.end(), normalEnchantments.begin(), normalEnchantments.end());
 
 	std::vector<enchantmentID> bookEnchantments = {};

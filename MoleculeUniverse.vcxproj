@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="accountEditor.cpp" />
     <ClCompile Include="additiveDrop.cpp" />
     <ClCompile Include="ageData.cpp" />
     <ClCompile Include="alternativeDropCondition.cpp" />
@@ -519,6 +520,7 @@
     <ClCompile Include="zombifiedPiglin.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="accountEditor.h" />
     <ClInclude Include="additiveDrop.h" />
     <ClInclude Include="ageData.h" />
     <ClInclude Include="alternativeDropCondition.h" />

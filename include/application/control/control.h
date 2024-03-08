@@ -96,6 +96,18 @@ public:
 	virtual void layout(crectanglei2& newRect);
 	void addChildren(std::initializer_list<control*> children);
 
+	template<typename childListType>
+	void layoutTableCentered(const childListType& children, cveci2& childSize = buttonSize, cint& margin = buttonMargin) {
+		cint& offsetStep = childSize.y() + margin;
+		//using end - begin instead of size() because fastlist doesn't have size()
+		cveci2& tablePos = rect.rectPos0Centered(cveci2(childSize.x(), childSize.y() + offsetStep * ((int)(children.end() - children.begin()) - 1)));
+		rectanglei2 currentChildRect = rectanglei2(tablePos, childSize);
+		for (auto c : children) {
+			c->layout(currentChildRect);
+			currentChildRect.y() += offsetStep;
+		}
+	}
+
 	//called when this control gains focus
 	virtual void focus();
 	//called when this control looses focus
@@ -126,7 +138,7 @@ public:
 
 	//pointer to the child that has the focus
 	control* focusedChild = nullptr;
-	fastList<control*>* children = nullptr;
+	fastList<control*> children = fastList<control*>();
 
 	baseFont* currentFont = nullptr;
 

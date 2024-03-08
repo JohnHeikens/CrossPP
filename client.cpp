@@ -82,13 +82,13 @@ client::client()
 }
 void client::mouseDown(cveci2& position, cvk& button)
 {
-	currentInput.clicked[keyCodeToButton(button)] = true;
-	currentInput.holding[keyCodeToButton(button)] = true;
+	currentInput.clicked[keyCodeToMouseButton(button)] = true;
+	currentInput.holding[keyCodeToMouseButton(button)] = true;
 }
 void client::mouseUp(cveci2& position, cvk& button)
 {
-	currentInput.clickReleased[keyCodeToButton(button)] = true;
-	currentInput.holding[keyCodeToButton(button)] = false;
+	currentInput.clickReleased[keyCodeToMouseButton(button)] = true;
+	currentInput.holding[keyCodeToMouseButton(button)] = false;
 }
 void client::scroll(cveci2& position, cint& scrollDelta)
 {

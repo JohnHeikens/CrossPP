@@ -43,7 +43,7 @@ void control::renderText(cveci2& position, const texture& renderTarget)
 
 void control::renderChildren(cveci2& position, const texture& renderTarget)
 {
-	for (control* element : *children)
+	for (control* element : children)
 	{
 		if (element->visible && element->rect.size.x() > 0 && element->rect.size.y() > 0)
 		{
@@ -54,7 +54,7 @@ void control::renderChildren(cveci2& position, const texture& renderTarget)
 
 control::control()
 {
-	children = new fastList<control*>();
+	children = fastList<control*>();
 	this->currentFont = defaultTheme().font;
 	this->borderSize = defaultTheme().borderSize;
 	this->borderColor = defaultTheme().borderColor;
@@ -163,8 +163,8 @@ void control::addChildren(std::initializer_list<control*> children)
 	for (control* c : children) {
 		c->parent = this;
 	}
-	this->children->push_back(children);
-	this->children->update();
+	this->children.push_back(children);
+	this->children.update();
 }
 
 void control::focus()
@@ -222,24 +222,22 @@ void control::switchVisibleChild(control* newFocusedChild)
 }
 control::~control()
 {
-	for (control* child : *children)
+	for (control* child : children)
 	{
 
 		delete child;
 	}
-
-	delete children;
 }
 
 control* control::getHighestChild(cveci2& pos) const
 {
 	//loop through childs from back to front
-	for (size_t index = children->size; index--; )//first comparison (index), then substraction (--)
+	for (size_t index = children.size; index--; )//first comparison (index), then substraction (--)
 	{
-		control* currentChild = (*children)[index];
+		control* currentChild = (children)[index];
 		if (currentChild->visible && (currentChild->rect).contains(pos))
 		{
-			return (*children)[index];
+			return (children)[index];
 		}
 	}
 	return nullptr;

@@ -1171,15 +1171,15 @@ fp entity::getMaxHealth() const
 	return entityDataList[entityType]->maxHealth;
 }
 
-void entity::addToWorld()
+void entity::addToWorld(const uuid& identifier)
 {
 	//when serializing an entity, uuids will be wasted, but whatever.
-	identifier = randomUUID(currentRandom);
 	chunk* chunkToAddTo = dimensionIn->loadChunkIfNotLoaded(getChunkCoordinates(position), chunkLoadLevel::worldGenerationLoaded);
 
 	chunkToAddTo->entityList.push_back(this);
 	//allowed, the fastlist is only used for moving entities efficiently
 	chunkToAddTo->entityList.update();
+	this->identifier = identifier;
 }
 
 fp entity::getGravityForce() const

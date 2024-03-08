@@ -239,10 +239,10 @@ void humanoid::render(const renderData& targetData) const
 	//just the skin rects, but for armor
 	crectangle2 textureRects[armorTypeCount]
 	{
-		crectangle2(0,0,0x8, 0x18),
-		crectangle2(0,0,0x8, 0x18),
-		crectangle2(0x20,0,8, 0x18),
-		crectangle2(0,0x20,0x10, 0x10),
+		crectangle2(0, 0, 4, 12),
+		crectangle2(0, 0, 4, 12),
+		crectangle2(16, 0, 4, 12),
+		crectangle2(0, 16, 8, 8),
 	};
 
 	for (int i = 0; i < armorPartCount; i++)
@@ -335,20 +335,20 @@ bool humanoid::addDamageSource(cfp& damage, std::shared_ptr<damageSource> source
 		const itemStack* s = &armorSlots->slots[i];
 		if (s->count)
 		{
-			enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::protectionEnchantment);
+			enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::protection);
 			switch (source.get()->type)
 			{
 			case fallDamage:
-				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::featherFallingEnchantment) * 3;
+				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::featherFalling) * 3;
 				break;
 			case projectileDamage:
-				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::projectileProtectionEnchantment) * 2;
+				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::projectileProtection) * 2;
 				break;
 			case fireDamage:
-				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::fireProtectionEnchantment) * 2;
+				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::fireProtection) * 2;
 				break;
 			case blastDamage:
-				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::blastProtectionEnchantment) * 2;
+				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::blastProtection) * 2;
 				break;
 			}
 		}
@@ -496,6 +496,7 @@ void humanoid::launchItem(const itemID& itemType)
 		if (itemType == itemID::arrow)
 		{
 			throwPower *= math::minimum(bowAnimationTime * secondsPerTick, (fp)1);
+			throwPower *= (1 + itemHolding->getEnchantmentLevel(enchantmentID::power));
 		}//speed *=
 
 		e->speed = speed + differenceNormalized * throwPower;
@@ -527,7 +528,7 @@ void humanoid::decreaseDurability(itemStack& stack, cfp& amount, cvec2& soundPos
 	{
 		cfp multipliedByWeakness = amount * getItemWeakness(stack.stackItemID);
 
-		cfp multipliedByEnchantments = multipliedByWeakness / (1 + stack.getEnchantmentLevel(enchantmentID::unBreakingEnchantment));
+		cfp multipliedByEnchantments = multipliedByWeakness / (1 + stack.getEnchantmentLevel(enchantmentID::unBreaking));
 
 		durabilityData* toDurabilityData = (durabilityData*)stack.data;
 		toDurabilityData->durability -= multipliedByEnchantments;
@@ -607,7 +608,7 @@ void humanoid::tick()
 					if (increaseMiningSpeed)
 					{
 						fp speedMultiplier = toolTierMultipliers[itemList[(int)itemHolding->stackItemID]->harvestTier];
-						int efficiencyLevel = itemHolding->getEnchantmentLevel(enchantmentID::efficiencyEnchantment);
+						int efficiencyLevel = itemHolding->getEnchantmentLevel(enchantmentID::efficiency);
 						if (efficiencyLevel)
 						{
 							speedMultiplier += 1 + math::squared(efficiencyLevel);
@@ -617,7 +618,7 @@ void humanoid::tick()
 					if (fluidArea > 0)
 					{
 						itemStack* helmetStack = armorSlots->getSlot(cveci2(0, helmetArmorType - bootsArmorType));
-						if (helmetStack->getEnchantmentLevel(enchantmentID::aquaAffinityEnchantment) == 0)
+						if (helmetStack->getEnchantmentLevel(enchantmentID::aquaAffinity) == 0)
 						{
 							damagePerTick *= 0.2;
 						}

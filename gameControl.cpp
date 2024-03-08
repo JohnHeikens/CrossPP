@@ -190,10 +190,10 @@ void gameControl::processInput()
 		{
 			for (mouseButton button = (mouseButton)0; button < mouseButton::count; button = (mouseButton)((byte)button + 1)) {
 				if (clicked[button]) {
-					form::mouseDown(mousePositionPixels, mouseButtonKeyCode[button]);
+					form::mouseDown(mousePositionPixels, mouseButtonToKeyCode(button));
 				}
 				if (clickReleased[button]) {
-					form::mouseUp(mousePositionPixels, mouseButtonKeyCode[button]);
+					form::mouseUp(mousePositionPixels, mouseButtonToKeyCode(button));
 				}
 			}
 		}
@@ -776,8 +776,10 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 				if (defenceValue > 0)
 				{
 					crectangle2 firstChestplateDrawRect = crectangle2(hotbarDrawRect.x(), currentYrowOffset, iconSize * hudScale, iconSize * hudScale);
-					renderIcons({ maxArmor * 0.5 }, { crectangle2(33, 477, 16, 16) }, { crectangle2(33, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w(), targetData.renderTarget);
-					renderIcons({ defenceValue * 0.5 }, { crectangle2(69, 477, 16, 16) }, { crectangle2(51, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w(), targetData.renderTarget);
+					renderIcons({ maxArmor * 0.5 }, { crectangle2(16, 238, 8, 8) }, { crectangle2(16, 238, 8, 8) }, firstChestplateDrawRect, firstChestplateDrawRect.w(), targetData.renderTarget);
+					renderIcons({ defenceValue * 0.5 }, { crectangle2(34, 238, 8, 8) }, { crectangle2(25, 238, 8, 8) }, firstChestplateDrawRect, firstChestplateDrawRect.w(), targetData.renderTarget);
+					//renderIcons({ maxArmor * 0.5 }, { crectangle2(33, 477, 16, 16) }, { crectangle2(33, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w(), targetData.renderTarget);
+					//renderIcons({ defenceValue * 0.5 }, { crectangle2(69, 477, 16, 16) }, { crectangle2(51, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w(), targetData.renderTarget);
 				}
 			}
 		}
