@@ -120,7 +120,9 @@ void human::tick()
 	humanoid::tick();
 	updateSelection();
 	entity* selectedEntity = selectedUUID ? dimensionIn->findUUID(position, armRange + mobSizeMargin, selectedUUID) : nullptr;
-	pickUpFloatingSlots();
+	if (currentGameMode != gameModeID::spectator) {
+		pickUpFloatingSlots();
+	}
 
 	mainBodyPart->flipX = lookingAt.x() < position.x();
 
@@ -817,28 +819,14 @@ void human::onItemRightClick(itemStack& stackIn)
 
 	if (getArmorType(stackIn.stackItemID))
 	{
+		//switch or equip armor
 		//equip armor
 		itemStack* armorSlot = &armorSlots->slots[getArmorType(stackIn.stackItemID) - bootsArmorType];
-		if (armorSlot->count)
-		{
-			if (wantsToStartUsing)
-			{
-				//switch armor
-				std::swap(*armorSlot, stackIn);
-				return;
-			}
-			else
-			{
-				goto notEquipped;
-			}
+		if (!wantsToStartUsing && armorSlot->count) {
+			return;//to prevent continuous swapping of armor, but to allow putting all armor on while holding RMB and scrolling
 		}
-		else
-		{
-			armorSlot->addStack(stackIn);
-			return;
-		}
+		std::swap(*armorSlot, stackIn);
 		getEquipSound(stackIn.stackItemID)->playRandomSound(dimensionIn, getHeadPosition());
-	notEquipped:;
 	}
 	else if (wantsToStartUsing && stackIn.stackItemID == (itemID)blockID::snow)
 	{
@@ -1313,7 +1301,7 @@ void human::onItemRightClickReleased(itemStack& stackIn)
 		//shoot arrow
 		//check for arrows in inventory
 		itemStack arrowStack = itemStack(itemID::arrow, 1);
-		if (currentGameMode == gameModeID::creative || substractStack(arrowStack))
+		if (currentGameMode == gameModeID::creative || stackIn.getEnchantmentLevel(enchantmentID::infinity) || substractStack(arrowStack))
 		{
 			launchItem(itemID::arrow);
 			decreaseDurability(stackIn, bowAnimationTime * secondsPerTick);

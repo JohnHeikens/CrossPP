@@ -2,19 +2,13 @@
 van meest irritant naar minst irritant / nodig:
 
 playerdata copies to installation
-power op een bow werkt niet
 depth strider ook niet
 boat werkt niet
 
-middle click not working
 als je rechtermuisknop doet in een crafting table met een stack blokjes denkt hij soms dat je meerdere keren achter elkaar klikt, en stopt hij er meerdere op 1 slot
-caps lock not working
-enderpearl gooien = error
-opslaan lukt niet want human wordt mee opgeslagen
 can't craft/ je kan niet 1 blockje tegelijk plaatsen in de hotbar/crafting slots
 installer stays open on first launch
 keyboard can't paste
-infinity op een bow werkt niet
 armor texture glitcht hot bar en op de pop
 boats sink in water
 je gaat uit je inv. als je word geduwd door een piston
@@ -108,3 +102,9 @@ je kan springen boven groene hitboxen
 arrows sometimes go through entities
 form world creator gaat niet leeg na het aanmaken
 mobs keep jumping for no reason
+middle click not working
+power op een bow werkt niet
+caps lock not working
+opslaan lukt niet want human wordt mee opgeslagen
+infinity op een bow werkt niet
+enderpearl gooien = error
