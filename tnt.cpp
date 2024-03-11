@@ -21,7 +21,7 @@ void tnt::tick()
 	}
 }
 
-void tnt::render(const renderData& targetData) const
+void tnt::render(const gameRenderData& targetData) const
 {
 	//render white or tnt texture
 	crectangle2 rect = calculateHitBox();

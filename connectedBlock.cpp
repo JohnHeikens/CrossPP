@@ -1,6 +1,6 @@
 #include "connectedBlock.h"
 #include "blockContainer.h"
-void connectedBlock::render(const renderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
+void connectedBlock::render(const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
 {
 	if (identifier == blockID::kelp)
 	{

@@ -4,7 +4,7 @@
 #include "collisionTypeID.h"
 #include "damageSource.h"
 #include "statusEffect.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "blockID.h"
 #include "include/math/collisions.h"
 struct dimension;
@@ -59,7 +59,7 @@ struct entity :IDestructable, nbtSerializable
 
 	int getEffectLevel(const statusEffectID& id) const;
 
-	vec2 getRenderOffset(const renderData& targetData) const;
+	vec2 getRenderOffset(const gameRenderData& targetData) const;
 
 	void addSpeed(cvec2& additionalSpeed);
 
@@ -77,7 +77,7 @@ struct entity :IDestructable, nbtSerializable
 
 	virtual void onDeath();
 	void physics();
-	virtual void render(const renderData& targetData) const;
+	virtual void render(const gameRenderData& targetData) const;
 	virtual void onCollisionWithGround(cfp& verticalSpeed);
 
 	fp getFluidArea(crectangle2& box, const std::vector<blockID>& fluids) const;
@@ -89,7 +89,7 @@ struct entity :IDestructable, nbtSerializable
 	virtual void serializeValue(nbtSerializer& s) override;
 	virtual bool compareSelector(const human& sender, const std::wstring& selectorString) const;
 	void teleportTo(dimension* newDimension, cvec2& newPosition, cbool& playTeleportSounds, cvec2& speedAfterTeleportation = cvec2());
-	virtual void renderHitboxes(const renderData& targetData) const;
+	virtual void renderHitboxes(const gameRenderData& targetData) const;
 	bool setOnFire(cint ticksToBurn);
 
 	virtual fp getMaxHealth() const;

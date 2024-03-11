@@ -2,6 +2,7 @@
 #include "math/graphics/graphics.h"
 #include "transformbrush.h"
 #include "math/graphics/resolutiontexture.h"
+#include "math/graphics/color/color.h"
 
 template<typename resultingType, typename inputType>
 struct solidBrush final :public brush<resultingType, inputType>
@@ -88,18 +89,32 @@ struct colorMixer final : public colorBrush
 
 	colorMixer(const brush0Type& topBrush, const brush1Type& bottomBrush) :topBrush(topBrush), bottomBrush(bottomBrush) {}
 
-	inline static constexpr color getColor(ccolor& topColor, ccolor& bottomColor)
-	{
-		//static functions
-		return (topColor.a() == color::maxValue) ?
-			topColor :
-			((topColor.a() == 0) ? bottomColor : color::transition(topColor, bottomColor));
-	}
+	//inline static constexpr color getColor(ccolor& topColor, ccolor& bottomColor)
+	//{
+	//	//static functions
+	//	return (topColor.a() == color::maxValue) ?
+	//		topColor :
+	//		(topColor.a() ? color::transition(topColor, bottomColor) : bottomColor);
+	//}
 
 	inline color getValue(cvec2& pos) const final
 	{
+		ccolor& topColor = topBrush.getValue(pos);
+		if (topColor.a() == color::maxValue) {
+			return topColor;
+		}
+		else {
+			ccolor& bottomColor = bottomBrush.getValue(pos);
+			if (topColor.a()) {
+				return color::transition(topColor, bottomColor);
+			}
+			else {
+				return bottomColor;
+			}
+		}
+
 		//the bottom color will be optimized away if the topcolor does not have transparency
-		return getColor(topBrush.getValue(pos), bottomBrush.getValue(pos));
+		//return getColor(topBrush.getValue(pos), bottomBrush.getValue(pos));
 	}
 };
 

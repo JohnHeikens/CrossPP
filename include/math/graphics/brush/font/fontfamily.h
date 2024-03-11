@@ -19,6 +19,7 @@ class fontFamily
 public:
 	resolutionTexture* tex;
 	fp letterWidths[asciiLetterCount];
+	rectangle2 croppedLetterRects[asciiLetterCount];
 
 	//the texture has to have a transparent background with black letters.
 	//Be careful: the actual texture will be modified!
@@ -59,5 +60,5 @@ inline void fontFamily::DrawLetter(cletter& l, cmat3x3& transformFrom1x1, const 
 	cmat3x3& multipliedTransform = mat3x3::cross(transformFrom1x1, mat3x3::fromRectToRect(texMaskRect, crectangle2(cvec2(1))));
 
 	//auto drawer = transformBrush<texture>(multipliedTransform, *tex);
-	fillTransparentRectangle(texMaskRect, multipliedTransform, b, renderTarget);
+	fillTransparentRectangle(croppedLetterRects[(byte)l], multipliedTransform, b, renderTarget);
 }

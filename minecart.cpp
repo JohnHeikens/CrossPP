@@ -9,7 +9,7 @@ minecart::minecart(dimension* dimensionIn, cvec2& position) :hollowRidableEntity
 	mainBodyPart = new bodyPart2D(minecartEditedTextureRect, nullptr, position, minecartRenderSize, minecartRotationCentre);
 }
 
-void minecart::render(const renderData& targetData) const
+void minecart::render(const gameRenderData& targetData) const
 {
 	//'snap' on the rails
 	mainBodyPart->translate = position;

@@ -7,5 +7,5 @@ struct fireworkRocket : public entity
 	fireworkRocket(dimension* dimensionIn, cvec2& position) : entity(dimensionIn, position, entityID::firework_rocket) {}
 	fireWorkData data;
 	virtual void serializeValue(nbtSerializer& s) override;
-	virtual void render(const renderData& targetData) const override;
+	virtual void render(const gameRenderData& targetData) const override;
 };

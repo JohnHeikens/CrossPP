@@ -70,7 +70,7 @@ struct humanoid : public mob, public slotContainer
 	void initializeBodyParts(crectangle2& headTextureRect, crectangle2& bodyTextureRect, crectangle2& leftLegTextureRect, crectangle2& rightLegTextureRect, crectangle2& leftArmTextureRect, crectangle2& rightArmTextureRect, cfp& pixelSize = humanPixelSize);
 
 	virtual void updateBodyParts() const override;
-	void render(const renderData& targetData) const override;
+	void render(const gameRenderData& targetData) const override;
 	virtual void updateSelection();
 	void resetDigProgress();
 	virtual fp getAttackDamage() const override;

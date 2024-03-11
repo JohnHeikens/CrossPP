@@ -14,14 +14,14 @@ constexpr mat3x3 brushFixTransform = mat3x3();//mat3x3::translate(cvec2(brushFix
 template<typename brush0Type>
 struct transformBrush final : public colorBrush
 {
-private:
+//private:
 	//transform: from screen pixel (or other transform) to texture pixel
-	mat3x3 transform;//cannot access the transform, as it is modified
-public:
+	mat3x3 modifiedTransform;//cannot access the transform, as it is modified
+//public:
 	const brush0Type& baseBrush;
 	vecb2 roundUp;
 	transformBrush(const mat3x3& transform, const brush0Type& baseBrush) :
-		transform(mat3x3::cross(brushFixTransform, transform)),//transformed pixel -> scale (make smaller), translate
+		modifiedTransform(mat3x3::cross(brushFixTransform, transform)),//transformed pixel -> scale (make smaller), translate
 		baseBrush(baseBrush)
 	{
 		vec2 add = vec2();
@@ -33,7 +33,7 @@ public:
 				add[i] -= 1.0 / 0x1000;
 			}
 		}
-		this->transform = mat3x3::cross(mat3x3::translate(add), transform);
+		this->modifiedTransform = mat3x3::cross(mat3x3::translate(add), transform);
 	}
 
 	inline color getValue(cvec2& pos) const final
@@ -56,6 +56,6 @@ public:
 		//}
 	//}
 		//return baseBrush.getValue(baseBrushPos);
-		return baseBrush.getValue(transform.multPointMatrix(pos));
+		return baseBrush.getValue(modifiedTransform.multPointMatrix(pos));
 	}
 };

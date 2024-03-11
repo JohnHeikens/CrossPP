@@ -558,7 +558,7 @@ void mob::serializeValue(nbtSerializer& s)
 	s.serializeValue(std::wstring(L"exact entity intersection"), exactEntityIntersection);
 	s.serializeValue(std::wstring(L"ticks since tool used"), ticksSinceToolUsed);
 }
-void mob::render(const renderData& targetData) const
+void mob::render(const gameRenderData& targetData) const
 {
 	updateBodyParts();
 	renderBodyPart(mainBodyPart, targetData.worldToRenderTargetTransform, targetData);
@@ -751,7 +751,7 @@ void mob::exitRodeEntity()
 		UUIDRidingOn = uuid();
 	}
 }
-void mob::renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const renderData& targetData) const
+void mob::renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const gameRenderData& targetData) const
 {
 	renderBodyPart(b, transform, *((mobData*)entityDataList[(int)entityType])->skin, targetData);
 }

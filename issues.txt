@@ -24,7 +24,6 @@ rightclicking on spawner with spawn egg doesn't set entity
 crashing whem igniting a lot of tnt in the end while being stuck in an ender dragon: dimensionIn could not be read
 blazes blijven vliegen, terwijl ze alleen moeten gaan vliegen als mensen eraan komen
 xp bottles not working
-mobs vallen aan terwijl ze je niet zien
 wolf richt niet op wie hij aanvalt
 enchanted golden apples absorption effect
 crops geven niet alle drops
@@ -108,3 +107,5 @@ caps lock not working
 opslaan lukt niet want human wordt mee opgeslagen
 infinity op een bow werkt niet
 enderpearl gooien = error
+
+mobs vallen aan terwijl ze je niet zien

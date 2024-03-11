@@ -13,7 +13,7 @@ constexpr crectangle2 endCrystalRelativeHitbox = crectangle2(endCrystalHitboxSiz
 struct endCrystal : public entity
 {
 	endCrystal(dimension* dimensionIn, cvec2& position);
-	virtual void render(const renderData& targetData) const override;
+	virtual void render(const gameRenderData& targetData) const override;
 	bodyPart2D* innerPart = nullptr;
 	bodyPart2D* outerPart = nullptr;
 

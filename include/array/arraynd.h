@@ -7,6 +7,8 @@
 #include "math/mattnxn.h"
 #include <list>
 #include "math/graphics/brush/brush.h"
+#include "math/graphics/brush/transformbrush.h"
+#include "math/axis.h"
 
 template<typename t, fsize_t axisCount>
 struct arraynd :IDestructable
@@ -137,6 +139,21 @@ struct arraynd :IDestructable
 		for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos.x()++)
 		{
 			*ptr = b.getValue(pos);
+		}
+	}
+	template<typename brush0Type>
+	inline void fillRowUnsafe(cfsize_t& rowY, cfsize_t& minX, cfsize_t& maxX, const transformBrush<brush0Type>& b) const
+	{
+		t* const rowPtr = baseArray + rowY * size.x();
+		t* const endPtr = rowPtr + maxX;
+
+
+		vec2 pos = b.modifiedTransform.multPointMatrix(vec2((fp)minX, (fp)rowY));
+		vec2 step = b.modifiedTransform.getStep<2>(axisID::x);
+
+		for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos += step)
+		{
+			*ptr = b.baseBrush.getValue(pos);
 		}
 	}
 
@@ -750,16 +767,22 @@ struct arraynd :IDestructable
 	template<typename brush0Type>
 	inline void fillTransformedRectangle(rectangle2 brushRect, cmat3x3& transform, const brush0Type& b) const
 	{
-		//expand the brushrect, so it contains the last row of pixels too
-		//brushRect.size += 1;
-		fastArray<vec2> positions({
-			transform.multPointMatrix(brushRect.pos0),
-			transform.multPointMatrix(brushRect.pos01()),
-			transform.multPointMatrix(brushRect.pos1()),
-			transform.multPointMatrix(brushRect.pos10()),
-			});
-		//check for clockwise
-		fillPolygon(positions, b);
+		if (transform.isStraight())//simple check which can save a lot of time
+		{
+			fillRectangle(transform.multRotatedRectMatrix(brushRect), b);
+		}
+		else {
+			//expand the brushrect, so it contains the last row of pixels too
+			//brushRect.size += 1;
+			fastArray<vec2> positions({
+				transform.multPointMatrix(brushRect.pos0),
+				transform.multPointMatrix(brushRect.pos01()),
+				transform.multPointMatrix(brushRect.pos1()),
+				transform.multPointMatrix(brushRect.pos10()),
+				});
+			//check for clockwise
+			fillPolygon(positions, b);
+		}
 	}
 };
 

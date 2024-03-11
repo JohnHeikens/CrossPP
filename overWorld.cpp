@@ -528,7 +528,7 @@ void overWorld::generateStructures(chunk* generateIn)
 			}
 }
 
-void overWorld::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const renderData& targetData) const
+void overWorld::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const gameRenderData& targetData) const
 {
 	cvec2& position = blockRect.getCenter();
 	cfp height = position.y();

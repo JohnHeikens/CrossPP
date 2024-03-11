@@ -25,7 +25,7 @@ creeper::creeper(dimension* dimensionIn, cvec2& position) :fourLeggedMob(dimensi
 
 }
 
-void creeper::render(const renderData& targetData) const
+void creeper::render(const gameRenderData& targetData) const
 {
 	if ((ticksUntilFuse < creeperFuseLength) && (ticksUntilFuse % ticksPerRealLifeSecond < (ticksPerRealLifeSecond / 2)))
 	{

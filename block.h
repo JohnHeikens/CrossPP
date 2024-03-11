@@ -14,7 +14,7 @@
 #include "biomeData.h"
 #include "facingData.h"
 #include "idAnalysis.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "collisionDataCollection.h"
 
 struct blockContainer;
@@ -82,9 +82,9 @@ struct block :IDestructable
 	/// <param name="data"></param>
 	/// <param name="containerIn"></param>
 	/// <param name="blockPosition"></param>
-	virtual void render(const renderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const;
+	virtual void render(const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const;
 	template<typename brush0Type>
-	void render(const brush0Type& b, rectangle2 brushRect, crectangle2& blockRect, const renderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation = false, const std::optional<vec2>& rotationCentreWorld = std::nullopt) const;
+	void render(const brush0Type& b, rectangle2 brushRect, crectangle2& blockRect, const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation = false, const std::optional<vec2>& rotationCentreWorld = std::nullopt) const;
 
 	static mat3x3 getTextureToWorldTransform(cveci2& textureSize, cmat3x3& blockToRenderTargetTransform, cvec2& blockPosition);
 	static mat3x3 getBrushRectToWorldTransform(crectangle2& brushRect, cmat3x3& blockToRenderTargetTransform, cvec2& blockPosition);
@@ -92,11 +92,11 @@ struct block :IDestructable
 	virtual collisionDataCollection getCollisionData(blockContainer* containerIn, cveci2& position) const;
 };
 
-void renderTorch(cveci2 & blockPosition, cvec2& relativeRotationCentre, cfp& angle, const resolutionTexture& tex, const renderData& targetData);
+void renderTorch(cveci2 & blockPosition, cvec2& relativeRotationCentre, cfp& angle, const resolutionTexture& tex, const gameRenderData& targetData);
 void renderTexture(crectangle2& rectangleToTransform, cmat3x3& transform, cbool& hasTransparency, const directionID& directionFacing, const resolutionTexture& tex, const texture& renderTarget, cbool& renderAnimation);
 void renderTexture(crectangle2& drawRect, cbool& hasTransparency, const directionID& directionFacing, const resolutionTexture& tex, const texture& renderTarget, cbool& renderAnimation);
-void renderBlockRect(crectangle2& blockRect, const renderData& targetData);
-void renderBlockRect(crectangle2& blockRect, const renderData& targetData, const color& c);
+void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData);
+void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData, const color& c);
 
 //template<typename targetType>
 //void renderBrewingStand(crectangle2& drawRect, cbool hasBottle[brewingStandPotionCapacity], const targetType& renderTarget);
@@ -104,9 +104,9 @@ void renderBlockRect(crectangle2& blockRect, const renderData& targetData, const
 
 
 template<typename brush0Type>
-void renderCollisionData(blockContainer* containerIn, cveci2& position, crectangle2& brushRect, const brush0Type& b, const renderData& targetData);
-void renderCollisionData(blockContainer* containerIn, cveci2& position, const resolutionTexture& tex, const renderData& targetData);
-void renderCollisionData(blockContainer* containerIn, cveci2& position, const renderData& targetData);
+void renderCollisionData(blockContainer* containerIn, cveci2& position, crectangle2& brushRect, const brush0Type& b, const gameRenderData& targetData);
+void renderCollisionData(blockContainer* containerIn, cveci2& position, const resolutionTexture& tex, const gameRenderData& targetData);
+void renderCollisionData(blockContainer* containerIn, cveci2& position, const gameRenderData& targetData);
 
 extern idList<biomeData*, biomeID> biomeDataList;
 

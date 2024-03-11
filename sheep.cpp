@@ -55,7 +55,7 @@ void sheep::serializeValue(nbtSerializer& s)
 	s.serializeValue(std::wstring(L"has wool"), hasWool);
 	s.serializeValue(std::wstring(L"wool color"), (int&)woolColor);
 }
-void sheep::render(const renderData& targetData) const
+void sheep::render(const gameRenderData& targetData) const
 {
 	fourLeggedMob::render(targetData);
 

@@ -56,7 +56,7 @@
 #include "levelID.h"
 #include "lightLevelID.h"
 #include "openData.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "settings.h"
 #include "slabType.h"
 #include "soundCollection.h"
@@ -144,7 +144,7 @@ void block::use()
 {
 }
 
-void block::render(const renderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
+void block::render(const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
 {
 	if (identifier == blockID::air)
 	{
@@ -348,7 +348,8 @@ void block::render(const renderData& targetData, blockData* const data, blockCon
 		resolutionTexture* textureToUse = furnaceOnTextures[(size_t)identifier - (size_t)blockID::furnace];
 		render(*textureToUse, crectangle2(textureToUse->getClientRect()), crectangle2(cvec2(blockPosition), cvec2(1)), targetData, data, containerIn, true);
 	}
-	else if (isSlab(identifier) || isButton(identifier) || isPressurePlate(identifier) || isFence(identifier) || isFenceGate(identifier) || isWall(identifier) || isStairs(identifier) || isTrapDoor(identifier) || (identifier == blockID::chorus_plant) || (identifier == blockID::chorus_flower) || (identifier == blockID::iron_bars) || (identifier == blockID::snow))
+	else if (isSlab(identifier) || isButton(identifier) || isPressurePlate(identifier) || isFence(identifier) || isFenceGate(identifier) || isWall(identifier) || isStairs(identifier) || isTrapDoor(identifier) || isChest(identifier) ||
+		is_in(identifier, blockID::chorus_plant, blockID::chorus_flower, blockID::iron_bars, blockID::snow, blockID::enchanting_table))
 	{
 		renderCollisionData(containerIn, blockPosition, targetData);
 	}
@@ -683,6 +684,10 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	{
 		collision.hitboxCollidingWith.h() = containerIn->getEmittanceLevel(position, levelID::powerLevel) > 0 ? pressedPressurePlateHeight : unPressedPressurePlateHeight;
 	}
+	else if (isChest(identifier))
+	{
+		collision.hitboxCollidingWith = getAbsoluteRect(collision.hitboxCollidingWith, chestBlockRect);
+	}
 	else if (identifier == blockID::snow)
 	{
 		collision.hitboxCollidingWith.h() = dynamic_cast<snowLayerData*>(containerIn->getBlockData(position))->layerThickness;
@@ -709,7 +714,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 
 
 template<typename brush0Type>
-void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectangle2& blockRect, const renderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation, const std::optional<vec2>& rotationCentre) const
+void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectangle2& blockRect, const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation, const std::optional<vec2>& rotationCentre) const
 {
 	mat3x3 transform;
 	if (renderAnimation)
@@ -794,7 +799,7 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 
 }
 
-void renderTorch(cveci2& blockPosition, cvec2& relativeRotationCentre, cfp& angle, const resolutionTexture& tex, const renderData& targetData)
+void renderTorch(cveci2& blockPosition, cvec2& relativeRotationCentre, cfp& angle, const resolutionTexture& tex, const gameRenderData& targetData)
 {
 	mat3x3 transform = mat3x3::fromRectToRect(crectangle2(torchTextureRect), crectangle2(cvec2(blockPosition) + relativeRotationCentre + cvec2(torchSize.x() * -0.5, 0), torchSize));
 	if (angle != 0)
@@ -817,11 +822,11 @@ void renderTexture(crectangle2& drawRect, cbool& hasTransparency, const directio
 	const texture& appropriateTexture = tex.getMipmapTexture(drawRect.size.x());
 	renderBrush(crectangle2(appropriateTexture.getClientRect()), drawRect, hasTransparency, directionFacing, appropriateTexture, renderTarget, renderAnimation);
 }
-void renderBlockRect(crectangle2& blockRect, const renderData& targetData)
+void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData)
 {
 	renderBlockRect(blockRect, targetData, colorPalette::white);
 }
-void renderBlockRect(crectangle2& blockRect, const renderData& targetData, const color& c)
+void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData, const color& c)
 {
 	targetData.renderTarget.fillRectangleBorders(ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect)), (cint)(settings::videoSettings::guiScale * 2), solidColorBrush(c));
 }

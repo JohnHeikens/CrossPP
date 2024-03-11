@@ -6,6 +6,7 @@
 #include "gameControl.h"
 #include "settings.h"
 #include "playerSocket.h"
+#include "renderData.h"
 void inventoryForm::linkUp(inventory* newInventoryToDisplay)
 {
 	inventoryToDisplay = newInventoryToDisplay;
@@ -69,14 +70,15 @@ void inventoryForm::render(cveci2& position, const texture& renderTarget)
 	updateScale();
 	fillTransparentRectangle((crectangle2)inventoryToDisplay->uiTexturePartToDraw, this->rect, *inventoryToDisplay->uiTexture, renderTarget);
 
+	const gameRenderData& targetData = ((gameControl*)parent)->getRenderData(renderTarget);
 	for (int i = 0; i < inventoryToDisplay->containers.size(); i++) {
 		uiSlotContainer* c = inventoryToDisplay->containers[i];
-		c->linkedContainer->render(renderTarget, position + (vec2)c->containerPixelPosition * scaleMultiplier, inventorySpacing * scaleMultiplier, inventoryItemDisplaySize * scaleMultiplier);
+		c->linkedContainer->render(targetData, position + (vec2)c->containerPixelPosition * scaleMultiplier, inventorySpacing * scaleMultiplier, inventoryItemDisplaySize * scaleMultiplier);
 	}
 	inventoryToDisplay->drawExtraData(mat3x3::fromRectToRect(crectangle2(cvec2(0), cvec2(inventoryToDisplay->uiTexturePartToDraw.size)), crectangle2(rect)), renderTarget);
 	if (itemHolding.count)
 	{
-		itemHolding.render(crectangle2(cvec2(position + holdingMousePos) - (inventoryItemDisplaySize * 0.5 * scaleMultiplier), vec2(inventoryItemDisplaySize) * scaleMultiplier), renderTarget);
+		itemHolding.render(crectangle2(cvec2(position + holdingMousePos) - (inventoryItemDisplaySize * 0.5 * scaleMultiplier), vec2(inventoryItemDisplaySize) * scaleMultiplier), targetData);
 	}
 	else
 	{

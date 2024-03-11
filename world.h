@@ -13,8 +13,6 @@ struct world :IDestructable
 	void tick();
 	bool serialize(cbool& write);
 
-	human* joinPlayer(const uuid& identifier, const std::wstring& playerName, gameControl& screen);
-
 	std::vector<biomeGenerator*> biomeList = std::vector<biomeGenerator*>();
 
 	std::vector<chunk*> chunksToSave = std::vector<chunk*>();

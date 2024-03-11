@@ -90,7 +90,7 @@ struct human :public humanoid, public INamable
 	void addStackOrDrop(itemStack& stack);
 	virtual bool substractStack(itemStack& stack) override;
 	virtual std::vector<vec3> getFrictions() const override;
-	virtual void render(const renderData& targetData) const override;
+	virtual void render(const gameRenderData& targetData) const override;
 	void setGameMode(const gameModeID& newGameMode);
 	void closeBlockGUI();
 

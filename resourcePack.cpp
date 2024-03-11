@@ -783,6 +783,20 @@ void loadResourcePacks() {
 		maxPowerLevel
 	};
 
+	constexpr int doubleFiltering[(int)levelID::count]
+	{
+		maxLightLevel / 0x8,
+		maxLightLevel / 0x8,
+		maxPowerLevel
+	};
+
+	constexpr int sunlightPermeable[(int)levelID::count]
+	{
+		0x40,
+		maxLightLevel,
+		maxPowerLevel
+	};
+
 	constexpr int glowingLightSource[(int)levelID::count]
 	{
 		0,
@@ -1148,7 +1162,7 @@ void loadResourcePacks() {
 	for (int i = 0; i < stairTextureNames.size(); i++)
 	{
 		resolutionTexture* blockTexture = loadTextureFromResourcePack(blockTextureFolder + stairTextureNames[i] + std::wstring(L".png"));
-		
+
 		blockList[identifier] = new block((blockID)identifier, 1.5, 1.5, standardBlockWeightPerCubicMeter, blockTexture, stairNames[i], stepStone, stepStone, stepStone, digStone, digStone, lightFiltering, withPickaxe, woodHarvestTier, collisionTypeID::willCollideTop); identifier++;
 	}
 	//slabs
@@ -1244,7 +1258,7 @@ void loadResourcePacks() {
 	}
 	for (int i = 0; i < (int)colorID::count; i++)
 	{
-		blockList[identifier] = new block((blockID)identifier, 1.25, 1.25, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + colorNames[i] + std::wstring(L"_terracotta.png")), colorNames[i] + std::wstring(L"_terracotta"), stepStone, stepStone, stepStone, digStone, digStone, lightBlocking, withPickaxe, woodHarvestTier); identifier++;
+		blockList[identifier] = new block((blockID)identifier, 1.25, 1.25, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + colorNames[i] + std::wstring(L"_terracotta.png")), colorNames[i] + std::wstring(L"_terracotta"), stepStone, stepStone, stepStone, digStone, digStone, sunlightPermeable, withPickaxe, woodHarvestTier); identifier++;
 	}
 	for (int i = 0; i < (int)colorID::count; i++)
 	{
@@ -1287,12 +1301,6 @@ void loadResourcePacks() {
 		}
 	}
 
-	constexpr int doubleFiltering[(int)levelID::count]
-	{
-		maxLightLevel / 0x8,
-		maxLightLevel / 0x8,
-		maxPowerLevel
-	};
 
 	for (int i = 0; i < frostedIceMeltTreshold; i++)
 	{
@@ -1319,15 +1327,15 @@ void loadResourcePacks() {
 	blockList[identifier] = new block((blockID)identifier, 1, 1, 0.35, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"bamboo_stage0.png")), std::wstring(L"bamboo_shoot"), hitBambooSapling, hitBambooSapling, hitBambooSapling, placeBambooSapling, placeBambooSapling, lightBlocking, withSwordOrShears, noHarvestTier, collisionTypeID::willNotCollide); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 1, 1, 0.35, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"bamboo_stalk.png")), std::wstring(L"bamboo"), stepBamboo, stepBamboo, stepBamboo, placeBamboo, placeBamboo, lightBlocking, withSwordOrShears, noHarvestTier, collisionTypeID::willCollideTop); identifier++;
 
-	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"clay.png")), std::wstring(L"clay"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, lightBlocking, withShovel, noHarvestTier); identifier++;
-	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, dirtTexture, std::wstring(L"dirt"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, lightBlocking, withShovel, noHarvestTier); identifier++;
-	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"coarse_dirt.png")), std::wstring(L"coarse_dirt"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, lightBlocking, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"clay.png")), std::wstring(L"clay"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, dirtTexture, std::wstring(L"dirt"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"coarse_dirt.png")), std::wstring(L"coarse_dirt"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier); identifier++;
 
-	blockList[identifier] = new block((blockID)identifier, 0.65, 0.65, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"grass_path_side.png")), std::wstring(L"grass_path"), stepGrass, stepGrass, stepGrass, digGrass, digGrass, lightFiltering, withShovel, noHarvestTier); identifier++;
-	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"grass_block_side.png")), std::wstring(L"grass_block"), stepGrass, stepGrass, stepGrass, digGrass, digGrass, lightBlocking, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.65, 0.65, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"grass_path_side.png")), std::wstring(L"grass_path"), stepGrass, stepGrass, stepGrass, digGrass, digGrass, sunlightPermeable, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"grass_block_side.png")), std::wstring(L"grass_block"), stepGrass, stepGrass, stepGrass, digGrass, digGrass, sunlightPermeable, withShovel, noHarvestTier); identifier++;
 
-	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"podzol_side.png")), std::wstring(L"podzol"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, lightBlocking, withShovel, noHarvestTier); identifier++;
-	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"mycelium_side.png")), std::wstring(L"mycelium"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, lightBlocking, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"podzol_side.png")), std::wstring(L"podzol"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"mycelium_side.png")), std::wstring(L"mycelium"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier); identifier++;
 
 	blockList[identifier] = new block((blockID)identifier, 0.4, 0.4, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"crimson_nylium_side.png")), std::wstring(L"crimson_nylium"), stepNylium, stepNylium, stepNylium, digNylium, digNylium, lightBlocking, withPickaxe, woodHarvestTier); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 0.4, 0.4, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"warped_nylium_side.png")), std::wstring(L"warped_nylium"), stepNylium, stepNylium, stepNylium, digNylium, digNylium, lightBlocking, withPickaxe, woodHarvestTier); identifier++;
@@ -1515,9 +1523,9 @@ void loadResourcePacks() {
 	blockList[identifier] = new block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"torch.png")), std::wstring(L"torch"), stepWood, stepWood, stepWood, digWood, digWood, noLightFilter, withHand, noHarvestTier, collisionTypeID::willNotCollide, 0, 0, false, false, moodyLightSource); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"soul_torch.png")), std::wstring(L"soul_torch"), stepWood, stepWood, stepWood, digWood, digWood, noLightFilter, withHand, noHarvestTier, collisionTypeID::willNotCollide, 0, 0, false, false, moodyLightSource); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 0.4, 0.4, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"ladder.png")), std::wstring(L"ladder"), stepLadder, stepLadder, stepLadder, digWood, digWood, lightFiltering, withHand, noHarvestTier, collisionTypeID::willNotCollide); identifier++;
-	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, farmlandTexture, std::wstring(L"farmland"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, lightBlocking, withShovel); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, farmlandTexture, std::wstring(L"farmland"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 0.1, 0.1, standardBlockWeightPerCubicMeter, snowTexture, std::wstring(L"snow"), stepSnow, stepSnow, stepSnow, stepSnow, stepSnow, lightFiltering, withShovel, woodHarvestTier, collisionTypeID::willCollide); identifier++;
-	blockList[identifier] = new block((blockID)identifier, 0.2, 0.2, standardBlockWeightPerCubicMeter, snowTexture, std::wstring(L"snow_block"), stepSnow, stepSnow, stepSnow, stepSnow, stepSnow, lightBlocking, withShovel, woodHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.2, 0.2, standardBlockWeightPerCubicMeter, snowTexture, std::wstring(L"snow_block"), stepSnow, stepSnow, stepSnow, stepSnow, stepSnow, sunlightPermeable, withShovel, woodHarvestTier); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 3.5, 3.5, standardBlockWeightPerCubicMeter, lanternGraphics, std::wstring(L"lantern"), placeLantern, placeLantern, breakLantern, breakLantern, placeLantern, noLightFilter, withPickaxe, woodHarvestTier, collisionTypeID::willNotCollide, 0, 0, false, false, brightLightSource); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 3.5, 3.5, standardBlockWeightPerCubicMeter, lanternGraphics, std::wstring(L"soul_lantern"), placeLantern, placeLantern, breakLantern, breakLantern, placeLantern, noLightFilter, withPickaxe, woodHarvestTier, collisionTypeID::willNotCollide, 0, 0, false, false, moodyLightSource); identifier++;
 	blockList[identifier] = new block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(itemTextureFolder + std::wstring(L"sea_pickle.png")), std::wstring(L"sea_pickle"), smallSlimeSound, smallSlimeSound, smallSlimeSound, bigSlimeSound, bigSlimeSound, noLightFilter, withHand, noHarvestTier, collisionTypeID::willCollideTop, 0, 0, false, false, glowingLightSource); identifier++;
@@ -1800,10 +1808,10 @@ void loadResourcePacks() {
 	};
 	for (int i = 0; i < sandTypeNames.size(); i++)
 	{
-		blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + sandTypeNames[i] + std::wstring(L".png")), sandTypeNames[i], stepSand, stepSand, stepSand, digSand, digSand, lightBlocking, withShovel, noHarvestTier); identifier++;
+		blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + sandTypeNames[i] + std::wstring(L".png")), sandTypeNames[i], stepSand, stepSand, stepSand, digSand, digSand, sunlightPermeable, withShovel, noHarvestTier); identifier++;
 	}
 
-	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"gravel.png")), std::wstring(L"gravel"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, lightBlocking, withShovel, noHarvestTier); identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.6, 0.6, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"gravel.png")), std::wstring(L"gravel"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier); identifier++;
 	//ores
 
 	cint stoneTypeCount = 0x3;
@@ -2745,14 +2753,13 @@ resolutionTexture* loadChestTexture(const std::wstring& path)
 	resolutionTexture* chestImage = loadTextureFromResourcePack(path);
 	cfp& scaleMultiplier = (fp)chestImage->scaledTextures[0]->size.x() / chestImage->defaultSize.x();
 	resolutionTexture* croppedTexture = new resolutionTexture(texture(cvect2<size_t>((size_t)((fp)blockTextureSize * scaleMultiplier))), cvec2(blockTextureSize));
-	cfp& chestPixelWidth = 14 * scaleMultiplier;
-	cfp& chestPixelHeight = 15 * scaleMultiplier;
-	cfp& chestBottomPixelHeight = 10 * scaleMultiplier;
-	cfp& padLockPixelWidth = 6 * scaleMultiplier;
-	cfp& padLockPixelHeight = 5 * scaleMultiplier;
-	fillTransformedBrushRectangle(crectangle2(0, 21 * scaleMultiplier, chestPixelWidth, chestBottomPixelHeight), cvec2((blockTextureSize * scaleMultiplier - chestPixelWidth) / 2, 0), *chestImage->scaledTextures[0], *croppedTexture->scaledTextures[0]);
-	fillTransformedBrushRectangle(crectangle2(0, 45 * scaleMultiplier, chestPixelWidth, chestPixelHeight - chestBottomPixelHeight), cvec2((blockTextureSize * scaleMultiplier - chestPixelWidth) / 2, chestBottomPixelHeight), *chestImage->scaledTextures[0], *croppedTexture->scaledTextures[0]);
-	fillTransparentRectangle(crectangle2(0, 59 * scaleMultiplier, padLockPixelWidth, padLockPixelHeight), crectangle2((blockTextureSize * scaleMultiplier - (padLockPixelWidth / 2)) / 2, chestBottomPixelHeight - (padLockPixelHeight / 4), padLockPixelWidth / 2, padLockPixelHeight / 2), *chestImage->scaledTextures[0], *croppedTexture->scaledTextures[0]);
+
+	cfp& chestBottomPixelHeight = 10;
+	cfp& padLockPixelWidth = 6;
+	cfp& padLockPixelHeight = 5;
+	fillTransformedBrushRectangle(crectangle2(0, 21, chestPixelWidth, chestBottomPixelHeight), cvec2((blockTextureSize - chestPixelWidth) / 2, 0), *chestImage, *croppedTexture);
+	fillTransformedBrushRectangle(crectangle2(0, 45, chestPixelWidth, chestPixelHeight - chestBottomPixelHeight), cvec2((blockTextureSize - chestPixelWidth) / 2, chestBottomPixelHeight), *chestImage, *croppedTexture);
+	fillTransparentRectangle(crectangle2(0, 59, padLockPixelWidth, padLockPixelHeight), crectangle2((blockTextureSize - (padLockPixelWidth / 2)) / 2, chestBottomPixelHeight - (padLockPixelHeight / 4), padLockPixelWidth / 2, padLockPixelHeight / 2), *chestImage, *croppedTexture);
 	croppedTexture->recalculateScaledTextures();
 	return croppedTexture;
 }

@@ -188,7 +188,7 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 	template<fsize_t vectorSize>
 	constexpr vectn<t, vectorSize> getStep(const axisID& axis) const
 	{
-		return this->axis[(int)axis];
+		return vectn<t, vectorSize>(this->axis[(int)axis]);
 	}
 
 	//output at x 0 y 0
@@ -359,6 +359,12 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 			transform = cross(transform, rotateDegrees(vect2<t>(rectFrom.x() + rectFrom.w() * 0.5, rectFrom.y() + rectFrom.h() * 0.5), angle));
 		}
 		return transform;
+	}
+
+	constexpr bool isStraight() const {
+		return 
+			(bool)this->axis[0].axis[0] ^ (bool)this->axis[1].axis[0] && 
+			(bool)this->axis[0].axis[1] ^ (bool)this->axis[1].axis[1];
 	}
 
 	/*
@@ -602,6 +608,10 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 	constexpr rectangle2 multRectMatrix(crectangle2& in) const
 	{
 		return rectangle2(multPointMatrix(in.pos0), multSizeMatrix(in.size));
+	}
+	constexpr rectangle2 multRotatedRectMatrix(crectangle2& in) const
+	{
+		return rectangle2::fromOppositeCorners(multPointMatrix(in.pos0), multPointMatrix(in.pos1()));
 	}
 };
 

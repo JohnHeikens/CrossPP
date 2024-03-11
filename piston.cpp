@@ -13,7 +13,7 @@ void piston::tick()
 	}
 }
 
-void piston::render(const renderData& targetData) const
+void piston::render(const gameRenderData& targetData) const
 {
 	cmat3x3& multipliedTransform = mat3x3::cross(targetData.worldToRenderTargetTransform, movingBlocks->containerToRootTransform);
 	cmat3x3& screenToBlocks = multipliedTransform.inverse();
@@ -23,7 +23,7 @@ void piston::render(const renderData& targetData) const
 	crectanglei2& flooredBlockRect = crectanglei2(unCroppedPos00, floorVector((blockRect.pos1()) + 1) - unCroppedPos00);
 	crectanglei2& croppedBlockRect = crectanglei2(movingBlocks->arrayPos00Offset, movingBlocks->blockIDArray.size).cropClientRectUnsafe(flooredBlockRect);
 	cveci2& pos11 = croppedBlockRect.pos1();
-	const renderData& incrementedRenderData = renderData(multipliedTransform, targetData.renderTarget, targetData.secondsOffset);
+	const gameRenderData& incrementedRenderData = gameRenderData(multipliedTransform, targetData.renderTarget, targetData.screen, targetData.secondsOffset);
 	for (veci2 currentPosition = croppedBlockRect.pos0; currentPosition.y() < pos11.y(); currentPosition.y()++)
 	{
 		for (currentPosition.x() = croppedBlockRect.x(); currentPosition.x() < pos11.x(); currentPosition.x()++)

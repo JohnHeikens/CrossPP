@@ -1,10 +1,10 @@
 #include "cropData.h"
 #include "cropBlock.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "include/math/graphics/resolutiontexture.h"
 #include <memory>
 #include "tickableBlockContainer.h"
-void cropBlock::render(const renderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
+void cropBlock::render(const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
 {
 	if (identifier == blockID::chorus_flower)
 	{

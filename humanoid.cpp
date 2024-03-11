@@ -61,7 +61,7 @@
 #include "itemStack.h"
 #include "mob.h"
 #include "nbtSerializer.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "slabType.h"
 #include "statusEffectID.h"
 #include "toolTypeID.h"
@@ -166,7 +166,7 @@ void humanoid::updateBodyParts() const
 	head->changed = true;
 }
 
-void humanoid::render(const renderData& targetData) const
+void humanoid::render(const gameRenderData& targetData) const
 {
 	updateBodyParts();
 	//draw the currently held itemStack
@@ -207,7 +207,7 @@ void humanoid::render(const renderData& targetData) const
 		//first rescaled, then transformed to the body, then to the right arm
 
 		//transform rectangle
-		itemHolding->renderSingleItem(itemTransform, targetData.renderTarget);
+		itemHolding->renderSingleItem(targetData.clone(itemTransform));
 	}
 
 	renderBodyPart(mainBodyPart, targetData.worldToRenderTargetTransform, targetData);

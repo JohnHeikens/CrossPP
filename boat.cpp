@@ -50,7 +50,7 @@ boat::boat(dimension* dimensionIn, cvec2& position) : hollowRidableEntity(dimens
 	rightPaddleHandle->children.push_back(rightPaddle);
 }
 
-void boat::render(const renderData& targetData) const
+void boat::render(const gameRenderData& targetData) const
 {
 	//paddle
 	cfp paddleRotation = getPaddleAngle(paddleRotations);

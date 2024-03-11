@@ -10,7 +10,7 @@ fallingBlock::fallingBlock(dimension* dimensionIn, cvec2& position, const blockI
 {
 }
 
-void fallingBlock::render(const renderData& targetData) const
+void fallingBlock::render(const gameRenderData& targetData) const
 {
 	crectangle2 rect = targetData.worldToRenderTargetTransform.multRectMatrix(calculateHitBox());
 

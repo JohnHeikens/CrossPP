@@ -9,7 +9,7 @@ struct boat :public hollowRidableEntity
 	woodTypeID boatType = (woodTypeID)0;
 	static fp getPaddleAngle(cfp& paddleRotations);
 	boat(dimension* dimensionIn, cvec2& position);
-	virtual void render(const renderData& targetData) const override;
+	virtual void render(const gameRenderData& targetData) const override;
 	virtual void tick() override;
 	virtual void onDeath() override;
 	virtual void serializeValue(nbtSerializer& s) override;

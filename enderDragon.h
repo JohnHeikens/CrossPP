@@ -118,7 +118,7 @@ struct enderDragon : public mob
 	bodyPart2D* createDragonLeg(cvec2& attachmentPoint, crectangle2& upperLegTextureRect, cfp& upperLegAngle, crectangle2& lowerLegTextureRect, cfp& lowerLegAngle, crectangle2& footTextureRect, cfp& footAngle);
 	static void createSpine(bodyPart2D* attachTo, bodyPart2D** spinePtr, cint spineCount);
 
-	virtual void render(const renderData& targetData) const override;
+	virtual void render(const gameRenderData& targetData) const override;
 	virtual void tick() override;
 	virtual bool addDamageSource(cfp& damage, std::shared_ptr<damageSource> source) override;
 	virtual void onDeath() override;

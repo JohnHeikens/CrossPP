@@ -17,7 +17,7 @@ zombifiedPiglin::zombifiedPiglin(dimension* dimensionIn, cvec2& position) :human
 	itemHolding = new itemStack(getMaterialTool(toolTypeID::sword, harvestTier::goldHarvestTier), 1);
 }
 
-void zombifiedPiglin::render(const renderData& targetData) const
+void zombifiedPiglin::render(const gameRenderData& targetData) const
 {
 	humanoid::render(targetData);
 }

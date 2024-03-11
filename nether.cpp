@@ -104,7 +104,7 @@ void nether::generateStructures(chunk* generateIn)
 	}
 }
 
-void nether::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const renderData& targetData) const
+void nether::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const gameRenderData& targetData) const
 {
 	//TODO: stop the biome colors from looking like cubes
 	cfp& value = biomeLocationNoise->evaluate(blockRect.getCenter());

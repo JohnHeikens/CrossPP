@@ -16,6 +16,7 @@ struct server {
 	void tick();
 	void updateToTime();
 	void kick(playerSocket* socket);
+	void addToServer(playerSocket* socket);
 	microseconds msPerTick() const;
 	human* findNearestPlayer(dimension* dimensionIn, cvec2& position);
 	fp distanceToNearestPlayer(dimension* dimensionIn, cvec2& position);
@@ -25,3 +26,4 @@ struct server {
 extern server* currentServer;
 void executeServer();
 void createServerFromCurrentWorld();
+playerSocket* listenForIncomingConnections();

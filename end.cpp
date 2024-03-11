@@ -102,16 +102,18 @@ void end::serializeValue(nbtSerializer& s)
 	dimension::serializeValue(s);
 }
 
-void end::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const renderData& targetData) const
+void end::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const gameRenderData& targetData) const
 {
-	if (settings::videoSettings::multiplyBiomeColors)
-	{
-		fillRepeatingTexture(drawRect, *endSkyTexture->scaledTextures[0], targetData.renderTarget);
-	}
-	else
-	{
-		targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::black));
-	}
+	//do not render the end sky, as it is almost impossible to compress, especially with lighting
+	//if (settings::videoSettings::multiplyBiomeColors)
+	//{
+	//	fillRepeatingTexture(drawRect, *endSkyTexture->scaledTextures[0], targetData.renderTarget);
+	//}
+	//else
+	//{
+	//	targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::black));
+	//}
+	targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::magenta));
 }
 
 biomeID end::getBiome(cvec2& position) const

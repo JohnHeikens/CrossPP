@@ -171,7 +171,7 @@ void enderDragon::createSpine(bodyPart2D* attachTo, bodyPart2D** spinePtr, cint 
 	}
 }
 
-void enderDragon::render(const renderData& targetData) const
+void enderDragon::render(const gameRenderData& targetData) const
 {
 	//render death beams
 	if (deathAnimationTicks)
@@ -230,20 +230,20 @@ void enderDragon::tick()
 		enderDragonWingsSound->playRandomSound(dimensionIn, position);
 	}
 
-	//for all hitboxes, check if they hit some blocks. if yes, destroy them
-	std::vector<entity*> collidingEntities = dimensionIn->getCollidingEntities(calculateHitBox());
-	for (entity* e : collidingEntities)
-	{
-		if (isMob(e->entityType) && e != this)
-		{
-			cvec2 knockBack = speed + cvec2(0, randFp(currentRandom, enderDragonMaxAdditionalUpwardsKnockbackForce));
-			e->addDamageSource(enderDragonDamage, std::make_shared<mobDamageSource>(identifier));
-			speed = e->handleCollision(speed, getWeight());
-		}
-	}
-
+	//not: if(health). health can be below 0
 	if (health > 0)
 	{
+		//for all hitboxes, check if they hit some blocks. if yes, destroy them
+		std::vector<entity*> collidingEntities = dimensionIn->getCollidingEntities(calculateHitBox());
+		for (entity* e : collidingEntities)
+		{
+			if (isMob(e->entityType) && e != this)
+			{
+				cvec2 knockBack = speed + cvec2(0, randFp(currentRandom, enderDragonMaxAdditionalUpwardsKnockbackForce));
+				e->addDamageSource(enderDragonDamage, std::make_shared<mobDamageSource>(identifier));
+				speed = e->handleCollision(speed, getWeight());
+			}
+		}
 		//find crystals to heal from
 		std::vector<entity*> nearEntities = dimensionIn->findNearEntities(position, endCrystalHealRange);
 		entity* nearestEndCrystal = nullptr;

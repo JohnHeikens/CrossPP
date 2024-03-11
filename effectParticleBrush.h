@@ -5,5 +5,5 @@ struct effectParticleBrush : textureParticleBrush {
 	effectParticleBrush(const color& effectColor) : effectColor(effectColor), textureParticleBrush(particleID::effect)
 	{
 	}
-	virtual void render(crectangle2& rect, const renderData& targetData) const override;
+	virtual void render(crectangle2& rect, const gameRenderData& targetData) const override;
 };

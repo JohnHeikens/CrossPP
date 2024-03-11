@@ -58,7 +58,7 @@
 #include "lightLevel.h"
 #include "lightLevelID.h"
 #include "mob.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "soundhandler2d.h"
 #include "keyHistoryEvent.h"
 #include "minecraftFont.h"
@@ -339,7 +339,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	player->updateSelection();
 	dimension* dimensionIn = player->dimensionIn;
 
-	const renderData& targetData = getRenderData(renderTarget, secondsBetweenTickAndRender);
+	const gameRenderData& targetData = getRenderData(renderTarget, secondsBetweenTickAndRender);
 
 	crectangle2& worldRect = targetData.renderTargetToWorldTransform.multRectMatrix(crectangle2(targetData.renderTarget.getClientRect()));
 
@@ -489,7 +489,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 		{
 			//move the entity a little, to match speed
 			cvec2& movement = e->getRenderOffset(targetData);
-			renderData entityRenderData = renderData(mat3x3::cross(targetData.worldToRenderTargetTransform, mat3x3::translate(movement)), targetData.renderTarget, targetData.secondsOffset);
+			gameRenderData entityRenderData = gameRenderData(mat3x3::cross(targetData.worldToRenderTargetTransform, mat3x3::translate(movement)), targetData.renderTarget, targetData.screen, targetData.secondsOffset);
 			e->render(entityRenderData);
 		}
 	}
@@ -671,7 +671,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 					crectangle2 selectorDrawRect = crectangle2(hotbarDrawRect.pos0 + vec2(currentHuman->rightHandSlotIndex * hotbarSpacing * hudScale, 0), vec2(hotbarSpacing * hudScale));
 					fillTransparentRectangle((crectangle2)selectorTextureRect, selectorDrawRect, *widgetsTexture, targetData.renderTarget);
 
-					currentHuman->hotbarSlots->render(targetData.renderTarget, hotbarDrawRect.pos0 + (hotbarSpacing - hotbarItemDisplaySize) / 2 * hudScale, hotbarSpacing * hudScale, hotbarItemDisplaySize * hudScale);
+					currentHuman->hotbarSlots->render(targetData, hotbarDrawRect.pos0 + (hotbarSpacing - hotbarItemDisplaySize) / 2 * hudScale, hotbarSpacing * hudScale, hotbarItemDisplaySize * hudScale);
 
 					currentYrowOffset += (hotbarDrawRect.y() + hotbarDrawRect.h());
 
@@ -842,9 +842,9 @@ void gameControl::lostFocus()
 	}
 }
 
-renderData gameControl::getRenderData(const texture& renderTarget, cfp& secondsOffset)
+gameRenderData gameControl::getRenderData(const texture& renderTarget, cfp& secondsOffset)
 {
-	return renderData(worldToRenderTargetTransform, renderTarget, secondsOffset);
+	return gameRenderData(worldToRenderTargetTransform,renderTarget, *this, secondsOffset);
 }
 
 mat3x3 gameControl::getWorldToScreenTransform(cvec2& middleWorldPosition, cfp& pixelsPerBlock)

@@ -8,6 +8,7 @@
 #include "benchMark.h"
 #include <optimization/stableTickLoop.h>
 #include "cpuUsageID.h"
+#include <future>
 server* currentServer = nullptr;
 std::thread* serverThread = nullptr;
 
@@ -22,6 +23,9 @@ void server::execute()
 
 
 	stableLoop loop = stableLoop(1000000 / 60);
+	//connectionManagerThread = new std::thread(listenForIncomingConnections);
+
+	std::future<playerSocket*> newPlayerSocket = std::async(&listenForIncomingConnections);
 
 	while (!stopping) {//server loop
 		loop.waitTillNextLoopTime();
@@ -30,6 +34,7 @@ void server::execute()
 		//render
 		renderClients();
 		currentBenchmark->addBenchmarkPoint(cpuUsageID::networking);
+
 		for (int i = 0; i < clients.size();) {
 			if (clients[i]->shouldDisconnect) {
 				kick(clients[i]);
@@ -39,42 +44,21 @@ void server::execute()
 			}
 		}
 
-
-		//seconds tickTimeLeft = lastTickTime + microsectosec(msPerTick()) - getSeconds();
-		//dummy time
-		if (listenerSelector.wait(sf::microseconds(1))) {
-
-			// received something
-			//if (selector.isReady(listener))
-			//{
-				// accept a new connection
-			sf::TcpSocket* clientSocket = new sf::TcpSocket();
-			if (listener.accept(*clientSocket) != sf::Socket::Done)
-			{
-				// error...
-			}
-
-
-			playerSocket* socket = new playerSocket(clientSocket);
-			if (socket->authenticated)
-			{
-				clients.push_back(socket);
-				//selector.add(*clientSocket);
-			}
-			else {
-				//this client didn't authenticate
-				delete socket;
-			}
-			//}
+		if (playerSocket* newSocket = newPlayerSocket.get()) {
+			addToServer(newSocket);
 		}
-		//for (auto c : clients) {
-		//	if (selector.isReady(*c->s.socket)) {
-		//		//the client has sent us data
-		//		c->processSocketInput();
-		//	}
-		//}
+		newPlayerSocket = std::async(&listenForIncomingConnections);
+		//connectionManagerThread->join();
+		//delete connectionManagerThread;
+		//connectionManagerThread = new std::thread(listenForIncomingConnections);
+
+
+
+
+		currentBenchmark->addBenchmarkPoint(cpuUsageID::miscellaneous);
 
 	}
+	//delete connectionManagerThread;
 	const std::vector<playerSocket*> copy = clients;
 	for (playerSocket* const& c : copy) {
 		kick(c);
@@ -190,6 +174,12 @@ void server::kick(playerSocket* socket)
 	socket->s.socket->disconnect();
 }
 
+void server::addToServer(playerSocket* socket)
+{
+	socket->player->addToWorld(socket->player->identifier);
+	clients.push_back(socket);
+}
+
 microseconds server::msPerTick() const
 {
 	return everyoneSleeping ? microSecondsPerTick / 0x10 : microSecondsPerTick;
@@ -245,4 +235,44 @@ void createServerFromCurrentWorld()
 	currentServer = new server();
 	serverThread = new std::thread(executeServer);//starts the server
 	currentClient->connectToServer(serverData());
+}
+
+playerSocket* listenForIncomingConnections()
+{
+	//seconds tickTimeLeft = lastTickTime + microsectosec(msPerTick()) - getSeconds();
+//dummy time
+
+	if (currentServer->listenerSelector.wait(sf::microseconds(1))) {
+
+		// received something
+		//if (selector.isReady(listener))
+		//{
+			// accept a new connection
+		sf::TcpSocket* clientSocket = new sf::TcpSocket();
+		if (currentServer->listener.accept(*clientSocket) != sf::Socket::Done)
+		{
+			// error...
+		}
+
+
+		playerSocket* socket = new playerSocket(clientSocket);
+
+		if (socket->authenticated)
+		{
+			return socket;
+			//selector.add(*clientSocket);
+		}
+		else {
+			//this client didn't authenticate
+			delete socket;
+		}
+		//}
+	}
+	return nullptr;
+	//for (auto c : clients) {
+	//	if (selector.isReady(*c->s.socket)) {
+	//		//the client has sent us data
+	//		c->processSocketInput();
+	//	}
+	//}
 }

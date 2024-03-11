@@ -73,7 +73,7 @@ void experienceOrb::tick()
 	entity::tick();
 }
 
-void experienceOrb::render(const renderData& targetData) const
+void experienceOrb::render(const gameRenderData& targetData) const
 {
 	cint experienceTableIndex = getExperienceTableIndex(value);
 	//calculate draw offset

@@ -2,7 +2,7 @@
 #include "doubleBlockData.h"
 #include "doorData.h"
 #include "renderBrush.h"
-void doubleBlock::render(const renderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
+void doubleBlock::render(const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
 {
 	const resolutionTexture& blockPartTexture = (dynamic_cast<doubleBlockData*>(data))->isPart0 ? *part0Tex : *part1Tex;
 	if (isDoor(identifier))

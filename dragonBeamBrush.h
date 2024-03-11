@@ -1,7 +1,7 @@
 #pragma once
 #include "include/math/graphics/brush/brush.h"
 constexpr color dragonDyingBeamStartColor = colorPalette::white;
-constexpr color dragonDyingBeamEndColor = colorPalette::purple;
+constexpr color dragonDyingBeamEndColor = colorPalette::magenta;
 template<typename brush0Type>
 struct dragonBeamBrush : colorBrush
 {

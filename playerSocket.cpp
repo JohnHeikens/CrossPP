@@ -41,9 +41,13 @@ playerSocket::playerSocket(sf::TcpSocket* socket)
 	serialize(playerUUID);
 	std::wstring playerName;
 	serializeWStringAsString(playerName);
-	player = currentWorld->joinPlayer(playerUUID, playerName, *screen);
-	screen->player = player;
+	screen->player = player = new human(currentWorld->dimensions[(int)currentWorld->worldSpawnDimension], vec2(), *screen, playerName);
+	crectangle2& relativeHitbox = player->calculateHitBox();
 
+	player->position = cvec2(currentWorld->worldSpawnPoint.x() + 0.5, currentWorld->worldSpawnPoint.y()) - relativeHitbox.pos0 + cvec2(relativeHitbox.size.x() * -0.5, 0);
+	player->newPosition = player->position;
+
+	player->identifier = playerUUID;
 	player->serialize(false);
 }
 

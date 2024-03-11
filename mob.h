@@ -56,10 +56,10 @@ struct mob :public entity
 	virtual ~mob();
 	mob(dimension* dimensionIn, cvec2& position, const entityID& entityType);
 	void exitRodeEntity();
-	void renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const renderData& targetData) const;
+	void renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const gameRenderData& targetData) const;
 
 	template<typename brush0Type>
-	inline void renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const brush0Type& skin, const renderData& targetData) const;
+	inline void renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const brush0Type& skin, const gameRenderData& targetData) const;
 	virtual void updateSelection();
 	void resetAmbientSoundCoolDown();
 
@@ -70,7 +70,7 @@ struct mob :public entity
 	virtual void onCollisionWithGround(cfp& verticalSpeed) override;
 	//does not initialize the head
 	virtual void serializeValue(nbtSerializer& s) override;
-	virtual void render(const renderData& targetData) const override;
+	virtual void render(const gameRenderData& targetData) const override;
 	bool shouldJump(bool& wantsToGoLeft, bool& wantsToGoRight) const;
 	void lookForward();
 	void lookAtEntity(entity* const& e);
@@ -82,7 +82,7 @@ struct mob :public entity
 	void updateHeadAngle()  const;
 };
 template<typename brush0Type>
-inline void mob::renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const brush0Type& skin, const renderData& targetData) const
+inline void mob::renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const brush0Type& skin, const gameRenderData& targetData) const
 {
 	if (getEffectLevel(statusEffectID::invisibility) == 0)
 	{

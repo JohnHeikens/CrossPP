@@ -48,7 +48,7 @@
 #include "nbtData.h"
 #include "nbtDataTag.h"
 #include "nbtSerializer.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "dimension.h"
 #include "renderBrush.h"
 void blockContainer::setBlockRange(cveci2& pos0, cveci2& pos1, const blockID& block, const chunkLoadLevel& minimalLoadLevel)
@@ -552,17 +552,17 @@ int blockContainer::getDecayStrength(cveci2& positionFrom, cveci2& positionTo, c
 		return math::minimum(toFilterStrength + decayStrengthExitingFrom, maxStrength);
 	}
 }
-void renderCollisionData(blockContainer* containerIn, cveci2& position, const resolutionTexture& tex, const renderData& targetData)
+void renderCollisionData(blockContainer* containerIn, cveci2& position, const resolutionTexture& tex, const gameRenderData& targetData)
 {
 	renderCollisionData(containerIn, position, crectangle2(tex.getClientRect()), tex, targetData);
 }
-void renderCollisionData(blockContainer* containerIn, cveci2& position, const renderData& targetData)
+void renderCollisionData(blockContainer* containerIn, cveci2& position, const gameRenderData& targetData)
 {
 	const block* blockToRender = containerIn->getBlock(position);
 	renderCollisionData(containerIn, position, *blockToRender->tex, targetData);
 }
 template<typename brush0Type>
-void renderCollisionData(blockContainer* containerIn, cveci2& position, crectangle2& brushRect, const brush0Type& b, const renderData& targetData)
+void renderCollisionData(blockContainer* containerIn, cveci2& position, crectangle2& brushRect, const brush0Type& b, const gameRenderData& targetData)
 {
 	const block* blockToRender = containerIn->getBlock(position);
 	const mat3x3& transform = block::getBrushRectToWorldTransform(brushRect, targetData.worldToRenderTargetTransform, position);

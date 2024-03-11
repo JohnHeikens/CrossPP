@@ -18,7 +18,7 @@ struct end :dimension
 	virtual generationData* generateTerrain(chunk* generateIn) override;
 	virtual void generateStructures(chunk* generateIn) override;
 	virtual void serializeValue(nbtSerializer& s) override;
-	virtual void renderSky(crectangle2& blockRect, crectangle2& drawRect, const renderData& targetData) const override;
+	virtual void renderSky(crectangle2& blockRect, crectangle2& drawRect, const gameRenderData& targetData) const override;
 	virtual biomeID getBiome(cvec2& position) const final;
 	virtual void initialize() override;
 	virtual ~end() override;

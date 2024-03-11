@@ -7,7 +7,7 @@
 #include "videoSettingsForm.h"
 #include "soundSettingsForm.h"
 #include "musicCollection.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "clientInput.h"
 #include "creditsForm.h"
 #include "soundPacket.h"
@@ -64,7 +64,7 @@ struct gameControl : form, clientInput
 	std::vector<soundPacket> dataToSend = std::vector<soundPacket>();
 
 	void renderGame(crectanglei2& rect, const texture& renderTarget, cbool& renderHUD);
-	renderData getRenderData(const texture& renderTarget, cfp& secondsOffset = 0);
+	gameRenderData getRenderData(const texture& renderTarget, cfp& secondsOffset = 0);
 	mat3x3 getWorldToScreenTransform(cvec2& middleWorldPosition, cfp& pixelsPerBlock);
 };
 

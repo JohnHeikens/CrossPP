@@ -4,6 +4,10 @@
 #include "itemID.h"
 #include "itemTag.h"
 #include "enchantment.h"
+#include "math/graphics/texture.h"
+#include "math/rectangletn.h"
+#include "math/mattnxn.h"
+#include "gameRenderData.h"
 struct itemStack : IDestructable, nbtSerializable
 {
 	itemStack(itemID stackItemID = (itemID)0, cint& count = 0, itemTag* data = nullptr, std::vector<enchantment*> enchantments = std::vector<enchantment*>()) :
@@ -35,8 +39,8 @@ struct itemStack : IDestructable, nbtSerializable
 	itemTag* data = nullptr;
 	std::vector<enchantment*> enchantments = std::vector<enchantment*>();
 
-	void render(crectangle2& rect, const texture& renderTarget) const;
-	void renderSingleItem(cmat3x3& transform, const texture& renderTarget) const;
+	void render(crectangle2& rect, const gameRenderData& targetData) const;
+	void renderSingleItem(const gameRenderData& targetData) const;
 
 	int getEnchantmentLevel(const enchantmentID& identifier) const;
 	void drawToolTips(cveci2& position, const texture& renderTarget) const;

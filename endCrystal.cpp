@@ -14,7 +14,7 @@ endCrystal::endCrystal(dimension* dimensionIn, cvec2& position) :entity(dimensio
 	outerPart->drawOrderIndex = outerPart->children.size();
 }
 
-void endCrystal::render(const renderData& targetData) const
+void endCrystal::render(const gameRenderData& targetData) const
 {
 	outerPart->angle = (currentFrameStartSeconds / 8) * math::PI2;
 

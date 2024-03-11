@@ -94,7 +94,7 @@ void collisionDataCollection::evaluate(crectangle2& hitboxToTest, cvec2& hitboxS
 	}
 }
 
-void collisionDataCollection::render(const renderData& targetData) const
+void collisionDataCollection::render(const gameRenderData& targetData) const
 {
 	for (const collisionData& hitbox : hitboxes)
 	{

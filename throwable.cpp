@@ -52,7 +52,7 @@ void throwable::tick()
 	entity::tick();
 }
 
-void throwable::render(const renderData& targetData) const
+void throwable::render(const gameRenderData& targetData) const
 {
 	crectangle2 hitboxRect = calculateHitBox();
 	renderTexture(hitboxRect, targetData.worldToRenderTargetTransform, true, standardUpFacingBlockDirection, *((throwableData*)entityDataList[(int)entityType])->tex, targetData.renderTarget, true);

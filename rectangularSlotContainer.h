@@ -9,7 +9,7 @@ struct rectangularSlotContainer :public slotContainer, public IDestructable
 	itemStack* slots = nullptr;//array of slots
 	rectangularSlotContainer(cveci2& rowsAndColumns);
 	inline itemStack* getSlot(cveci2& pos) { return slots + pos.x() + pos.y() * rowsAndColumns.x(); }
-	void render(const texture& renderTarget, cvec2& pos, cfp& offset, cfp& itemDrawSize);
+	void render(const gameRenderData& targetData, cvec2& pos, cfp& offset, cfp& itemDrawSize);
 	bool getSlot(cveci2& mousePos, cveci2& drawPos, cint& offset, cint& itemDrawSize, veci2& slotPosition) const;
 	bool addStack(itemStack& stack) const;
 	int countAmount(const itemStack& stack) const;

@@ -165,7 +165,7 @@ struct colortn : public vectn<t, channelCount>
 	//https://en.wikipedia.org/wiki/Bilinear_interpolation
 	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount> (&colorsToInterpolate)[4], cvec2& weights)
 	{
-		cvec2& invertedWeigths = 1 - weights;
+		cvec2& invertedWeigths = (fp)1 - weights;
 		cfp weightArray[4]
 		{
 			invertedWeigths.x() * invertedWeigths.y(),
@@ -280,7 +280,7 @@ namespace colorPalette
 	static constexpr color green = color(0, color::maxValue, 0);
 	static constexpr color blue = color(0, 0, color::maxValue);
 	static constexpr color yellow = color(color::maxValue, color::maxValue, 0);
-	static constexpr color purple = color(color::maxValue, 0, color::maxValue);
+	static constexpr color magenta = color(color::maxValue, 0, color::maxValue);
 	static constexpr color cyan = color(0, color::maxValue, color::maxValue);
 	static constexpr color white = color(color::maxValue, color::maxValue, color::maxValue);
 	static constexpr color gray = color(color::halfMaxValue, color::halfMaxValue, color::halfMaxValue);

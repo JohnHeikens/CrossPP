@@ -158,20 +158,20 @@ itemStack::~itemStack()
 	clearData();
 }
 
-void itemStack::render(crectangle2& rect, const texture& renderTarget) const
+void itemStack::render(crectangle2& rect, const gameRenderData& targetData) const
 {
 	if (count)
 	{
 		const resolutionTexture& textureToUse = replaceIfMissing(itemList[stackItemID]->tex);
 		cmat3x3& matrix = mat3x3::fromRectToRect(crectangle2(textureToUse.getClientRect()), rect);
-		renderSingleItem(matrix, renderTarget);
+		renderSingleItem(targetData.clone(matrix));
 		if (count > 1)
 		{
 			//draw text
 			std::wstring s = std::to_wstring(count);
 			cveci2 size = cveci2((int)(s.size() * defaultTheme().font->fontSize), (int)defaultTheme().font->fontSize);
 			cvec2 topRight = rect.pos1();
-			defaultTheme().font->DrawString(s, rectangle2(topRight.x() - size.x(), rect.pos0.y(), size.x(), size.y()), renderTarget);
+			currentMinecraftFont->DrawString(s, rectangle2(topRight.x() - size.x(), rect.pos0.y(), size.x(), size.y()), targetData.renderTarget);
 		}
 
 		if (hasDurability(stackItemID))
@@ -183,19 +183,19 @@ void itemStack::render(crectangle2& rect, const texture& renderTarget) const
 				cfp& margin = 0.1;
 				crectangle2& durabilityBarRect = getAbsoluteRect(rect, crectangle2(margin, margin, 1 - (margin * 2), 0.15));
 
-				renderTarget.fillRectangle(durabilityBarRect, brushes::black);
+				targetData.renderTarget.fillRectangle(durabilityBarRect, brushes::black);
 
 				crectangle2& durabilityRect = getAbsoluteRect(durabilityBarRect, crectangle2(0, 0.5, toDurabilityData->durability, 0.5));
 
 				ccolor& durabilityColor = color::lerpcolor(colorPalette::red, colorPalette::green, toDurabilityData->durability);
-				renderTarget.fillRectangle(durabilityRect, solidColorBrush(durabilityColor));
+				targetData.renderTarget.fillRectangle(durabilityRect, solidColorBrush(durabilityColor));
 			}
 		}
 	}
 }
 
 #pragma optimize( "", off )
-void itemStack::renderSingleItem(cmat3x3& transform, const texture& renderTarget) const
+void itemStack::renderSingleItem(const gameRenderData& targetData) const
 {
 	if (count)
 	{
@@ -215,22 +215,22 @@ void itemStack::renderSingleItem(cmat3x3& transform, const texture& renderTarget
 
 			const auto& screenMask = alphaMask<resolutionTexture, decltype(mixer)>(textureToUse, mixer);
 
-			fillTransparentRectangle(textureRect, transform, screenMask, renderTarget);
+			fillTransparentRectangle(textureRect, targetData.worldToRenderTargetTransform, screenMask, targetData.renderTarget);
 		}
 		else
 		{
 			if (isBlockItem(stackItemID) && !isDoubleBlock((blockID)stackItemID)) {
 				//transform from block container to texture
-				cmat3x3& matrix = mat3x3::cross(transform, mat3x3::fromRectToRect(crectangle2(0, 0, 1, 1), textureRect));
+				cmat3x3& matrix = mat3x3::cross(targetData.worldToRenderTargetTransform, mat3x3::fromRectToRect(crectangle2(0, 0, 1, 1), textureRect));
 				const blockID& itemBlock = (blockID)stackItemID;
 				cveci2& blockPosition = cveci2();
-				const renderData& targetData = renderData(matrix, renderTarget);
+				const gameRenderData& transformedData = gameRenderData(matrix, targetData.renderTarget, targetData.screen);
 				renderBlockContainer container = renderBlockContainer(cveci2(1));
 				container.setBlockID(cveci2(), (blockID)stackItemID);
-				blockList[itemBlock]->render(targetData, container.getBlockData(blockPosition), &container, blockPosition);
+				blockList[itemBlock]->render(transformedData, container.getBlockData(blockPosition), &container, blockPosition);
 			}
 			else {
-				fillTransparentRectangle(textureRect, transform, textureToUse, renderTarget);
+				fillTransparentRectangle(textureRect, targetData.worldToRenderTargetTransform, textureToUse, targetData.renderTarget);
 			}
 		}
 		if (isPotion(stackItemID))
@@ -253,10 +253,10 @@ void itemStack::renderSingleItem(cmat3x3& transform, const texture& renderTarget
 				potionColor = waterColor;
 			}
 			const solidColorBrush& potionColorBrush = solidColorBrush(potionColor);
-			mat3x3 mipmapTransform = transform;
+			mat3x3 mipmapTransform = targetData.worldToRenderTargetTransform;
 			rectangle2 rect = crectangle2(blockTextureRect);
 			const auto& mult = colorMultiplier<texture, solidColorBrush>(potionOverlayTexture->mipmap(mipmapTransform, rect), potionColorBrush);
-			fillTransparentRectangle(rect, mipmapTransform, mult, renderTarget);
+			fillTransparentRectangle(rect, mipmapTransform, mult, targetData.renderTarget);
 		}
 	}
 }

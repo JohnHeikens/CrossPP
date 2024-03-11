@@ -75,7 +75,6 @@ constexpr fp maxExperienceSpeed = maxFloatingSlotSpeed;
 constexpr fp gravityForce = 1.6;
 
 
-
 constexpr powerLevel maxPowerLevel = 0x100;
 
 constexpr fluidLevel maxFluidLevel = 0x100;
@@ -171,6 +170,11 @@ constexpr fp pistonTopSize = pistonTopPixelSize / (fp)blockTextureSize;
 constexpr fp pistonArmSize = pistonTopSize;
 
 constexpr fp redstoneWireHeight = 1.0 / 0x10;
+
+constexpr int chestPixelPadding = 1;
+constexpr int chestPixelWidth = blockTextureSize - chestPixelPadding * 2;
+constexpr int chestPixelHeight = blockTextureSize - chestPixelPadding;
+constexpr rectangle2 chestBlockRect = crectangle2(chestPixelPadding / (fp)blockTextureSize, 0, chestPixelWidth / (fp)blockTextureSize, chestPixelHeight / (fp)blockTextureSize);
 
 constexpr int floatingSlotDespawnTicks = 5 * ticksPerRealLifeMinute;
 constexpr int particleDespawnTicks = ticksPerRealLifeSecond;

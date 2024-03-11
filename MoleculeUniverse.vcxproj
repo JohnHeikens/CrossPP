@@ -582,6 +582,7 @@
     <ClInclude Include="clientInput.h" />
     <ClInclude Include="effectParticleBrush.h" />
     <ClInclude Include="fpng.h" />
+    <ClInclude Include="gameRenderData.h" />
     <ClInclude Include="include\math\graphics\brush\font\baseFont.h" />
     <ClInclude Include="minecraftFont.h" />
     <ClInclude Include="include\network\compressedPacket.h" />

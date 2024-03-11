@@ -7,7 +7,7 @@ rectangularSlotContainer::rectangularSlotContainer(cveci2& rowsAndColumns)
 	slots = new itemStack[rowsAndColumns.x() * rowsAndColumns.y()]();//initialize to default value(nullptr)
 }
 
-void rectangularSlotContainer::render(const texture& renderTarget, cvec2& pos, cfp& offset, cfp& itemDrawSize)
+void rectangularSlotContainer::render(const gameRenderData& targetData, cvec2& pos, cfp& offset, cfp& itemDrawSize)
 {
 	//draw slots
 	const itemStack* currentSlot = this->slots;
@@ -18,7 +18,7 @@ void rectangularSlotContainer::render(const texture& renderTarget, cvec2& pos, c
 			if (currentSlot->count)
 			{
 				cvec2& currentPosition = pos + cvec2(i, j) * offset;
-				currentSlot->render(crectangle2(currentPosition, cvec2(itemDrawSize)), renderTarget);
+				currentSlot->render(crectangle2(currentPosition, cvec2(itemDrawSize)), targetData);
 			}
 			//renderTarget.fillTexture(crectangle2(slots[i + j * rowsAndColumns.x()].item->textureCoords, veci2(blockTextureSize)), crectangle2(offset, cvec2(blockTextureSize)), *blockTextures);
 		}

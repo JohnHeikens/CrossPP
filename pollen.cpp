@@ -3,7 +3,7 @@
 #include "dimension.h"
 #include "idConverter.h"
 
-void pollen::render(const renderData& targetData) const
+void pollen::render(const gameRenderData& targetData) const
 {
 	targetData.renderTarget.fillEllipse(targetData.worldToRenderTargetTransform.multRectMatrix(calculateHitBox()), solidColorBrush(colorPalette::gray));
 }

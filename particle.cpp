@@ -26,7 +26,7 @@ void particle::tick()
 	entity::tick();
 }
 
-void particle::render(const renderData& targetData) const
+void particle::render(const gameRenderData& targetData) const
 {
 	this->brush->render(calculateHitBox(), targetData);
 }

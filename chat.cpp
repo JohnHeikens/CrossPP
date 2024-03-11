@@ -47,6 +47,7 @@
 #include "statusEffect.h"
 #include "statusEffectID.h"
 #include "structureID.h"
+#include "minecraftFont.h"
 
 constexpr int selectedPositionCount = 2;
 vec2 selectedPositions[selectedPositionCount]{};
@@ -742,13 +743,14 @@ void chat::render(const texture& renderTarget, const gameControl& screen) const
 	int lineCount = 0;
 	cint maxLineCount = 0x10;
 	vec2 offset = cvec2(screen.commandLineTextbox->rect.pos01());
+	minecraftFont f = minecraftFont();
 	for (int i = (int)linesSaid.size() - 1; (i >= 0) && (lineCount < maxLineCount); i--)
 	{
 		if (((timesSaid[i] + chatTime) > currentWorld->ticksSinceStart) || showMoreChat)
 		{
 			//this applies even in the top left
-			veci2 size = defaultTheme().font->measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
-			defaultTheme().font->DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
+			veci2 size = f.measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
+			f.DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
 			lineCount++;
 			offset.y() += size.y();
 		}

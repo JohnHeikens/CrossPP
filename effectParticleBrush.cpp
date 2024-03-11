@@ -4,9 +4,9 @@
 #include "math/graphics/resolutiontexture.h"
 #include "math/mattnxn.h"
 #include "math/rectangletn.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 
-void effectParticleBrush::render(crectangle2& rect, const renderData& targetData) const
+void effectParticleBrush::render(crectangle2& rect, const gameRenderData& targetData) const
 {
 	const resolutionTexture& tex = getTexture();
 	fillTransparentRectangle(tex.getClientRect(), mat3x3::cross(targetData.worldToRenderTargetTransform, mat3x3::fromRectToRect(tex.getClientRect(), rect)),

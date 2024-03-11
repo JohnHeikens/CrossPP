@@ -43,22 +43,29 @@ fontFamily::fontFamily(resolutionTexture* tex, cbool& flipRows)
 	
 	int fontScaleMultiplier = (int)(topTextureToEdit.size.x() / asciiRowWidth);
 	for (int i = 0; i < asciiLetterCount; i++) {
+
 		cveci2& asciiOffset = getAsciiOffset((byte)i);
 		cveci2& multipliedOffset = asciiOffset * fontScaleMultiplier;
 		crectanglei2& rectToSearch = rectanglei2(multipliedOffset, fontScaleMultiplier);
 		int width = 0;
+		rectanglei2 pixelRect = rectanglei2();
 		for (int y = 0; y < fontScaleMultiplier; y++){
-			for (int x = width + 1; x < fontScaleMultiplier; x++) {
+			for (int x = 0; x < fontScaleMultiplier; x++) {
 				veci2 realPos = veci2(x, y) + multipliedOffset;
 				if (topTextureToEdit.getValueUnsafe(realPos).a())
 				{
-					width = x;
-
+					if (!width) {
+						pixelRect = rectanglei2(realPos, veci2(1));
+					}
+					else {
+						pixelRect.expandToContain(crectanglei2(realPos, veci2(1)));
+					}
+					width = math::maximum(width, x);
 				}
 			}
 		}
 		letterWidths[i] = width / (fp)fontScaleMultiplier;
-
+		croppedLetterRects[i] = crectangle2(pixelRect).multiplied(1.0 / tex->getScaleModifier());
 	}
 }
 

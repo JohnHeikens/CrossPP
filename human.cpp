@@ -104,7 +104,7 @@
 #include "mob.h"
 #include "nbtSerializable.h"
 #include "nbtSerializer.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "smithingTableSlotContainer.h"
 #include "soundCollection.h"
 #include "soundhandler2d.h"
@@ -557,10 +557,12 @@ std::vector<vec3> human::getFrictions() const
 	return flying ? std::vector<vec3>({ noCollisionFriction }) : humanoid::getFrictions();
 }
 
-void human::render(const renderData& targetData) const
+void human::render(const gameRenderData& targetData) const
 {
 	if (currentGameMode == gameModeID::spectator)
 	{
+		if (targetData.screen.player->currentGameMode != gameModeID::spectator) return;
+
 		updateBodyParts();
 
 		const auto& transparencyBrush = solidColorBrush(color(color::halfMaxValue, 0));
@@ -573,21 +575,21 @@ void human::render(const renderData& targetData) const
 	{
 		head->hasTransparency = false;
 		humanoid::render(targetData);
-		if (!sneaking) {
-			//render nametag
-			crectangle2& hitbox = calculateHitBox();
-			constexpr fp averageLetterRelativeWidth = 0.7;
-			constexpr fp averageNameLetterCount = 7.0;
-			constexpr fp averageNameTagSize = 1.0;
-			constexpr fp letterSize = averageNameTagSize / (averageNameLetterCount * averageLetterRelativeWidth);
-			constexpr fp maxNameLength = 2.0;
-			minecraftFont clonedFont = minecraftFont(letterSize);
-			cvec2& nameTagMiddleBottom = hitbox.pos0 + cvec2(hitbox.size.x() * 0.5, hitbox.size.y());
-			cvec2& movedBottom = nameTagMiddleBottom + cvec2(clonedFont.measureStringSize(cvec2(maxNameLength, letterSize), name) * -0.5, 0);
+	}
+	if (!sneaking) {
+		//render nametag
+		crectangle2& hitbox = calculateHitBox();
+		constexpr fp averageLetterRelativeWidth = 0.7;
+		constexpr fp averageNameLetterCount = 7.0;
+		constexpr fp averageNameTagSize = 1.0;
+		constexpr fp letterSize = averageNameTagSize / (averageNameLetterCount * averageLetterRelativeWidth);
+		constexpr fp maxNameLength = 2.0;
+		minecraftFont clonedFont = minecraftFont(letterSize);
+		cvec2& nameTagMiddleBottom = hitbox.pos0 + cvec2(hitbox.size.x() * 0.5, hitbox.size.y());
+		cvec2& movedBottom = nameTagMiddleBottom + cvec2(clonedFont.measureStringSize(cvec2(maxNameLength, letterSize), name) * -0.5, 0);
 
-			rectangle2 nameTagRect = crectangle2(movedBottom, cvec2(maxNameLength, letterSize));
-			clonedFont.DrawString(name, nameTagRect, targetData.renderTarget, targetData.worldToRenderTargetTransform);
-		}
+		rectangle2 nameTagRect = crectangle2(movedBottom, cvec2(maxNameLength, letterSize));
+		clonedFont.DrawString(name, nameTagRect, targetData.renderTarget, targetData.worldToRenderTargetTransform);
 	}
 }
 

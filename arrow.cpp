@@ -8,7 +8,7 @@ arrow::arrow(dimension* dimensionIn, cvec2& position) : throwable(dimensionIn, p
 	mainBodyPart = new bodyPart2D(arrowTextureRect, nullptr, position, arrowSize, arrowSize * 0.5);
 	mainBodyPart->hasTransparency = true;
 }
-void arrow::render(const renderData& targetData) const
+void arrow::render(const gameRenderData& targetData) const
 {
 	mainBodyPart->translate = position;
 	if (speed.x() != 0 || speed.y() != 0)

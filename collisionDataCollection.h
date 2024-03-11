@@ -1,7 +1,7 @@
 #pragma once
 #include "collisionData.h"
 #include "collisionEdgeData.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include <map>
 struct collisionDataCollection
 {
@@ -19,5 +19,5 @@ struct collisionDataCollection
 	//y : size
 	collisionEdgeData getEdges(cfp& location, const directionID& checkDirection) const;
 	void evaluate(crectangle2& hitboxToTest, cvec2& hitboxSpeed, cfp& maxDuration);
-	void render(const renderData& targetData) const;
+	void render(const gameRenderData& targetData) const;
 };

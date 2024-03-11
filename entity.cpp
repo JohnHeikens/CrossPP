@@ -85,7 +85,7 @@
 #include "nbtData.h"
 #include "nbtDataTag.h"
 #include "nbtSerializer.h"
-#include "renderData.h"
+#include "gameRenderData.h"
 #include "slime.h"
 #include "statusEffect.h"
 #include "statusEffectID.h"
@@ -114,7 +114,7 @@ int entity::getEffectLevel(const statusEffectID& id) const
 	}
 	return highestPotency;
 }
-vec2 entity::getRenderOffset(const renderData& targetData) const
+vec2 entity::getRenderOffset(const gameRenderData& targetData) const
 {
 	//when traveling to another dimension, don't interpolate positions
 	return dimensionIn == newDimension ? targetData.getRenderOffset(position, newPosition) : position;
@@ -720,7 +720,7 @@ entity::~entity()
 		delete tasks;
 	}
 }
-void entity::render(const renderData& targetData) const
+void entity::render(const gameRenderData& targetData) const
 {
 	//render fire
 	if (fireTicks)
@@ -1145,7 +1145,7 @@ void entity::teleportTo(dimension* newDimension, cvec2& newPosition, cbool& play
 	}
 }
 
-void entity::renderHitboxes(const renderData& targetData) const
+void entity::renderHitboxes(const gameRenderData& targetData) const
 {
 	renderBlockRect(calculateHitBox(), targetData);
 	cvec2 pos0 = targetData.worldToRenderTargetTransform.multPointMatrix(position);

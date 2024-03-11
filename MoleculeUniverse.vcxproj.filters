@@ -1081,6 +1081,12 @@
     <Filter Include="Source Files\UI\accountEditor">
       <UniqueIdentifier>{a1849b70-2a9e-4b14-a083-1a116ba6650c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\rendering\renderData">
+      <UniqueIdentifier>{c31f5eae-94a4-4062-9a3c-eb01aadc8ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rendering\renderData\gameRenderData">
+      <UniqueIdentifier>{c6d13aff-df87-4173-a0ac-f328ac611cbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
@@ -2266,9 +2272,6 @@
     </ClInclude>
     <ClInclude Include="statusEffect.h">
       <Filter>Source Files\statusEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="renderData.h">
-      <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="world.h">
       <Filter>Source Files\world</Filter>
@@ -3685,6 +3688,12 @@
     </ClInclude>
     <ClInclude Include="accountEditor.h">
       <Filter>Source Files\UI\accountEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="renderData.h">
+      <Filter>Source Files\rendering\renderData</Filter>
+    </ClInclude>
+    <ClInclude Include="gameRenderData.h">
+      <Filter>Source Files\rendering\renderData\gameRenderData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
