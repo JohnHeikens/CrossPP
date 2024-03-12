@@ -538,11 +538,14 @@ void tickableBlockContainer::tick()
 		}
 		else
 		{
-			if (!data->tick(this, blockUpdatePositions[i]))
+			if (data->tick(this, blockUpdatePositions[i]))
+			{
+				data->ticked = true;//only set data->ticked to true when it still expects more ticks. else the block might be deleted
+			}
+			else
 			{
 				blockUpdatePositions.erase(i);
 			}
-			data->ticked = true;
 		}
 	}
 }

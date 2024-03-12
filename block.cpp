@@ -161,16 +161,6 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 		cfp drawHeightLeft = valueTop > 0 || blockBelow == blockID::air ? 1 : (math::maximum(currentData->currentFluidLevel, valueLeft)) / (fp)maxFluidLevel;
 		cfp drawHeightRight = valueTop > 0 || blockBelow == blockID::air ? 1 : (math::maximum(currentData->currentFluidLevel, valueRight)) / (fp)maxFluidLevel;
 
-		fastArray<vec2> positions({
-			cvec2(),
-			cvec2(0,drawHeightLeft),
-			cvec2(1,drawHeightRight),
-			cvec2(1, 0)
-			});
-		for (int i = 0; i < 4; i++)
-		{
-			positions[i] = targetData.worldToRenderTargetTransform.multPointMatrix(positions[i] + blockPosition);
-		}
 		color c = identifier == blockID::water ? waterColor : lavaColor;
 
 		cfp partFilled = (drawHeightLeft + drawHeightRight) * 0.5;
@@ -178,7 +168,22 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 
 		const solidColorBrush b = solidColorBrush(color(c, (colorChannel)(c.a() * transparencyMultiplier)));
 		const auto m = colorMixer<solidColorBrush, texture>(b, targetData.renderTarget);
-		targetData.renderTarget.fillPolygon(positions, m);
+		if (drawHeightLeft == drawHeightRight) {
+			targetData.renderTarget.fillTransformedRectangle(crectangle2(cvec2(blockPosition), cvec2(1, drawHeightLeft)), targetData.worldToRenderTargetTransform, m);
+		}
+		else {
+			fastArray<vec2> positions({
+				cvec2(),
+				cvec2(0,drawHeightLeft),
+				cvec2(1,drawHeightRight),
+				cvec2(1, 0)
+				});
+			for (int i = 0; i < 4; i++)
+			{
+				positions[i] = targetData.worldToRenderTargetTransform.multPointMatrix(positions[i] + blockPosition);
+			}
+			targetData.renderTarget.fillPolygon(positions, m);
+		}
 		return;
 	}
 	else if (isTorch(identifier))

@@ -314,7 +314,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	headPosition = player->getHeadPosition();
 	if (player->dimensionIn == player->newDimension)
 	{
-		headPosition += (player->newPosition - player->position) * (ticksPerRealLifeSecond * secondsBetweenTickAndRender);
+		headPosition += (player->newPosition - player->position) * math::minimum(secondsBetweenTickAndRender, secondsPerTick) * ticksPerRealLifeSecond;
 	}
 
 	cmat3x3 mouseLookingTransform = getWorldToScreenTransform(headPosition, pixelsPerBlock);
@@ -339,7 +339,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	player->updateSelection();
 	dimension* dimensionIn = player->dimensionIn;
 
-	const gameRenderData& targetData = getRenderData(renderTarget, secondsBetweenTickAndRender);
+	const gameRenderData& targetData = getRenderData(renderTarget, math::minimum(secondsBetweenTickAndRender, secondsPerTick));
 
 	crectangle2& worldRect = targetData.renderTargetToWorldTransform.multRectMatrix(crectangle2(targetData.renderTarget.getClientRect()));
 

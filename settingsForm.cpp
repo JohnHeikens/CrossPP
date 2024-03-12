@@ -20,25 +20,9 @@ void settingsForm::mouseDown(cveci2& position, cvk& button)
 	control* highestChild = getHighestChild(position);
 	if (highestChild == saveAndQuitButton)
 	{
-		((gameControl*)parent)->socket.s.socket->disconnect();
+		//do NOT disconnect in an uncontrolled way!
+		//((gameControl*)parent)->socket.s.socket->disconnect();
 		((gameControl*)parent)->socket.shouldDisconnect = true;
-		//((gameControl*)parent)->socket.disconnected = true;
-		//
-		//if (currentServer->clients.size()) {
-		//
-		//}
-		////save and quit to title
-		//currentWorld->serialize(true);
-		//
-		//delete currentWorld;
-		//
-		//visible = false;
-		//parent->visible = false;
-		//currentWorldSelector->visible = true;
-		//mainForm->focusChild(currentWorldSelector);
-		//parent->focusChild(nullptr);
-		//currentWorldSelector->refresh();
-
 	}
 	else if (highestChild == videoSettingsButton)
 	{

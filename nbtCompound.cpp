@@ -339,6 +339,9 @@ void nbtCompound::serializeChild(const streamSerializer& s, nbtData*& child, con
 	else
 	{
 		std::wstring childName;
+		if (childName == std::wstring(L"inventor\x1 slots")) {
+			throw "found";
+		}
 		s.serializeWStringAsString<int16_t>(childName);
 		child = createNBTData(childName, childTag);
 	}

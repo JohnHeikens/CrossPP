@@ -64,6 +64,11 @@ https://developercommunity.visualstudio.com/t/pragma-warningpush-0-no-longer-wor
 to include sfml:
 use vcpkg (click on an include directive to see)
 
+do NOT put code in your onedrive documents folder! once it's full, it basically plays a ransom game where you either heve to buy more storage or lose your files after 30 days.
+to fix, delete the ipch files and the installer EXE and empty the release and debug output folders
+
+debug heap (memory, access violation etc) errors: use application verifier
+
 how to create an installer: use inno setup. it's very simple!
 
 dll not found in visual studio itself, out of nowhere: clean and rebuild solution

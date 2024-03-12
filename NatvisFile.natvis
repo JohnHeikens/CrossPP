@@ -52,4 +52,14 @@
 			</ArrayItems>
 		</Expand>
 	</Type>
+	<Type Name="nbtData">
+		<DisplayString>{{ {name} : {dataTag} }}</DisplayString>
+		<Expand>
+		</Expand>
+	</Type>
+	<Type Name="nbtCompound">
+		<DisplayString>{{{name}: {dataTag}: children:{children} }}</DisplayString>
+		<Expand>
+		</Expand>
+	</Type>
 </AutoVisualizer>

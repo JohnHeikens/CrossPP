@@ -147,6 +147,7 @@ bool fluidData::tick(tickableBlockContainer* containerIn, cveci2& position)
 		if (currentFluidLevel == 0)
 		{
 			containerIn->setBlockID(position, blockID::air, chunkLoadLevel::updateLoaded);
+			return false;//as this block flowed empty, no update is needed. we can't return the normal way, as currentFluidLevel is undefined now.
 		}
 		else
 		{
