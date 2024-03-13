@@ -491,7 +491,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	else if (isFence(identifier) || isFenceGate(identifier) || isWall(identifier) || identifier == blockID::iron_bars)
 	{
 		const blockData* const data = containerIn->getBlockData(position);
-		bool connect[fenceConnectionPossibilityCount];
+		bool connect[fenceConnectionPossibilityCount]{};
 		for (size_t connectionIndex = 0; connectionIndex < fenceConnectionPossibilityCount; connectionIndex++)
 		{
 			connect[connectionIndex] = containerIn->canConnect(position, fenceConnectionCheckPositions[connectionIndex]);
@@ -692,6 +692,9 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	else if (isChest(identifier))
 	{
 		collision.hitboxCollidingWith = getAbsoluteRect(collision.hitboxCollidingWith, chestBlockRect);
+	}
+	else if (isBed(identifier)) {
+		collision.hitboxCollidingWith.h() = bedHitboxHeight;
 	}
 	else if (identifier == blockID::snow)
 	{

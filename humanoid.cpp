@@ -98,7 +98,7 @@ void humanoid::updateBodyParts() const
 	}
 	else if (sleeping)
 	{
-		mainBodyPart->translate = vec2(position.x(), position.y() + bedHeight);
+		mainBodyPart->translate = vec2(position.x(), position.y() + mainBodyPart->size.x() * 0.5);
 	}
 	else
 	{
@@ -113,7 +113,7 @@ void humanoid::updateBodyParts() const
 	if (sleeping)//looking to the left
 	{
 		//flip body
-		mainBodyPart->flipX = true;
+		mainBodyPart->flipX = lookingAt.y() < position.y();;
 	}
 
 	fp rightArmWalkingAngle;

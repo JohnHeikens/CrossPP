@@ -20,6 +20,7 @@ struct world :IDestructable
 	chat currentChat = chat();
 	dimension* dimensions[(int)dimensionID::count];
 	int ticksSinceStart = 0;
+	int lastAutoSaveTick = 0;
 	fp currentTime = 0;
 
 	fp getTimeOfDay()const;

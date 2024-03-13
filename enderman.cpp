@@ -2,14 +2,14 @@
 #include "enderman.h"
 #include "taskList.h"
 #include "teleportOnDamageAI.h"
-#include "hurtByTargetAI.h"
 #include "wanderAI.h"
+#include "stareDownAI.h"
 
 enderman::enderman(dimension* dimensionIn, cvec2& position) :humanoid(dimensionIn, position, entityID::enderman)
 {
 	tasks = new taskList(this, {
 	new teleportOnDamageAI(this),
-	new hurtByTargetAI(this),
+	new stareDownAI(this),
 	new wanderAI(this),
 		});
 

@@ -1,8 +1,19 @@
 #include "soundCollection.h"
 #include "constants.h"
 #include "tickableBlockContainer.h"
-#include "entity.h"
 #include "server.h"
+#include <filesystem>
+#include <memory>
+#include <string>
+#include <vector>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include "audioCollection.h"
+#include "array/wstring.h"
+#include "GlobalFunctions.h"
+#include "math/random/random.h"
+#include "math/vectn.h"
+#include "soundhandler2d.h"
+#include "soundPacket.h"
 #include "human.h"
 
 std::vector<soundCollection*> globalSoundCollectionList = std::vector<soundCollection*>();
@@ -46,7 +57,7 @@ void audioCollection::addAudioFileName(const std::wstring& path)
 	}
 	if (!loaded)
 	{
-		handleError(std::wstring(L"no sound found"));
+		handleError(std::wstring(L"no sound found in " + path));
 	}
 }
 

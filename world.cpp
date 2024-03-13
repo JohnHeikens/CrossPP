@@ -93,6 +93,7 @@ bool world::serialize(cbool& write)
 	}
 	else
 	{
+		lastAutoSaveTick = ticksSinceStart;
 		if (s.converter)
 		{
 			//todo: message box
@@ -361,6 +362,13 @@ void world::tick()
 
 	chunksToSave.clear();
 
+	//auto save here
+	//save the world file, so if the world crashes before the first save, we still have it
+	if ((ticksSinceStart - lastAutoSaveTick) > (5 * ticksPerRealLifeMinute) || lastAutoSaveTick == 0)//save every 5 minutes and upon world creation
+	{
+		lastAutoSaveTick = ticksSinceStart;
+		currentWorld->serialize(true);
+	}
 
 	//rightClicked = false;
 	//leftClicked = false;

@@ -4,6 +4,7 @@
 #include "math/graphics/graphics.h"
 #include "optimization/stableTickLoop.h"
 #include "control/control.h"
+#include <Windows.h>
 
 void application::changeKeyboardLayout()
 {
@@ -391,12 +392,14 @@ HWND MakeWindow(RECT windowrect,
 )
 {
 	WNDCLASSEX wc{};
+	//system colors are defined in Winuser.h:
+	//https://stackoverflow.com/questions/15658341/color-window-in-hbrbackground
 	//MSG msg;
 	// Init wc
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.hbrBackground = CreateSolidBrush(0);
+	wc.hbrBackground = CreateSolidBrush(COLOR_BACKGROUND + 1);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);

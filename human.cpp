@@ -294,7 +294,7 @@ void human::tick()
 						if (canSleep())
 						{
 							sleeping = true;
-							cvec2 middlePosition = cvec2(selectedBlockPosition.x() + getOtherPartRelativeLocation(selectedBlockID, data->isPart0, data->directionFacing).x() * 0.5 + 0.5, selectedBlockPosition.y());
+							cvec2 middlePosition = cvec2(selectedBlockPosition.x() + getOtherPartRelativeLocation(selectedBlockID, data->isPart0, data->directionFacing).x() * 0.5 + 0.5, selectedBlockPosition.y() + bedHitboxHeight + math::fpepsilon);
 							//set respawn point
 							currentWorld->worldSpawnPoint = middlePosition;
 							currentWorld->worldSpawnDimension = dimensionIn->identifier;
@@ -1420,4 +1420,9 @@ void human::calculateFood()
 void human::addExhaustion(cfp& exhaustion)
 {
 	foodExhaustionlevel += exhaustion;
+}
+
+rectangle2 human::calculateHitBox(cvec2& position) const
+{
+	return sleeping ? crectangle2(position.x() - humanHitboxSize.y() / 2, position.y(), humanHitboxSize.y(), humanHitboxSize.x()) : humanoid::calculateHitBox(position);
 }

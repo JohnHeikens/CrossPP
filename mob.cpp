@@ -171,7 +171,7 @@ void mob::tick()
 					{
 						if (criticalDamage)
 						{
- 							criticalAttackSound->playRandomSound(dimensionIn, exactEntityIntersection);
+							criticalAttackSound->playRandomSound(dimensionIn, exactEntityIntersection);
 							for (int i = 0; i < 5; i++) {
 								particle* p = summonParticle(dimensionIn, exactEntityIntersection, new textureParticleBrush(particleID::crit), 4);
 							}
@@ -191,9 +191,10 @@ void mob::tick()
 				cvec2 sideWaysBonusSpeed = cvec2((knockBackLevel + 1) * baseKnockBackSpeed *
 					(difference < -knockbackDistance ? -1 : difference > knockbackDistance ? 1 : 0)
 					, 0);
-				cvec2 knockBack = speed + sideWaysBonusSpeed;
+				//cvec2 knockBack = speed + sideWaysBonusSpeed;
 
 				speed = entityToAttack->handleCollision(speed, getWeight());
+				entityToAttack->speed += sideWaysBonusSpeed;//add arm knockback. for now, that's free.
 
 				entityToAttack->addDamageSource(attackDamage, std::make_shared<mobDamageSource>(identifier));
 				exhaustionIncrease += 0.1;
@@ -280,7 +281,7 @@ void mob::tick()
 		}
 		else
 		{
-			MovementSpeed = humanFlyingSpeed;
+			MovementSpeed = ((mobData*)entityDataList[entityType])->flyingSpeed;
 		}
 		terminalVelocityMultiplier = airTerminalVelocityMultiplier;
 		if (wantsToGoUp || wantsToJump)
@@ -454,8 +455,8 @@ void mob::onDeath()
 
 			mobDamageSource* source = (mobDamageSource*)it->get();
 
-			if(entity* entityFrom = dimensionIn->findUUID(position, 0x40, source->uuidFrom))
-			//if (source->uuidFrom == currentPlayableCharachter->identifier)
+			if (entity* entityFrom = dimensionIn->findUUID(position, 0x40, source->uuidFrom))
+				//if (source->uuidFrom == currentPlayableCharachter->identifier)
 			{
 				if (entityFrom->entityType == entityID::human)
 				{
@@ -632,7 +633,9 @@ void mob::goToPosition(cvec2& destination)
 	{
 		wantsToGoUp = true;
 	}
-	wantsToJump = shouldJump(wantsToGoLeft, wantsToGoRight);
+	//if the mob is flying but is on the ground we can still evaluate this
+	//also if the collision level is willNotCollide, it won't set onGround to true
+	wantsToJump = onGround && shouldJump(wantsToGoLeft, wantsToGoRight);
 }
 
 void mob::updateHeadAngle() const

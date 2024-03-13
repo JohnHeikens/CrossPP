@@ -78,14 +78,14 @@ cvec2 enderDragonOuterWingTopSize = cvec2(enderDragonOuterWingTopTextureRect.siz
 cvec2 enderDragonBodySize = cvec2(enderDragonBodyTextureRect.size) * enderDragonPixelSize;
 cfp frontAttachmentOffset = enderDragonBodySize.y() / 3;
 
-constexpr fp dragonDyingBeamPurpleDistance = 0x4;
 constexpr fp dragonDyingBeamTransparencyDistance = 0x20;
+constexpr fp dragonDyingBeamPurpleDistance = dragonDyingBeamTransparencyDistance / 0x4;
 constexpr int dragonDyingBeamCount = 0x20;
 constexpr fp dragonDyingBeamMaxWidth = math::PI2 / dragonDyingBeamCount;
 constexpr veci2 enderDragonRelativeDyingLocation = cveci2(0, 5);//not that high up, so he can be fully seen
 constexpr fp enderDragonDyingAnimationDistance = 0x2;
 constexpr fp maximalEnderDragonDyingAnimationDistance = 0x80;
-constexpr fp enderDragonDyingDescendSpeed = 0.1;
+constexpr fp enderDragonDyingAscendSpeed = 2;//ascend 2 blocks per second
 constexpr int enderDragonDeathAnimationDuration = 200;
 constexpr fp endCrystalHealRange = 0x20;
 constexpr rectangle2 endCrystalBeamTextureRect = crectangle2(0, 0, 0x10, 0x100);

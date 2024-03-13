@@ -2,6 +2,7 @@
 #include "client.h"
 #include "mainMenu.h"
 #include <regex>
+#include "gameControl.h"
 
 accountEditor::accountEditor()
 {
@@ -24,7 +25,7 @@ void accountEditor::mouseDown(cveci2& position, cvk& button)
 {
 	if (getHighestChild(position) == saveButton) {
 		const std::wstring& newAccountName = playerNameTextBox->text;
-		if(checkAccountName(newAccountName))//account name is valid and accepted
+		if (checkAccountName(newAccountName))//account name is valid and accepted
 		{
 			currentClient->data.name = newAccountName;
 			currentClient->data.serialize(true);
@@ -34,6 +35,11 @@ void accountEditor::mouseDown(cveci2& position, cvk& button)
 	else {
 		form::mouseDown(position, button);
 	}
+}
+
+void accountEditor::renderBackGround(cveci2& position, const texture& renderTarget)
+{
+	renderOptionsBackGround(crectanglei2(position, rect.size), renderTarget);
 }
 
 bool checkAccountName(const std::wstring& n)

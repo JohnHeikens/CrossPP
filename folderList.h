@@ -10,6 +10,7 @@ const std::wstring miscellaneousNetherMusicFolder = miscellaneousMusicFolder + s
 const std::wstring fileVersionsFolder = miscellaneousDataFolder + std::wstring(L"fileversions\\");
 const std::wstring playerDataFolder = dataFolder + std::wstring(L"player\\");
 const std::wstring skinFolder = playerDataFolder + std::wstring(L"skins\\");
+const std::wstring screenshotsFolder = playerDataFolder + std::wstring(L"screenshots\\");
 
 const std::wstring resourcePackFolder = dataFolder + std::wstring(L"resourcepacks\\");
 

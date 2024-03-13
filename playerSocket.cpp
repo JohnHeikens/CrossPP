@@ -13,9 +13,12 @@
 #include "math/uuid.h"
 #include "math/vectn.h"
 #include "human.h"
-#include "server.h"
-#include <future>
 #include "fpng.h"
+#include <rpcndr.h>
+#include <thread>
+#include <vector>
+#include <SFML/Network/SocketSelector.hpp>
+#include <SFML/System/Time.hpp>
 #pragma optimize("", off)
 playerSocket::playerSocket(sf::TcpSocket* socket)
 {
@@ -24,8 +27,17 @@ playerSocket::playerSocket(sf::TcpSocket* socket)
 	write = false;
 
 	ull num;
-	//receive authentication packet
-	s.receivePacket();
+	//receive authentication packet.
+	//wait for packet until timeout (fixes random connects pausing the server)
+	//scope is for the selector
+	{
+		sf::SocketSelector selector;
+		selector.add(*socket);
+		//the packet should follow the connect shortly. we can wait safely, but one player can join at a time.
+		//max 100 delay
+		if (!selector.wait(sf::milliseconds(100))) return;
+		s.receivePacket();
+	}
 	serialize(num);
 	if (num != gameAuthNumber)
 	{

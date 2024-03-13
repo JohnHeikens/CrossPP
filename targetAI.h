@@ -7,7 +7,7 @@ struct targetAI : taskAI
 	fp proximity = 0;
 
 	virtual bool shouldExecute() override;
-	const bool targetNear(const entity* targetEntity) const;
+	const bool targetNear(const entity* targetEntity, fp proximity = 0) const;
 	const bool targetNear() const;
 	entity* findTarget() const;
 	targetAI(entity* connectedEntity, cfp& proximity = standardDetectionRange) :taskAI(connectedEntity), proximity(proximity) {}

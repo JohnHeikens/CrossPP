@@ -7,8 +7,9 @@ bool targetAI::shouldExecute()
 	return targetNear();
 }
 
-const bool targetAI::targetNear(const entity* targetEntity) const
+const bool targetAI::targetNear(const entity* targetEntity, fp proximity) const
 {
+	if (!proximity) proximity = this->proximity;
 	cfp distanceToTargetSquared = (targetEntity->position - connectedEntity->position).lengthSquared();
 	if (distanceToTargetSquared < math::squared(proximity))
 	{

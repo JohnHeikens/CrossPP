@@ -3,19 +3,37 @@
 #include "soundPacket.h"
 #include "soundCollection.h"
 #include <memory>
-#include "math/uuid.h"
-#include "folderList.h"
-#include "nbtSerializer.h"
 #include "mainMenu.h"
 #include "server.h"
 #include "worldSelector.h"
 #include "keyHistoryEvent.h"
 #include "fpng.h"
+#include <rpcndr.h>
+#include <cstdint>
+#include <vector>
+#include <SFML/Network/Socket.hpp>
+#include <SFML/Network/TcpSocket.hpp>
+#include <SFML/System/Time.hpp>
+#include "constants.h"
+#include "application/mouseButton.h"
+#include "GlobalFunctions.h"
+#include "math/graphics/color/color.h"
+#include "math/graphics/texture.h"
+#include "math/random/random.h"
+#include "math/vectn.h"
+#include "serverData.h"
+#include "soundhandler2d.h"
+#include "folderList.h"
+#include "math/timemath.h"
+#include <filesystem/filemanager.h>
+
+miliseconds lastScreenshotTime = 0;
 
 void client::render(cveci2& position, const texture& renderTarget)
 {
 	write = true;
 	currentInput.serialize(*this);
+	cbool& takeScreenShot = currentInput.pressedKey((cvk)keyID::screenshot);
 	s.sendPacket();
 	currentInput.clearTemporaryData();
 
@@ -64,6 +82,23 @@ void client::render(cveci2& position, const texture& renderTarget)
 		uint32_t channelCount;
 		fpng::fpng_decode_memory((const char*)&(*compressedScreen.begin()), (uint32_t)compressedScreen.size(), decompressedScreen, size.x(), size.y(), channelCount, bgraColorChannelCount);
 		std::copy(decompressedScreen.begin(), decompressedScreen.end(), (byte*)renderTarget.baseArray);
+	}
+	if (takeScreenShot) {
+		//take screenshot
+
+		createFoldersIfNotExists(screenshotsFolder);
+		renderTarget.Flip();
+		for (color& c : renderTarget) {
+			c.a() = color::maxValue;
+		}
+
+		renderTarget.Save(screenshotsFolder + timeToString(L"%Y-%m-%d_%H.%M.%S") + L".png");
+		lastScreenshotTime = getMiliseconds();
+	}
+	//0.5 seconds flash
+	if (getMiliseconds() - lastScreenshotTime < 500) {
+		//renderTarget.Save(screenshotsFolder + timeToString(L"%Y-%m-%d_%H.%M.%S") + L".bmp");//for testing
+		renderTarget.fill(colorPalette::white);//flash effect
 	}
 }
 

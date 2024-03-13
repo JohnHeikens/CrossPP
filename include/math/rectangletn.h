@@ -190,6 +190,10 @@ struct rectangletn
 	{
 		return rectangletn<t, axisCount>(rectPos0Centered(innerRectSize), innerRectSize);
 	}
+	constexpr rectangletn<t, axisCount> rectCenteredAround(const vectn<t, axisCount>& newCenterPosition) const
+	{
+		return rectangletn<t, axisCount>(newCenterPosition + (size / (t)2), size);
+	}
 	constexpr void moveToCenter(const rectangletn& outerRect)
 	{
 		pos0 = outerRect.rectPos0Centered(size);

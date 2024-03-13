@@ -199,7 +199,7 @@ constexpr bool willBeNoticedByMobs(const gameModeID& identifier) noexcept
 
 constexpr bool collidesWithThrowables(const entityID& identifier)
 {
-	return isMob(identifier) || isThrowableEntity(identifier);
+	return isMob(identifier) || isThrowableEntity(identifier) || is_in(identifier, entityID::end_crystal, entityID::boat);
 }
 
 constexpr bool isLevelDataType(const arrayDataType& type)

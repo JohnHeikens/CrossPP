@@ -29,6 +29,7 @@ void server::execute()
 
 	while (!stopping) {//server loop
 		loop.waitTillNextLoopTime();
+
 		updateToTime();
 
 		//render
@@ -44,10 +45,13 @@ void server::execute()
 			}
 		}
 
-		if (playerSocket* newSocket = newPlayerSocket.get()) {
-			addToServer(newSocket);
+		//accept connection
+		if (newPlayerSocket._Is_ready()) {
+			if (playerSocket* newSocket = newPlayerSocket.get()) {
+				addToServer(newSocket);
+			}
+			newPlayerSocket = std::async(&listenForIncomingConnections);
 		}
-		newPlayerSocket = std::async(&listenForIncomingConnections);
 		//connectionManagerThread->join();
 		//delete connectionManagerThread;
 		//connectionManagerThread = new std::thread(listenForIncomingConnections);
@@ -98,6 +102,9 @@ void server::stop()
 void server::tick()
 {
 	currentBenchmark->addBenchmarkPoint(cpuUsageID::chunkLoading);
+
+
+
 	constexpr fp playerLoadDistance = 0x20;//the distance which should always be loaded in around the player, with or without a camera looking at it
 
 	//visiblerange * 2 because the camera can load in 2x further
@@ -123,7 +130,7 @@ void server::tick()
 			currentEnd->keepPlayerLoaded(dimension::getTouchingChunkCoordinateRange(crectangle2(-mainEndIslandMaxRadius, 0, mainEndIslandMaxRadius * 2, 0x100)));
 		}
 	}
-
+	currentBenchmark->addBenchmarkPoint(cpuUsageID::miscellaneous);
 	currentWorld->tick();
 
 	//also set them to false if the world does not have focus, so it will not be placing random blocks
@@ -132,6 +139,8 @@ void server::tick()
 		fillAllElements(c->screen->clickedFocused, false);
 		//fillAllElements(c->screen->holding, false);
 	}
+
+
 	//rightClicked = false;
 	//leftClicked = false;
 	//middleClicked = false;

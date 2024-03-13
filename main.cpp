@@ -27,12 +27,7 @@ std::wstring getCommonAppDataFolder() {
 		return std::wstring(&szPath[0]);
 	}
 
-	int msgboxID = MessageBox(
-		NULL,
-		(LPCWSTR)L"common appdata folder not found",
-		(LPCWSTR)L"Medieval Survival",
-		MB_ICONWARNING | MB_OK
-	);
+	handleError(L"common appdata folder not found");
 	return std::wstring();
 }
 
@@ -47,12 +42,7 @@ std::wstring getUserAppDataFolder()
 		delete pValue;
 		return appDataFolder;
 	}
-	int msgboxID = MessageBox(
-		NULL,
-		(LPCWSTR)L"user appdata folder not found",
-		(LPCWSTR)L"Medieval Survival",
-		MB_ICONWARNING | MB_OK
-	);
+	handleError(L"user appdata folder not found");
 	return L"";
 }
 

@@ -1087,6 +1087,9 @@
     <Filter Include="Source Files\rendering\renderData\gameRenderData">
       <UniqueIdentifier>{c6d13aff-df87-4173-a0ac-f328ac611cbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entity\AI\targetAI\angerAI\stareDownAI">
+      <UniqueIdentifier>{bd7f8d82-62bd-43c5-9afe-df1b40a66425}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
@@ -2159,6 +2162,9 @@
     </ClCompile>
     <ClCompile Include="accountEditor.cpp">
       <Filter>Source Files\UI\accountEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="stareDownAI.cpp">
+      <Filter>Source Files\entity\AI\targetAI\angerAI\stareDownAI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3695,6 +3701,12 @@
     <ClInclude Include="gameRenderData.h">
       <Filter>Source Files\rendering\renderData\gameRenderData</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stareDownAI.h">
+      <Filter>Source Files\entity\AI\targetAI\angerAI\stareDownAI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt">
@@ -3714,5 +3726,15 @@
     <Natvis Include="NatvisFile.natvis">
       <Filter>Resource Files\debug</Filter>
     </Natvis>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="MAINICON.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MedievalSurvival.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

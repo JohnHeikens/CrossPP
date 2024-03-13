@@ -467,6 +467,7 @@
     <ClCompile Include="spawnerData.cpp" />
     <ClCompile Include="spongeData.cpp" />
     <ClCompile Include="stairsData.cpp" />
+    <ClCompile Include="stareDownAI.cpp" />
     <ClCompile Include="statusEffect.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -637,6 +638,7 @@
     <ClInclude Include="gzipIncluder.h" />
     <ClInclude Include="packageCreator.h" />
     <ClInclude Include="renderBlockContainer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="sapSpreadData.h" />
     <ClInclude Include="doorData.h" />
     <ClInclude Include="doubleAttachedBlockData.h" />
@@ -975,6 +977,7 @@
     <ClInclude Include="spawnerData.h" />
     <ClInclude Include="spongeData.h" />
     <ClInclude Include="stairsData.h" />
+    <ClInclude Include="stareDownAI.h" />
     <ClInclude Include="statusEffect.h" />
     <ClInclude Include="statusEffectData.h" />
     <ClInclude Include="statusEffectID.h" />
@@ -1040,6 +1043,12 @@
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="MAINICON.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MedievalSurvival.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

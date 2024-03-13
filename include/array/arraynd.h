@@ -260,7 +260,7 @@ struct arraynd :IDestructable
 		}
 		return true;
 	}
-	inline bool inBounds(crectanglei2& rect) const
+	inline bool inBounds(crectanglein<axisCount>& rect) const
 	{
 		cveci2 pos11 = rect.pos1();
 

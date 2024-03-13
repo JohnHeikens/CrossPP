@@ -4,7 +4,8 @@ van meest irritant naar minst irritant / nodig:
 playerdata copies to installation
 depth strider ook niet
 boat werkt niet
-
+ender_eye vliegt veel te hoog
+knockback doet het niet
 als je rechtermuisknop doet in een crafting table met een stack blokjes denkt hij soms dat je meerdere keren achter elkaar klikt, en stopt hij er meerdere op 1 slot
 can't craft/ je kan niet 1 blockje tegelijk plaatsen in de hotbar/crafting slots
 installer stays open on first launch

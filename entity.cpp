@@ -360,7 +360,6 @@ void entity::physics()
 {
 	bool newOnGround = false;
 	cbool& oldOnGround = onGround;
-	vec2 noCollisionPosition = newPosition + speed;
 	vec2 positionAfterCollisions = newPosition;
 	axisCollided = vect2<bool>();
 	if (collideLevel != collisionTypeID::willNotCollide)
@@ -502,6 +501,7 @@ void entity::physics()
 			{
 				if (firstCollision.collisionTime < secondsToCalculateLeft)
 				{
+					cvec2& noCollisionPosition = newPosition + speed * secondsToCalculateLeft;
 					//check if walking on a cactus
 									//todo: better method than measuring the entire block height while keeping accuracy
 					crectangle2& topHitbox = calculateHitBox(vec2(positionAfterCollisions.x(), positionAfterCollisions.y()));
@@ -621,7 +621,7 @@ void entity::physics()
 	}
 	else
 	{
-		positionAfterCollisions = noCollisionPosition;
+		positionAfterCollisions = newPosition + speed * secondsPerTick;
 	}
 	crectangle2 blockCheckHitbox = calculateHitBox(position);
 	newPosition = positionAfterCollisions;

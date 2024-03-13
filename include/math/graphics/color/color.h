@@ -282,6 +282,7 @@ namespace colorPalette
 	static constexpr color yellow = color(color::maxValue, color::maxValue, 0);
 	static constexpr color magenta = color(color::maxValue, 0, color::maxValue);
 	static constexpr color cyan = color(0, color::maxValue, color::maxValue);
+	static constexpr color purple = color(color::halfMaxValue, 0, color::maxValue);
 	static constexpr color white = color(color::maxValue, color::maxValue, color::maxValue);
 	static constexpr color gray = color(color::halfMaxValue, color::halfMaxValue, color::halfMaxValue);
 	static constexpr color orange = color(color::maxValue, color::halfMaxValue, 0);

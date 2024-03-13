@@ -66,6 +66,8 @@ struct human :public humanoid, public INamable
 	void addExperience(cint& amount);
 	void calculateFood();
 	void addExhaustion(cfp& exhaustion);
+	using humanoid::calculateHitBox;
+	virtual rectangle2 calculateHitBox(cvec2& position) const override;
 
 	//hands
 	int rightHandSlotIndex = 0;

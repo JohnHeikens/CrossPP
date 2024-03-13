@@ -319,6 +319,8 @@ constexpr rectangle2 bedBackTextureRect = crectangle2(0, 20, 6, 16);
 constexpr rectangle2 bedLegTextureRect = crectangle2(50, 40, 4, 3);
 constexpr fp bedHeightPixels = (bedLegTextureRect.size.y() + bedFrontTextureRect.size.x());
 constexpr fp bedHeight = bedHeightPixels / (cfp)blockTextureSize;
+constexpr int bedBottomThicknessPixels = 2;
+constexpr fp bedHitboxHeight = (bedLegTextureRect.h() + bedBottomThicknessPixels) / (fp)blockTextureSize;
 
 constexpr fp enchantingTableHeight = 0xc / (cfp)0x10;
 constexpr fp grassPathHeight = 0xf / (cfp)0x10;

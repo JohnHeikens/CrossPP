@@ -18,7 +18,7 @@ void handleError(const std::wstring& message)
 			int msgboxID = MessageBox(
 				NULL,
 				(LPCWSTR)message.c_str(),
-				(LPCWSTR)L"Medieval Survival",
+				(LPCWSTR)gameName.c_str(),
 				MB_ICONWARNING | MB_OK
 			);
 			throw std::runtime_error(messageToString);

@@ -24,10 +24,10 @@ inline uint GetSecond()
 
 //DONT CONVERT TO INT!
 //HUGE NUMBERS
-inline microseconds getSeconds()
-{
-	return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-}
+//inline seconds getSeconds()
+//{
+//	return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).c;
+//}
 inline microseconds getmicroseconds()
 {
 	return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -91,4 +91,26 @@ inline std::time_t getEpochTime(const std::wstring& dateTime, const std::wstring
 
 	// Convert the tm structure to time_t value and return.
 	return std::mktime(&dt);
+}
+inline std::wstring timeToString(const std::wstring& format = L"%A, %B %d, %Y %I:%M:%S %p") {
+	//const auto& t = std::time(nullptr);
+	//const auto& tm = *std::localtime(&t);
+	//
+	//std::wostringstream oss;
+	//oss << std::put_time(&tm, format.c_str());
+	//return oss.str();
+	//https://stackoverflow.com/questions/24750855/c-how-to-get-timestamp-string-both-on-linux-and-windows
+
+	time_t rawtime;
+	struct tm timeinfo = tm();
+	wchar_t buffer[80];
+
+	time(&rawtime);
+	localtime_s(&timeinfo, &rawtime);
+
+	// Wednesday, March 19, 2014 01:06:18 PM
+	wcsftime(buffer, 80, format.c_str(), &timeinfo);
+	
+
+	return std::wstring(buffer);
 }

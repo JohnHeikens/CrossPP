@@ -689,11 +689,20 @@ void loadResourcePacks() {
 	endPortalOpenSound = std::make_shared<soundCollection>(blockSoundFolder + std::wstring(L"end_portal\\endportal"));
 	fuseSound = std::make_shared<soundCollection>(miscellaneousSoundFolder + std::wstring(L"fuse"));
 	explosionSound = std::make_shared<soundCollection>(miscellaneousSoundFolder + std::wstring(L"explode"));
+
+	//ender dragon
 	enderDragonWingsSound = std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"enderdragon\\wings"));
+	enderDragonDeathSound = std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"enderdragon\\end"));
+
+	//ghast
 	fireBallShootSound = std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"ghast\\fireball4"));
 	ghastWarningSound = std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"ghast\\charge"));
+
+	//enderman
+	endermanStareSound = std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"endermen\\stare"));
+	endermanScreamSound = std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"endermen\\stare"));
+
 	fireSound = std::make_shared<soundCollection>(generalSoundFolder + std::wstring(L"fire\\fire"));
-	enderDragonDeathSound = std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"enderdragon\\end"));
 	brewingFinishSound = std::make_shared<soundCollection>(blockSoundFolder + std::wstring(L"brewing_stand\\brew"));
 	bowHitSound = std::make_shared<soundCollection>(miscellaneousSoundFolder + std::wstring(L"bowhit"));
 	clickSound = std::make_shared<soundCollection>(miscellaneousSoundFolder + std::wstring(L"click"));
@@ -1696,7 +1705,7 @@ void loadResourcePacks() {
 		fillTransformedBrushRectangle(bedLegTextureRect, crectangle2(blockTextureSize - bedLegTextureRect.w(), 0, bedLegTextureRect.w(), bedLegTextureRect.h()), *bedTexture, *backTexture);
 		fillTransformedBrushRectangle(bedLegTextureRect, crectangle2(0, 0, bedLegTextureRect.w(), bedLegTextureRect.h()), *bedTexture, *frontTexture);
 
-		blockList[identifier] = new doubleBlock(block((blockID)identifier, 0.2, 0.2, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(itemTextureFolder + colorNames[i] + std::wstring(L"_bed.png")), colorNames[i] + std::wstring(L"_bed"), stepWood, stepWood, stepWood, digWood, digWood, lightFiltering, withAxe, noHarvestTier, collisionTypeID::willNotCollide), backTexture, frontTexture, cveci2(-1, 0)); identifier++;
+		blockList[identifier] = new doubleBlock(block((blockID)identifier, 0.2, 0.2, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(itemTextureFolder + colorNames[i] + std::wstring(L"_bed.png")), colorNames[i] + std::wstring(L"_bed"), stepWood, stepWood, stepWood, digWood, digWood, lightFiltering, withAxe, noHarvestTier, collisionTypeID::willCollideTop), backTexture, frontTexture, cveci2(-1, 0)); identifier++;
 	}
 
 	blockList[identifier] = new block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(itemTextureFolder + std::wstring(L"campfire.png")), std::wstring(L"campfire"), stepWood, stepWood, stepWood, digWood, digWood, noLightFilter, withHand, noHarvestTier, collisionTypeID::willCollideTop); identifier++;
@@ -2360,7 +2369,7 @@ void loadResourcePacks() {
 	//add mob data
 	entityDataList = idList<entityData*, entityID>(fastList<entityData*>());
 	int currentEntityID = 0;
-	entityDataList.push_back(new mobData(entityData((entityID)currentEntityID, std::wstring(L"human"), maxhumanhealth, humanHitbox, humanVolume, humanWeight), loadTexture(skinFolder + std::wstring(L"current.png"), humanSkinSize), nullptr, nullptr, std::make_shared<soundCollection>(generalSoundFolder + std::wstring(L"damage\\hit")), nullptr, humanWalkingSpeed, getLegSwingSynchronizer(humanLegSize.y()), rgbColorValues[(int)colorID::pink], rgbColorValues[(int)colorID::green], 4.0, 1.0)); currentEntityID++;
+	entityDataList.push_back(new mobData(entityData((entityID)currentEntityID, std::wstring(L"human"), maxhumanhealth, humanHitbox, humanVolume, humanWeight), loadTexture(skinFolder + std::wstring(L"current.png"), humanSkinSize), nullptr, nullptr, std::make_shared<soundCollection>(generalSoundFolder + std::wstring(L"damage\\hit")), nullptr, humanWalkingSpeed, getLegSwingSynchronizer(humanLegSize.y()), rgbColorValues[(int)colorID::pink], rgbColorValues[(int)colorID::green], 4.0, 1.0, new experienceDrop(), humanFlyingSpeed)); currentEntityID++;
 	entityDataList.push_back(new mobData(entityData((entityID)currentEntityID, std::wstring(L"skeleton"), maxhumanhealth, humanHitbox, skeletonVolume, skeletonWeight), loadTextureFromResourcePack(entityTextureFolder + std::wstring(L"skeleton\\skeleton.png")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"skeleton\\step")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"skeleton\\say")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"skeleton\\hurt")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"skeleton\\death")), humanWalkingSpeed, getLegSwingSynchronizer(humanLegSize.y()), rgbColorValues[(int)colorID::lightGray], rgbColorValues[(int)colorID::gray], 1.5, 5, new experienceDrop(5, 5))); currentEntityID++;
 	entityDataList.push_back(new mobData(entityData((entityID)currentEntityID, std::wstring(L"stray"), maxhumanhealth, humanHitbox, skeletonVolume, skeletonWeight), loadTextureFromResourcePack(entityTextureFolder + std::wstring(L"skeleton\\stray.png")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"pig\\step")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"stray\\idle")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"stray\\hurt")), std::make_shared<soundCollection>(mobSoundFolder + std::wstring(L"stray\\death")), humanWalkingSpeed, getLegSwingSynchronizer(humanLegSize.y()), rgbColorValues[(int)colorID::blue], rgbColorValues[(int)colorID::gray], 1.5, 5, new experienceDrop(5, 5))); currentEntityID++;
 
@@ -2422,7 +2431,7 @@ void loadResourcePacks() {
 		entityDataList.push_back(new entityData((entityID)currentEntityID, particleTypeDataList[(particleID)i]->name + std::wstring(L"_particle"), 5, relativeParticleHitbox, 0.002, 0.1, false)); currentEntityID++;
 	}
 
-	cfp arrowPower = 0x20;
+	cfp arrowPower = 0x30;
 	cfp throwPower = 0x30;
 	cfp fishingHookThrowPower = 0xc;
 

@@ -167,9 +167,9 @@ mobData::~mobData()
 {
 	delete experienceWhenKilled;
 }
-mobData::mobData(const entityData& data, resolutionTexture* skin, std::shared_ptr<soundCollection> walkSound, std::shared_ptr<soundCollection> ambientSound, std::shared_ptr<soundCollection> hurtSound, std::shared_ptr<soundCollection> deathSound, cfp& walkingSpeed, const swingSynchronizer& legSwingSynchronizer, const color& spawnEggColor, const color& spawnEggOverlayColor, cfp& attackSpeed, cfp& attackDamage, experienceDrop* experienceWhenKilled) :
+mobData::mobData(const entityData& data, resolutionTexture* skin, std::shared_ptr<soundCollection> walkSound, std::shared_ptr<soundCollection> ambientSound, std::shared_ptr<soundCollection> hurtSound, std::shared_ptr<soundCollection> deathSound, cfp& walkingSpeed, const swingSynchronizer& legSwingSynchronizer, const color& spawnEggColor, const color& spawnEggOverlayColor, cfp& attackSpeed, cfp& attackDamage, experienceDrop* experienceWhenKilled, cfp& flyingSpeed) :
 	entityData(data),
-	skin(skin), stepSound(walkSound), ambientSound(ambientSound), hurtSound(hurtSound), deathSound(deathSound), walkingSpeed(walkingSpeed), attackSpeed(attackSpeed), attackDamage(attackDamage), experienceWhenKilled(experienceWhenKilled), legSwingSynchronizer(legSwingSynchronizer), spawnEggColor(spawnEggColor), spawnEggOverlayColor(spawnEggOverlayColor)
+	skin(skin), stepSound(walkSound), ambientSound(ambientSound), hurtSound(hurtSound), deathSound(deathSound), walkingSpeed(walkingSpeed), flyingSpeed(flyingSpeed ? flyingSpeed : walkingSpeed), attackSpeed(attackSpeed), attackDamage(attackDamage), experienceWhenKilled(experienceWhenKilled), legSwingSynchronizer(legSwingSynchronizer), spawnEggColor(spawnEggColor), spawnEggOverlayColor(spawnEggOverlayColor)
 {
 
 }

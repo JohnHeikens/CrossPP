@@ -5,7 +5,7 @@
 #include "filesystem/file/endian.h"
 #include "socketContainer.h"
 struct playerSocket : socketContainer {
-	human* player;
+	human* player = nullptr;
 	gameControl* screen = nullptr;
 	bool authenticated = false;
 	playerSocket(sf::TcpSocket* socket);

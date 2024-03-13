@@ -40,6 +40,7 @@ enum class keyID :int
 	commandLine = VK_OEM_2,//backslash or question mark
 	text = 'T',
 	debug = VK_F3,
+	screenshot = VK_F2,
 	headUpDisplay = VK_F1,
 	escape = VK_ESCAPE,
 	renderHitboxes = 'B',

@@ -113,7 +113,7 @@ void end::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const gameRe
 	//{
 	//	targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::black));
 	//}
-	targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::magenta));
+	targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::purple));
 }
 
 biomeID end::getBiome(cvec2& position) const

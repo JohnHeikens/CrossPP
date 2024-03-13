@@ -64,9 +64,14 @@ std::shared_ptr<soundCollection> endPortalOpenSound = std::shared_ptr<soundColle
 std::shared_ptr<soundCollection> fuseSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> explosionSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> enderDragonWingsSound = std::shared_ptr<soundCollection>();
-std::shared_ptr<soundCollection> fireBallShootSound = std::shared_ptr<soundCollection>();
-std::shared_ptr<soundCollection> fireSound = std::shared_ptr<soundCollection>();
+
 std::shared_ptr<soundCollection> ghastWarningSound = std::shared_ptr<soundCollection>();
+std::shared_ptr<soundCollection> fireBallShootSound = std::shared_ptr<soundCollection>();
+
+std::shared_ptr<soundCollection> endermanStareSound = std::shared_ptr<soundCollection>();
+std::shared_ptr<soundCollection> endermanScreamSound = std::shared_ptr<soundCollection>();
+
+std::shared_ptr<soundCollection> fireSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> enderDragonDeathSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> bowHitSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> brewingFinishSound = std::shared_ptr<soundCollection>();

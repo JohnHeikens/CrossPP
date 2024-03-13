@@ -6,6 +6,7 @@
 #include "serverSelector.h"
 #include "main.h"
 #include "accountEditor.h"
+#include "minecraftFont.h"
 mainMenu::mainMenu() :form()
 {
 	borderSize = 0;
@@ -13,7 +14,8 @@ mainMenu::mainMenu() :form()
 	gameNameLabel = new label(gameName);
 	gameNameLabel->backGroundColor = colorPalette::transparent;
 	gameNameLabel->borderSize = 0;
-	gameNameLabel->currentFont = new baseFont(defaultTheme().font->family, 0);
+	//gameNameLabel->currentFont = new baseFont(defaultTheme().font->family, 0);
+	gameNameLabel->currentFont = new minecraftFont();
 	addChildren({ backgroundPicture, gameNameLabel, playOfflineButton , playOnlineButton, accountButton });
 }
 

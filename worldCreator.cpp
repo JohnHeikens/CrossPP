@@ -48,6 +48,7 @@ void worldCreator::mouseDown(cveci2& position, cvk& button)
 		currentWorld = worldCreating;
 		generateNewWorld();
 
+
 		createServerFromCurrentWorld();
 
 

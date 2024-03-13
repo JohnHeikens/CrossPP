@@ -11,11 +11,7 @@
 #include "soundList.h"
 #include "gameForm.h"
 //to switch to flying or walking
-bool wasJumping = false;
-constexpr int timeBetweenJumps = 9;
-constexpr int ticksBetweenJumpsToFly = timeBetweenJumps - 3;
 
-int ticksSinceStoppedJumping = ticksBetweenJumpsToFly + 1;
 
 void playerControlledAI::execute()
 {
@@ -144,6 +140,8 @@ void playerControlledAI::execute()
 
 void playerControlledAI::serializeValue(nbtSerializer& s)
 {
+	//we don't have to serialize tickssincestoppedjumping, that would only cause surprise moments where you f.e. stop flying when you reconnect because you're holding space
+
 	//s.serializeValue(std::wstring(L"visible range x"), visibleRange.x());
 	//s.serializeValue(std::wstring(L"visible range when walking"), visibleRangeXWalk);
 }

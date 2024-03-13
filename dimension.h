@@ -3,6 +3,23 @@
 #include "tickableBlockContainer.h"
 #include "generationData.h"
 #include "dimensionID.h"
+#include <utility>
+#include <vector>
+#include "arrayDataType.h"
+#include "biomeID.h"
+#include "chunkLoadLevel.h"
+#include "collisionDataCollection.h"
+#include "constants.h"
+#include "entity.h"
+#include "gameRenderData.h"
+#include "array/arraynd.h"
+#include "GlobalFunctions.h"
+#include "math/graphics/color/color.h"
+#include "math/mathfunctions.h"
+#include "math/rectangletn.h"
+#include "math/uuid.h"
+#include "math/vectn.h"
+#include "nbtSerializer.h"
 struct chunk;
 enum class BiomeID : int;
 enum class structureID;

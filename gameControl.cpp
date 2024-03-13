@@ -786,22 +786,25 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	}
 	int bossBarIndex = 0;
 	cvec2 barTextureSize = cvec2(182, 5);
+	constexpr int maxBossBarCount = 7;
 	//render boss bars
 	for (entity* e : nearEntities)
 	{
 		if (isBossMob(e->entityType))
 		{
-			cfp barPart = e->health / (entityDataList[(int)e->entityType])->maxHealth;
-
 			crectangle2 bossBarBackGroundTextureRect = crectangle2(0, 0x100 - (((bossBarIndex * 2) + 1) * barTextureSize.y()), barTextureSize.x(), barTextureSize.y());
-			crectangle2 bossBarForeGroundTextureRect = crectangle2(0, 0x100 - (((bossBarIndex * 2) + 2) * barTextureSize.y()), barTextureSize.x() * barPart, barTextureSize.y());
 			crectangle2 bossBarBackGroundScreenRect = crectangle2(rect.x() + ((rect.w() - barTextureSize.x() * hudScale) / 2), rect.y() + rect.h() - (barTextureSize.y() * (bossBarIndex + 1) * hudScale), barTextureSize.x() * hudScale, barTextureSize.y() * hudScale);
-			crectangle2 bossBarForeGroundScreenRect = crectangle2(bossBarBackGroundScreenRect.x(), bossBarBackGroundScreenRect.y(), bossBarBackGroundScreenRect.w() * barPart, bossBarBackGroundScreenRect.h());
-
 			fillTransparentRectangle(bossBarBackGroundTextureRect, bossBarBackGroundScreenRect, *barsTexture, targetData.renderTarget);
-			fillTransparentRectangle(bossBarForeGroundTextureRect, bossBarForeGroundScreenRect, *barsTexture, targetData.renderTarget);
+			if (e->health > 0) {
+				cfp barPart = e->health / (entityDataList[(int)e->entityType])->maxHealth;
+				crectangle2 bossBarForeGroundTextureRect = crectangle2(0, 0x100 - (((bossBarIndex * 2) + 2) * barTextureSize.y()), barTextureSize.x() * barPart, barTextureSize.y());
+				crectangle2 bossBarForeGroundScreenRect = crectangle2(bossBarBackGroundScreenRect.x(), bossBarBackGroundScreenRect.y(), bossBarBackGroundScreenRect.w() * barPart, bossBarBackGroundScreenRect.h());
+				fillTransparentRectangle(bossBarForeGroundTextureRect, bossBarForeGroundScreenRect, *barsTexture, targetData.renderTarget);
+			}
 
-			bossBarIndex++;
+			if (++bossBarIndex >= maxBossBarCount) {
+				break;
+			}
 		}
 	}
 }

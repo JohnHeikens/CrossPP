@@ -66,6 +66,8 @@ extern std::shared_ptr<soundCollection> fuseSound;
 extern std::shared_ptr<soundCollection> explosionSound;
 extern std::shared_ptr<soundCollection> enderDragonWingsSound;
 extern std::shared_ptr<soundCollection> fireBallShootSound;
+extern std::shared_ptr<soundCollection> endermanStareSound;
+extern std::shared_ptr<soundCollection> endermanScreamSound;
 extern std::shared_ptr<soundCollection> fireSound;
 extern std::shared_ptr<soundCollection> ghastWarningSound;
 extern std::shared_ptr<soundCollection> enderDragonDeathSound;

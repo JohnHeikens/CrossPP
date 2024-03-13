@@ -84,7 +84,7 @@ struct entity :IDestructable, nbtSerializable
 	bool hitboxContains(crectangle2& box, const std::vector<blockID>& blockIDArray);
 	bool hitboxContainsOnly(crectangle2& box, const std::vector<blockID>& blockIDArray);
 
-	virtual rectangle2 calculateHitBox() const;
+	rectangle2 calculateHitBox() const;
 	virtual rectangle2 calculateHitBox(const cvec2& pos) const;
 	virtual void serializeValue(nbtSerializer& s) override;
 	virtual bool compareSelector(const human& sender, const std::wstring& selectorString) const;
