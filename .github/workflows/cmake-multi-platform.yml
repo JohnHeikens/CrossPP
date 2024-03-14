@@ -58,6 +58,8 @@ jobs:
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
+        shell: bash
+      
         run: |
           # Add commands to execute your code on each platform
           if [ "$RUNNER_OS" == "Linux" ]; then
