@@ -69,10 +69,7 @@ jobs:
           elif [ "$RUNNER_OS" == "Windows" ]; then
                choco install important_windows_software
           elif [ "$RUNNER_OS" == "macOS" ]; then
-
-          else
-               echo "$RUNNER_OS not supported"
-               exit 1
+          
           fi
 
       - name: Configure CMake
