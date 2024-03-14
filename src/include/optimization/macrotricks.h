@@ -65,18 +65,18 @@ template<typename t2>																								\
 functionType typename std::enable_if<std::is_arithmetic<t2>::value, structType>										\
 ::type operator o(const t2& b) const {																				\
 	newExpression((*this))																							\
-	for (auto it : zip(result, (*this)))																			\
+	for (auto it : std::views::zip(result, (*this)))																			\
 	{																												\
-		it.val<0>() = it.val<1>() o b;																				\
+		std::get<0>(it) = std::get<1>(it) o b;																				\
 	}																												\
 	return result;																									\
 }																													\
 functionType structType operator o(const structType& b) const														\
 {																													\
 	newExpression(b)																								\
-	for (auto it : zip(result, (*this), b))																			\
+	for (auto it : std::views::zip(result, (*this), b))																			\
 	{																												\
-		it.val<0>() = it.val<1>() o it.val<2>();																	\
+		std::get<0>(it) = std::get<1>(it) o std::get<2>(it);																	\
 	}																												\
 	return result;																									\
  }																													\
@@ -85,9 +85,9 @@ functionType friend typename std::enable_if<std::is_arithmetic<t2>::value, struc
 ::type operator o(const t2& a, const structType& b)																	\
  { 																													\
 	newExpression(b)																								\
-	for (auto it : zip(result, b))																					\
+	for (auto it : std::views::zip(result, b))																					\
 	{																												\
-		it.val<0>() = a o it.val<1>();																				\
+		std::get<0>(it) = a o std::get<1>(it);																				\
 	}																												\
 	return result;																									\
 }																													\
@@ -95,7 +95,7 @@ functionType void operator o##= (const structType& b)																\
 {																													\
 	for (auto it : zip((*this), b))																					\
 	{																												\
-		it.val<0>() o##= it.val<1>();																				\
+		std::get<0>(it) o##= std::get<1>(it);																				\
 	}																												\
 }																													\
 template<typename t2>																								\

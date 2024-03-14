@@ -1,13 +1,13 @@
 #pragma once
 #include "direction.h"
 #include "vectn.h"
-#include "graphics/alignment.h"
+#include "math/graphics/alignment.h"
 #include "random/random.h"
 
-template<typename t, size_t axisCount>
+template<typename t, fsize_t axisCount>
 struct rectIteratortn;
 
-template<typename t, size_t axisCount>
+template<typename t, fsize_t axisCount>
 struct rectangletn
 {
 	vectn<t, axisCount> pos0 = vectn<t, axisCount>();
@@ -224,7 +224,7 @@ struct rectangletn
 	{
 		switch (alignment)
 		{
-		case verticalAlignment::botton:
+		case verticalAlignment::bottom:
 			return y;
 		case verticalAlignment::middle:
 			return y + (h + rectangleHeight) / 2;
@@ -236,11 +236,11 @@ struct rectangletn
 	{
 		switch (alignment)
 		{
-		case horizontalAlignment::botton:
+		case horizontalAlignment::left:
 			return x;
 		case horizontalAlignment::middle:
 			return x + (w + rectangleWidth) / 2;
-		case horizontalAlignment::top:
+		case horizontalAlignment::right:
 			return x + w - rectangleWidth;
 		}
 	}
@@ -292,7 +292,7 @@ inline rectangletn<outputType, axisCount> floorRectangle(crectangletn<inputType,
 
 	return crectangletn<outputType, axisCount>(pos0, pos1 - pos0);
 }
-template<typename outputType = int, typename inputType, size_t axisCount>
+template<typename outputType = int, typename inputType, fsize_t axisCount>
 inline rectangletn<outputType, axisCount> ceilRectangle(crectangletn<inputType, axisCount>& rect)
 {
 	const auto& pos0 = ceilVector<outputType>(rect.pos0);
@@ -343,7 +343,7 @@ inline t* cut(t* const& arr, crectanglet1<size_t>& range)
 
 //https://stackoverflow.com/questions/1784573/iterator-for-2d-vector
 
-template<typename t, size_t axisCount>
+template<typename t, fsize_t axisCount>
 struct rectIteratortn
 {
 public:
@@ -426,13 +426,13 @@ public:
 };
 
 
-template<typename t, size_t axisCount>
+template<typename t, fsize_t axisCount>
 constexpr rectIteratortn<t, axisCount> rectangletn<t, axisCount>::begin() const
 {
 	return rectIteratortn<t, axisCount>(*this, pos0);
 }
 
-template<typename t, size_t axisCount>
+template<typename t, fsize_t axisCount>
 constexpr rectIteratortn<t, axisCount> rectangletn<t, axisCount>::end() const
 {
 	vectn<t, axisCount> endPos = pos0;

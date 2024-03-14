@@ -4,6 +4,7 @@
 #include "GlobalFunctions.h"
 #include "array/wstring.h"
 #include "macrotricks.h"
+#include <string>
 
 #ifdef _DEBUG
 //#define EXTRADEBUGCHECKS
@@ -16,8 +17,8 @@
 # define assumeInRelease2(shouldBeTrue, errorMessageIfFalse)
 #endif
 #else
-# define assumeInRelease1(shouldBeTrue)   __assume(shouldBeTrue)
-# define assumeInRelease2(shouldBeTrue, errorMessageIfFalse)   __assume(shouldBeTrue)
+# define assumeInRelease1(shouldBeTrue)   [[assume(shouldBeTrue)]]
+# define assumeInRelease2(shouldBeTrue, errorMessageIfFalse)   [[assume(shouldBeTrue)]]
 #endif
 
 
@@ -28,7 +29,7 @@
 
 //#define assumeInRelease(e) (((e) || assert(__FILE__, __LINE__)), __assume(e) )
 
-constexpr void throwIfFalse(cbool& shouldBeTrue, std::wstring errorMessageIfFalse = L"")
+inline void throwIfFalse(cbool& shouldBeTrue, std::wstring errorMessageIfFalse = L"")
 {
 	if (!shouldBeTrue)
 	{

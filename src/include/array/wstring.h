@@ -4,6 +4,7 @@
 //#include <stringapiset.h>
 #include "GlobalFunctions.h"
 #include <filesystem>
+#include <algorithm>
 
 typedef std::vector<std::wstring> wstringContainer;
 typedef std::vector<std::string> stringContainer;
@@ -106,7 +107,7 @@ inline size_t find(std::wstring str, size_t offset, std::wstring seekfor, std::w
 			if (index != std::wstring::npos)
 			{
 				offset = find(str, offset + 1, std::wstring() + skip[index + 1], skip);
-				if (offset == -1)
+				if (offset == std::wstring::npos)
 				{
 					return std::wstring::npos;
 				}
@@ -167,7 +168,7 @@ inline std::vector<std::wstring> split_string(const std::wstring& str, const std
 		while (true)
 		{
 			csize_t& currentIndex = find(str, previousIndex, delimiter, skip);
-			if (currentIndex == -1) {
+			if (currentIndex == std::wstring::npos) {
 				strings.push_back(str.substr(previousIndex));
 				break;
 			}

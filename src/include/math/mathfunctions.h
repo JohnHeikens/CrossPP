@@ -15,6 +15,22 @@ namespace math
 	constexpr fp fpepsilon = 0.0001;
 	constexpr fp averageSinusHillValue = 2.0 / PI;
 	static fp sqrt2 = sqrt(2.0);
+
+	template <typename t = fsize_t>
+	constexpr t getNextPowerOf2Multiplied(const t& n){
+		t i = 1;
+		for (; i < n; i *= 2);
+		return i;
+	}
+	template <typename t = fsize_t>
+	constexpr t getNextPowerOf2(const t& n){
+		t power = 1;
+		for (t i = 1; i < n; i *= 2){
+			power++;
+		}
+		return power;
+	}
+
 	//degrees can be 0, 90, 180 or 270
 	constexpr int sinDegrees(cint& degrees)
 	{
@@ -40,9 +56,9 @@ namespace math
 		}
 	}
 	//degrees can be 0, 90, 180 or 270
-	inline cint cosDegrees(cint& degrees)
+	inline int cosDegrees(cint& degrees)
 	{
-		cint sinusEquivalentDegrees = degrees + 90;
+		cint& sinusEquivalentDegrees = degrees + 90;
 		return sinDegrees(sinusEquivalentDegrees == 360 ? 0 : sinusEquivalentDegrees);
 	}
 	template<typename testFunction>

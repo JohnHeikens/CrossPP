@@ -185,7 +185,7 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 
 
 	//if x++, output += getxstep
-	template<fsize_t vectorSize>
+	template<fsize_t vectorSize = cols - 1>
 	constexpr vectn<t, vectorSize> getStep(const axisID& axis) const
 	{
 		return vectn<t, vectorSize>(this->axis[(int)axis]);
@@ -198,7 +198,7 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		return this->axis[rows - 1];
 	}
 
-	template<typename t, fsize_t dimensionCount>
+	template<fsize_t dimensionCount>
 	constexpr static typename std::enable_if <(rows > 1),
 		mattnxn>::type translate(cvectn<t, dimensionCount>& add)
 	{
@@ -323,12 +323,11 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 				translate(-translateAmount)));//move to mirror place
 	}
 
-	template<typename t>
 	inline static constexpr mattnxn expandRectangle(const rectanglet2<t>& rect, const t& border)
 	{
 		return fromRectToRect(rect, rect.expanded(border));
 	}
-	template<typename t, fsize_t axisCount>
+	template<fsize_t axisCount>
 	inline static constexpr mattnxn fromRectToRect(const rectangletn<t, axisCount>& rectFrom, const rectangletn<t, axisCount>& rectTo)
 	{
 		const mattnxn translateFrom = translate(-rectFrom.pos0);//move rectangle from pos0 of rectFrom to 0, 0
@@ -336,7 +335,6 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		const mattnxn translateTo = translate(rectTo.pos0);//move it to the pos0 of rectTo
 		return cross(translateTo, cross(scaled, translateFrom));
 	}
-	template<typename t>
 	inline static constexpr mattnxn fromPointsToPoints(const vect2<t>& a00, const vect2<t>& a10, const vect2<t>& a01, const vect2<t>& b00, const vect2<t>& b10, const vect2<t>& b01)
 	{
 		//from a->barycentric point->b

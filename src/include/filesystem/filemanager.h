@@ -19,26 +19,42 @@ typedef std::ios_base::openmode fileOpenMode;
 //typedef std::ios_base::open_mode fileOpenMode;
 //#endif
 
-inline void movePathsToRecycleBin(const std::vector<std::wstring>& pathsToDelete)
-{
-	std::wstring mergedString = std::wstring(L"");
-	for (const auto& it : pathsToDelete)
-	{
-		mergedString += it;
-	}
-
-	//https://devblogs.microsoft.com/oldnewthing/20100218-00/?p=14893
-	//not mergedstring += std::wstring(L"\0") because it won't add anything
-	mergedString += (letter)0;
-
-	SHFILEOPSTRUCT f;
-	ZeroMemory(&f, sizeof(SHFILEOPSTRUCT));
-	f.wFunc = FO_DELETE;
-	f.fFlags = FOF_ALLOWUNDO;
-	f.pFrom = mergedString.c_str();
-	//SHFileOperation ignores pTo in the delete operation. U must specify FOF_ALLOWUNDO to move the files to the Recycle Bin, or else.....it'll be not be place there!!!!!! How sad!!! Heh heh heh!!! :-D
-	SHFileOperation(&f);
-}
+//not cross-platform
+//inline void movePathsToRecycleBin(const std::vector<std::wstring>& pathsToDelete)
+//{
+//	
+//	std::wstring mergedString = std::wstring(L"");
+//	for (const auto& it : pathsToDelete)
+//	{
+//		mergedString += it;
+//	}
+//
+//	//https://devblogs.microsoft.com/oldnewthing/20100218-00/?p=14893
+//	//not mergedstring += std::wstring(L"\0") because it won't add anything
+//	mergedString += (letter)0;
+//
+//	SHFILEOPSTRUCT f;
+//	ZeroMemory(&f, sizeof(SHFILEOPSTRUCT));
+//	f.wFunc = FO_DELETE;
+//	f.fFlags = FOF_ALLOWUNDO;
+//	f.pFrom = mergedString.c_str();
+//	//SHFileOperation ignores pTo in the delete operation. U must specify FOF_ALLOWUNDO to move the files to the Recycle Bin, or else.....it'll be not be place there!!!!!! How sad!!! Heh heh heh!!! :-D
+//	SHFileOperation(&f);
+//}
+//void movePathsToRecycleBin(const std::vector<std::wstring>& pathsToDelete)
+//{
+//    for (const auto& path : pathsToDelete)
+//    {
+//        try
+//        {
+//            std::filesystem::remove_all(std::filesystem::path(path));
+//        }
+//        catch (const std::filesystem::filesystem_error& ex)
+//        {
+//            // Handle errors if necessary
+//        }
+//    }
+//}
 
 inline std::wstring findFileRecursive(const std::wstring& fileNameWithExtionsion, const std::wstring& folderIn)
 {

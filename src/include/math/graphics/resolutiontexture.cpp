@@ -1,9 +1,10 @@
 #include "resolutiontexture.h"
 #include "math/graphics/brush/brushes.h"
+#include "mathfunctions.h"
 //COPIES THE COLORS, NOT THE POINTER
 resolutionTexture::resolutionTexture(const texture& highestResolution, cvec2& size)
 {
-	size_t resolutionSteps = 1;
+	size_t resolutionSteps = math::getNextPowerOf2(size.minimum());
 	for (fsize_t i = 1; i < highestResolution.size.x() && i < highestResolution.size.y(); i *= 2)
 	{
 		resolutionSteps++;

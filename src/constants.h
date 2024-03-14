@@ -144,7 +144,7 @@ constexpr int vanillaChunkBlockCount = minecraftChunkLayerSize * averageMinecraf
 constexpr int averageChunkBlockCountUnderGround = chunkArraySize;//in an endless world, the average amount of blocks underground = filled
 //you will have to stripmine the same amount of time to find ores
 //stripmine: 4 blocks exposed per 2 blocks mined instead of 8
-constexpr fp chunkOreMultiplier = (averageChunkBlockCountUnderGround / (cfp)vanillaChunkBlockCount) * 2;
+constexpr fp chunkOreMultiplier = (averageChunkBlockCountUnderGround / (fp)vanillaChunkBlockCount) * 2;
 
 constexpr int ticksPerMinecraftSubChunk = 3;
 
@@ -225,8 +225,6 @@ constexpr fp visibleRangeTransitionSpeedPerSecond = 0.9;//in 1 second, it's 10x 
 
 constexpr int iconSize = 8;
 
-constexpr int buttonMargin = 5;
-constexpr veci2 buttonSize = cveci2(0x200, (int)defaultFontSize + defaultBorderSize * 2);
 constexpr int smallRightButtonSize = buttonSize.y() * 4;
 
 #pragma optimize( "", off )
@@ -318,18 +316,18 @@ constexpr rectangle2 bedFrontTextureRect = crectangle2(0, 42, 6, 16);
 constexpr rectangle2 bedBackTextureRect = crectangle2(0, 20, 6, 16);
 constexpr rectangle2 bedLegTextureRect = crectangle2(50, 40, 4, 3);
 constexpr fp bedHeightPixels = (bedLegTextureRect.size.y() + bedFrontTextureRect.size.x());
-constexpr fp bedHeight = bedHeightPixels / (cfp)blockTextureSize;
+constexpr fp bedHeight = bedHeightPixels / (fp)blockTextureSize;
 constexpr int bedBottomThicknessPixels = 2;
 constexpr fp bedHitboxHeight = (bedLegTextureRect.h() + bedBottomThicknessPixels) / (fp)blockTextureSize;
 
-constexpr fp enchantingTableHeight = 0xc / (cfp)0x10;
-constexpr fp grassPathHeight = 0xf / (cfp)0x10;
-constexpr fp soulSandHeight = 0xe / (cfp)0x10;
-constexpr fp unPressedPressurePlateHeight = 0x2 / (cfp)0x10;
-constexpr fp pressedPressurePlateHeight = 0x1 / (cfp)0x10;
-constexpr fp unPressedButtonHeight = 0x2 / (cfp)0x10;
-constexpr fp pressedButtonHeight = 0x1 / (cfp)0x10;
-constexpr fp buttonWidth = 0x6 / (cfp)0x10;
+constexpr fp enchantingTableHeight = 0xc / (fp)0x10;
+constexpr fp grassPathHeight = 0xf / (fp)0x10;
+constexpr fp soulSandHeight = 0xe / (fp)0x10;
+constexpr fp unPressedPressurePlateHeight = 0x2 / (fp)0x10;
+constexpr fp pressedPressurePlateHeight = 0x1 / (fp)0x10;
+constexpr fp unPressedButtonHeight = 0x2 / (fp)0x10;
+constexpr fp pressedButtonHeight = 0x1 / (fp)0x10;
+constexpr fp buttonWidth = 0x6 / (fp)0x10;
 
 constexpr vec2 legBrakeSpeed = vec2(humanWalkingSpeed, 15);
 
@@ -464,7 +462,7 @@ constexpr directionID standardUpFacingBlockDirection = directionID::positiveY;
 constexpr directionID standardSideFacingBlockDirection = directionID::negativeX;
 
 const std::wstring gameName = std::wstring(L"Medieval Survival");
-constexpr ull gameAuthNumber = 12969394847103665724;
+constexpr ull gameAuthNumber = 12969394847103665724ULL;
 
 const std::wstring nbtFileExtension = std::wstring(L".dat");
 const std::wstring jsonFileExtension = std::wstring(L".json");
@@ -485,7 +483,7 @@ inline std::wstring getClassName(const t& instance)
 //template<typename t>
 //std::wstring getClassName(const t& instance);
 
-cfp getPowerStrength(const powerLevel& level);
+fp getPowerStrength(const powerLevel& level);
 
 namespace stdFileSystem = std::filesystem;
 

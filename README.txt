@@ -87,6 +87,18 @@ how to manage nuget packages: project -> manage nuget packages (doesn't seem to 
 etw collection is currently in progress:
 https://stackoverflow.com/questions/16724041/cannot-start-concurrency-visualizer-in-visual-studio-2012-got-error-unable-to
 
+include file problems: specify include folder both in the c_cpp_properties.json and using include_directories() in CMakeLists.txt
+
+c++ standard:
+change in CMakeLists.txt : 
+set(CMAKE_CXX_STANDARD ##) with ## being version number
+
+also change in c_cpp_properties.json
+
+type/value mismatch: f.e. use std::remove_const_t instead of std::remove_const::value
+
+error with std::chrono::system_clock::now: use steady_clock everywhere 
+
 TODO:
 
 bonemeal particles

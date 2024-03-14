@@ -43,8 +43,8 @@ inline bool insertSortedWithoutDoubles(listType& list, const t& value)
 }
 
 //CAUTION! THIS FUNCTION IS VERY SLOW! PLEASE JUST SORT() AND UNIQUE() THE LIST AFTERWARDS
-template<typename listType, typename t, typename compareFunction>
-inline bool insertSortedWithoutDoubles(listType& list, const t& value, compareFunction function = std::less<t>)
+template<typename listType, typename t, typename compareFunction = std::less<t>>
+inline bool insertSortedWithoutDoubles(listType& list, const t& value, compareFunction function)
 {
 	static_assert(!std::is_pointer<listType>::value, "pointers are not allowed");
 	const auto index = std::lower_bound(list.begin(), list.end(), value, function);

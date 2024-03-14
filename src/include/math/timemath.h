@@ -15,7 +15,7 @@ typedef const microseconds cmicroseconds;
 typedef const seconds cseconds;
 
 //the time at which the application booted
-extern std::chrono::time_point<std::chrono::steady_clock> boottime;
+extern std::chrono::steady_clock::time_point boottime;
 
 inline uint GetSecond()
 {
@@ -55,12 +55,12 @@ inline miliseconds getMiliseconds(const microseconds& s)
 
 inline microseconds GetMicroSecondsSinceApplicationBoot()
 {
-	auto current_time = std::chrono::high_resolution_clock::now();
+	auto current_time = std::chrono::steady_clock::now();
 	return std::chrono::duration_cast<std::chrono::microseconds>(current_time - boottime).count();
 }
 inline miliseconds GetMiliSecondsSinceApplicationBoot()
 {
-	auto current_time = std::chrono::high_resolution_clock::now();
+	auto current_time = std::chrono::steady_clock::now();
 	return std::chrono::duration_cast<std::chrono::milliseconds>(current_time - boottime).count();
 }
 inline seconds GetSecondsSinceApplicationBoot()

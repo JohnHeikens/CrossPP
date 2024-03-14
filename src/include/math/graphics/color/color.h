@@ -1,5 +1,8 @@
 #pragma once
 #include "math/vectn.h"
+#include "GlobalFunctions.h"
+#include <type_traits> 
+
 constexpr int bgraColorChannelCount = 4;
 constexpr int rgbColorChannelCount = 3;
 //bgra structure
@@ -25,7 +28,7 @@ struct colortn : public vectn<t, channelCount>
 
 	static constexpr size_t bitSize = byteSize * ByteToBits;
 
-	static constexpr bool isByteColor = std::is_same<std::remove_const<t>::type, byte>::value;
+	static constexpr bool isByteColor = std::is_same_v<std::remove_const_t<t>, byte>;
 	static constexpr t maxValue = std::is_integral<t>::value ? (isByteColor ? bytemax : 0x100) : 1;
 
 	static constexpr t halfMaxValue = maxValue / 2;

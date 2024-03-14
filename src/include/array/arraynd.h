@@ -131,8 +131,8 @@ struct arraynd :IDestructable
 		t* const rowPtr = baseArray + rowY * size.x();
 		t* const endPtr = rowPtr + maxX;
 
-		typedef brush0Type::inputType vectorType;
-		typedef vectorType::axisType axisType;
+		typedef typename brush0Type::inputType vectorType;
+		typedef typename vectorType::axisType axisType;
 
 		vectorType pos = vectorType((axisType)minX, (axisType)rowY);
 
@@ -149,7 +149,7 @@ struct arraynd :IDestructable
 
 
 		vec2 pos = b.modifiedTransform.multPointMatrix(vec2((fp)minX, (fp)rowY));
-		vec2 step = b.modifiedTransform.getStep<2>(axisID::x);
+		vec2 step = b.modifiedTransform.getStep(axisID::x);
 
 		for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos += step)
 		{
@@ -249,7 +249,8 @@ struct arraynd :IDestructable
 			}
 		}
 	}
-	constexpr bool inBounds(cvecin<axisCount>& pos) const
+	template <typename axisType>
+	constexpr bool inBounds(cvectn<axisType, axisCount>& pos) const
 	{
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
@@ -321,9 +322,9 @@ struct arraynd :IDestructable
 	{
 		vectn<fsize_t, axisCount> clamped = cvectn<fsize_t, axisCount>();
 
-		for (auto axisIt : zip(clamped, pos, size))
+		for (auto axisIt : std::views::zip(clamped, pos, size))
 		{
-			axisIt.val<0>() = (axisIt.val<1>() < axisIt.val<2>()) ? axisIt.val<1>() : (axisIt.val<2>() - 1);
+			std::get<0>(axisIt) = (std::get<1>(axisIt) < std::get<2>(axisIt)) ? std::get<1>(axisIt) : (std::get<2>(axisIt) - 1);
 		}
 
 		return getValueUnsafe(clamped);
@@ -334,7 +335,7 @@ struct arraynd :IDestructable
 		cvecin<axisCount> clamped = cvecin<axisCount>();
 		for (auto axisIt : zip(clamped, pos))
 		{
-			axisIt.val<0>() = (axisIt.val<1>() < 0) ? 0 : axisIt.val<1>();
+			std::get<0>(axisIt) = (std::get<1>(axisIt) < 0) ? 0 : std::get<1>(axisIt);
 		}
 
 		return getValueClampedToEdgePositive(cvectn<fsize_t, axisCount>(clamped));
@@ -412,7 +413,7 @@ struct arraynd :IDestructable
 	{
 		//crop rectangle
 		rectanglei2 rect = rectanglei2(destinationPosition.x(), destinationPosition.y(), source.size.x(), source.size.y());
-		rect.crop(crectangletn<int, 2>(getClientRect()));
+		getClientRect().cropClientRect(rect);
 		copyArrayUnsafe(crectanglet2<fsize_t>(rect), source.size.x(), source.baseArray);
 	}
 

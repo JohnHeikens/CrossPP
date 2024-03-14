@@ -3,6 +3,7 @@
 #include "math/graphics/brush/brushes.h"
 
 constexpr fp defaultFontSize = 0x10;
+
 struct baseFont
 {
 	fontFamily& family;
@@ -54,9 +55,9 @@ struct baseFont
 	{
 		//start at top left
 		vec2 offset = vec2(bounds.pos0.x(), bounds.pos0.y() + bounds.h() - fontSize);
-		for (int i = 0; i < text.size(); i++)
+		for (const auto& c : text)
 		{
-			offset = MeasureLetterOffset(bounds, offset, text[i]);
+			offset = MeasureLetterOffset(bounds, offset, c);
 		}
 		return offset;
 	}
@@ -66,9 +67,9 @@ struct baseFont
 		fp widestX = 0;
 		vec2 offset = vec2();
 		crectangle2 maximalBounds = crectangle2(0, maximumSize.y(), maximumSize.x(), maximumSize.y());
-		for (int i = 0; i < text.size(); i++)
+		for (const auto& c : text)
 		{
-			offset = MeasureLetterOffset(maximalBounds, offset, text[i]);
+			offset = MeasureLetterOffset(maximalBounds, offset, c);
 			widestX = math::maximum(offset.x(), widestX);
 		}
 		return vec2(widestX, -offset.y() + getLineHeight());

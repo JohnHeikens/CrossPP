@@ -21,8 +21,8 @@ get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId})
 
-# Use c++ 17
-set(CMAKE_CXX_STANDARD 17)
+# Use c++ 23
+set(CMAKE_CXX_STANDARD 23)
 # Enable additional warnings and debug mode
 # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
 set (CMAKE_CXX_FLAGS "-g -W -pedantic")
@@ -31,6 +31,7 @@ set (CMAKE_CXX_FLAGS "-g -W -pedantic")
 set(SOURCES src/main.cpp)
 # folder with .h files, e.g. include/
 include_directories(src)
+include_directories(src/include)
 
 # 3rd party dependencies
 add_subdirectory(lib)

@@ -29,11 +29,11 @@ struct saturator final :public colorBrush
 	inline color getValue(cvec2& pos) const final
 	{
 		const color original = baseBrush.getValue(pos);
-		cvec3& rgbOriginal = original.toVector();
-		cvec3& hsv = rgb2hsv(rgbOriginal);
-		cvec3& saturated = vec3(hsv.h(), math::minimum(hsv.s + addsaturation, (fp)1.0), math::minimum(hsv.v + addvalue, (fp)1.0));
-		cvec3& rgbSaturated = hsv2rgb(saturated);
-		return color::fromVector(rgbSaturated);
+		const colorf& rgbOriginal(original);
+		const colorf& hsv = rgb2hsv(rgbOriginal);
+		const colorf& saturated = vec3(hsv.h(), math::minimum(hsv.s() + addsaturation, (fp)1.0), math::minimum(hsv.v() + addvalue, (fp)1.0));
+		const colorf& rgbSaturated = hsv2rgb(saturated);
+		return color(rgbSaturated);
 	}
 };
 

@@ -1,13 +1,15 @@
 #pragma once
 #include "GlobalFunctions.h"
 #include "axis.h"
-#include "array/zipiterator.h"
+//#include "array/zipiterator.h"
 #include "optimization/optimization.h"
 #include "direction.h"
 #include "mathfunctions.h"
+#include <ranges>
 
 template<typename t, fsize_t n>
-struct alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t) * 0x4) : 0) vectn
+//alignment is already a power of two
+struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t) * 0x4) : math::getNextPowerOf2Multiplied(sizeof(t) * n)) vectn
 {
 	typedef const vectn cvecn;
 	static constexpr fsize_t axisCount = n;
@@ -120,14 +122,14 @@ struct alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t) * 0x4) 
 	template<typename indexType, typename = std::enable_if<std::is_integral<t>::value>>
 	constexpr t& operator[](const indexType& axisIndex)
 	{
-		assumeInRelease((axisIndex < axisCount) && (axisIndex >= 0));
+		assumeInRelease((axisIndex < (indexType)axisCount) && (axisIndex >= 0));
 		return this->axis[axisIndex];
 	}
 
 	template<typename indexType, typename = std::enable_if<std::is_integral<t>::value>>
 	constexpr const t& operator[](const indexType& axisIndex) const
 	{
-		assumeInRelease((axisIndex < axisCount) && (axisIndex >= 0));
+		assumeInRelease((axisIndex < (indexType)axisCount) && (axisIndex >= 0));
 		return this->axis[axisIndex];
 	}
 
@@ -387,9 +389,9 @@ struct alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t) * 0x4) 
 
 	constexpr bool indexInBounds(const vectn& size) const
 	{
-		for (auto it : zip((*this), size))
+		for (auto it : std::views::zip((*this), size))
 		{
-			if (it.val<0>() < 0 || it.val<0>() >= it.val<1>())
+			if (it.template val<0>() < 0 || it.template val<0>() >= it.template val<1>())
 			{
 				return false;
 			}

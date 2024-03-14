@@ -12,7 +12,7 @@ enum class endianness
 	littleEndian,
 	bigEndian
 };
-inline const endianness getCurrentEndianness()
+inline endianness getCurrentEndianness()
 {
 	const int16_t twoByteValue = 0x1;
 	return *((const int8_t*)&twoByteValue) ? endianness::littleEndian : endianness::bigEndian;
