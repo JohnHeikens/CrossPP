@@ -9,6 +9,15 @@ on:
     branches: [ "main" ]
 
 jobs:
+  setup-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt update
+      - run: sudo apt install build-essential
+      - run: sudo apt install libx11-dev xorg-dev freeglut3-dev libudev-dev
+      # we assume cmake is installed already
+      # sudo apt install cmake
+
   build:
     runs-on: ${{ matrix.os }}
 
@@ -31,9 +40,12 @@ jobs:
             c_compiler: cl
             cpp_compiler: cl
           - os: ubuntu-latest
+            needs: setup-ubuntu
+
             c_compiler: gcc
             cpp_compiler: g++
           - os: ubuntu-latest
+            needs: setup-ubuntu
             c_compiler: clang
             cpp_compiler: clang++
         exclude:
