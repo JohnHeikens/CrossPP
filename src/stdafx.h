@@ -1,0 +1,15 @@
+#pragma once
+#include <Windows.h>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <set>
+#include <vector>
+#include <memory>
+#include <thread>
+#include "math/graphics/stbincluder.h"
+#include "gzipIncluder.h"
+#include "constants.h"
+#include "interface/idestructable.h"
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>

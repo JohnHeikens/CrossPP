@@ -1,3 +1,4 @@
+#GITIGNORE 1:
 x64
 old data
 screenshots
@@ -10,6 +11,54 @@ models
 Debug
 enc_temp_folder
 
+#GITIGNORE 2:
+
+# Build system
+gmon.out
+*.stats
+Thumbs.db
+.DS_Store
+build
+build/
+bin
+
+# VS Code
+.vscode/ipch
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#GITIGNORE 3:
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudio,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudio,c++

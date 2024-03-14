@@ -46,6 +46,15 @@ issue with shared ptr destruction throwing: use std::make_shared<t> instead of s
 to move a file while keeping it included:
 in the solution explorer, click on the 'show all files' button. then it will show the folder view without having to switch views.
 
+setup project:
+https://github.com/lutrarutra/SFML-Project-Template/blob/master/README.md
+
+problems with mingw not found in path:
+edit environment variables for your account (see link above)
+
+Unable to determine what CMake generator to use. Please install or configure a preferred generator, or update settings.json, your Kit configuration or PATH variable. Error: No usable generator found:
+https://stackoverflow.com/questions/70197831/unable-to-determine-what-cmake-generator-to-use-vs-code-windows-10
+
 how to deploy / create an installer:
 
 https://learn.microsoft.com/en-us/cpp/ide/walkthrough-deploying-your-program-cpp?view=msvc-170
