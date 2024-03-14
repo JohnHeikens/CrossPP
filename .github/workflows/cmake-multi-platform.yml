@@ -68,8 +68,7 @@ jobs:
             # sudo apt install cmake
           elif [ "$RUNNER_OS" == "Windows" ]; then
                choco install important_windows_software
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-          
+          # elif [ "$RUNNER_OS" == "macOS" ]; then
           fi
 
       - name: Configure CMake
