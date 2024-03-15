@@ -71,10 +71,9 @@ jobs:
             sudo apt install libx11-dev xorg-dev freeglut3-dev libudev-dev
             # we assume cmake is installed already
             # sudo apt install cmake
-          elif [ "$RUNNER_OS" == "Windows" ]; then
-            # placeholder comment to avoid syntax errors
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-            # placeholder comment to avoid syntax errors
+            # we can't allow empty clauses
+            # elif [ "$RUNNER_OS" == "Windows" ]; then
+            # elif [ "$RUNNER_OS" == "macOS" ]; then
           fi
 
       - name: Configure CMake
