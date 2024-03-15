@@ -72,8 +72,9 @@ jobs:
             # we assume cmake is installed already
             # sudo apt install cmake
           elif [ "$RUNNER_OS" == "Windows" ]; then
-
-          # elif [ "$RUNNER_OS" == "macOS" ]; then
+            # placeholder comment to avoid syntax errors
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+          # placeholder comment to avoid syntax errors
           fi
 
       - name: Configure CMake
