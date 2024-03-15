@@ -49,7 +49,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: msys2/setup-msys2@v2
+      - name: install-msys2
+        if: matrix.os == 'windows-latest'
+        uses: msys2/setup-msys2@v2
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
