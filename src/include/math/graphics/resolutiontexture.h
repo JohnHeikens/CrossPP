@@ -1,5 +1,5 @@
 #pragma once
-#include "Texture.h"
+#include "texture.h"
 #include "brush/transformbrush.h"
 struct resolutionTexture : public colorBrush
 {
