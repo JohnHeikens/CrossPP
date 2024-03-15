@@ -49,6 +49,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: msys2/setup-msys2@v2
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -69,7 +70,7 @@ jobs:
             # we assume cmake is installed already
             # sudo apt install cmake
           elif [ "$RUNNER_OS" == "Windows" ]; then
-               choco install important_windows_software
+
           # elif [ "$RUNNER_OS" == "macOS" ]; then
           fi
 
