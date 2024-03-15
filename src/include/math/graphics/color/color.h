@@ -6,7 +6,7 @@
 constexpr int bgraColorChannelCount = 4;
 constexpr int rgbColorChannelCount = 3;
 //bgra structure
-template<typename t, size_t channelCount>
+template<typename t, fsize_t channelCount>
 struct colortn : public vectn<t, channelCount>
 {
 	typedef t channelType;
@@ -61,7 +61,7 @@ struct colortn : public vectn<t, channelCount>
 	template<typename t2>
 	constexpr colortn(const colortn<t2, channelCount>& other)
 	{
-		for (int i = 0; i < channelCount; i++)
+		for (fsize_t i = 0; i < channelCount; i++)
 		{
 			constexpr t2 otherMaxValue = colortn<t2, channelCount>::maxValue;
 			if constexpr (maxValue == otherMaxValue)

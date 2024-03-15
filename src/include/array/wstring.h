@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <windows.h>
 //#include <stringapiset.h>
 #include "GlobalFunctions.h"
 #include <filesystem>
@@ -11,6 +10,8 @@ typedef std::vector<std::string> stringContainer;
 
 //litteraly copies chars to letters
 //https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar
+//cross-platform way:
+//https://stackoverflow.com/questions/4804298/how-to-convert-wstring-into-string
 inline std::wstring stringToWString(const std::string& s)
 {
 	//corrupts memory
@@ -20,10 +21,15 @@ inline std::wstring stringToWString(const std::string& s)
 	//std::wstring wsTmp(s.begin(), s.end());
 	//return wsTmp;
 	//-1 because there is a '\0' charachter
-	int wCharCount = MultiByteToWideChar(CP_UTF8, 0, s.c_str(), -1, NULL, 0) - 1;
-	std::wstring r((size_t)wCharCount, L'#');//make a new string with the measured length and fill it with '#'
-	MultiByteToWideChar(CP_UTF8, 0, s.c_str(), -1, &r[0], wCharCount);//fill the string with the new wstring
-	return r;
+	//int wCharCount = MultiByteToWideChar(CP_UTF8, 0, s.c_str(), -1, NULL, 0) - 1;
+	//std::wstring r((size_t)wCharCount, L'#');//make a new string with the measured length and fill it with '#'
+	//MultiByteToWideChar(CP_UTF8, 0, s.c_str(), -1, &r[0], wCharCount);//fill the string with the new wstring
+	//return r;
+	return std::wstring(s.begin(), s.end());
+	//using convert_typeX = std::codecvt_utf8<wchar_t>;
+    //std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+    //return converterX.from_bytes(s);
 }
 //litteraly copies letters to chars
 inline std::string WStringToString(const std::wstring& s)
@@ -34,11 +40,15 @@ inline std::string WStringToString(const std::wstring& s)
 	//std::string sTmp(s.begin(), s.end());
 	//return sTmp;
 	//-1 because there is a '\0' charachter
-	int charCount = WideCharToMultiByte(CP_UTF8, 0, s.c_str(), -1, NULL, 0, NULL, NULL) - 1;
-	std::string r((size_t)charCount, '#');//make a new string with the measured length and fill it with '#'
-	WideCharToMultiByte(CP_UTF8, 0, s.c_str(), -1, &r[0], charCount, NULL, NULL);//fill the string with the new wstring
-	return r;
-
+	//int charCount = WideCharToMultiByte(CP_UTF8, 0, s.c_str(), -1, NULL, 0, NULL, NULL) - 1;
+	//std::string r((size_t)charCount, '#');//make a new string with the measured length and fill it with '#'
+	//WideCharToMultiByte(CP_UTF8, 0, s.c_str(), -1, &r[0], charCount, NULL, NULL);//fill the string with the new wstring
+	//return r;
+	return std::string(s.begin(), s.end());
+    //using convert_typeX = std::codecvt_utf8<wchar_t>;
+    //std::wstring_convert<convert_typeX, wchar_t> converterX;
+//
+    //return converterX.to_bytes(s);
 }
 
 inline std::wstring towstring(cfp value, cint digits)

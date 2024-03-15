@@ -84,7 +84,9 @@
         "xlocnum": "cpp",
         "xloctime": "cpp",
         "xmemory": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "codecvt": "cpp",
+        "*.rh": "cpp"
     },
     "cmake.additionalCompilerSearchDirs": [
         "C:\\msys64\\mingw64\\bin\\"
