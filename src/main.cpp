@@ -7,10 +7,10 @@
 #include "GlobalFunctions.h"
 #include "array/wstring.h"
 #include <thread>
-#include <corecrt.h>
+//#include <corecrt.h>
 #include <filesystem>
 #include <string>
-#include <shlobj.h>
+//#include <shlobj.h>
 #include "folderList.h"
 #include <filesystem/filemanager.h>
 
