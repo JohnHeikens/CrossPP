@@ -6,7 +6,7 @@
 //#ifdef _HAS_CXX17 //warning! this is not a safe macro
 //c++ 17:
 #include <filesystem>
-#include <Windows.h>
+//#include <Windows.h>
 namespace stdFileSystem = std::filesystem;
 
 typedef std::ios_base::openmode fileOpenMode;
