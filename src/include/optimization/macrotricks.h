@@ -62,7 +62,7 @@ constructorType structName& operator=(const structName & other) = default;
 //newexpression should be a macro that creates a new instance with the same size as the argument
 #define addOperator(o, newExpression, structType, functionType)														\
 template<typename t2>																								\
-functionType typename std::enable_if<std::is_arithmetic<t2>::value, structType>										\
+functionType typename std::enable_if<std::is_arithmetic_v<t2>, structType>										\
 ::type operator o(const t2& b) const {																				\
 	newExpression((*this))																							\
 	for (auto it : std::views::zip(result, (*this)))																			\
@@ -81,7 +81,7 @@ functionType structType operator o(const structType& b) const														\
 	return result;																									\
  }																													\
 template<typename t2>																								\
-functionType friend typename std::enable_if<std::is_arithmetic<t2>::value, structType>								\
+functionType friend typename std::enable_if<std::is_arithmetic_v<t2>, structType>								\
 ::type operator o(const t2& a, const structType& b)																	\
  { 																													\
 	newExpression(b)																								\
@@ -99,7 +99,7 @@ functionType void operator o##= (const structType& b)																\
 	}																												\
 }																													\
 template<typename t2>																								\
-functionType typename std::enable_if<std::is_arithmetic<t2>::value, void>											\
+functionType typename std::enable_if<std::is_arithmetic_v<t2>, void>											\
 ::type operator o##=(const t2& b)																					\
 { 																													\
 	for (t& val : (*this))																							\
