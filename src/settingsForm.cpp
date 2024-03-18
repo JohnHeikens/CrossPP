@@ -15,7 +15,7 @@ void settingsForm::render(cveci2& position, const texture& renderTarget)
 	form::renderChildren(position, renderTarget);
 }
 
-void settingsForm::mouseDown(cveci2& position, cvk& button)
+void settingsForm::mouseDown(cveci2& position, cmb& button)
 {
 	control* highestChild = getHighestChild(position);
 	if (highestChild == saveAndQuitButton)

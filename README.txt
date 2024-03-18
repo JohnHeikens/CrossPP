@@ -19,6 +19,12 @@ or you initialized an extern in the declaration
 compilation slow: turn 'multi procession compilation' to 'yes' in the project settings. not in the soluition settings!
 unresolved external: cpp file not added to solution?
 
+'uint32_t' is not a member of 'std':
+#include <cstdint> not <stdint> (stdint has no std:: namespace in front of it)
+
+no #include errors:
+search for this setting: toggle intellisense engine fallback on include errors
+
 Cyclic build dependency detected: IItemComparable.h depends on slabType.h depends on IItemComparable.h
 exclude the files from the project, then reinclude them
 

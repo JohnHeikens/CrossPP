@@ -8,6 +8,6 @@ struct settingsForm :form
 	button* soundSettingsButton = new button(L"Sound Settings...");
 	settingsForm();
 	virtual void render(cveci2& position, const texture& renderTarget) override;
-	virtual void mouseDown(cveci2& position, cvk& button) override;
+	virtual void mouseDown(cveci2& position, cmb& button) override;
 	virtual void layout(crectanglei2& newRect) override;
 };

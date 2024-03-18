@@ -5,8 +5,8 @@
 #include "optimization/stableTickLoop.h"
 #include "control/control.h"
 
-//works on windows only
-//void application::changeKeyboardLayout()
+// works on windows only
+// void application::changeKeyboardLayout()
 //{
 //	// Define the US English keyboard layout identifier
 //	LPCWSTR US_ENGLISH_KEYBOARD_LAYOUT_ID = L"00000409";
@@ -20,35 +20,75 @@
 //	// Example usage: Get the currently active keyboard layout
 //	HKL activeLayout = GetKeyboardLayout(0);
 //	std::wcout << L"Active Keyboard Layout: " << activeLayout << std::endl;
-//}
+// }
 
 int application::run()
 {
-	//changeKeyboardLayout();
-	mainForm->focus();
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 0;
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Tutorial", sf::Style::Close, settings);
+	settings = window.getSettings();
+	std::cout << SFML_VERSION_MAJOR << "." << SFML_VERSION_MINOR << "." << SFML_VERSION_PATCH << std::endl;
+	std::cout << settings.majorVersion << "." << settings.minorVersion << std::endl;
 
-	//cap at 60fps
-	cmicroseconds& frameTime = (microseconds)(1000000 / cappedFps);
+	window.setFramerateLimit(60);
+	// ImGui::SFML::Init(window);
+
+	// Create a texture with initial size
+	sf::Texture windowTexture;
+	windowTexture.create(window.getSize().x, window.getSize().y);
+
+	// Create a sprite to display the texture
+	sf::Sprite sprite(windowTexture);
+
+	texture renderTex = texture(cvecs2(window.getSize().x, window.getSize().y));
+
+	// cap at 60fps
+	cmicroseconds &frameTime = (microseconds)(1000000 / cappedFps);
 	stableLoop loop = stableLoop(frameTime);
-	while (doEvents())//next frame
+	// changeKeyboardLayout();
+	mainForm->focus();
+	while (window.isOpen())
 	{
 		loop.waitTillNextLoopTime();
-		processInput();//process events from user
+		processInput(); // process events from user
 		// Do stuff with graphics->colors
 		render();
 		// Draw graphics->colors to window
 
-		if (!color::isByteColor)
-		{
-			std::copy(graphics.baseArray, graphics.baseArray + (graphics.size.volume()), windowColorPtr);
-		}
-		//TODO: copy colors to screen
-		//BitBlt(wndDC, 0, 0, (int)graphics.size.x(), (int)graphics.size.y(), hdcMem, 0, 0, SRCCOPY);
+		window.clear();
+		windowTexture.update((byte *)renderTex.baseArray);
+		window.draw(sprite);
+		// ImGui::SFML::Render(window);
+		window.display();
 	}
+
 	return 0;
 }
 
-//LRESULT CALLBACK WndProc(
+void application::processInput()
+{
+	sf::Event event;
+	while (window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+			window.close();
+		else if (event.type == sf::Event::KeyPressed)
+		{
+			mainForm->keyDown(event.key.code);
+		}
+		else if (event.type == sf::Event::KeyReleased)
+		{
+			mainForm->keyUp(event.key.code);
+		}
+		else if (event.type == sf::Event::TextEntered)
+		{
+			mainForm->enterText(event.text.unicode);
+		}
+	}
+}
+
+// LRESULT CALLBACK WndProc(
 //	HWND hwnd,
 //	UINT msg,
 //	WPARAM wParam,
@@ -68,13 +108,13 @@ int application::run()
 //		app->linkGraphics();
 //	}
 //	break;
-//	
+//
 //	case WM_PASTE:
 //	{
 //		app->mainForm->paste();
 //	}
 //	break;
-//	
+//
 //	case WM_MOUSEMOVE:
 //	{
 //
@@ -175,7 +215,7 @@ int application::run()
 //		BitBlt(hdc, 0, 0, (int)app->graphics.size.x(), (int)app->graphics.size.y(), app->hdcMem, 0, 0, SRCCOPY);
 //		EndPaint(hwnd, &ps);
 //	}
-//	break;	
+//	break;
 //	case WM_CLOSE:
 //	{
 //		if (app->mainForm->close())
@@ -202,9 +242,9 @@ int application::run()
 //	break;
 //	}
 //	return DefWindowProc(hwnd, msg, wParam, lParam);
-//}
+// }
 //
-//void application::processInput()
+// void application::processInput()
 //{
 //	POINT p;
 //	if (GetCursorPos(&p))
@@ -229,14 +269,14 @@ int application::run()
 //			}
 //		}
 //	}
-//}
+// }
 
 void application::render()
 {
 	mainForm->render(cveci2(0, 0), graphics);
 }
 
-//void application::linkGraphics()
+// void application::linkGraphics()
 //{
 //	//adjust graphics size
 //	RECT graphicsrect, windowrect;
@@ -296,13 +336,13 @@ void application::render()
 //	hbmOld = (HBITMAP)SelectObject(hdcMem, hbmp);
 //
 //	mainForm->layout(crectanglei2(0, 0, (int)graphics.size.x(), (int)graphics.size.y()));
-//}
-application::application(form* mainForm)
+// }
+application::application(form *mainForm)
 {
 	this->mainForm = mainForm;
-	std::fill(lastKeyDown, lastKeyDown + 0x100, false);
+	//std::fill(lastKeyDown, lastKeyDown + 0x100, false);
 }
-//void application::switchFullScreen()
+// void application::switchFullScreen()
 //{
 //	//all styles will be kept except all overlappedwindow styles
 //	DWORD dwStyle = GetWindowLong(hwnd, GWL_STYLE);
@@ -333,18 +373,18 @@ application::application(form* mainForm)
 //	}
 //	isFullScreen = !isFullScreen;
 //	linkGraphics();
-//}
-//application* application::getApplicationConnected(HWND mainWindow)
+// }
+// application* application::getApplicationConnected(HWND mainWindow)
 //{
 //	//getwindowlong is not going to cut it. long_ptr it is!
 //	LONG_PTR l = GetWindowLongPtr(mainWindow, GWLP_USERDATA);
 //	return (application*)l;
-//}
+// }
 application::~application()
 {
 	delete mainForm;
 
-	//we dont have to delete its colors because they are part of the DIBSection
+	// we dont have to delete its colors because they are part of the DIBSection
 
 	if (graphics.baseArray)
 	{

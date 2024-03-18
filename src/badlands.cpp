@@ -56,7 +56,7 @@ void badlands::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, st
 		}
 		else
 		{
-			fp noiseValue = terracottaNoise->evaluate(cvec2(pos.x() * noiseStretch.x(), height * noiseStretch.y())) + height * elevationInfluence;
+			fp noiseValue = terracottaNoise->evaluate<2>(cvec2(pos.x() * noiseStretch.x(), height * noiseStretch.y())) + height * elevationInfluence;
 			cint seedValue1 = (int)floor(noiseValue);
 			cint seedValue2 = (int)currentWorld->seed;
 			cint value = (int)perfectlyHashToDoubleSizedType(seedValue1, seedValue2);

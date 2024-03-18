@@ -18,26 +18,26 @@ void playerControlledAI::execute()
 	human* connectedPlayer = (human*)connectedEntity;
 	cbool& worldFocus = !(connectedPlayer->screen.focusedChild);// currentGame->focused && !currentGame->focusedChild;
 
-	connectedPlayer->wantsToSprint = worldFocus && connectedPlayer->screen.holdingDownKey((cvk)keyID::sprint);
-	connectedPlayer->wantsToJump = worldFocus && connectedPlayer->screen.holdingDownKey((cvk)keyID::jump);
-	connectedPlayer->wantsToGoLeft = worldFocus && connectedPlayer->screen.holdingDownKey((cvk)keyID::left);
-	connectedPlayer->wantsToGoRight = worldFocus && connectedPlayer->screen.holdingDownKey((cvk)keyID::right);
-	connectedPlayer->wantsToSneak = worldFocus && connectedPlayer->screen.holdingDownKey((cvk)keyID::sneak);
-	connectedPlayer->wantsToGoDown = worldFocus && connectedPlayer->screen.holdingDownKey((cvk)keyID::down);
-	connectedPlayer->wantsToGoUp = worldFocus && connectedPlayer->screen.holdingDownKey((cvk)keyID::up);
+	connectedPlayer->wantsToSprint = worldFocus && connectedPlayer->screen.holdingDownKey((vk)keyID::sprint);
+	connectedPlayer->wantsToJump = worldFocus && connectedPlayer->screen.holdingDownKey((vk)keyID::jump);
+	connectedPlayer->wantsToGoLeft = worldFocus && connectedPlayer->screen.holdingDownKey((vk)keyID::left);
+	connectedPlayer->wantsToGoRight = worldFocus && connectedPlayer->screen.holdingDownKey((vk)keyID::right);
+	connectedPlayer->wantsToSneak = worldFocus && connectedPlayer->screen.holdingDownKey((vk)keyID::sneak);
+	connectedPlayer->wantsToGoDown = worldFocus && connectedPlayer->screen.holdingDownKey((vk)keyID::down);
+	connectedPlayer->wantsToGoUp = worldFocus && connectedPlayer->screen.holdingDownKey((vk)keyID::up);
 
 	cbool& spectating = connectedPlayer->currentGameMode == gameModeID::spectator;
 
 	if (!spectating)
 	{
-		connectedPlayer->wantsToHit = worldFocus && connectedPlayer->screen.clickedFocused[mouseButton::left];
+		connectedPlayer->wantsToHit = worldFocus && connectedPlayer->screen.clickedFocused[mb::Left];
 	}
-	connectedPlayer->wantsToDig = worldFocus && (!spectating) && connectedPlayer->screen.holding[mouseButton::left];
+	connectedPlayer->wantsToDig = worldFocus && (!spectating) && connectedPlayer->screen.holding[mb::Left];
 
 
-	connectedPlayer->wantsToKeepUsing = worldFocus && connectedPlayer->screen.holding[mouseButton::right];
-	connectedPlayer->wantsToStartUsing = worldFocus && connectedPlayer->screen.clickedFocused[mouseButton::right];
-	connectedPlayer->wantsToStopUsing = worldFocus && connectedPlayer->screen.clickReleased[mouseButton::right];
+	connectedPlayer->wantsToKeepUsing = worldFocus && connectedPlayer->screen.holding[mb::Right];
+	connectedPlayer->wantsToStartUsing = worldFocus && connectedPlayer->screen.clickedFocused[mb::Right];
+	connectedPlayer->wantsToStopUsing = worldFocus && connectedPlayer->screen.clickReleased[mb::Right];
 
 	if (connectedPlayer->wantsToJump)
 	{
@@ -102,7 +102,7 @@ void playerControlledAI::execute()
 		{
 			if (connectedEntity->entityType == entityID::human)
 			{
-				if (connectedPlayer->screen.holdingDownKey((cvk)keyID::camera))
+				if (connectedPlayer->screen.holdingDownKey((vk)keyID::camera))
 				{
 					connectedPlayer->screen.visibleRangeXWalk *= pow(0.95, scrollDelta);
 				}
@@ -124,7 +124,7 @@ void playerControlledAI::execute()
 			}
 
 			itemStack* selectedHotbarSlot = connectedPlayer->hotbarSlots->getSlot(cveci2(connectedPlayer->rightHandSlotIndex, 0));
-			if (worldFocus && connectedPlayer->screen.clickedFocused[mouseButton::middle] && connectedPlayer->currentGameMode == gameModeID::creative)
+			if (worldFocus && connectedPlayer->screen.clickedFocused[mb::Middle] && connectedPlayer->currentGameMode == gameModeID::creative)
 			{
 				//pick block
 				selectedHotbarSlot->clearData();

@@ -12,7 +12,7 @@ struct mainMenu : public form
 	pictureBox* backgroundPicture = nullptr;
 	label* gameNameLabel = nullptr;
 	virtual void render(cveci2& position, const texture& renderTarget) override;
-	virtual void mouseDown(cveci2& position, cvk& button) override;
+	virtual void mouseDown(cveci2& position, cmb& button) override;
 	virtual void layout(crectanglei2& newRect) override;
 	virtual void focus() override;
 	virtual void keyDown(cvk& key) override;

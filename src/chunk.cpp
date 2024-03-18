@@ -76,7 +76,7 @@ void chunk::generateStructures()
 		{
 			cint& height = ((overworldGenerationData*)terrainData)->heights[halfChunkSize.x()];
 
-			cbool& hasTopPosition = (height >= worldPos.y()) && (height < (worldPos.y() + chunkSize.y()));
+			cbool& hasTopPosition = (height >= worldPos.y()) && (height < (worldPos.y() + (int)chunkSize.y()));
 
 			cveci2& topPosition = cveci2(worldPos.x() + (int)halfChunkSize.x(), height);
 
@@ -280,7 +280,7 @@ void chunk::serializeValue(nbtSerializer& s)
 		{
 			entityList.update();
 			//mob types
-			for (int i = 0; i < entityList.size; i++)
+			for (fsize_t i = 0; i < entityList.size; i++)
 			{
 				if (isSerializable(entityList[i]->entityType))
 				{
@@ -448,7 +448,7 @@ chunk::chunk(dimension* dimensionIn, cveci2& chunkCoordinates) :dimensionIn(dime
 }
 void chunk::changeEntityList()
 {
-	for (int i = 0; i < entityList.size; i++)
+	for (fsize_t i = 0; i < entityList.size; i++)
 	{
 		entity* e = entityList[i];
 		if (e->despawn)
@@ -482,7 +482,7 @@ void chunk::spawnMobs()
 	for (int i = 0; i < spawnTries; i++)
 	{
 		//check mob cap
-		int mobCount = 0;
+		size_t mobCount = 0;
 		for (entity* e : entityList)
 		{
 			if (isMob(e->entityType))
@@ -552,7 +552,7 @@ void chunk::randomTick()
 {
 	if (loadLevel >= chunkLoadLevel::entityLoaded)
 	{
-		for (size_t i = 0; i < currentWorld->randomTickSpeed; i++)
+		for (int i = 0; i < currentWorld->randomTickSpeed; i++)
 		{
 			cveci2& pos = worldPos + cveci2(randIndex(currentRandom, (int)chunkSize.x()), randIndex(currentRandom, (int)chunkSize.y()));
 			blockData* data = dimensionIn->getBlockData(pos);
@@ -576,7 +576,7 @@ chunk::~chunk()
 				delete blockDataArray.baseArray[index];
 			}
 		}
-		for (int i = 0; i < entityList.size; i++)
+		for (fsize_t i = 0; i < entityList.size; i++)
 		{
 			delete entityList[i];
 		}

@@ -1,4 +1,6 @@
 #pragma once
+#include "math/timemath.h"
+#include <thread>
 struct stableLoop {
 	microseconds microSecondsPerIteration = 0;
 	stableLoop(microseconds microSecondsPerIteration) : microSecondsPerIteration(microSecondsPerIteration) {}

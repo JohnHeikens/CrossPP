@@ -70,7 +70,7 @@ veci2 dimension::searchPortal(cveci2& positionNear)
 	cfp netherPortalSearchRange = identifier == dimensionID::nether ? netherPortalSearchRangeNether : netherPortalSearchRangeOverWorld;
 	fp minimumDistanceSquared = INFINITY;
 	int portalIndex = 0;
-	for (int i = 0; i < portalPositions.size(); i++)
+	for (size_t i = 0; i < portalPositions.size(); i++)
 	{
 		veci2 location = portalPositions[i];
 		cint distanceSquared = (location - positionNear).lengthSquared();
@@ -230,7 +230,7 @@ void dimension::serializeValue(nbtSerializer& s)
 		//list of block update positions
 		if (s.write)
 		{
-			for (int i = 0; i < blockUpdatePositions.size; i++)
+			for (fsize_t i = 0; i < blockUpdatePositions.size; i++)
 			{
 				if (s.push())
 				{

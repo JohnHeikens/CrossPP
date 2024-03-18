@@ -1,4 +1,5 @@
 #include "nbtData.h"
+#include "constants.h"
 nbtData* createNBTData(const std::wstring& text)
 {
 	//https://minecraft.gamepedia.com/NBT_path_format

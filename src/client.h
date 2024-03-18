@@ -13,8 +13,8 @@ struct client : control, socketContainer {
 
 	virtual void render(cveci2& position, const texture& renderTarget) override;
 	client();
-	virtual void mouseDown(cveci2& position, cvk& button) override;
-	virtual void mouseUp(cveci2& position, cvk& button) override;
+	virtual void mouseDown(cveci2& position, cmb& button) override;
+	virtual void mouseUp(cveci2& position, cmb& button) override;
 	virtual void scroll(cveci2& position, cint& scrollDelta) override;
 
 	virtual void hover(cveci2& position) override;

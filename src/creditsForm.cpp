@@ -120,7 +120,7 @@ void creditsForm::render(cveci2& position, const texture& renderTarget)
 
 void creditsForm::keyDown(cvk& keycode)
 {
-	if (keycode == (cvk)keyID::escape)
+	if (keycode == (vk)keyID::escape)
 	{
 		parent->switchVisibleChild(nullptr);
 	}

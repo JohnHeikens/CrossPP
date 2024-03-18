@@ -2683,7 +2683,7 @@ std::vector<resolutionTexture* > loadGrowthStageTextures(const std::wstring& blo
 {
 	auto loadedTextures = std::vector<resolutionTexture* >();
 	auto indexedTextures = std::vector<resolutionTexture* >(growthStageIndexes.size());
-	for (int i = 0; i < growthStageIndexes.size(); i++)
+	for (size_t i = 0; i < growthStageIndexes.size(); i++)
 	{
 		cint index = growthStageIndexes[i];
 		if (index >= loadedTextures.size())

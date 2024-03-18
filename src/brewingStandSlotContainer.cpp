@@ -51,18 +51,18 @@ void brewingStandSlotContainer::drawExtraData(cmat3x3& transform, const texture&
 	{
 		cfp& brewProgress = selectedBrewingStandData->ticksBrewed / (fp)brewingBatchTime;
 		cint& brewTextureHeight = 27;
-		cint& brewTexturePart = (cint)(brewTextureHeight * brewProgress);
+		cint& brewTexturePart = (int)(brewTextureHeight * brewProgress);
 		inventory::drawExtraData(crectanglei2(176, (227 + brewTextureHeight) - brewTexturePart, 33, brewTexturePart), veci2(97, 121 + (brewTextureHeight - brewTexturePart)), transform, renderTarget);
 	}
 	//draw progress bar
 	if (selectedBrewingStandData->fuelLeft)
 	{
 		cfp& partLeft = selectedBrewingStandData->fuelLeft / (fp)blazePowderBrewingBatchCount;
-		inventory::drawExtraData(crectanglei2(176, 223, (cint)(18 * partLeft), 4), vec2(60, 118), transform, renderTarget);
+		inventory::drawExtraData(crectanglei2(176, 223, (int)(18 * partLeft), 4), vec2(60, 118), transform, renderTarget);
 	}
 }
 
-void brewingStandSlotContainer::clickedOnItem(cvk& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
+void brewingStandSlotContainer::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
 {
 	//reset process when adding bottle
 

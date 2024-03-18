@@ -131,7 +131,7 @@ bool fluidData::tick(tickableBlockContainer* containerIn, cveci2& position)
 							}
 							else //emptied
 							{
-								data->currentFluidLevel = (const fluidLevel)totalFluid;
+								data->currentFluidLevel = (fluidLevel)totalFluid;
 								currentFluidLevel -= maximalTransferAmount;
 							}
 						}

@@ -51,7 +51,7 @@ void biomeGenerator::placeRandomlyGrownStemPlant(blockContainer* containerIn, cv
 
 	//grow a block on the stem
 	std::vector<veci2> possibilities = std::vector<veci2>();
-	for (int i = 0; i < directionCount1D; i++)
+	for (fsize_t i = 0; i < directionCount1D; i++)
 	{
 		cveci2& absoluteCheckPosition = position + directionVectors2D[i];
 		if (containerIn->getBlockID(absoluteCheckPosition) == blockID::air)
@@ -160,7 +160,7 @@ bool biomeGenerator::placeChorusTree(blockContainer* containerIn, cveci2& pos, s
 		for (int y = pos.y(); y <= topY; y++)
 		{
 			std::vector<int> nextXCoords = std::vector<int>();
-			for (int index = 0; index < xCoords.size(); index++)
+			for (size_t index = 0; index < xCoords.size(); index++)
 			{
 				cint x = xCoords[index];
 				if (randChance(currentRandom, 0x8) || y == topY)

@@ -32,7 +32,7 @@ void craftableSlotContainer::recalculateOutputSlot()
 	craftingOutputSlot->linkedContainer->slots[0] = currentRecipeResult.count ? currentRecipeResult : itemStack();
 }
 
-void craftableSlotContainer::clickedOnItem(cvk& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
+void craftableSlotContainer::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
 {
 	if (selectedSlotContainer == craftingOutputSlot)
 	{

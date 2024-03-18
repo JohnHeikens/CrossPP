@@ -69,32 +69,32 @@ std::mt19937 currentRandom;
 gameForm::~gameForm()
 {
 
-	for (int i = 0; i < craftingRecipes.size(); i++)
+	for (size_t i = 0; i < craftingRecipes.size(); i++)
 	{
 		delete craftingRecipes[i];
 	}
 
-	for (int i = 0; i < furnaceRecipes.size(); i++)
+	for (size_t i = 0; i < furnaceRecipes.size(); i++)
 	{
 		delete furnaceRecipes[i];
 	}
 
-	for (int i = 0; i < tagList.size; i++)
+	for (size_t i = 0; i < tagList.size; i++)
 	{
 		delete tagList[i];
 	}
 
-	for (int i = 0; i < jigsawPoolList.size(); i++)
+	for (size_t i = 0; i < jigsawPoolList.size(); i++)
 	{
 		delete jigsawPoolList[i];
 	}
 
-	for (int i = 0; i < converterList.size(); i++)
+	for (size_t i = 0; i < converterList.size(); i++)
 	{
 		delete converterList[i];
 	}
 
-	for (int i = 0; i < structureList.size(); i++)
+	for (size_t i = 0; i < structureList.size(); i++)
 	{
 		delete structureList[i];
 	}
@@ -171,32 +171,10 @@ void gameForm::render(cveci2& position, const texture& renderTarget)
 	}
 	handler->update(currentClient->earPosition, hearingRange, settings::soundSettings::headScreenDistance, settings::soundSettings::volume);
 
-	if (focusedChild == currentClient)// && (currentClient->focusedChild == nullptr)
-	{
-		hideCursor();
-	}
-	else
-	{
-		showCursor();
-	}
-	//if (currentPlayableCharachter)
-	//{
-		//update sounds
-		//check music
-
-	//mob* currentMob = (mob*)currentPlayableCharachter;
-	//earPosition = currentMob->getHeadPosition();
-	//TODO: fix
-	//}
-	//else
-	//{
-	//	handler->update(cvec2(), 0, 0, settings::soundSettings::volume);
-	//}
+	currentApplication->window.setMouseCursorVisible(focusedChild != currentClient);
 
 	//draw all controls
 	renderChildren(position, renderTarget);
 	//don't draw self
 	//form::render(position, renderTarget);
-	
-	
 }

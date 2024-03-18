@@ -8,7 +8,9 @@
 //#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //#define new DEBUG_NEW
 //#endif
-
+#include <cstddef>
+#include <cstdint>
+#include <sfml/Window.hpp>
 
 //https://stackoverflow.com/questions/2324658/how-to-determine-the-version-of-the-c-standard-used-by-the-compiler
 namespace cPlusPlusVersions
@@ -32,7 +34,8 @@ typedef unsigned int uint;
 typedef unsigned short ushort;
 typedef wchar_t letter;//unicode charachter
 //virtual keycode
-typedef byte vk;
+typedef sf::Keyboard::Key vk;
+typedef sf::Mouse::Button mb;
 
 typedef uint fsize_t;//fast size type, will result in sse instructions and loop unrolling
 typedef const fsize_t cfsize_t;//fast size type, will result in sse instructions and loop unrolling
@@ -51,6 +54,7 @@ typedef const fp cfp;
 typedef const letter cletter;
 //const virtual keycode
 typedef const vk cvk;
+typedef const mb cmb;
 typedef const size_t csize_t;
 
 constexpr int ByteToBits = 8;//there are 8 bits in a byte

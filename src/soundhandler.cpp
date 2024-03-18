@@ -1,7 +1,7 @@
 #include "soundHandler.h"
 void soundHandler::update()
 {
-	for (int i = 0; i < currentlyPlayIngAudio->size; i++)
+	for (size_t i = 0; i < currentlyPlayIngAudio->size; i++)
 	{
 		sf::Sound* s = (*currentlyPlayIngAudio)[i];
 		if (s->getStatus() == sf::SoundSource::Status::Stopped)

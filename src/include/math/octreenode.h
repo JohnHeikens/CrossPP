@@ -3,7 +3,7 @@
 
 constexpr int fastestOctreenodeSize = 4;
 
-template<typename t, size_t axisCount>
+template<typename t, fsize_t axisCount>
 struct octreeNode
 {
 	t uniformValue = t();
@@ -53,7 +53,7 @@ struct octreeNode
 
 			const auto itRect = crectangletn<size_t, axisCount>(cvectn<size_t, axisCount>(fastestOctreenodeSize));
 
-			for (auto nodeIt : zip(childNodes, itRect))
+			for (auto nodeIt : std::views::zip(childNodes, itRect))
 			{
 				nodeIt.val<0>() = new octreeNode(recursionDepth - 1, position + (cvecin<axisCount>)(nodeIt.val<1>() * scale), values);
 			}

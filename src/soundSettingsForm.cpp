@@ -25,7 +25,7 @@ void soundSettingsForm::render(cveci2& position, const texture& renderTarget)
 	renderChildren(position, renderTarget);
 }
 
-void soundSettingsForm::mouseDown(cveci2& position, cvk& button)
+void soundSettingsForm::mouseDown(cveci2& position, cmb& button)
 {
 	form::mouseDown(position, button);
 	control* highestChild = getHighestChild(position);
@@ -45,7 +45,7 @@ void soundSettingsForm::mouseDown(cveci2& position, cvk& button)
 
 void soundSettingsForm::keyDown(cvk& keycode)
 {
-	if (keycode == (cvk)keyID::escape)
+	if (keycode == (vk)keyID::escape)
 	{
 		parent->switchVisibleChild(((gameControl*)parent)->options);
 	}

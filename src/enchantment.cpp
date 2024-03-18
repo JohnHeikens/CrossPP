@@ -11,7 +11,7 @@ std::wstring enchantment::toWString() const
 {
 	std::wstring enchantmentName = enchantmentDataList[(int)identifier]->name;
 	enchantmentName = replace(enchantmentName, std::wstring(L"_"), std::wstring(L" "));
-	if (power != 1 || power < enchantmentDataList[(int)identifier]->powerRanges.size)
+	if (power != 1 || power < (int)enchantmentDataList[(int)identifier]->powerRanges.size)
 	{
 		enchantmentName += std::wstring(L" ") + std::to_wstring(power);
 	}

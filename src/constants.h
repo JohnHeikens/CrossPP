@@ -46,6 +46,9 @@ struct biomeData;
 
 
 //constants
+
+constexpr wchar_t colorCodeChar = '\xA7';
+
 constexpr vect2<size_t> chunkSize = cvect2<size_t>(0x100, 0x100);
 //functions
 constexpr veci2 getChunkCoordinates(cvec2& worldPos) noexcept {

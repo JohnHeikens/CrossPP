@@ -24,7 +24,7 @@ void mainMenu::render(cveci2& position, const texture& renderTarget)
 	form::render(position, renderTarget);
 }
 
-void mainMenu::mouseDown(cveci2& position, cvk& button)
+void mainMenu::mouseDown(cveci2& position, cmb& button)
 {
 	control* highestChild = getHighestChild(position);
 	if (highestChild == playOfflineButton)
@@ -61,12 +61,14 @@ void mainMenu::focus()
 
 void mainMenu::keyDown(cvk& key)
 {
-	if (key == (cvk)keyID::escape)
+	if (key == (vk)keyID::escape)
 	{
-		PostMessage(currentApplication->hwnd, WM_CLOSE, 0, 0);
+		//might cause a crash
+		currentApplication->window.close();
+		//PostMessage(currentApplication->hwnd, WM_CLOSE, 0, 0);
 	}
 	form::keyDown(key);
-	if (key == (cvk)VK_SPACE)//pressed space button
+	if (key == vk::Space)//pressed space button
 	{
 		mainForm->switchVisibleChild(currentWorldSelector);
 		return;

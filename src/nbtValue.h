@@ -1,5 +1,6 @@
 #pragma once
 #include "constants.h"
+#include "type/conversion.h"
 template<typename t>
 struct nbtValue :nbtData
 {

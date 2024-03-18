@@ -9,6 +9,7 @@ struct brush : IDestructable
 	typedef i inputType;
 	typedef r resultingType;
 	virtual resultingType getValue(const inputType& pos) const = 0;
+	//virtual ~brush() {};
 };
 
 typedef brush<color, vec2> colorBrush;

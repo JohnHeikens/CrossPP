@@ -50,7 +50,7 @@ layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vecto
 	this->OutputPlus = mid;
 	cfp& amplitude = outputRange.pos1().x() - mid;
 	cfp& mult = amplitude * NOISE_MULT / TotalWeight;
-	for (int i = 0; i < octaveWeights.size(); i++)
+	for (size_t i = 0; i < octaveWeights.size(); i++)
 	{
 		this->octaveWeights[i] *= mult;
 	}

@@ -22,7 +22,7 @@ void videoSettingsForm::layout(crectanglei2& newRect)
 	guiScaleSlider->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, currentY, buttonSize.x(), buttonSize.y()));
 }
 
-void videoSettingsForm::mouseDown(cveci2& position, cvk& button)
+void videoSettingsForm::mouseDown(cveci2& position, cmb& button)
 {
 	form::mouseDown(position, button);
 	control* highestChild = getHighestChild(position);

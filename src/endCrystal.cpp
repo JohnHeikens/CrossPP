@@ -44,7 +44,7 @@ void endCrystal::explode()
 	//seek nearby dragons
 	std::vector<entity*> nearByEntities = dimensionIn->findNearEntities(position, dragonNoticeDistance);
 
-	for (int i = 0; i < nearByEntities.size(); i++)
+	for (size_t i = 0; i < nearByEntities.size(); i++)
 	{
 		if (nearByEntities[i]->entityType == entityID::ender_dragon)
 		{

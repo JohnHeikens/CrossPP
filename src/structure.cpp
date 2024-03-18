@@ -41,7 +41,7 @@ mat3x3i structure::getBlocksToWorldTransform(cveci2& pos00, cbool& flipX) const
 
 mat3x3 structure::getEntitiesToWorldTransform(cveci2& pos00, cbool& flipX) const
 {
-	mat3x3 entitiesToWorldTransform = mat3x3::translate(pos00);
+	mat3x3 entitiesToWorldTransform = mat3x3::translate(cvec2(pos00));
 	if (flipX)
 	{
 		//+ blocks->size.x() - 1

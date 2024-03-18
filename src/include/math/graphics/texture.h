@@ -2,9 +2,7 @@
 #include "brush/brush.h"
 #include "array/arraynd.h"
 
-// width and height MUST be a power of 2
-// https://en.wikipedia.org/wiki/Texture_mapping
-struct texture : public colorBrushSizeT, public array2d<color>
+struct texture : public virtual colorBrushSizeT, public array2d<color>
 {
 public:
 	texture(cvect2<fsize_t> &size, cbool &initializeToDefault = true) : array2d<color>(size, initializeToDefault) {}
@@ -20,18 +18,19 @@ public:
 	{
 		if constexpr (isDebugging)
 		{
-			if(!inBounds(pos)){
+			if (!inBounds(pos))
+			{
 				return colorPalette::magenta;
 			}
-			//if (pos.x() >= size.x())
+			// if (pos.x() >= size.x())
 			//{
 			//	return colorPalette::yellow;
-			//}
-			//else if (pos.y() >= size.y())
+			// }
+			// else if (pos.y() >= size.y())
 			//{
 			//	return colorPalette::blue;
-			//}
-			//if constexpr (std::is_signed_v<fsize_t>)
+			// }
+			// if constexpr (std::is_signed_v<fsize_t>)
 			//{
 			//	if (pos.x() < 0)
 			//	{
@@ -41,7 +40,7 @@ public:
 			//	{
 			//		return colorPalette::green;
 			//	}
-			//}
+			// }
 		}
 		return getValueUnsafe(pos);
 	}
@@ -69,6 +68,9 @@ public:
 	void Fade(cfp &weight, const color &fadeto) const;
 
 	void visualizeFormula(crectangle2 &screenRect, crectangle2 &spaceRect, fp (*func)(cfp &x), const colorBrush &b);
+	virtual ~texture() override
+	{
+	}
 };
 
 veci2 getImageSize(const std::wstring &path);

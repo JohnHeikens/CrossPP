@@ -21,7 +21,7 @@ void accountEditor::layout(crectanglei2& newRect)
 	//
 }
 
-void accountEditor::mouseDown(cveci2& position, cvk& button)
+void accountEditor::mouseDown(cveci2& position, cmb& button)
 {
 	if (getHighestChild(position) == saveButton) {
 		const std::wstring& newAccountName = playerNameTextBox->text;

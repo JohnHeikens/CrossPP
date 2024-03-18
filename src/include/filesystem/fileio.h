@@ -2,8 +2,10 @@
 #include "GlobalFunctions.h"
 #include "filemanager.h"
 #include <fstream>
+#include <string>
+#include <iostream>
 
-constexpr fileOpenMode getOpenMode(cbool& write)
+constexpr std::ios_base::openmode getOpenMode(cbool& write)
 {
 	return (write ? std::ios::out : std::ios::in) | std::ios::binary;
 }
@@ -12,7 +14,7 @@ constexpr fileOpenMode getOpenMode(cbool& write)
 inline std::fstream getAcceleratedFstream(const std::wstring& path, cbool& write, std::shared_ptr<char[]>& buffer, cint& bufferSize)
 {
 	std::fstream stream;
-	stream.open(path, getOpenMode(write));
+	stream.open(path.c_str(), getOpenMode(write));
 	if (stream.good())
 	{
 		//give a buffer to read faster

@@ -129,7 +129,7 @@ struct gameForm final :public form
 	virtual void render(cveci2& position, const texture& renderTarget) final;
 	virtual void keyDown(cvk& keycode) final;
 	virtual void layout(crectanglei2& newRect) final;
-	virtual void mouseDown(cveci2& position, cvk& button) final;
+	virtual void mouseDown(cveci2& position, cmb& button) final;
 	virtual ~gameForm() override;
 };
 

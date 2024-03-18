@@ -15,7 +15,7 @@ additiveDrop::~additiveDrop()
 std::vector<itemStack> additiveDrop::roll(const dropData& data, std::mt19937& randomToUse) const
 {
 	std::vector<itemStack> slots = std::vector<itemStack>();
-	for (int i = 0; i < drops.size(); i++)
+	for (size_t i = 0; i < drops.size(); i++)
 	{
 		const std::vector<itemStack> additionalSlots = drops[i]->roll(data, randomToUse);
 		slots.insert(slots.end(), additionalSlots.begin(), additionalSlots.end());

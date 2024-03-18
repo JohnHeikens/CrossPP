@@ -57,7 +57,7 @@ struct rectangletn
 	}
 	constexpr bool contains(const vectn<t, axisCount>& pos) const
 	{
-		for (int i = 0; i < axisCount; i++)
+		for (fsize_t i = 0; i < axisCount; i++)
 		{
 			if ((pos[i] < pos0[i]) || (pos[i] >= (pos0[i] + size[i])))
 			{
@@ -180,7 +180,7 @@ struct rectangletn
 	{
 		vectn<t, axisCount> result = vectn<t, axisCount>();
 
-		for (int i = 0; i < axisCount; i++)
+		for (fsize_t i = 0; i < axisCount; i++)
 		{
 			result[i] = pos0[i] + ((size[i] - innerRectSize[i]) / 2);
 		}
@@ -283,7 +283,7 @@ addTemplateTypes(rectangle)
 
 
 //DONT USE THIS TO CONVERT TO PIXEL RECTANGLES; USE CEILRECT
-template<typename outputType = int, typename inputType, size_t axisCount>
+template<typename outputType = int, typename inputType, fsize_t axisCount>
 inline rectangletn<outputType, axisCount> floorRectangle(crectangletn<inputType, axisCount>& rect)
 {
 	const auto& pos0 = floorVector<outputType>(rect.pos0);

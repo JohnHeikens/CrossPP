@@ -15,7 +15,7 @@ humanSlotContainerUI::humanSlotContainerUI() : craftingGridSlotContainer(new uiS
 	containers.push_back(craftingOutputSlot = new uiSlotContainer(cveci2(154, 122), new rectangularSlotContainer(cveci2(1))));
 }
 
-void humanSlotContainerUI::clickedOnItem(cvk& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
+void humanSlotContainerUI::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
 {
 	human* currentHuman = (human*)linkedPlayer;
 	if (selectedSlotContainer == armorSlots)

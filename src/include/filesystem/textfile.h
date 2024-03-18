@@ -11,7 +11,7 @@
 inline std::string readalltext(std::wstring path)
 {
 
-	std::ifstream t(path, getOpenMode(false));
+	std::ifstream t(path.c_str(), getOpenMode(false));
 	t.seekg(0, std::ios::end);
 	size_t size = (size_t)t.tellg();
 	std::string buffer(size, '#');
@@ -21,17 +21,17 @@ inline std::string readalltext(std::wstring path)
 }
 inline void writealltext(std::wstring path, std::string text)
 {
-	std::ofstream s(path, getOpenMode(true));
+	std::ofstream s(path.c_str(), getOpenMode(true));
 	s.write(text.c_str(), (std::streamsize)text.size());
 	s.close();
 }
 //https://www.codespeedy.com/fetch-a-random-line-from-a-text-file-in-cpp/
-inline stringContainer readAllLines(std::wstring path)
+inline stringContainer readAllLines(const std::wstring& path)
 {
 	std::string line;
 	stringContainer lines;
 	//input file stream
-	std::ifstream file(path);
+	std::ifstream file(path.c_str());
 
 	//store the lines in the string vector
 	while (std::getline(file, line))

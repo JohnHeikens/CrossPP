@@ -45,7 +45,7 @@ dropCondition* readCondition(const jsonContainer& container)
 		const enchantmentID& requiredEnchantmentID = enchantmentDataList.getIDByName(container[std::wstring(L"enchantment")].children[0].value);
 
 		bonusCondition->enchantmentRequired = requiredEnchantmentID;
-		for (int i = 0; i < chanceTableContainers.size(); i++)
+		for (size_t i = 0; i < chanceTableContainers.size(); i++)
 		{
 			convertToDouble(chanceTableContainers[i].value, bonusCondition->chanceTable[i]);
 		}

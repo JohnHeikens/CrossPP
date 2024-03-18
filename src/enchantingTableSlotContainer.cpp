@@ -39,7 +39,7 @@ enchantingTableSlotContainer::~enchantingTableSlotContainer()
 	delete hotbarSlots;
 }
 
-void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cvk& button, itemStack& stackHolding)
+void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cmb& button, itemStack& stackHolding)
 {
 	human* currentHuman = (human*)linkedPlayer;
 	constexpr rectangle2 optionsRect = crectangle2(enchantmentBottomOptionPos.x(), enchantmentBottomOptionPos.y(), enchantmentOptionSize.x(), enchantmentOptionSize.y() * enchantmentOptionCount);
@@ -61,7 +61,7 @@ void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cvk& button,
 
 			enchantedSlot.count = 1;
 
-			for (int i = 0; i < enchantmentOptions[selectedOptionIndex].size(); i++)
+			for (size_t i = 0; i < enchantmentOptions[selectedOptionIndex].size(); i++)
 			{
 				enchantedSlot.enchantments.push_back(new enchantment(enchantmentOptions[selectedOptionIndex][i]));
 			}
@@ -164,7 +164,7 @@ void enchantingTableSlotContainer::recalculateEnchantments()
 		{
 			enchantmentData* currentEnchantmentData = enchantmentDataList[(int)identifier];
 			//the power of 'sharpness 5' is 5 for example
-			for (int enchantmentPower = 1; enchantmentPower <= currentEnchantmentData->powerRanges.size; enchantmentPower++)
+			for (size_t enchantmentPower = 1; enchantmentPower <= currentEnchantmentData->powerRanges.size; enchantmentPower++)
 			{
 				if (currentEnchantmentData->powerRanges[enchantmentPower - 1].contains(cveci1(finalLevel)))
 				{
@@ -184,7 +184,7 @@ void enchantingTableSlotContainer::recalculateEnchantments()
 		{
 		bonusRoll:
 			int value = rand(enchantmentRandom, totalWeight - 1);
-			for (int choiceIndex = 0; choiceIndex < enchantmentsToChooseFrom.size; choiceIndex++)
+			for (size_t choiceIndex = 0; choiceIndex < enchantmentsToChooseFrom.size; choiceIndex++)
 			{
 				value -= enchantmentDataList[(int)enchantmentsToChooseFrom[choiceIndex].identifier]->weight;
 				if (value < 0)

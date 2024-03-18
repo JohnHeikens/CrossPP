@@ -77,7 +77,7 @@ void structureBlockSaveModeUI::layout(crectanglei2& newRect)
 	saveButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
 }
 
-void structureBlockSaveModeUI::mouseDown(cveci2& position, cvk& button)
+void structureBlockSaveModeUI::mouseDown(cveci2& position, cmb& button)
 {
 	human* currentHuman = ((gameControl*)parent->parent)->player;
 	structureBlockUI* structureBlockOptions = (structureBlockUI*)parent;

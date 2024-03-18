@@ -1,5 +1,5 @@
 #include "rectangletn.h"
-#include <immintrin.h> // Include SIMD header for Intel CPUs
+//#include <immintrin.h> // Include SIMD header for Intel CPUs
 #pragma once
 /// <summary>
 /// 

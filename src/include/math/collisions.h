@@ -36,7 +36,7 @@ bool collidespheresSpeed(cvec2& spherePos1, cfp& sphereRadius1, cvec2& sphereVel
 
 
 //https://gamedev.stackexchange.com/questions/48587/resolving-a-collision-with-forces
-template<size_t dimensionCount>
+template<fsize_t dimensionCount>
 constexpr vecn<dimensionCount> getSpeedAfterCollision(cvect2<vecn<dimensionCount>>& speedsBeforeCollision, cvec2& masses)
 {
 	if (masses[0] == masses[1])

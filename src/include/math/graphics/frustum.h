@@ -1,6 +1,6 @@
 #pragma once
 #include <array>
-#include "mattnxn.h"
+#include "math/mattnxn.h"
 
 struct AABB;
 

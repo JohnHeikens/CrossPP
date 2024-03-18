@@ -831,7 +831,7 @@ bool humanoid::placeBlock(blockID blockToPlace)
 				cvec2 relativeAttachmentPosition = exactBlockIntersection - cvec2(adjacentBlockPosition);
 
 				//check which block to attach to
-				for (int i = 0; i < directionCount2D; i++)
+				for (fsize_t i = 0; i < directionCount2D; i++)
 				{
 					if ((!isTorch(blockToPlace)) || ((directionID)i != directionID::positiveY))
 					{

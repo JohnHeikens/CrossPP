@@ -42,7 +42,7 @@ fontFamily::fontFamily(resolutionTexture* tex, cbool& flipRows)
 	}
 	
 	int fontScaleMultiplier = (int)(topTextureToEdit.size.x() / asciiRowWidth);
-	for (int i = 0; i < asciiLetterCount; i++) {
+	for (size_t i = 0; i < asciiLetterCount; i++) {
 
 		cveci2& asciiOffset = getAsciiOffset((byte)i);
 		cveci2& multipliedOffset = asciiOffset * fontScaleMultiplier;

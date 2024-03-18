@@ -345,7 +345,7 @@ void blockContainer::addOres(cveci2& pos, const blockID& b, cint& oreCount, std:
 		int expansionPossibilitiesCount = 0;
 		int expansionPossibilities[4]{};
 
-		for (int i = 0; i < checkPositions.size(); i++)
+		for (size_t i = 0; i < checkPositions.size(); i++)
 		{
 			veci2 relativeCheckPos = checkPositions[i];
 			//no downwards attenuation

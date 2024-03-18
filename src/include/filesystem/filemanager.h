@@ -9,7 +9,7 @@
 //#include <Windows.h>
 namespace stdFileSystem = std::filesystem;
 
-typedef std::ios_base::openmode fileOpenMode;
+typedef int fileOpenMode;
 
 //#else
 ////c++ 15:

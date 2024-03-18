@@ -6,7 +6,7 @@ sideSliderWidth(sideSliderWidth)
 	addChildren({ sideSlider });
 }
 
-void listControl::mouseDown(cveci2& position, cvk& button)
+void listControl::mouseDown(cveci2& position, cmb& button)
 {
 	control::mouseDown(position, button);
 	reOrganizeChildControls();
@@ -25,7 +25,7 @@ void listControl::reOrganizeChildControls()
 	cint invisibleSpaceHeight = math::maximum(totalSpaceHeight - arrangementRoom.y(), 0);
 	cint controlOffset = math::lerp(invisibleSpaceHeight, 0, sideSlider->value);
 	veci2 arrangementOffset = veci2(0, -1);
-	for (int i = 0; i < children.size; i++) 
+	for (size_t i = 0; i < children.size; i++) 
 	{
 		control* c = (children)[i];
 		if (c != sideSlider)

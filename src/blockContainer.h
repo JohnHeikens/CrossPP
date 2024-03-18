@@ -82,7 +82,7 @@ struct blockContainer
 	void setArrayValue(cveci2& position, const t& value, const arrayDataType& dataType, const chunkLoadLevel& minimalLoadLevel);
 
 	template<typename checkFunction>
-	bool getAffectedPositions(cveci2& startPosition, cveci2& startDirection, cint& maxSize, checkFunction checkFunctionToUse, std::set<veci2>& affectedPositions, const std::vector<veci2>& relativeCheckPositions);
+	bool getAffectedPositions(cveci2& startPosition, cveci2& startDirection, csize_t& maxSize, checkFunction checkFunctionToUse, std::set<veci2>& affectedPositions, const std::vector<veci2>& relativeCheckPositions);
 
 	template<typename checkFunction>
 	std::vector<veci2> getAffectedPositions(crectanglei2& rectToSearch, checkFunction checkFunctionToUse);
@@ -117,7 +117,7 @@ inline t blockContainer::getArrayValue(cveci2& position, const arrayDataType& da
 template<typename checkFunction>
 
 //check function : parameters: position, flowdirection
-inline bool blockContainer::getAffectedPositions(cveci2& startPosition, cveci2& startDirection, cint& maxSize, checkFunction checkFunctionToUse, std::set<veci2>& affectedPositions, const std::vector<veci2>& relativeCheckPositions)
+inline bool blockContainer::getAffectedPositions(cveci2& startPosition, cveci2& startDirection, csize_t& maxSize, checkFunction checkFunctionToUse, std::set<veci2>& affectedPositions, const std::vector<veci2>& relativeCheckPositions)
 {
 	if (!(inBounds(startPosition) && checkFunctionToUse(startPosition, startDirection)))
 	{
@@ -138,7 +138,7 @@ inline bool blockContainer::getAffectedPositions(cveci2& startPosition, cveci2& 
 			//7. Set n equal to the first element of Q.
 			cveci2& currentPosition = *(floodQueue.begin());
 
-			for (int checkPosIndex = 0; checkPosIndex < relativeCheckPositions.size(); checkPosIndex++)
+			for (size_t checkPosIndex = 0; checkPosIndex < relativeCheckPositions.size(); checkPosIndex++)
 			{
 				cveci2& absoluteCheckPos = currentPosition + relativeCheckPositions[checkPosIndex];
 				if (inBounds(absoluteCheckPos) && checkFunctionToUse(absoluteCheckPos, relativeCheckPositions[checkPosIndex]))

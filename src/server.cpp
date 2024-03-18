@@ -46,7 +46,7 @@ void server::execute()
 		}
 
 		//accept connection
-		if (newPlayerSocket._Is_ready()) {
+		if (newPlayerSocket.valid()) {
 			if (playerSocket* newSocket = newPlayerSocket.get()) {
 				addToServer(newSocket);
 			}

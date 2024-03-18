@@ -97,7 +97,7 @@ struct idConverter
 		cbool write = true;
 		if (s.push<nbtDataTag::tagList>(name))
 		{
-			for (int i = 0; i < dataList.size; i++)
+			for (fsize_t i = 0; i < dataList.size; i++)
 			{
 				s.serializeValue(std::wstring(L""), dataList[i]->name);
 			}
@@ -109,7 +109,7 @@ struct idConverter
 	inline static void convertArray(dataType*& idArray, csize_t & idArraySize, const std::vector<idType>& converter)
 	{
 		//convert everything to the new value
-		for (int index = 0; index < idArraySize; index++)
+		for (size_t index = 0; index < idArraySize; index++)
 		{
 			convertID<idType>(idArray[index], idArray[index], converter);
 		}

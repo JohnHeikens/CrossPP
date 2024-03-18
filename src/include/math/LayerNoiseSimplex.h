@@ -18,11 +18,11 @@ public:
 	std::vector<vec3> octaveFrequencies = std::vector<vec3>();//the multiplier for the input coordinates
 	fp OutputPlus = 0;//the addition to the output to map it between min and max
 
-	template<int dimensions>
+	template<fsize_t dimensions>
 	inline fp evaluate(const vecn<dimensions>& position) const
 	{
 		fp val = OutputPlus;
-		for (int i = 0; i < octaveWeights.size(); i++)
+		for (size_t i = 0; i < octaveWeights.size(); i++)
 		{
 			val += octaveWeights[i] * baseNoise->evaluate<dimensions>(position * octaveFrequencies[i]);
 		}

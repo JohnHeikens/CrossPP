@@ -74,20 +74,20 @@ bool collidedistance3d(const vec3& p0, const vec3& p1, const vec3& boxp0, const 
 	fp tx0 = (boxp0.x() - p0.x()) * inversenormal.x();//t when intersecting with the boxp0.x() plane
 	fp tx1 = (boxp1.x() - p0.x()) * inversenormal.x();//t when intersecting with the boxp1.x() plane
 
-	tmin = min(tx0, tx1);
-	tmax = max(tx0, tx1);
+	tmin = math::minimum(tx0, tx1);
+	tmax = math::maximum(tx0, tx1);
 
 	fp ty0 = (boxp0.y() - p0.y()) * inversenormal.y();//t when intersecting with the boxp0.y() plane
 	fp ty1 = (boxp1.y() - p0.y()) * inversenormal.y();//t when intersecting with the boxp1.y() plane
 
-	tmin = max(tmin, min(ty0, ty1));
-	tmax = min(tmax, max(ty0, ty1));
+	tmin = math::maximum(tmin, math::minimum(ty0, ty1));
+	tmax = math::minimum(tmax, math::maximum(ty0, ty1));
 
 	fp tz0 = (boxp0.z() - p0.z()) * inversenormal.z();//t when intersecting with the boxp0.z() plane
 	fp tz1 = (boxp1.z() - p0.z()) * inversenormal.z();//t when intersecting with the boxp1.z() plane
 
-	tmin = max(tmin, min(tz0, tz1));
-	tmax = min(tmax, max(tz0, tz1));
+	tmin = math::maximum(tmin, math::minimum(tz0, tz1));
+	tmax = math::minimum(tmax, math::maximum(tz0, tz1));
 
 	//nearest point?
 	return tmax >= tmin && tmax >= 0;//tmax >= 0 because else you could hit behind you
@@ -114,14 +114,14 @@ bool collidedistance2dDirection(cvec2& p0, cvec2& directionNormal, cvec2& boxp0,
 	fp tx0 = (boxp0.x() - p0.x()) * inversenormal.x();//t when intersecting with the boxp0.x() plane
 	fp tx1 = (boxp1.x() - p0.x()) * inversenormal.x();//t when intersecting with the boxp1.x() plane
 
-	tmin = min(tx0, tx1);
-	tmax = max(tx0, tx1);
+	tmin = math::minimum(tx0, tx1);
+	tmax = math::maximum(tx0, tx1);
 
 	fp ty0 = (boxp0.y() - p0.y()) * inversenormal.y();//t when intersecting with the boxp0.y() plane
 	fp ty1 = (boxp1.y() - p0.y()) * inversenormal.y();//t when intersecting with the boxp1.y() plane
 
-	tmin = max(tmin, min(ty0, ty1));
-	tmax = min(tmax, max(ty0, ty1));
+	tmin = math::maximum(tmin, math::minimum(ty0, ty1));
+	tmax = math::minimum(tmax, math::maximum(ty0, ty1));
 
 	//nearest point?
 	return tmax >= tmin && tmax >= 0;//tmax >= 0 because else you could hit behind you

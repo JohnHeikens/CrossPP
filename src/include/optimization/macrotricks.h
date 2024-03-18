@@ -31,25 +31,26 @@ addTemplateSize(shortenedTemplateName, 3)																			\
 addTemplateSize(shortenedTemplateName, 4)
 
 #define addTemplateType(shortenedTemplateName, typeTemplateName, typeName)											\
-template<size_t axisCount>																							\
+template<fsize_t axisCount>																							\
 using shortenedTemplateName##typeTemplateName##n = shortenedTemplateName##tn<typeName, axisCount>;					\
 																													\
 addTypeSizes(shortenedTemplateName##typeTemplateName)																\
 																													\
-template<size_t axisCount>																							\
+template<fsize_t axisCount>																							\
 using c##shortenedTemplateName##typeTemplateName##n = const shortenedTemplateName##typeTemplateName##n<axisCount>;	\
 																													\
 addTypeSizes(c##shortenedTemplateName##typeTemplateName)
 
 #define addTemplateTypes(shortenedTemplateName)																		\
-template<typename t, size_t axisCount>																				\
+template<typename t, fsize_t axisCount>																				\
 using c##shortenedTemplateName##tn = const shortenedTemplateName##tn<t, axisCount>;									\
 addTemplateSizes(shortenedTemplateName)																				\
 addTemplateSizes(c##shortenedTemplateName)																			\
 addTemplateType(shortenedTemplateName, , fp)																		\
 addTemplateType(shortenedTemplateName, i, int)																		\
 addTemplateType(shortenedTemplateName, l, long)																		\
-addTemplateType(shortenedTemplateName, b, bool)
+addTemplateType(shortenedTemplateName, b, bool)																		\
+addTemplateType(shortenedTemplateName, s, bool)
 
 //https://stackoverflow.com/questions/18290523/is-a-default-move-constructor-equivalent-to-a-member-wise-move-constructor
 #define addDefaultConstructors(structName, constructorType)																			\
@@ -93,7 +94,7 @@ functionType friend typename std::enable_if<std::is_arithmetic_v<t2>, structType
 }																													\
 functionType void operator o##= (const structType& b)																\
 {																													\
-	for (auto it : zip((*this), b))																					\
+	for (auto it : std::views::zip((*this), b))																					\
 	{																												\
 		std::get<0>(it) o##= std::get<1>(it);																				\
 	}																												\

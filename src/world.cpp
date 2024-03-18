@@ -97,34 +97,34 @@ bool world::serialize(cbool& write)
 		if (s.converter)
 		{
 			//todo: message box
-			if (MessageBox(NULL, L"This File Needs To Be Converter To The Current Version. Do You Still Want To Open It?",
-				gameName.c_str(), MB_OKCANCEL | MB_ICONWARNING) == IDCANCEL)
-			{
-				return false;
-			}
-			switch (MessageBox(NULL, L"Do You Want To Make A Backup?",
-				gameName.c_str(), MB_YESNOCANCEL | MB_ICONQUESTION))
-			{
-			case IDYES:
-			{
-				const std::wstring& backupFolderName = getAvailableWorldName(currentWorld->name + std::wstring(L" - Backup"));
-				stdFileSystem::copy(path, savesFolder + backupFolderName, stdFileSystem::copy_options::recursive);
-			}
-			break;
-			case IDNO:
-			{
-
-			}
-			break;
-			case IDCANCEL:
-			{
-
-			}
-			return false;
-			default:
-				handleError(std::wstring(L"not a messagebox option"));
-				break;
-			}
+			//if (MessageBox(NULL, L"This File Needs To Be Converter To The Current Version. Do You Still Want To Open It?",
+			//	gameName.c_str(), MB_OKCANCEL | MB_ICONWARNING) == IDCANCEL)
+			//{
+			//	return false;
+			//}
+			//switch (MessageBox(NULL, L"Do You Want To Make A Backup?",
+			//	gameName.c_str(), MB_YESNOCANCEL | MB_ICONQUESTION))
+			//{
+			//case IDYES:
+			//{
+			//	const std::wstring& backupFolderName = getAvailableWorldName(currentWorld->name + std::wstring(L" - Backup"));
+			//	stdFileSystem::copy(path, savesFolder + backupFolderName, stdFileSystem::copy_options::recursive);
+			//}
+			//break;
+			//case IDNO:
+			//{
+//
+			//}
+			//break;
+			//case IDCANCEL:
+			//{
+//
+			//}
+			//return false;
+			//default:
+			//	handleError(std::wstring(L"not a messagebox option"));
+			//	break;
+			//}
 		}
 	}
 	s.serializeValue(std::wstring(L"seed"), seed);

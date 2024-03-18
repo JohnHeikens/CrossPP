@@ -1,7 +1,7 @@
 #pragma once
 #include "octreenode.h"
 #include "raycastIterator.h"
-template<typename t, size_t axisCount>
+template<typename t, fsize_t axisCount>
 struct treeNodeIterator
 {
 	typedef octreeNode<t, axisCount> octreeNodeType;
@@ -24,9 +24,9 @@ struct treeNodeIterator
 			if (currentNode.hasChildNodes())
 			{
 				vecn<axisCount> relativeChildPosition;
-				for (auto it : zip(relativeChildPosition, position))
+				for (auto it : std::views::zip(relativeChildPosition, position))
 				{
-					it.val<0>() = math::Remainder1(it.val<1>()) * fastestOctreenodeSize;
+					std::get<2>(it) = math::Remainder1(std::get<2>(it)) * fastestOctreenodeSize;
 				}
 
 				childIt = new treeNodeIterator(*currentNode.childNodes[it.currentPosition.getDimensionalArrayIndex(currentNode.size)], relativeChildPosition, directionNormal);

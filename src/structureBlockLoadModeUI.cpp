@@ -41,7 +41,7 @@ void structureBlockLoadModeUI::layout(crectanglei2& newRect)
 	loadButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
 }
 
-void structureBlockLoadModeUI::mouseDown(cveci2& position, cvk& button)
+void structureBlockLoadModeUI::mouseDown(cveci2& position, cmb& button)
 {
 	human* currentHuman = ((gameControl*)parent->parent)->player;
 	control* highestChild = getHighestChild(position);

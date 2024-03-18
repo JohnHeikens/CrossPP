@@ -1,3 +1,5 @@
+
+# set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 # Shoutout to CMake guide: https://eliasdaler.github.io/using-cmake/
 cmake_minimum_required(VERSION 3.5)
 
@@ -27,14 +29,52 @@ set(CMAKE_CXX_STANDARD 23)
 # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
 set (CMAKE_CXX_FLAGS "-g -W -pedantic")
 
-# All .cpp-files
-set(SOURCES src/main.cpp)
+# add .cpp-files
+
+file(GLOB_RECURSE source_list "src/*.cpp")
+
+list(FILTER source_list EXCLUDE REGEX "!(${PROJECT_SOURCE_DIR}/src/*)" )
+list(FILTER source_list EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/src/gzip/*" )
+
+foreach(header_dir ${source_list})
+    message(STATUS "[INFO] source file included: ${header_dir}")
+endforeach()
+set(SOURCES ${source_list}) 
+
 # folder with .h files, e.g. include/
-include_directories(src)
+#MACRO(HEADER_DIRECTORIES return_list)
+#    FILE(GLOB_RECURSE new_list 
+#    src/*.h)
+#    SET(dir_list "")
+#    FOREACH(file_path ${new_list})
+#        GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
+#        SET(dir_list ${dir_list} ${dir_path})
+#    ENDFOREACH()
+#    LIST(REMOVE_DUPLICATES dir_list)
+#    SET(${return_list} ${dir_list})
+#ENDMACRO()
+#
+#
+#HEADER_DIRECTORIES(header_dir_list)
+#
+#foreach(header_dir ${header_dir_list})
+#    message(STATUS "[INFO] Directory included: ${header_dir}")
+#endforeach()
+#
+#list(LENGTH header_dir_list header_dir_list_count)
+#message(STATUS "[INFO] Found ${header_dir_list_count} header directories.")
+
+
+#add directories to add to #include statements for example we don't have to #include "include/math/..." but with this shortcut we can #include "math/..."
+include_directories(src) 
 include_directories(src/include)
 
+#include_directories(${header_dir_list})
+#include_directories(${CMAKE_SOURCE_DIR})
+#set(SOURCE_DIR )
 # 3rd party dependencies
 add_subdirectory(lib)
+
 
 # Here the .c/.cpp files get linked
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -43,6 +83,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 # No need to link SFML implicitly as ImGui-SFML does it for you!
 # Refer to https://eliasdaler.github.io/using-cmake/
 target_link_libraries(${PROJECT_NAME} PRIVATE ImGui-SFML::ImGui-SFML)
+#target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
 
 # Additional resources like images and fonts
 # We want the to copy from permanent folder "res" to temporary folder "build"

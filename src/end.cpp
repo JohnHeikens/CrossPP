@@ -69,7 +69,7 @@ void end::generateStructures(chunk* generateIn)
 
 		summonEntity(entityID::ender_dragon, this, cvec2(0, exitPortalLevel + 0x20));
 
-		for (int i = 0; i < obsidianPillarCount; i++)
+		for (size_t i = 0; i < obsidianPillarCount; i++)
 		{
 			cint pillarX = i % 2 == 0 ? -obsidianPillarDistance : obsidianPillarDistance;
 
@@ -160,7 +160,7 @@ void end::initialize()
 
 	terrainNoise = new layerNoiseSimplex(worldRandom, octaveWeights, octaveScales);
 
-	for (int i = 0; i < obsidianPillarCount; i++)
+	for (size_t i = 0; i < obsidianPillarCount; i++)
 	{
 		obsidianPillarRadius[i] = rand(worldRandom, 3, 6);
 		obsidianPillarHeight[i] = rand(worldRandom, 0x20, 0x28);

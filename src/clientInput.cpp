@@ -34,19 +34,19 @@ void clientInput::addClientInput(const clientInput& newInput)
 {
 	mousePositionPixels = newInput.mousePositionPixels;
 	scrollDelta += newInput.scrollDelta;
-	for (int i = 0; i < mouseButton::count; i++) {
+	for (size_t i = 0; i < mb::ButtonCount; i++) {
 		clicked[i] |= newInput.clicked[i];
 		clickReleased[i] |= newInput.clickReleased[i];
 		holding[i] = newInput.holding[i];
 	}
 	keyDownHistory.insert(keyDownHistory.end(), newInput.keyDownHistory.begin(), newInput.keyDownHistory.end());
-	for (int i = 0; i < newInput.keysDown.size(); i++) {
+	for (size_t i = 0; i < newInput.keysDown.size(); i++) {
 		cvk& key = newInput.keysDown[i];
 		if (std::find(keysDown.begin(), keysDown.end(), key) == keysDown.end()) {
 			keysDown.push_back(key);
 		}
 	}
-	for (int i = 0; i < newInput.keysUp.size(); i++) {
+	for (size_t i = 0; i < newInput.keysUp.size(); i++) {
 		cvk& key = newInput.keysUp[i];
 		if (std::find(keysUp.begin(), keysUp.end(), key) == keysUp.end()) {
 			keysUp.push_back(key);

@@ -22,7 +22,7 @@ inline void renderBrewingStand(cmat3x3& normalRectToScreenTransform, cbool hasBo
 		2
 	};
 
-	for (int i = 0; i < directionCount1D; i++)
+	for (fsize_t i = 0; i < directionCount1D; i++)
 	{
 		crectangle2& brewingStandTopTextureClientRect = brewingStandTopTexture->getClientRect();
 		cint bottleIndexToDraw = bottleIndexesToDraw[i];

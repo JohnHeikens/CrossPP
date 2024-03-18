@@ -217,7 +217,7 @@ calculation* area::GetCalculation(std::wstring equation, variable** result)
 				{
 					wstringContainer arguments = split_string(betweenbraces, std::wstring(L","), skip);
 					//c->calculations = std::vector<action*>();
-					for (int k = 0; k < arguments.size(); k++)
+					for (size_t k = 0; k < arguments.size(); k++)
 					{
 						calculation* cur = GetCalculation(arguments[k], &fcall->inputs[k]);
 						if (cur) {

@@ -45,7 +45,7 @@ void jigsawUI::render(cveci2& position, const texture& renderTarget)
 	levelsSlider->text = std::wstring(L"levels:") + std::to_wstring((int)levelsSlider->value);
 	renderChildren(position, renderTarget);
 }
-void jigsawUI::mouseDown(cveci2& position, cvk& button)
+void jigsawUI::mouseDown(cveci2& position, cmb& button)
 {
 	human* currentHuman = ((gameControl*)parent)->socket.player;
 	control* highestChild = getHighestChild(position);

@@ -206,7 +206,7 @@ struct nbtSerializer :iSerializer
 	template<typename t>
 	inline static bool serializeArray(nbtData* data, t* value, int count = 1)
 	{
-		return serializeVariableArray<t>(write, data, value, count);
+		return serializeVariableArray<t>(data, value, count);
 	}
 	template<nbtDataTag valueDataTag>
 	inline nbtData* getNBTData(const std::wstring& memberName)
@@ -419,12 +419,12 @@ struct nbtSerializer :iSerializer
 		}
 	}
 
-	template<typename t, size_t axisCount>
+	template<typename t, fsize_t axisCount>
 	inline bool serializeValue(const std::wstring& memberName, vectn<t, axisCount>& vector)
 	{
 		if (push<nbtDataTag::tagCompound>(memberName))
 		{
-			for (size_t i = 0; i < axisCount; i++)
+			for (fsize_t i = 0; i < axisCount; i++)
 			{
 				serializeValue(axisNames[i], vector[i]);
 			}
@@ -439,7 +439,7 @@ struct nbtSerializer :iSerializer
 	}
 
 
-	template<typename t, size_t axisCount>
+	template<typename t, fsize_t axisCount>
 	inline bool serializeValue(const std::wstring& memberName, colortn<t, axisCount>& vector)
 	{
 		return serializeValue(memberName, (vectn<t, axisCount>&)vector);

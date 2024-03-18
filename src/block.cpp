@@ -594,7 +594,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 		collisionCollection.hitboxes.push_back(collisionData(crectangle2(cvec2(position) + currentMiddleHitboxOffset, cvec2(currentMiddleHitboxSize)), collisionTypeID::willCollideTop));
 
 		//add 4 exstensions
-		for (int i = 0; i < directionCount2D; i++)
+		for (fsize_t i = 0; i < directionCount2D; i++)
 		{
 			blockID connectingBlock = containerIn->getBlockID(position + directionVectors2D[i]);
 			cfp extensionLength = (connectingBlock == blockID::chorus_plant || connectingBlock == blockID::chorus_flower || connectingBlock == blockID::end_stone) ? currentMiddleHitboxOffset : extensionMinimalLength;
@@ -836,5 +836,5 @@ void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData)
 }
 void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData, const color& c)
 {
-	targetData.renderTarget.fillRectangleBorders(ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect)), (cint)(settings::videoSettings::guiScale * 2), solidColorBrush(c));
+	targetData.renderTarget.fillRectangleBorders(ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect)), (int)(settings::videoSettings::guiScale * 2), solidColorBrush(c));
 }

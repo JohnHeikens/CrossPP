@@ -20,8 +20,6 @@
 #include "keyID.h"
 #include "musicList.h"
 #include "application/mouseButton.h"
-#include <rpcndr.h>
-#include <WinUser.h>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -62,6 +60,9 @@
 #include "soundhandler2d.h"
 #include "keyHistoryEvent.h"
 #include "minecraftFont.h"
+#include <sfml/Window.hpp>
+#include "GlobalFunctions.h"
+#include "constants.h"
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
@@ -188,12 +189,12 @@ void gameControl::processInput()
 	{
 		if (highestChild == focusedChild)
 		{
-			for (mouseButton button = (mouseButton)0; button < mouseButton::count; button = (mouseButton)((byte)button + 1)) {
+			for (sf::Mouse::Button button = (sf::Mouse::Button)0; button < sf::Mouse::Button::ButtonCount; button = (mb)((byte)button + 1)) {
 				if (clicked[button]) {
-					form::mouseDown(mousePositionPixels, mouseButtonToKeyCode(button));
+					form::mouseDown(mousePositionPixels, button);
 				}
 				if (clickReleased[button]) {
-					form::mouseUp(mousePositionPixels, mouseButtonToKeyCode(button));
+					form::mouseUp(mousePositionPixels, button);
 				}
 			}
 		}
@@ -209,13 +210,13 @@ void gameControl::processInput()
 			player->rightHandSlotIndex = pos.x();
 			fillAllElements(clicked, false);
 		}
-		std::copy(clicked, clicked + mouseButton::count, clickedFocused);
+		std::copy(clicked, clicked + mb::ButtonCount, clickedFocused);
 	}
 
 	//process keys
 	for (const keyHistoryEvent& e : mostRecentInput.keyDownHistory) {
 		if (e.down) {
-			if (e.key == (cvk)keyID::inventory)
+			if (e.key == (vk)keyID::inventory)
 			{
 				if (inventoryUI->visible)
 				{
@@ -231,18 +232,18 @@ void gameControl::processInput()
 					}
 				}
 			}
-			if (((e.key == (cvk)keyID::commandLine) || (e.key == (cvk)keyID::text)) && focusedChild == nullptr)
+			if (((e.key == (vk)keyID::commandLine) || (e.key == (vk)keyID::text)) && focusedChild == nullptr)
 			{
 				commandLineTextbox->visible = true;
 				focusChild(commandLineTextbox);
 
-				if (e.key == (cvk)keyID::text)
+				if (e.key == (vk)keyID::text)
 				{
 					//avoid typing the text keybind
 					return;
 				}
 			}
-			if (e.key == VK_RETURN && focusedChild == commandLineTextbox)
+			if (e.key == vk::Enter && focusedChild == commandLineTextbox)
 			{
 				//execute the commandline
 				std::wstring line = commandLineTextbox->text;
@@ -253,7 +254,7 @@ void gameControl::processInput()
 				commandLineTextbox->text = std::wstring(L"");
 				commandLineTextbox->cursorIndex = 0;
 			}
-			else if (e.key == (cvk)keyID::escape)
+			else if (e.key == (vk)keyID::escape)
 			{
 				if (focusedChild == nullptr)
 				{
@@ -268,15 +269,15 @@ void gameControl::processInput()
 			}
 			else if (focusedChild == nullptr)
 			{
-				if (e.key == (cvk)keyID::renderHitboxes && settings::renderDebugData)
+				if (e.key == (vk)keyID::renderHitboxes && settings::renderDebugData)
 				{
 					settings::renderHitboxes = !settings::renderHitboxes;
 				}
-				else if (e.key == (cvk)keyID::debug)
+				else if (e.key == (vk)keyID::debug)
 				{
 					settings::renderDebugData = !settings::renderDebugData;
 				}
-				else if (e.key == (cvk)keyID::headUpDisplay)
+				else if (e.key == (vk)keyID::headUpDisplay)
 				{
 					settings::renderHUD = !settings::renderHUD;
 				}
@@ -382,7 +383,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 
 	for (size_t axis = 0; axis < 2; axis++)
 	{
-		for (size_t i = 0; i < blocksToBeDrawn.size[axis]; i++)
+		for (int i = 0; i < blocksToBeDrawn.size[axis]; i++)
 		{
 			rectangle2 blockRect = rectangle2();
 			blockRect.pos0[axis] = (fp)i + pos00[axis];
@@ -696,7 +697,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 						if (currentLevel)
 						{
 							const minecraftFont f = minecraftFont(iconSize * hudScale);
-							std::wstring str = L"§a" + std::to_wstring(currentLevel);
+							std::wstring str = colorCodeChar + L"a" + std::to_wstring(currentLevel);
 							cvec2& size = f.fontSize * vec2(1, (fp)str.length());
 							f.DrawString(str, crectangle2((rect.w() - size.x()) * 0.5, currentYrowOffset + expBarSize.y() - scaledBarOffset, size.x(), size.y()), targetData.renderTarget);
 							attackIndicatorOffset += iconSize * hudScale + scaledBarOffset;
@@ -711,10 +712,10 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 
 			if (canTakeDamage)
 			{
-				std::vector<fp> healthAmounts = std::vector<fp>({ math::maximum(player->health, (cfp)1.0) * 0.5 });
+				std::vector<fp> healthAmounts = std::vector<fp>({ math::maximum(player->health, (fp)1.0) * 0.5 });
 				if (player->absorptionHealth > 0)
 				{
-					healthAmounts.push_back(math::maximum(player->absorptionHealth, (cfp)1.0) * 0.5);
+					healthAmounts.push_back(math::maximum(player->absorptionHealth, (fp)1.0) * 0.5);
 				}
 
 				constexpr int iconTextureSize = 18;
@@ -863,8 +864,8 @@ void renderIcons(const std::vector<fp>& values, const std::vector<rectangle2>& i
 	{
 		vec2 position = firstIconRect.pos0;
 
-		int iconTypeIndex = 0;
-		int heartIndex = 0;
+		size_t iconTypeIndex = 0;
+		size_t heartIndex = 0;
 
 		fp nextValue = values[0];
 

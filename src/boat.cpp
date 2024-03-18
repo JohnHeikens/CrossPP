@@ -23,7 +23,7 @@ boat::boat(dimension* dimensionIn, cvec2& position) : hollowRidableEntity(dimens
 	constexpr rectangle2 boatTextureRect = crectangle2(4, 26, 56, 0x10);
 	cvec2 handleOffset = cvec2(0, boatHitboxSize.y());
 
-	cfp boatScale = boatHitboxSize.x() / (cfp)boatTextureRect.w();
+	cfp& boatScale = boatHitboxSize.x() / (fp)boatTextureRect.w();
 
 	mainBodyPart = new bodyPart2D(boatTextureRect, nullptr, vec2(position.x(), position.y()), vec2(boatHitboxSize.x(), boatScale * boatTextureRect.h()), vec2(boatHitboxSize.x() * 0.5, 0), 0, 180);
 

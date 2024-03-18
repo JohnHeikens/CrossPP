@@ -1,5 +1,5 @@
 #pragma once
-#include "application/mouseButton.h"
+#include <sfml/Window.hpp>
 #include "keyID.h"
 #include "keyHistoryEvent.h"
 struct socketContainer;
@@ -8,9 +8,9 @@ struct clientInput {
 
 	int scrollDelta = 0;
 
-	bool clicked[(byte)mouseButton::count]{};
-	bool clickReleased[(byte)mouseButton::count]{};
-	bool holding[(byte)mouseButton::count]{};
+	bool clicked[(byte)sf::Mouse::ButtonCount]{};
+	bool clickReleased[(byte)sf::Mouse::ButtonCount]{};
+	bool holding[(byte)sf::Mouse::ButtonCount]{};
 
 	//the keys which were pressed (0 = start)
 	std::vector<keyHistoryEvent> keyDownHistory = std::vector<keyHistoryEvent>();

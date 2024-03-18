@@ -1,6 +1,9 @@
 // fpng.h - unlicense (see end of fpng.cpp)
 #pragma once
 
+//for now, let's not use SSE in favor of cross-platform usability
+#define FPNG_NO_SSE 1
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <vector>

@@ -175,7 +175,7 @@ noEntriesFound:
 	if (cint conditionsIndex = container.getChildIndex(std::wstring(L"conditions")); conditionsIndex != -1)
 	{
 		const std::vector<jsonContainer> conditionContainers = container.children[conditionsIndex].children;
-		for (int i = 0; i < conditionContainers.size(); i++)
+		for (size_t i = 0; i < conditionContainers.size(); i++)
 		{
 			dropToReturn = new conditionDrop(dropToReturn, readCondition(conditionContainers[i]));
 		}

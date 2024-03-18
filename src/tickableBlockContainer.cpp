@@ -520,7 +520,7 @@ void tickableBlockContainer::tick()
 {
 	//you CANT erase from this list except here!
 	blockUpdatePositions.update();
-	for (int i = 0; i < blockUpdatePositions.size; i++)
+	for (size_t i = 0; i < blockUpdatePositions.size; i++)
 	{
 		blockData* data = getBlockData(blockUpdatePositions[i]);
 		if (data)
@@ -528,7 +528,7 @@ void tickableBlockContainer::tick()
 			data->ticked = false;
 		}
 	}
-	for (int i = 0; i < blockUpdatePositions.size; i++)
+	for (size_t i = 0; i < blockUpdatePositions.size; i++)
 	{
 		blockData* data = getBlockData(blockUpdatePositions[i]);
 		//remove empty, double and finished updates

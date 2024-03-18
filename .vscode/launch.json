@@ -4,13 +4,13 @@
         {
             "name": "Launch",
             "osx": {
-                "MIMode": "lldb",
+                "MIMode": "lldb"
             },
             "windows": {
-                "MIMode": "gdb",
+                "MIMode": "gdb"
             },
             "linux": {
-                "MIMode": "gdb",
+                "MIMode": "gdb"
             },
             "type": "cppdbg",
             "request": "launch",
@@ -21,7 +21,22 @@
             "externalConsole": false,
             "environment": [],
             "visualizerFile": "${workspaceFolder}/visualization.natvis",
-            "showDisplayString": true,
+            "showDisplayString": true
         }
+        //,
+        //{
+        //    "type": "cmake",
+        //    "request": "launch",
+        //    "name": "CMake: Script debugging",
+        //    "cmakeDebugType": "script",
+        //    "scriptPath": "${workspaceFolder}/CMakeLists.txt"
+        //},
+        //{
+        //    "name": "CMake: CMake Script",
+        //    "type": "cmake",
+        //    "request": "launch",
+        //    "cmakeDebugType": "script",
+        //    "scriptPath": "${file}"
+        //}
     ]
 }

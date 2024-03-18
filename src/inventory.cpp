@@ -1,12 +1,12 @@
 #include "inventory.h"
 #include "human.h"
-void inventory::clickedOnItem(cvk& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
+void inventory::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
 {
 	if (stackHolding.count)
 	{
 		if (canAddStack(selectedSlotContainer, stackHolding))
 		{
-			if (button == VK_RBUTTON)
+			if (button == mb::Right)
 			{
 				selectedSlotContainer->linkedContainer->getSlot(selectedSlot)->addStack(stackHolding, 1);
 			}
@@ -45,7 +45,7 @@ inventory::~inventory()
 	}
 }
 
-void inventory::mouseDown(cveci2& pixelPosition, cvk& button, itemStack& stackHolding)
+void inventory::mouseDown(cveci2& pixelPosition, cmb& button, itemStack& stackHolding)
 {
 	human* currentHuman = (human*)linkedPlayer;
 	//check which inventory slot is clicked on

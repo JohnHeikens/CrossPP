@@ -48,6 +48,7 @@
 #include "statusEffectID.h"
 #include "structureID.h"
 #include "minecraftFont.h"
+#include <sfml/Network.hpp>
 
 constexpr int selectedPositionCount = 2;
 vec2 selectedPositions[selectedPositionCount]{};
@@ -590,7 +591,7 @@ void chat::say(human& sender, std::wstring line)
 						std::wstring mergedString = std::wstring(L"");
 						if (path.size() > 2)
 						{
-							for (int i = 0; i < currentWorld->currentChat.linesSaid.size(); i++)
+							for (size_t i = 0; i < currentWorld->currentChat.linesSaid.size(); i++)
 							{
 								if (i)
 								{
@@ -697,7 +698,7 @@ void chat::say(human& sender, std::wstring line)
 									std::vector<blockID> replaceList = std::vector<blockID>(replaceContainer.size());
 									if (replaceContainer.size())
 									{
-										for (int i = 0; i < replaceContainer.size(); i++)
+										for (size_t i = 0; i < replaceContainer.size(); i++)
 										{
 											replaceList[i] = (blockID)blockList.getIDByName(trim_copy(replaceContainer[i]));
 											if ((int)replaceList[i] == -1)

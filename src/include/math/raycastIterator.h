@@ -2,7 +2,7 @@
 #pragma once
 //http://www.cse.yorku.ca/~amana/research/grid.pdf
 
-template<size_t axisCount>
+template<fsize_t axisCount>
 struct rayCastIterator
 {
 	//values which change per step

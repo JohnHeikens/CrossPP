@@ -232,18 +232,18 @@ public:
 
 
 
-	template<int dimensions>
-	inline fp evaluate(cvectn<fp, dimensions>& position) const
-	{
-		//static_assert(false);
-		throw "wrong number of dimensions";
-	}
+	//template<int dimensions>
+	//inline fp evaluate(cvectn<fp, dimensions>& position) const
+	//{
+	//	//static_assert(false);
+	//	throw "wrong number of dimensions";
+	//}
 
 	//1D Perlin simplex noise
 	//Takes around 74ns on an AMD APU.
 	//return: Noise value in the range[-1; 1], value of 0 on all integer coordinates.
-	template<>
-	inline fp evaluate(cvectn<fp, 1>& position) const
+	template<int dimensions>
+	inline std::enable_if_t<dimensions == 1, fp> evaluate(cvectn<fp, dimensions>& position) const
 	{
 		fp n0, n1;   // Noise contributions from the two "corners"
 	// No need to skew the input space in 1D
@@ -287,8 +287,8 @@ public:
 	//2D Perlin simplex noise
 //Takes around 150ns on an AMD APU.
 //return: Noise value in the range[-1; 1], value of 0 on all integer coordinates.
-	template<>
-	inline fp evaluate(cvectn<fp, 2>& position) const
+	template<int dimensions>
+	inline std::enable_if_t<dimensions == 2, fp> evaluate(cvectn<fp, dimensions>& position) const
 	{
 
 		fp n0, n1, n2;   // Noise contributions from the three corners
@@ -417,8 +417,8 @@ public:
 	//3D Perlin simplex noise
 	//return: Noise value in the range[-1; 1], value of 0 on all integer coordinates.
 
-	template<>
-	inline fp evaluate(cvectn<fp, 3>& position) const
+	template<int dimensions>
+	inline std::enable_if_t<dimensions == 3, fp> evaluate(cvectn<fp, dimensions>& position) const
 	{
 		fp n0, n1, n2, n3; // Noise contributions from the four corners
 

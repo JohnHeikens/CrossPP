@@ -6,6 +6,7 @@
 #include "filesystem/serializer.h"
 #include "GlobalFunctions.h"
 #include "nbtDataTag.h"
+#include "constants.h"
 struct nbtCompound :nbtData
 {
 	std::vector<nbtData*> children;

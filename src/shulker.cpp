@@ -32,7 +32,7 @@ void shulker::teleportToAttachableBlock()
 
 		std::vector<int> possibleDirections = std::vector<int>();
 
-		for (int newDirection = 0; newDirection < directionCount2D; newDirection++)
+		for (fsize_t newDirection = 0; newDirection < directionCount2D; newDirection++)
 		{
 			if (canAttachTo(testPosition, (directionID)newDirection))
 			{

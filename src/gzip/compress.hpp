@@ -1,4 +1,5 @@
 //https://github.com/mapbox/gzip-hpp/blob/master/include/gzip/decompress.hpp
+#include <stdint.h>
 #pragma once
 
 #include "zlib-1.2.11/zlib-1.2.11/zlib.h"

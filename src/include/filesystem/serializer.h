@@ -130,11 +130,11 @@ struct serializer :iSerializer
 		//return true;
 	}
 
-	template<typename valueType, size_t n, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
-	inline bool serialize(vectn<valueType, n>& value) const
+	template<typename valueType, fsize_t axisCount, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
+	inline bool serialize(vectn<valueType, axisCount>& value) const
 	{
-		return serialize(value.axis, n);
-		for (size_t i = 0; i < n; i++)
+		return serialize(value.axis, axisCount);
+		for (fsize_t i = 0; i < axisCount; i++)
 		{
 			if (!serialize(value.axis[i]))
 			{

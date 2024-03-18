@@ -1,6 +1,9 @@
 #pragma once
 #include "texture.h"
 #include "brush/transformbrush.h"
+
+// width and height MUST be a power of 2
+// https://en.wikipedia.org/wiki/Texture_mapping
 struct resolutionTexture : public colorBrush
 {
 	//the resolution levels of this texture, from biggest [0] to smallest [size - 1]

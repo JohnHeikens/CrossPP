@@ -2,6 +2,7 @@
 #include <SFML/Network/TcpSocket.hpp>
 #include <network/compressedPacket.h>
 #include <utility>
+#include "optimization/optimization.h"
 struct tcpSerializer {
 	sf::TcpSocket* socket = nullptr;
 	compressedPacket* receivingPacket = new compressedPacket();

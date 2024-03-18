@@ -160,6 +160,6 @@ struct addition: action
 	// Inherited via action
 	inline virtual void execute() const override
 	{
-		*(t*)result.var = *(t*)left.var + *(t*)right.var;
+		*((t*)result->var) = *((t*)left->var) + *((t*)right->var);
 	}
 };

@@ -15,7 +15,7 @@ bool shapelessRecipe::verifyPattern(rectangularSlotContainer* container)
 			itemStack* s = container->getSlot(cveci2(j, k));
 			if (s->count)
 			{
-				for (int i = 0; i < requiredItems->size; i++)
+				for (size_t i = 0; i < requiredItems->size; i++)
 				{
 					IItemComparable* comparable = (*requiredItems)[i];
 					if (comparable->compare(s->stackItemID))

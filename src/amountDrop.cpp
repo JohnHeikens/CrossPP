@@ -3,7 +3,7 @@ std::vector<itemStack> amountDrop::roll(const dropData& data, std::mt19937& rand
 {
 	std::vector<itemStack> stacksToIncrease = dropsToIncrease->roll(data, randomToUse);
 	std::vector<itemStack> increasedStacks = std::vector<itemStack>();
-	for (int i = 0; i < stacksToIncrease.size(); i++)
+	for (size_t i = 0; i < stacksToIncrease.size(); i++)
 	{
 		stacksToIncrease[i].count = distribution->getAmount(stacksToIncrease[i].count, data, randomToUse);
 		if (stacksToIncrease[i].count > 0)

@@ -8,6 +8,7 @@
 #include "math/rectangletn.h"
 #include "math/vectn.h"
 #include "GlobalFunctions.h"
+#include "constants.h"
 #pragma once
 
 extern fontFamily* currentMinecraftFontFamily;
@@ -25,13 +26,13 @@ struct minecraftFont : public baseFont {
 		vec2 currentOffset = offset;
 
 		//color ranges
-		for (int i = 0; i < text.size(); i++)
+		for (size_t i = 0; i < text.size(); i++)
 		{
 			letter currentLetter = text[i];
 
 			//const auto& currentTextBrush = colorMultiplier<texture, solidColorBrush>(*creditsFont.family->tex, brushes::white);
 
-			if (currentLetter == L'§')
+			if (currentLetter == colorCodeChar)
 			{
 				if (obfuscated)
 				{
@@ -79,7 +80,7 @@ struct minecraftFont : public baseFont {
 				}
 				else
 				{
-					handleError(std::wstring(L"invalid sign behind \"§\""));
+					handleError(std::wstring(L"invalid sign behind \"") + colorCodeChar + L"\"");
 				}
 				i++;
 			}

@@ -16,7 +16,7 @@ struct benchmarkContainer
 	inline microseconds measureBenchmarkTime(const t& processingType) const
 	{
 		microseconds totalMicroSeconds = 0;
-		for (int i = 0; i < benchMarks.size(); i++)
+		for (size_t i = 0; i < benchMarks.size(); i++)
 		{
 			const benchMarkPoint<t> point = benchMarks[i];
 			if (point.processingType == processingType && i + 1 < benchMarks.size())

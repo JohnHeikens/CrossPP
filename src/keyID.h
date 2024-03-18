@@ -1,19 +1,21 @@
 #pragma once
+#include <sfml/Window.hpp>
+#include "constants.h"
 
 static constexpr int hotbarSlotKeys[StandardInventoryColumnCount]
 {
-	0x31,
-	0x32,
-	0x33,
-	0x34,
-	0x35,
-	0x36,
-	0x37,
-	'C',
-	'F',
+	sf::Keyboard::Num1,
+	sf::Keyboard::Num2,
+	sf::Keyboard::Num3,
+	sf::Keyboard::Num4,
+	sf::Keyboard::Num5,
+	sf::Keyboard::Num6,
+	sf::Keyboard::Num7,
+	sf::Keyboard::C,
+	sf::Keyboard::F,
 };
 
-enum class keyID :int
+enum class keyID
 {
 	hotbarSlot0 = hotbarSlotKeys[0],
 	hotbarSlot1 = hotbarSlotKeys[1],
@@ -24,25 +26,24 @@ enum class keyID :int
 	hotbarSlot6 = hotbarSlotKeys[6],
 	hotbarSlot7 = hotbarSlotKeys[7],
 	hotbarSlot8 = hotbarSlotKeys[8],
-	left = 'A',
-	right = 'D',
-	up = 'W',//'W',
-	down = 'S',//'S',
-	inventory = 'E',
-	drop = 'M',//not q, because you will accidentally drop the worst items, like swords
-	camera = 'F',
-	hit = VK_LBUTTON,
-	use = VK_RBUTTON,
-	jump = VK_SPACE,
-	sprint = VK_CONTROL,
-	sneak = VK_SHIFT,
+	left = sf::Keyboard::A,
+	right = sf::Keyboard::D,
+	up = sf::Keyboard::W,
+	down = sf::Keyboard::S,
+	inventory = sf::Keyboard::E,
+	drop = sf::Keyboard::M,//not q, because you will accidentally drop the worst items, like swords
+	camera = sf::Keyboard::F,
+	hit = sf::Mouse::Left,
+	use = sf::Mouse::Right,
+	jump = sf::Keyboard::Space,
+	sprint = sf::Keyboard::LControl,
+	sneak = sf::Keyboard::LShift,
 	exit = sneak,
-	commandLine = VK_OEM_2,//backslash or question mark
-	text = 'T',
-	debug = VK_F3,
-	screenshot = VK_F2,
-	headUpDisplay = VK_F1,
-	escape = VK_ESCAPE,
-	renderHitboxes = 'B',
-	count
+	commandLine = sf::Keyboard::Slash,//backslash or question mark
+	text = sf::Keyboard::T,
+	headUpDisplay = sf::Keyboard::F1,
+	screenshot = sf::Keyboard::F2,
+	debug = sf::Keyboard::F3,
+	escape = sf::Keyboard::Escape,
+	renderHitboxes = sf::Keyboard::B
 };

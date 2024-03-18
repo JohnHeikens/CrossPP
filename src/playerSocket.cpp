@@ -14,7 +14,6 @@
 #include "math/vectn.h"
 #include "human.h"
 #include "fpng.h"
-#include <rpcndr.h>
 #include <thread>
 #include <vector>
 #include <SFML/Network/SocketSelector.hpp>

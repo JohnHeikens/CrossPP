@@ -18,7 +18,7 @@ worldCreator::worldCreator() : form()
 		cancelButton});
 }
 
-void worldCreator::mouseDown(cveci2& position, cvk& button)
+void worldCreator::mouseDown(cveci2& position, cmb& button)
 {
 	control* highestChild = getHighestChild(position);
 	if (highestChild == createButton)
@@ -73,7 +73,7 @@ void worldCreator::mouseDown(cveci2& position, cvk& button)
 
 void worldCreator::keyPress(cvk& key)
 {
-	if (key == (cvk)keyID::escape)
+	if (key == (vk)keyID::escape)
 	{
 		cancelWorldCreation();
 	}

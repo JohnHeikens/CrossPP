@@ -26,9 +26,9 @@ void slider::setValue(cfp& newValue)
 	}
 }
 
-void slider::mouseDown(cveci2& position,cvk& button)
+void slider::mouseDown(cveci2& position,cmb& button)
 {
-	if (button == VK_LBUTTON) 
+	if (button == mb::Left) 
 	{
 		control* child = getHighestChild(position);
 		if (!child || child == dragButton)

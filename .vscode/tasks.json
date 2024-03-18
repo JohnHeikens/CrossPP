@@ -5,7 +5,7 @@
             "label": "make",
             "type": "shell",
             "windows" :{
-                "command": "mingw32-make.exe"
+                "command": "mingw32-make.exe -j12"
             },
             "linux" :{
                 "command" : "make -j$((`nproc`))"

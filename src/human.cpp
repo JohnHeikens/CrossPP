@@ -136,7 +136,7 @@ void human::tick()
 
 
 
-	if (screen.pressedKey((cvk)keyID::exit))
+	if (screen.pressedKey((vk)keyID::exit))
 	{
 		if (UUIDRidingOn)
 		{
@@ -509,7 +509,8 @@ bool human::serialize(cbool& write)
 		createFoldersIfNotExists(playersFolder);
 	}
 	const std::wstring& path = playersFolder + (std::wstring)identifier;
-	return nbtSerializable::serialize(L"player", path, write);
+	//to point out which 'serialize' function to use. this might cause errors. is mob::serialize calling human::serializeValue?
+	return mob::serialize(L"player", path, write);
 }
 
 bool human::addDamageSource(cfp& damage, std::shared_ptr<damageSource> source)
@@ -1381,11 +1382,11 @@ void human::calculateFood()
 
 		if (foodsaturationlevel > 0.0F)
 		{
-			foodsaturationlevel = max(foodsaturationlevel - 1.0F, 0.0F);
+			foodsaturationlevel = math::maximum(foodsaturationlevel - (fp)1.0, (fp)0.0);
 		}
 		else
 		{
-			foodlevel = max(foodlevel - 1, 0);
+			foodlevel = math::maximum(foodlevel - 1, 0);
 		}
 	}
 

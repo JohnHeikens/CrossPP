@@ -41,7 +41,7 @@ void minecart::tick()
 				}
 				else
 				{
-					for (int i = 0; i < directionCount1D; i++)
+					for (fsize_t i = 0; i < directionCount1D; i++)
 					{
 						cvec2 speedNormal = directionVectors2D[i];
 						constexpr fp revertDistance = 1.0 / 0x10;

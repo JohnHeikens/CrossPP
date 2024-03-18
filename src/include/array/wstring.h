@@ -4,6 +4,7 @@
 #include "GlobalFunctions.h"
 #include <filesystem>
 #include <algorithm>
+#include <vector>
 
 typedef std::vector<std::wstring> wstringContainer;
 typedef std::vector<std::string> stringContainer;

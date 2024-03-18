@@ -1,6 +1,8 @@
 #pragma once
 #include "renderData.h"
 #include "GlobalFunctions.h"
+#include "math/timemath.h"
+#include "constants.h"
 struct gameControl;
 struct gameRenderData : public renderData {
 	const gameControl& screen;

@@ -55,7 +55,7 @@ struct gameControl : form, clientInput
 
 	clientInput mostRecentInput = clientInput();
 
-	bool clickedFocused[(byte)mouseButton::count];
+	bool clickedFocused[(byte)sf::Mouse::ButtonCount];
 
 	//creditsForm* currentCredits = nullptr;
 

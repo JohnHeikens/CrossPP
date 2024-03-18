@@ -32,12 +32,12 @@ void serverEditor::layout(crectanglei2& newRect)
 
 void serverEditor::keyPress(cvk& key)
 {
-	if (key == (cvk)keyID::escape) {
+	if (key == (vk)keyID::escape) {
 		parent->switchVisibleChild(currentServerSelector);
 	}
 }
 
-void serverEditor::mouseDown(cveci2& position, cvk& button)
+void serverEditor::mouseDown(cveci2& position, cmb& button)
 {
 	if (getHighestChild(position) == doneButton) {
 		serverData data = serverData();

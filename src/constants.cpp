@@ -15,17 +15,18 @@ void handleError(const std::wstring& message)
 		}
 		else
 		{
-			int msgboxID = MessageBox(
-				NULL,
-				(LPCWSTR)message.c_str(),
-				(LPCWSTR)gameName.c_str(),
-				MB_ICONWARNING | MB_OK
-			);
+			//TODO: message box cross-platform
+			//int msgboxID = MessageBox(
+			//	NULL,
+			//	(LPCWSTR)message.c_str(),
+			//	(LPCWSTR)gameName.c_str(),
+			//	MB_ICONWARNING | MB_OK
+			//);
 			throw std::runtime_error(messageToString);
 		}
 	}
 }
-cfp getPowerStrength(const powerLevel& level)
+fp getPowerStrength(const powerLevel& level)
 {
 	constexpr fp multiplier = powerStrengthStepCount / maxPowerLevel;
 

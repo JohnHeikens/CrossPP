@@ -49,7 +49,7 @@ void chestData::generateChestLoot()
 			}
 			std::shuffle(chestPositions.begin(), chestPositions.end(), randomToUse);
 
-			for (int stackIndex = 0; stackIndex < chestLoot.size(); stackIndex++)
+			for (size_t stackIndex = 0; stackIndex < chestLoot.size(); stackIndex++)
 			{
 				itemStack& slotToFill = slots->slots[chestPositions[stackIndex]];
 

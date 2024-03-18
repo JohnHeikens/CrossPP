@@ -2,5 +2,5 @@
 struct keyHistoryEvent {
 	vk key;
 	bool down;//false = released
-	keyHistoryEvent(cvk key = 0, cbool& down = false) : key(key), down(down) {}
+	keyHistoryEvent(cvk key = sf::Keyboard::Unknown, cbool& down = false) : key(key), down(down) {}
 };

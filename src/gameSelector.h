@@ -12,7 +12,7 @@ struct gameSelector : form
 	button* newButton = new button();
 	button* deleteButton = new button(L"Delete");
 	button* refreshButton = new button(L"Refresh");
-	virtual void mouseDown(cveci2& position, cvk& button) override;
+	virtual void mouseDown(cveci2& position, cmb& button) override;
 	void refresh();
 	virtual void keyPress(cvk& key) override;
 	virtual void layout(crectanglei2& newRect) override;

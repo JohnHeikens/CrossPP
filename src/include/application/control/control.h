@@ -3,6 +3,7 @@
 #include "event/eventhandler.h"
 #include "event/eventargs.h"
 #include <initializer_list>
+#include <sfml/Window.hpp>
 
 struct control;
 
@@ -12,19 +13,24 @@ typedef eventHandler<controlEventArgs> controlEventHandler;
 struct mouseEventArgs : controlEventArgs 
 {
 	veci2 position = veci2();
-	vk button = 0;
-	mouseEventArgs(control& sencder, cveci2& position, cvk& button) : controlEventArgs(sender), position(position), button(button) 
+	mouseEventArgs(control& sencder, cveci2& position) : controlEventArgs(sender), position(position) 
+	{
+
+	}
+};
+struct mouseButtonEventArgs : mouseEventArgs{
+	mb button;
+	mouseButtonEventArgs(control& sencder, cveci2& position, cmb& button) : mouseEventArgs(sender, position), button(button) 
 	{
 
 	}
 };
 typedef eventHandler<mouseEventArgs> mouseEventHandler;
 
-struct mouseWheelEventArgs : controlEventArgs
+struct mouseWheelEventArgs : mouseEventArgs
 {
-	veci2 position = veci2();
 	int scrollDelta = 0;
-	mouseWheelEventArgs(control& sencder, cveci2& position, cint& scrollDelta):controlEventArgs(sender), position(position), scrollDelta(scrollDelta)
+	mouseWheelEventArgs(control& sencder, cveci2& position, cint& scrollDelta):mouseEventArgs(sender, position), scrollDelta(scrollDelta)
 	{
 	
 	}
@@ -33,7 +39,7 @@ typedef eventHandler<mouseWheelEventArgs> mouseWheelEventHandler;
 
 struct keyEventArgs : controlEventArgs
 {
-	vk keyCode = 0;
+	vk keyCode;
 	keyEventArgs(control& sender, cvk& keyCode) : controlEventArgs(sender), keyCode(keyCode)
 	{
 
@@ -87,10 +93,11 @@ public:
 	virtual void keyDown(cvk& keyCode);
 	virtual void keyUp(cvk& keyCode);
 	virtual void keyPress(cvk& keyCode);
+	virtual void enterText(cuint& keyCode);
 
 	virtual void hover(cveci2& position);
-	virtual void mouseDown(cveci2& position, cvk& button);
-	virtual void mouseUp(cveci2& position, cvk& button);
+	virtual void mouseDown(cveci2& position, cmb& button);
+	virtual void mouseUp(cveci2& position, cmb& button);
 	virtual void click();
 	virtual void scroll(cveci2& position, cint& scrollDelta);
 	virtual void layout(crectanglei2& newRect);

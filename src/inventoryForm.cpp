@@ -48,7 +48,7 @@ void inventoryForm::unLink()
 	}
 }
 
-void inventoryForm::mouseDown(cveci2& position, cvk& button)
+void inventoryForm::mouseDown(cveci2& position, cmb& button)
 {
 	form::mouseDown(position, button);
 

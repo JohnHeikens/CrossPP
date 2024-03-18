@@ -17,7 +17,7 @@ struct slider :public control
 	void rePositionDragButton();
 	void setValue(cfp& newValue);
 
-	virtual void mouseDown(cveci2& position, cvk& button) override;
+	virtual void mouseDown(cveci2& position, cmb& button) override;
 	virtual void dragCompleted();
 	virtual void layout(crectanglei2& newRect) override;
 	color checkMarkColor = colorPalette::white;

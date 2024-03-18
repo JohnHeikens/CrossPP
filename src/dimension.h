@@ -116,7 +116,7 @@ inline array2d<t> dimension::getArrayValues(crectanglei2& rect, const arrayDataT
 
 	for (size_t i = 0; i < 2; i++)
 	{
-		if (pos1[i] != (lastChunkCoordinates[i] * chunkSize[i]))
+		if (pos1[i] != (lastChunkCoordinates[i] * (int)chunkSize[i]))
 		{
 			//exclusive
 			lastChunkCoordinates[i]++;

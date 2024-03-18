@@ -64,7 +64,7 @@ control::control()
 void control::keyDown(cvk& keyCode)
 {
 	onKeyDown.invoke(keyEventArgs(*this, keyCode));
-	if (keyCode == VK_SPACE || keyCode == VK_RETURN)
+	if (keyCode == vk::Space || keyCode == vk::Enter)
 	{
 		click();
 	}
@@ -96,10 +96,16 @@ void control::keyPress(cvk& keyCode)
 		focusedChild->keyPress(keyCode);
 	}
 }
-void control::hover(cveci2& position)
+void control::enterText(cuint &unicode)
+{
+	if (focusedChild) {
+		focusedChild->enterText(unicode);
+	}
+}
+void control::hover(cveci2 &position)
 {
 	//TODO: the button argument is not working
-	onHover.invoke(mouseEventArgs(*this, position, 0));
+	onHover.invoke(mouseEventArgs(*this, position));
 	//if (onHover)
 	//{
 	//	onHover(position);
@@ -110,10 +116,10 @@ void control::hover(cveci2& position)
 		highest->hover(position - highest->rect.pos0);
 	}
 }
-void control::mouseDown(cveci2& position, cvk& button)
+void control::mouseDown(cveci2& position, cmb& button)
 {
 	control* highest = getHighestChild(position);
-	onMouseDown.invoke(mouseEventArgs(*this, position, button));
+	onMouseDown.invoke(mouseButtonEventArgs(*this, position, button));
 	
 	if (highest != focusedChild)
 	{
@@ -123,16 +129,16 @@ void control::mouseDown(cveci2& position, cvk& button)
 	{
 		focusedChild->mouseDown(position - focusedChild->rect.pos0, button);
 	}
-	else if (button == VK_LBUTTON)
+	else if (button == mb::Left)
 	{
 		click();
 	}
 }
 
-void control::mouseUp(cveci2& position, cvk& button)
+void control::mouseUp(cveci2& position, cmb& button)
 {
 	control* highest = getHighestChild(position);
-	onMouseUp.invoke(mouseEventArgs(*this, position, button));
+	onMouseUp.invoke(mouseButtonEventArgs(*this, position, button));
 	if (highest && (highest == focusedChild))
 	{
 		focusedChild->mouseUp(position - focusedChild->rect.pos0, button);

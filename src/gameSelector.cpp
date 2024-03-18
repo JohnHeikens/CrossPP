@@ -13,7 +13,7 @@ gameSelector::gameSelector() : form()
 	addChildren({ gameListControl, openButton, newButton, deleteButton, refreshButton });
 }
 
-void gameSelector::mouseDown(cveci2& position, cvk& button)
+void gameSelector::mouseDown(cveci2& position, cmb& button)
 {
 	control* highestChild = getHighestChild(position);
 	if (highestChild == openButton)
@@ -42,12 +42,13 @@ void gameSelector::mouseDown(cveci2& position, cvk& button)
 		if (c)
 		{
 			//ask for confirmation
-			const std::wstring& messageString = L"Are You Sure You Want To Delete This " + gameTypeName + L"?";
-			if (MessageBox(NULL, messageString.c_str(), gameName.c_str(), MB_OKCANCEL | MB_ICONWARNING) == IDOK)
-			{
-				deleteGame(c);
-				refresh();
-			}
+			//TODO: make a new messagebox function
+			//const std::wstring& messageString = L"Are You Sure You Want To Delete This " + gameTypeName + L"?";
+			//if (MessageBox(NULL, messageString.c_str(), gameName.c_str(), MB_OKCANCEL | MB_ICONWARNING) == IDOK)
+			//{
+			//	deleteGame(c);
+			//	refresh();
+			//}
 		}
 	}
 	form::mouseDown(position, button);
@@ -55,7 +56,7 @@ void gameSelector::mouseDown(cveci2& position, cvk& button)
 
 void gameSelector::refresh()
 {
-	for (int i = 0; i < gameListControl->children.size; i++)
+	for (size_t i = 0; i < gameListControl->children.size; i++)
 	{
 		control* c = gameListControl->children[i];
 		if (c != gameListControl->sideSlider)
@@ -74,7 +75,7 @@ void gameSelector::refresh()
 
 void gameSelector::keyPress(cvk& key)
 {
-	if (key == (cvk)keyID::escape)
+	if (key == (vk)keyID::escape)
 	{
 		visible = false;
 		currentMainMenu->visible = true;

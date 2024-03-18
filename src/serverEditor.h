@@ -12,6 +12,6 @@ struct serverEditor :form {
 	button* doneButton = new button(L"Done");
 	virtual void layout(crectanglei2& newRect) override;
 	virtual void keyPress(cvk& key) override;
-	virtual void mouseDown(cveci2& position, cvk& button);
+	virtual void mouseDown(cveci2& position, cmb& button);
 };
 extern serverEditor* currentServerEditor;

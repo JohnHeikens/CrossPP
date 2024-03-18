@@ -418,7 +418,7 @@ void mob::tick()
 	}
 
 	//add particles for potions
-	for (int i = 0; i < activeEffects.size(); i++) {
+	for (size_t i = 0; i < activeEffects.size(); i++) {
 		if (randChance(currentRandom, (ticksPerRealLifeSecond / activeEffects[i].potency))) {
 			summonParticle(dimensionIn, getrandomPosition(currentRandom, calculateHitBox()), new effectParticleBrush(statusEffectDataList[activeEffects[i].identifier]->particleColor));
 			activeEffects[i].identifier;
@@ -744,7 +744,7 @@ void mob::exitRodeEntity()
 	if (UUIDRidingOn)
 	{
 		ridableEntity* entityRodeOn = (ridableEntity*)dimensionIn->findUUID(position, ridingEntitySearchRadius, UUIDRidingOn);
-		for (int i = 0; i < entityRodeOn->seats.size(); i++)
+		for (size_t i = 0; i < entityRodeOn->seats.size(); i++)
 		{
 			if (entityRodeOn->seats[i] == identifier)
 			{

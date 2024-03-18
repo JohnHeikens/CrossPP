@@ -5,7 +5,7 @@ void potionData::serializeValue(nbtSerializer& s)
 	{
 		if (s.write)
 		{
-			for (int i = 0; i < effectsToAdd.size(); i++)
+			for (size_t i = 0; i < effectsToAdd.size(); i++)
 			{
 				if (s.push<nbtDataTag::tagCompound>())
 				{

@@ -1,4 +1,3 @@
-#pragma once
 #include "entity.h"
 #include "math/collisions.h"
 #include "entityData.h"
@@ -161,7 +160,7 @@ void entity::tick()
 		}
 	}
 
-	for (int i = 0; i < activeEffects.size(); i++)
+	for (size_t i = 0; i < activeEffects.size(); i++)
 	{
 		statusEffect& effect = activeEffects[i];
 		applyStatusEffect(effect);
@@ -173,7 +172,7 @@ void entity::tick()
 			{
 				activeEffects.erase(activeEffects.begin() + i);
 				fp maximalAbsorptionHealth = 0;
-				for (int i = 0; i < activeEffects.size(); i++)
+				for (size_t i = 0; i < activeEffects.size(); i++)
 				{
 					if (activeEffects[i].identifier == statusEffectID::absorption)
 					{
@@ -390,7 +389,7 @@ void entity::physics()
 					//check if another hitbox collided
 					const fp hitbox00 = positionAfterCollisions.y() + relativeHitbox.y();
 
-					for (int stepIndex = 0; stepIndex < data.hitboxes.size(); stepIndex++)
+					for (size_t stepIndex = 0; stepIndex < data.hitboxes.size(); stepIndex++)
 					{
 						const collisionData& checkData = data.hitboxes[stepIndex];
 						if ((checkData.collisionTime > math::fpepsilon) && (checkData.collisionTime < firstCollisionTime))
@@ -988,7 +987,7 @@ void entity::applyStatusEffect(const statusEffect& effect)
 
 void entity::addStatusEffects(const std::vector<statusEffect>& effectsToAdd)
 {
-	for (int i = 0; i < effectsToAdd.size(); i++)
+	for (size_t i = 0; i < effectsToAdd.size(); i++)
 	{
 		const statusEffect& effect = effectsToAdd[i];
 		if (effect.identifier == statusEffectID::instantHealth)
@@ -1066,7 +1065,7 @@ void entity::serializeValue(nbtSerializer& s)
 	{
 		if (s.write)
 		{
-			for (int i = 0; i < activeEffects.size(); i++)
+			for (size_t i = 0; i < activeEffects.size(); i++)
 			{
 				if (s.push<nbtDataTag::tagCompound>())
 				{

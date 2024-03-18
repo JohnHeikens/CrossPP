@@ -27,7 +27,7 @@
 
 //https://docs.microsoft.com/en-us/cpp/intrinsics/assume?view=msvc-170
 
-//#define assumeInRelease(e) (((e) || assert(__FILE__, __LINE__)), __assume(e) )
+//#define assumeInRelease(e) (((e) || assert(__FILE__, __LINE__)), [[assume(e)]] )
 
 inline void throwIfFalse(cbool& shouldBeTrue, std::wstring errorMessageIfFalse = L"")
 {
@@ -48,6 +48,6 @@ inline void throwIfFalse(cbool& shouldBeTrue, std::wstring errorMessageIfFalse =
 		throw "should not be able to come here";
 	}
 #else
-	__assume(shouldBeTrue);
+	[[assume(shouldBeTrue)]];
 #endif // _DEBUG
 }*/

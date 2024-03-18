@@ -9,7 +9,7 @@ bool blockStateCondition::checkCondition(const dropData& data, std::mt19937& ran
 		data.harvestedBlockData->serializeValue(s);
 		s.write = false;
 
-		for (int i = 0; i < blockStateNames.size(); i++)
+		for (size_t i = 0; i < blockStateNames.size(); i++)
 		{
 			int val = 0;
 			if (s.serializeValue(blockStateNames[i], val))

@@ -36,7 +36,7 @@ struct nbtDataArray :nbtData
 			const wstringContainer& container = split_string(s, std::wstring(L","));
 			arraySize = container.size();
 			//size of container will always be 1 or more (when nothing is in the string, it will return 1 string containing "")
-			__assume(arraySize);
+			assumeInRelease1(arraySize);
 			data = new t[arraySize];
 			for (size_t i = 0; i < arraySize; i++)
 			{

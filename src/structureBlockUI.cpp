@@ -92,7 +92,7 @@ void structureBlockUI::render(cveci2& position, const texture& renderTarget)
 	modeLabel->layout(crectanglei2(modeLabel->rect.x(), modeLabel->rect.y(), modeLabelWidth, modeLabel->rect.h()));
 	renderChildren(position, renderTarget);
 }
-void structureBlockUI::mouseDown(cveci2& position, cvk& button)
+void structureBlockUI::mouseDown(cveci2& position, cmb& button)
 {
 	human* currentHuman = (human*)currentPlayableCharachter;
 	control* highestChild = getHighestChild(position);

@@ -12,7 +12,7 @@ struct inventoryForm : form
 
 	virtual void linkUp(inventory* newInventoryToDisplay);
 	virtual void unLink();
-	virtual void mouseDown(cveci2& position, cvk& button) override;
+	virtual void mouseDown(cveci2& position, cmb& button) override;
 	virtual void hover(cveci2& position) override;
 	virtual void render(cveci2& position, const texture& renderTarget) override;
 	void updateScale();

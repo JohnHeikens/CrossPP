@@ -4,6 +4,7 @@
 #include "gameControl.h"
 #include "filesystem/file/endian.h"
 #include "socketContainer.h"
+#include <thread>
 struct playerSocket : socketContainer {
 	human* player = nullptr;
 	gameControl* screen = nullptr;

@@ -333,7 +333,7 @@ struct arraynd :IDestructable
 	inline t getValueClampedToEdge(cvecin<axisCount>& pos) const
 	{
 		cvecin<axisCount> clamped = cvecin<axisCount>();
-		for (auto axisIt : zip(clamped, pos))
+		for (auto axisIt : std::views::zip(clamped, pos))
 		{
 			std::get<0>(axisIt) = (std::get<1>(axisIt) < 0) ? 0 : std::get<1>(axisIt);
 		}

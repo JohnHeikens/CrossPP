@@ -8,7 +8,6 @@
 #include "worldSelector.h"
 #include "keyHistoryEvent.h"
 #include "fpng.h"
-#include <rpcndr.h>
 #include <cstdint>
 #include <vector>
 #include <SFML/Network/Socket.hpp>
@@ -33,7 +32,7 @@ void client::render(cveci2& position, const texture& renderTarget)
 {
 	write = true;
 	currentInput.serialize(*this);
-	cbool& takeScreenShot = currentInput.pressedKey((cvk)keyID::screenshot);
+	cbool& takeScreenShot = currentInput.pressedKey((vk)keyID::screenshot);
 	s.sendPacket();
 	currentInput.clearTemporaryData();
 
@@ -115,15 +114,15 @@ client::client()
 		data.serialize(true);
 	}
 }
-void client::mouseDown(cveci2& position, cvk& button)
+void client::mouseDown(cveci2& position, cmb& button)
 {
-	currentInput.clicked[keyCodeToMouseButton(button)] = true;
-	currentInput.holding[keyCodeToMouseButton(button)] = true;
+	currentInput.clicked[button] = true;
+	currentInput.holding[button] = true;
 }
-void client::mouseUp(cveci2& position, cvk& button)
+void client::mouseUp(cveci2& position, cmb& button)
 {
-	currentInput.clickReleased[keyCodeToMouseButton(button)] = true;
-	currentInput.holding[keyCodeToMouseButton(button)] = false;
+	currentInput.clickReleased[button] = true;
+	currentInput.holding[button] = false;
 }
 void client::scroll(cveci2& position, cint& scrollDelta)
 {

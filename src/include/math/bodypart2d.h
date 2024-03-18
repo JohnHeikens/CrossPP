@@ -52,7 +52,7 @@ struct bodyPart2D : IDestructable
 			CalculateTransform();
 		}
 		cmat3x3& view = mat3x3::cross(transform, applied);
-		for (int i = 0; i < children.size(); i++)
+		for (size_t i = 0; i < children.size(); i++)
 		{
 			if (i == drawOrderIndex)
 			{

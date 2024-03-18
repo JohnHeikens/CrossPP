@@ -14,7 +14,7 @@ void collisionDataCollection::addCollisionData(const collisionDataCollection& ex
 collisionData collisionDataCollection::getFirstCollision(cbool allowCollisionType[(size_t)collisionTypeID::count]) const
 {
 	collisionData nearestCollision = collisionData();
-	for (int i = 0; i < (size_t)collisionTypeID::count; i++)
+	for (size_t i = 0; i < (size_t)collisionTypeID::count; i++)
 	{
 		if (allowCollisionType[i] && firstCollisions[i] < nearestCollision)
 		{

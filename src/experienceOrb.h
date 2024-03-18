@@ -1,5 +1,6 @@
 #pragma once
 #include "entity.h"
+#include <limits.h>
 
 //experience
 constexpr fp experienceSize = 0.2;
@@ -28,7 +29,7 @@ constexpr int experienceSizeTable[experienceSizeCount]
 	616,
 	1236,
 	2476,
-	MAXINT
+	INT_MAX
 };
 
 fp getExperience(cfp& level);

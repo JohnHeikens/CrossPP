@@ -1,3 +1,4 @@
+#include "random.h"
 std::wstring randomName(std::mt19937& generator)
 {
 	static std::vector<std::wstring> randomFirstNames = {

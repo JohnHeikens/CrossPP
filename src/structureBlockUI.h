@@ -26,5 +26,5 @@ struct structureBlockUI : form
 	void serializeWithTemporaryData(cbool& write);
 	virtual void layout(crectanglei2& rect) override;
 	virtual void render(cveci2& position, const texture& renderTarget) override;
-	virtual void mouseDown(cveci2& position, cvk& button) override;
+	virtual void mouseDown(cveci2& position, cmb& button) override;
 };
