@@ -383,7 +383,7 @@ void entity::physics()
 			{
 				if (newOnGround)
 				{
-					int index = -1;
+					size_t index = std::wstring::npos;
 					fp firstCollisionTime = INFINITY;
 
 					//check if another hitbox collided

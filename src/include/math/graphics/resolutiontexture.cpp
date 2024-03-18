@@ -4,13 +4,13 @@
 //COPIES THE COLORS, NOT THE POINTER
 resolutionTexture::resolutionTexture(const texture& highestResolution, cvec2& size)
 {
-	size_t resolutionSteps = math::getNextPowerOf2(size.minimum());
-	for (fsize_t i = 1; i < highestResolution.size.x() && i < highestResolution.size.y(); i *= 2)
-	{
-		resolutionSteps++;
-	}
+	fsize_t resolutionSteps = math::getNextPowerOf2((fsize_t)size.minimum());
+	//for (fsize_t i = 1; i < highestResolution.size.x() && i < highestResolution.size.y(); i *= 2)
+	//{
+	//	resolutionSteps++;
+	//}
 
-	scaledTextures = fastArray<texture*>((int)resolutionSteps, true);
+	scaledTextures = fastArray<texture*>(resolutionSteps, true);
 	scaledTextures[0] = new texture(highestResolution);
 
 	recalculateScaledTextures();

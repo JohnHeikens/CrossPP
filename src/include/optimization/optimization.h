@@ -17,8 +17,13 @@
 # define assumeInRelease2(shouldBeTrue, errorMessageIfFalse)
 #endif
 #else
+#if _MSC_VER
+# define assumeInRelease1(shouldBeTrue)   __assume(shouldBeTrue)
+# define assumeInRelease2(shouldBeTrue, errorMessageIfFalse)   __assume(shouldBeTrue)
+#else
 # define assumeInRelease1(shouldBeTrue)   [[assume(shouldBeTrue)]]
 # define assumeInRelease2(shouldBeTrue, errorMessageIfFalse)   [[assume(shouldBeTrue)]]
+#endif
 #endif
 
 

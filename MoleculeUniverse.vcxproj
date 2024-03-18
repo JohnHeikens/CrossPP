@@ -77,16 +77,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src\include\;$(SolutionDir)\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -98,16 +98,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)\src\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src\include\;$(SolutionDir)\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -119,16 +119,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src\include\;$(SolutionDir)\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -140,16 +140,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)\src\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src\include\;$(SolutionDir)\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -206,9 +206,9 @@
     <ClCompile Include="src\clientInput.cpp" />
     <ClCompile Include="src\effectParticleBrush.cpp" />
     <ClCompile Include="src\fpng.cpp" />
-    <ClCompile Include="include\network\compressedPacket.cpp" />
+    <ClCompile Include="src\include\network\compressedPacket.cpp" />
     <ClCompile Include="src\gameTile.cpp" />
-    <ClCompile Include="include\math\random\random.cpp" />
+    <ClCompile Include="src\include\math\random\random.cpp" />
     <ClCompile Include="src\particleTypeData.cpp" />
     <ClCompile Include="src\playerData.cpp" />
     <ClCompile Include="src\playerSocket.cpp" />
@@ -314,52 +314,49 @@
     <ClCompile Include="src\idConverter.cpp" />
     <ClCompile Include="src\idList.cpp" />
     <ClCompile Include="src\IItemComparable.cpp" />
-    <ClCompile Include="include\application\application.cpp" />
-    <ClCompile Include="include\application\control\button.cpp" />
-    <ClCompile Include="include\application\control\checkbox.cpp" />
-    <ClCompile Include="include\application\control\colorpicker.cpp" />
-    <ClCompile Include="include\application\control\control.cpp" />
-    <ClCompile Include="include\application\control\filedialog.cpp" />
-    <ClCompile Include="include\application\control\form.cpp" />
-    <ClCompile Include="include\application\control\label.cpp" />
-    <ClCompile Include="include\application\control\listcontrol.cpp" />
-    <ClCompile Include="include\application\control\picturebox.cpp" />
-    <ClCompile Include="include\application\control\slider.cpp" />
-    <ClCompile Include="include\application\control\TextBox.cpp" />
-    <ClCompile Include="include\application\interaction.cpp" />
-    <ClCompile Include="include\array\wstring.cpp" />
-    <ClCompile Include="include\compiler\area.cpp" />
-    <ClCompile Include="include\compiler\compiler.cpp" />
-    <ClCompile Include="include\compiler\errors.cpp" />
-    <ClCompile Include="include\compiler\memorymanagement.cpp" />
-    <ClCompile Include="include\filesystem\file\fastStream.cpp" />
-    <ClCompile Include="include\filesystem\iserializable.cpp" />
-    <ClCompile Include="include\filesystem\jsonReader.cpp" />
-    <ClCompile Include="include\interface\idestructable.cpp" />
-    <ClCompile Include="include\math\bodypart2d.cpp" />
-    <ClCompile Include="include\math\collisions.cpp" />
-    <ClCompile Include="include\math\frustum.cpp" />
-    <ClCompile Include="include\math\graphics\brush\brush.cpp" />
-    <ClCompile Include="include\math\graphics\brush\brushes.cpp" />
-    <ClCompile Include="include\math\graphics\color\color.cpp" />
-    <ClCompile Include="include\math\graphics\brush\font\font.cpp" />
-    <ClCompile Include="include\math\graphics\brush\font\fontfamily.cpp" />
-    <ClCompile Include="include\math\graphics\graphics.cpp" />
-    <ClCompile Include="include\math\intersectable.cpp" />
-    <ClCompile Include="include\math\intersectablecuboid.cpp" />
-    <ClCompile Include="include\math\keyframe.cpp" />
-    <ClCompile Include="include\math\LayerNoiseSimplex.cpp" />
-    <ClCompile Include="include\math\meshfunctions.cpp" />
-    <ClCompile Include="include\math\neuralnetwork\neuralnetwork.cpp" />
-    <ClCompile Include="include\math\neuralnetwork\fastlayer.cpp" />
-    <ClCompile Include="include\math\graphics\resolutiontexture.cpp" />
-    <ClCompile Include="include\math\SimplexNoise.cpp" />
-    <ClCompile Include="include\math\sound\sound.cpp" />
-    <ClCompile Include="include\math\standardarea.cpp" />
-    <ClCompile Include="include\math\swingsynchronizer.cpp" />
-    <ClCompile Include="include\math\graphics\texture.cpp" />
-    <ClCompile Include="include\math\timemath.cpp" />
-    <ClCompile Include="include\math\triangle.cpp" />
+    <ClCompile Include="src\include\application\application.cpp" />
+    <ClCompile Include="src\include\application\control\button.cpp" />
+    <ClCompile Include="src\include\application\control\checkbox.cpp" />
+    <ClCompile Include="src\include\application\control\colorpicker.cpp" />
+    <ClCompile Include="src\include\application\control\control.cpp" />
+    <ClCompile Include="src\include\application\control\filedialog.cpp" />
+    <ClCompile Include="src\include\application\control\form.cpp" />
+    <ClCompile Include="src\include\application\control\label.cpp" />
+    <ClCompile Include="src\include\application\control\listcontrol.cpp" />
+    <ClCompile Include="src\include\application\control\picturebox.cpp" />
+    <ClCompile Include="src\include\application\control\slider.cpp" />
+    <ClCompile Include="src\include\application\control\TextBox.cpp" />
+    <ClCompile Include="src\include\application\interaction.cpp" />
+    <ClCompile Include="src\include\array\wstring.cpp" />
+    <ClCompile Include="src\include\compiler\area.cpp" />
+    <ClCompile Include="src\include\compiler\compiler.cpp" />
+    <ClCompile Include="src\include\compiler\errors.cpp" />
+    <ClCompile Include="src\include\compiler\memorymanagement.cpp" />
+    <ClCompile Include="src\include\filesystem\iserializable.cpp" />
+    <ClCompile Include="src\include\filesystem\jsonReader.cpp" />
+    <ClCompile Include="src\include\interface\idestructable.cpp" />
+    <ClCompile Include="src\include\math\bodypart2d.cpp" />
+    <ClCompile Include="src\include\math\collisions.cpp" />
+    <ClCompile Include="src\include\math\frustum.cpp" />
+    <ClCompile Include="src\include\math\graphics\brush\brush.cpp" />
+    <ClCompile Include="src\include\math\graphics\brush\brushes.cpp" />
+    <ClCompile Include="src\include\math\graphics\color\color.cpp" />
+    <ClCompile Include="src\include\math\graphics\brush\font\font.cpp" />
+    <ClCompile Include="src\include\math\graphics\brush\font\fontfamily.cpp" />
+    <ClCompile Include="src\include\math\graphics\graphics.cpp" />
+    <ClCompile Include="src\include\math\intersectable.cpp" />
+    <ClCompile Include="src\include\math\intersectablecuboid.cpp" />
+    <ClCompile Include="src\include\math\keyframe.cpp" />
+    <ClCompile Include="src\include\math\LayerNoiseSimplex.cpp" />
+    <ClCompile Include="src\include\math\meshfunctions.cpp" />
+    <ClCompile Include="src\include\math\graphics\resolutiontexture.cpp" />
+    <ClCompile Include="src\include\math\SimplexNoise.cpp" />
+    <ClCompile Include="src\include\math\sound\sound.cpp" />
+    <ClCompile Include="src\include\math\standardarea.cpp" />
+    <ClCompile Include="src\include\math\swingsynchronizer.cpp" />
+    <ClCompile Include="src\include\math\graphics\texture.cpp" />
+    <ClCompile Include="src\include\math\timemath.cpp" />
+    <ClCompile Include="src\include\math\triangle.cpp" />
     <ClCompile Include="src\incompatibleEnchantments.cpp" />
     <ClCompile Include="src\inputData.cpp" />
     <ClCompile Include="src\inventory.cpp" />
@@ -584,13 +581,13 @@
     <ClInclude Include="src\effectParticleBrush.h" />
     <ClInclude Include="src\fpng.h" />
     <ClInclude Include="src\gameRenderData.h" />
-    <ClInclude Include="include\math\graphics\brush\font\baseFont.h" />
+    <ClInclude Include="src\include\math\graphics\brush\font\baseFont.h" />
     <ClInclude Include="src\minecraftFont.h" />
-    <ClInclude Include="include\network\compressedPacket.h" />
+    <ClInclude Include="src\include\network\compressedPacket.h" />
     <ClInclude Include="src\gameTile.h" />
-    <ClInclude Include="include\application\mouseButton.h" />
-    <ClInclude Include="include\filesystem\file\tcpSerializer.h" />
-    <ClInclude Include="include\optimization\stableTickLoop.h" />
+    <ClInclude Include="src\include\application\mouseButton.h" />
+    <ClInclude Include="src\include\filesystem\file\tcpSerializer.h" />
+    <ClInclude Include="src\include\optimization\stableTickLoop.h" />
     <ClInclude Include="src\keyHistoryEvent.h" />
     <ClInclude Include="src\packetSerializer.h" />
     <ClInclude Include="src\playerData.h" />
@@ -638,7 +635,7 @@
     <ClInclude Include="src\gzipIncluder.h" />
     <ClInclude Include="src\packageCreator.h" />
     <ClInclude Include="src\renderBlockContainer.h" />
-    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\sapSpreadData.h" />
     <ClInclude Include="src\doorData.h" />
     <ClInclude Include="src\doubleAttachedBlockData.h" />
@@ -728,117 +725,114 @@
     <ClInclude Include="src\idConverter.h" />
     <ClInclude Include="src\idList.h" />
     <ClInclude Include="src\IItemComparable.h" />
-    <ClInclude Include="include\application\application.h" />
-    <ClInclude Include="include\application\applicationrunner.h" />
-    <ClInclude Include="include\application\control\button.h" />
-    <ClInclude Include="include\application\control\checkbox.h" />
-    <ClInclude Include="include\application\control\colorpicker.h" />
-    <ClInclude Include="include\application\control\control.h" />
-    <ClInclude Include="include\application\control\filedialog.h" />
-    <ClInclude Include="include\application\control\form.h" />
-    <ClInclude Include="include\application\control\label.h" />
-    <ClInclude Include="include\application\control\listcontrol.h" />
-    <ClInclude Include="include\application\control\picturebox.h" />
-    <ClInclude Include="include\application\control\slider.h" />
-    <ClInclude Include="include\application\control\TextBox.h" />
-    <ClInclude Include="include\application\cursorhandling.h" />
-    <ClInclude Include="include\application\interaction.h" />
-    <ClInclude Include="include\array\arrayfunctions.h" />
-    <ClInclude Include="include\array\arraynd.h" />
-    <ClInclude Include="include\array\fastarray.h" />
-    <ClInclude Include="include\array\fastlist.h" />
-    <ClInclude Include="include\array\rectiteratortn.h" />
-    <ClInclude Include="include\array\skiplist.h" />
-    <ClInclude Include="include\array\tileList.h" />
-    <ClInclude Include="include\array\wstring.h" />
-    <ClInclude Include="include\array\zipiterator.h" />
-    <ClInclude Include="include\compiler\area.h" />
-    <ClInclude Include="include\compiler\compiler.h" />
-    <ClInclude Include="include\compiler\errors.h" />
-    <ClInclude Include="include\compiler\function.h" />
-    <ClInclude Include="include\compiler\memorymanagement.h" />
-    <ClInclude Include="include\compiler\operators.h" />
-    <ClInclude Include="include\compiler\standardarea.h" />
-    <ClInclude Include="include\event\eventargs.h" />
-    <ClInclude Include="include\event\eventhandler.h" />
-    <ClInclude Include="include\filesystem\fileio.h" />
-    <ClInclude Include="include\filesystem\filemanager.h" />
-    <ClInclude Include="include\filesystem\file\endian.h" />
-    <ClInclude Include="include\filesystem\file\fastStream.h" />
-    <ClInclude Include="include\filesystem\iserializable.h" />
-    <ClInclude Include="include\filesystem\iserializer.h" />
-    <ClInclude Include="include\filesystem\jsonReader.h" />
-    <ClInclude Include="include\filesystem\serialization.h" />
-    <ClInclude Include="include\filesystem\serializer.h" />
-    <ClInclude Include="include\filesystem\textfile.h" />
-    <ClInclude Include="include\GlobalFunctions.h" />
-    <ClInclude Include="include\interface\idestructable.h" />
-    <ClInclude Include="include\interface\inamable.h" />
-    <ClInclude Include="include\math\axis.h" />
-    <ClInclude Include="include\math\bodypart2d.h" />
-    <ClInclude Include="include\math\collisions.h" />
-    <ClInclude Include="include\math\coordinatesystem.h" />
-    <ClInclude Include="include\math\cropline.h" />
-    <ClInclude Include="include\math\dimension\dimensionalindex.h" />
-    <ClInclude Include="include\math\direction.h" />
-    <ClInclude Include="include\math\endlessPrecision.h" />
-    <ClInclude Include="include\math\neuralnetwork\fastlayer.h" />
-    <ClInclude Include="include\math\graphics\brush\font\font.h" />
-    <ClInclude Include="include\math\graphics\alignment.h" />
-    <ClInclude Include="include\math\graphics\brush\brush.h" />
-    <ClInclude Include="include\math\graphics\brush\brushes.h" />
-    <ClInclude Include="include\math\graphics\brush\transformbrush.h" />
-    <ClInclude Include="include\math\graphics\color\color.h" />
-    <ClInclude Include="include\math\graphics\brush\font\fontfamily.h" />
-    <ClInclude Include="include\math\graphics\frustum.h" />
-    <ClInclude Include="include\math\graphics\graphics.h" />
-    <ClInclude Include="include\math\hashing.h" />
-    <ClInclude Include="include\math\intersectable.h" />
-    <ClInclude Include="include\math\intersectablecuboid.h" />
-    <ClInclude Include="include\math\intersection.h" />
-    <ClInclude Include="include\math\keyframe.h" />
-    <ClInclude Include="include\math\LayerNoiseSimplex.h" />
-    <ClInclude Include="include\math\MarchingCubes.h" />
-    <ClInclude Include="include\math\mathfunctions.h" />
-    <ClInclude Include="include\math\matt3x3.h" />
-    <ClInclude Include="include\math\mattnxn.h" />
-    <ClInclude Include="include\math\meshConstants.h" />
-    <ClInclude Include="include\math\meshfunctions.h" />
-    <ClInclude Include="include\math\neuralnetwork\neuralnetwork.h" />
-    <ClInclude Include="include\math\neuralnetwork\aiblueprint.h" />
-    <ClInclude Include="include\math\neuralnetwork\aiinputdata.h" />
-    <ClInclude Include="include\math\octreenode.h" />
-    <ClInclude Include="include\math\physics.h" />
-    <ClInclude Include="include\math\physics\gravity\gravity.h" />
-    <ClInclude Include="include\math\point3.h" />
-    <ClInclude Include="include\math\random\random.h" />
-    <ClInclude Include="include\math\random\shufflerandom.h" />
-    <ClInclude Include="include\math\ray.h" />
-    <ClInclude Include="include\math\raycast.h" />
-    <ClInclude Include="include\math\raycastIterator.h" />
-    <ClInclude Include="include\math\rectangletn.h" />
-    <ClInclude Include="include\math\graphics\resolutiontexture.h" />
-    <ClInclude Include="include\math\SimplexNoise.h" />
-    <ClInclude Include="include\math\sound\sound.h" />
-    <ClInclude Include="include\math\graphics\stbincluder.h" />
-    <ClInclude Include="include\math\swingsynchronizer.h" />
-    <ClInclude Include="include\math\graphics\texture.h" />
-    <ClInclude Include="include\math\graphics\textures.h" />
-    <ClInclude Include="include\math\theme.h" />
-    <ClInclude Include="include\math\tile.h" />
-    <ClInclude Include="include\math\timemath.h" />
-    <ClInclude Include="include\math\treenodeiterator.h" />
-    <ClInclude Include="include\math\triangle.h" />
-    <ClInclude Include="include\math\triangulationtable.h" />
-    <ClInclude Include="include\math\uuid.h" />
-    <ClInclude Include="include\math\vectn.h" />
-    <ClInclude Include="include\math\vectorrandom.h" />
-    <ClInclude Include="include\optimization\benchmark.h" />
-    <ClInclude Include="include\optimization\debug.h" />
-    <ClInclude Include="include\optimization\macrotricks.h" />
-    <ClInclude Include="include\optimization\optimization.h" />
-    <ClInclude Include="include\type\conversion.h" />
-    <ClInclude Include="include\type\types.h" />
+    <ClInclude Include="src\include\application\application.h" />
+    <ClInclude Include="src\include\application\applicationrunner.h" />
+    <ClInclude Include="src\include\application\control\button.h" />
+    <ClInclude Include="src\include\application\control\checkbox.h" />
+    <ClInclude Include="src\include\application\control\colorpicker.h" />
+    <ClInclude Include="src\include\application\control\control.h" />
+    <ClInclude Include="src\include\application\control\filedialog.h" />
+    <ClInclude Include="src\include\application\control\form.h" />
+    <ClInclude Include="src\include\application\control\label.h" />
+    <ClInclude Include="src\include\application\control\listcontrol.h" />
+    <ClInclude Include="src\include\application\control\picturebox.h" />
+    <ClInclude Include="src\include\application\control\slider.h" />
+    <ClInclude Include="src\include\application\control\TextBox.h" />
+    <ClInclude Include="src\include\application\cursorhandling.h" />
+    <ClInclude Include="src\include\application\interaction.h" />
+    <ClInclude Include="src\include\array\arrayfunctions.h" />
+    <ClInclude Include="src\include\array\arraynd.h" />
+    <ClInclude Include="src\include\array\fastarray.h" />
+    <ClInclude Include="src\include\array\fastlist.h" />
+    <ClInclude Include="src\include\array\rectiteratortn.h" />
+    <ClInclude Include="src\include\array\skiplist.h" />
+    <ClInclude Include="src\include\array\tileList.h" />
+    <ClInclude Include="src\include\array\wstring.h" />
+    <ClInclude Include="src\include\array\zipiterator.h" />
+    <ClInclude Include="src\include\compiler\area.h" />
+    <ClInclude Include="src\include\compiler\compiler.h" />
+    <ClInclude Include="src\include\compiler\errors.h" />
+    <ClInclude Include="src\include\compiler\function.h" />
+    <ClInclude Include="src\include\compiler\memorymanagement.h" />
+    <ClInclude Include="src\include\compiler\operators.h" />
+    <ClInclude Include="src\include\compiler\standardarea.h" />
+    <ClInclude Include="src\include\event\eventargs.h" />
+    <ClInclude Include="src\include\event\eventhandler.h" />
+    <ClInclude Include="src\include\filesystem\fileio.h" />
+    <ClInclude Include="src\include\filesystem\filemanager.h" />
+    <ClInclude Include="src\include\filesystem\file\endian.h" />
+    <ClInclude Include="src\include\filesystem\iserializable.h" />
+    <ClInclude Include="src\include\filesystem\iserializer.h" />
+    <ClInclude Include="src\include\filesystem\jsonReader.h" />
+    <ClInclude Include="src\include\filesystem\serialization.h" />
+    <ClInclude Include="src\include\filesystem\serializer.h" />
+    <ClInclude Include="src\include\filesystem\textfile.h" />
+    <ClInclude Include="src\include\GlobalFunctions.h" />
+    <ClInclude Include="src\include\interface\idestructable.h" />
+    <ClInclude Include="src\include\interface\inamable.h" />
+    <ClInclude Include="src\include\math\axis.h" />
+    <ClInclude Include="src\include\math\bodypart2d.h" />
+    <ClInclude Include="src\include\math\collisions.h" />
+    <ClInclude Include="src\include\math\coordinatesystem.h" />
+    <ClInclude Include="src\include\math\cropline.h" />
+    <ClInclude Include="src\include\math\dimension\dimensionalindex.h" />
+    <ClInclude Include="src\include\math\direction.h" />
+    <ClInclude Include="src\include\math\endlessPrecision.h" />
+    <ClInclude Include="src\include\math\graphics\brush\font\font.h" />
+    <ClInclude Include="src\include\math\graphics\alignment.h" />
+    <ClInclude Include="src\include\math\graphics\brush\brush.h" />
+    <ClInclude Include="src\include\math\graphics\brush\brushes.h" />
+    <ClInclude Include="src\include\math\graphics\brush\transformbrush.h" />
+    <ClInclude Include="src\include\math\graphics\color\color.h" />
+    <ClInclude Include="src\include\math\graphics\brush\font\fontfamily.h" />
+    <ClInclude Include="src\include\math\graphics\frustum.h" />
+    <ClInclude Include="src\include\math\graphics\graphics.h" />
+    <ClInclude Include="src\include\math\hashing.h" />
+    <ClInclude Include="src\include\math\intersectable.h" />
+    <ClInclude Include="src\include\math\intersectablecuboid.h" />
+    <ClInclude Include="src\include\math\intersection.h" />
+    <ClInclude Include="src\include\math\keyframe.h" />
+    <ClInclude Include="src\include\math\LayerNoiseSimplex.h" />
+    <ClInclude Include="src\include\math\MarchingCubes.h" />
+    <ClInclude Include="src\include\math\mathfunctions.h" />
+    <ClInclude Include="src\include\math\matt3x3.h" />
+    <ClInclude Include="src\include\math\mattnxn.h" />
+    <ClInclude Include="src\include\math\meshConstants.h" />
+    <ClInclude Include="src\include\math\meshfunctions.h" />
+    <ClInclude Include="src\include\math\neuralnetwork\aiblueprint.h" />
+    <ClInclude Include="src\include\math\neuralnetwork\aiinputdata.h" />
+    <ClInclude Include="src\include\math\octreenode.h" />
+    <ClInclude Include="src\include\math\physics.h" />
+    <ClInclude Include="src\include\math\physics\gravity\gravity.h" />
+    <ClInclude Include="src\include\math\point3.h" />
+    <ClInclude Include="src\include\math\random\random.h" />
+    <ClInclude Include="src\include\math\random\shufflerandom.h" />
+    <ClInclude Include="src\include\math\ray.h" />
+    <ClInclude Include="src\include\math\raycast.h" />
+    <ClInclude Include="src\include\math\raycastIterator.h" />
+    <ClInclude Include="src\include\math\rectangletn.h" />
+    <ClInclude Include="src\include\math\graphics\resolutiontexture.h" />
+    <ClInclude Include="src\include\math\SimplexNoise.h" />
+    <ClInclude Include="src\include\math\sound\sound.h" />
+    <ClInclude Include="src\include\math\graphics\stbincluder.h" />
+    <ClInclude Include="src\include\math\swingsynchronizer.h" />
+    <ClInclude Include="src\include\math\graphics\texture.h" />
+    <ClInclude Include="src\include\math\graphics\textures.h" />
+    <ClInclude Include="src\include\math\theme.h" />
+    <ClInclude Include="src\include\math\tile.h" />
+    <ClInclude Include="src\include\math\timemath.h" />
+    <ClInclude Include="src\include\math\treenodeiterator.h" />
+    <ClInclude Include="src\include\math\triangle.h" />
+    <ClInclude Include="src\include\math\triangulationtable.h" />
+    <ClInclude Include="src\include\math\uuid.h" />
+    <ClInclude Include="src\include\math\vectn.h" />
+    <ClInclude Include="src\include\math\vectorrandom.h" />
+    <ClInclude Include="src\include\optimization\benchmark.h" />
+    <ClInclude Include="src\include\optimization\debug.h" />
+    <ClInclude Include="src\include\optimization\macrotricks.h" />
+    <ClInclude Include="src\include\optimization\optimization.h" />
+    <ClInclude Include="src\include\type\conversion.h" />
+    <ClInclude Include="src\include\type\types.h" />
     <ClInclude Include="src\incompatibleEnchantments.h" />
     <ClInclude Include="src\inputData.h" />
     <ClInclude Include="src\inventory.h" />
@@ -1036,19 +1030,19 @@
     <ClInclude Include="src\zombifiedPiglin.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\issues.txt" />
-    <Text Include="src\README.txt" />
-    <Text Include="src\suggestions.txt" />
-    <Text Include="src\tips.txt" />
+    <Text Include="issues.txt" />
+    <Text Include="README.txt" />
+    <Text Include="suggestions.txt" />
+    <Text Include="tips.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="src\visualization.natvis" />
+    <Natvis Include="visualization.natvis" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="src\MAINICON.ico" />
+    <Image Include="MAINICON.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="src\MedievalSurvival.rc" />
+    <ResourceCompile Include="MedievalSurvival.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -160,12 +160,12 @@ void textBox::lostFocus()
 void textBox::paste()
 {
 	checkCursorIndex();
-	std::wstring clipBoardText;
-	if (GetClipboardText(clipBoardText))
-	{
-		text.insert(cursorIndex, clipBoardText);
-		cursorIndex += clipBoardText.length();
-	}
+	//std::wstring clipBoardText;
+	//if (GetClipboardText(clipBoardText))
+	//{
+	//	text.insert(cursorIndex, clipBoardText);
+	//	cursorIndex += clipBoardText.length();
+	//}
 }
 
 void textBox::mouseDown(cveci2 &position, cmb &button)

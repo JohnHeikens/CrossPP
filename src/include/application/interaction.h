@@ -4,7 +4,7 @@
 
 bool doEvents();
 
-bool GetClipboardText(std::wstring& result);
+//bool GetClipboardText(std::wstring& result);
 
 //returns wether this key is pressed
 //source:

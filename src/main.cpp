@@ -19,8 +19,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Config.hpp>
 
-#include <imgui-SFML.h>
-#include <imgui.h>
+//#include <imgui-SFML.h>
+//#include <imgui.h>
 
 int main(int argc, char *argv[])
 {
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 	return result;
 }
 
-//std::filesystem::path workingDirectory;
+std::filesystem::path workingDirectory;
 //
 //std::wstring getCommonAppDataFolder() {
 //	TCHAR szPath[MAX_PATH];

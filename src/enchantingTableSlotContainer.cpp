@@ -164,7 +164,7 @@ void enchantingTableSlotContainer::recalculateEnchantments()
 		{
 			enchantmentData* currentEnchantmentData = enchantmentDataList[(int)identifier];
 			//the power of 'sharpness 5' is 5 for example
-			for (size_t enchantmentPower = 1; enchantmentPower <= currentEnchantmentData->powerRanges.size; enchantmentPower++)
+			for (int enchantmentPower = 1; enchantmentPower <= (int)currentEnchantmentData->powerRanges.size; enchantmentPower++)
 			{
 				if (currentEnchantmentData->powerRanges[enchantmentPower - 1].contains(cveci1(finalLevel)))
 				{

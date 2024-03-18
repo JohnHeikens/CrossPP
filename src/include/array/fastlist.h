@@ -221,7 +221,8 @@ struct fastList :IDestructable
 		addList.insert(addList.end(), elements.begin(), elements.end());
 		newSize += elements.size();
 	}
-	inline t& operator[](const size_t& index) const
+	template <typename indexType>
+	inline t& operator[](const indexType& index) const
 	{
 		if constexpr (isDebugging)
 		{

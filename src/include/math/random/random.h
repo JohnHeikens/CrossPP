@@ -57,7 +57,7 @@ inline int randIndex(std::mt19937& generator, const std::vector<int> weights, ci
 {
 	std::uniform_int_distribution<int> distribution(0, totalWeight - 1);
 	int value = distribution(generator);
-	for (size_t i = 0; i < weights.size(); i++)
+	for (int i = 0; i < (int)weights.size(); i++)
 	{
 		value -= weights[i];
 		if (value < 0)

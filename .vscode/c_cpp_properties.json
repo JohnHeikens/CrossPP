@@ -3,9 +3,9 @@
         {
             "name": "Mac",
             "includePath": [
-                //"${default}",
-                //"${workspaceFolder}/src",
-                //"${workspaceFolder}/src/include",
+                "${default}",
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/src/include",
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers",
                 "build/_deps/sfml-src/include",
                 "build/_deps/imgui-sfml-src",
@@ -19,9 +19,9 @@
         {
             "name": "Win32",
             "includePath": [
-                //"${default}",
-                //"${workspaceFolder}/src/**",
-                //"${workspaceFolder}/src/include",
+                "${default}",
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/src/include",
                 "C:/msys64/mingw64/include/c++/13.2.0",
                 "C:/msys64/mingw64/include/c++/13.2.0/x86_64-w64-mingw32",
                 "C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/13.2.0/include",
@@ -37,9 +37,9 @@
         {
             "name": "Linux",
             "includePath": [
-                //"${default}",
-                //"${workspaceFolder}/src",
-                //"${workspaceFolder}/src/include",
+                "${default}",
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/src/include",
                 "build/_deps/sfml-src/include",
                 "build/_deps/imgui-sfml-src",
                 "build/_deps/imgui-src"
