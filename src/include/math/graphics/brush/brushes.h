@@ -9,7 +9,7 @@ struct solidBrush final :public brush<resultingType, inputType>
 {
 	resultingType value = resultingType();
 	solidBrush(const resultingType& value) :value(value) {}
-	inline resultingType getValue(const inputType& pos) const noexcept final
+	constexpr resultingType getValue(const inputType& pos) const noexcept
 	{
 		return value;
 	}
@@ -26,7 +26,7 @@ struct saturator final :public colorBrush
 	fp addvalue = 0.1;
 	const brush0Type& baseBrush;
 	saturator(const brush0Type& baseBrush) :baseBrush(baseBrush) {}
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		const color original = baseBrush.getValue(pos);
 		const colorf& rgbOriginal(original);
@@ -43,7 +43,7 @@ struct colorMultiplier final : public colorBrush
 	const brush0Type& baseBrush;
 	const brush1Type& multColors;
 	colorMultiplier(const brush0Type& baseBrush, const brush1Type& multColors) : baseBrush(baseBrush), multColors(multColors) {}
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		const color& original = baseBrush.getValue(pos);
 		const color& multiplyWith = multColors.getValue(pos);
@@ -59,7 +59,7 @@ struct colorMaximizer final : public colorBrush
 	const brush0Type& brush0 = nullptr;
 	const brush1Type& brush1 = nullptr;
 	colorMaximizer(const brush0Type& brush0, const brush1Type& brush1) : brush0(brush0), brush1(brush1) {}
-	virtual inline color getValue(cvec2& pos) const final
+	virtual inline color getValue(cvec2& pos) const
 	{
 		return color::maximizeColors(brush0.getValue(pos), brush1.getValue(pos));
 	}
@@ -72,7 +72,7 @@ struct alphaMask final :public colorBrush
 	const brush1Type& baseBrush = nullptr;
 
 	alphaMask(const brush0Type& AlphaTex, const brush1Type& baseBrush) :alphaTex(AlphaTex), baseBrush(baseBrush) {}
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		const color c = baseBrush.getValue(pos);
 		const colorChannel& alpha = alphaTex.getValue(pos).a();
@@ -81,52 +81,17 @@ struct alphaMask final :public colorBrush
 
 };
 
-template<typename brush0Type = colorBrush, typename brush1Type = colorBrush>
-struct colorMixer final : public colorBrush
-{
-	const brush0Type& topBrush = nullptr;
-	const brush1Type& bottomBrush = nullptr;
 
-	colorMixer(const brush0Type& topBrush, const brush1Type& bottomBrush) :topBrush(topBrush), bottomBrush(bottomBrush) {}
-
-	//inline static constexpr color getColor(ccolor& topColor, ccolor& bottomColor)
-	//{
-	//	//static functions
-	//	return (topColor.a() == color::maxValue) ?
-	//		topColor :
-	//		(topColor.a() ? color::transition(topColor, bottomColor) : bottomColor);
-	//}
-
-	inline color getValue(cvec2& pos) const final
-	{
-		ccolor& topColor = topBrush.getValue(pos);
-		if (topColor.a() == color::maxValue) {
-			return topColor;
-		}
-		else {
-			ccolor& bottomColor = bottomBrush.getValue(pos);
-			if (topColor.a()) {
-				return color::transition(topColor, bottomColor);
-			}
-			else {
-				return bottomColor;
-			}
-		}
-
-		//the bottom color will be optimized away if the topcolor does not have transparency
-		//return getColor(topBrush.getValue(pos), bottomBrush.getValue(pos));
-	}
-};
 
 template<typename brush0Type, typename resultingType = brush0Type::resultingType, typename inputType = brush0Type::inputType>
 struct repeatingBrush final : public brush<resultingType, inputType>
 {
 	//repeats the same brush
-	const brush<resultingType, inputType>& brushToRepeat;
+	const brush0Type& brushToRepeat;
 	inputType repeatSize;
 	repeatingBrush(const brush0Type& brushToRepeat, const inputType& repeatSize) :brushToRepeat(brushToRepeat), repeatSize(repeatSize) {}
 	repeatingBrush(const brush0Type& textureToRepeat) :brushToRepeat(textureToRepeat), repeatSize(textureToRepeat.getClientRect().size) {}
-	inline resultingType getValue(const inputType& pos) const final
+	inline resultingType getValue(const inputType& pos) const
 	{
 		if constexpr (std::is_same_v<inputType, vec2>) {
 			const inputType& remainderPos = vec2(math::mod(pos.x(), repeatSize.x()), math::mod(pos.y(), repeatSize.y()));
@@ -147,7 +112,7 @@ struct repeatingBrush final : public brush<resultingType, inputType>
 //	const inputType& repeatSize = inputType();
 //	repeatingBrush(const brush0Type& brushToRepeat, const inputType& repeatSize) :brushToRepeat(brushToRepeat), repeatSize(repeatSize) {}
 //	repeatingBrush(const brush0Type& textureToRepeat) :brushToRepeat(textureToRepeat), repeatSize(textureToRepeat.getClientRect().size) {}
-//	inline color getValue(const inputType& pos) const final
+//	inline color getValue(const inputType& pos) const
 //	{
 //		if constexpr (std::is_same_v<inputType, vec2>) {
 //			const inputType& remainderPos = vec2(math::mod(pos.x(), repeatSize.x()), math::mod(pos.y(), repeatSize.y()));
@@ -166,7 +131,7 @@ struct functionPointerBrush final : public colorBrush
 	functionPointerBrush(const colorFunction&& function) :function(function) {}
 	const colorFunction&& function;
 
-	inline color getColor(cvec2& pos) const final
+	inline color getColor(cvec2& pos) const
 	{
 		return function(pos);
 	}
@@ -177,7 +142,7 @@ struct grayScaleToTransparency final : colorBrush
 {
 	const brush0Type& grayScaleBrush;
 	inline grayScaleToTransparency(const brush0Type& grayScaleBrush) :grayScaleBrush(grayScaleBrush) {}
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		//r, g or b does not matter
 		const colorChannel& alpha = grayScaleBrush.getValue(pos).r;
@@ -192,7 +157,7 @@ struct vignetteBrush final : colorBrush
 	vec2 middle = vec2();
 	const brush0Type& baseBrush;
 	vignetteBrush(cvec2& middle, cfp& darkenAmountAtMaxDistance, cfp& maxDistance, const brush0Type& baseBrush) :distanceMultiplier((darkenAmountAtMaxDistance* color::maxValue) / math::squared(maxDistance)), middle(middle), baseBrush(baseBrush) {}
-	virtual inline color getValue(cvec2& pos) const final
+	virtual inline color getValue(cvec2& pos) const
 	{
 		return color::muliplyColors(baseBrush.getValue(pos), color::maxValue - (colorChannel)((pos - middle).lengthSquared() * distanceMultiplier));
 	}
@@ -201,7 +166,7 @@ struct vignetteBrush final : colorBrush
 struct bilinearInterpolator final :colorBrush
 {
 	const texture& baseTexture;
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		//first interpolate x, then y
 		cvect2<fsize_t> pos00 = floorVector<fsize_t>(pos);
@@ -227,7 +192,7 @@ struct bilinearInterpolator final :colorBrush
 struct squareInterpolator final : public colorBrush
 {
 	colorf cornerColors[4]{};
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		return colorf::interpolateColor(cornerColors, pos);
 	}

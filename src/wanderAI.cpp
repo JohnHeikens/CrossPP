@@ -14,13 +14,13 @@ void wanderAI::startExecuting()
 void wanderAI::updateTask()
 {
 	mob* connectedMob = (mob*)connectedEntity;
-	if (randChance(currentRandom, 0x100) || ((abs(targetX - connectedEntity->position.x()) < 1) && randChance(currentRandom, 0x10)))
+	bool canReachTargetPoint = connectedMob->goToPosition(cvec2(targetX, connectedEntity->position.y()));
+	if (randChance(currentRandom, (!canReachTargetPoint || (abs(targetX - connectedEntity->position.x()) < 1)) ? 0x10 : 0x100))
 	{
 		cfp targetOffset = 0x10;
 		//choose new target
 		targetX = connectedEntity->position.x() + randFp(currentRandom, -targetOffset, targetOffset);
 	}
-	connectedMob->goToPosition(cvec2(targetX, connectedEntity->position.y()));
 
 	connectedMob->flipBodyToWalkingDirection();
 	connectedMob->lookForward();

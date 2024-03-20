@@ -14,7 +14,7 @@ public:
 	void Flip() const;
 	bool Save(std::wstring path) const;
 
-	inline color getValue(cvect2<fsize_t> &pos) const final
+	inline color getValue(cvect2<fsize_t> &pos) const
 	{
 		if constexpr (isDebugging)
 		{
@@ -67,7 +67,17 @@ public:
 
 	void Fade(cfp &weight, const color &fadeto) const;
 
-	void visualizeFormula(crectangle2 &screenRect, crectangle2 &spaceRect, fp (*func)(cfp &x), const colorBrush &b);
+	template <typename brush0Type>
+	inline void visualizeFormula(crectangle2& screenRect, crectangle2& spaceRect, fp(*func)(cfp& x), const brush0Type& b)
+	{
+		mat3x3 spaceToScreen = mat3x3::fromRectToRect(spaceRect, screenRect);
+		fp dotDistance = 0.01;
+		for (fp spaceX = math::ceil(spaceRect.pos0.x()); spaceX < spaceRect.pos1().x(); spaceX += dotDistance)
+		{
+			cvec2 pos = spaceToScreen.multPointMatrix(vec2(spaceX, func(spaceX)));
+			fillEllipseCentered(pos, vec2(4), b);
+		}
+	}
 	virtual ~texture() override
 	{
 	}

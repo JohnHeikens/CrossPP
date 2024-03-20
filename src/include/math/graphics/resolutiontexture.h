@@ -1,6 +1,7 @@
 #pragma once
 #include "texture.h"
 #include "brush/transformbrush.h"
+#include "color/color.h"
 
 // width and height MUST be a power of 2
 // https://en.wikipedia.org/wiki/Texture_mapping
@@ -73,7 +74,7 @@ struct resolutionTexture : public colorBrush
 		return scaledTextures[0]->size.x() / defaultSize.x();
 	}
 
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		return scaledTextures[0]->getValue(pos * getScaleModifier());
 	}

@@ -73,7 +73,7 @@ void gameSelector::refresh()
 	}
 }
 
-void gameSelector::keyPress(cvk& key)
+void gameSelector::keyDown(cvk& key)
 {
 	if (key == (vk)keyID::escape)
 	{

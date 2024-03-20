@@ -14,7 +14,7 @@ struct slime : public mob
 	virtual void serializeValue(nbtSerializer& s) override;
 	void resize();
 	virtual void createBodyParts();
-	virtual void goToPosition(cvec2& destination) override;
+	virtual bool goToPosition(cvec2& destination) override;
 	virtual vec2 getJumpPower() const override;
 	virtual fp getAttackDamage() const override;
 	virtual fp getWeight() const override;

@@ -51,5 +51,5 @@ struct chicken : public passiveMob
 	virtual void updateBodyParts() const override;
 	virtual void serializeValue(nbtSerializer& s) override;
 	virtual fp getGravityForce() const override;
-	virtual void goToPosition(cvec2& destination) override;
+	virtual bool goToPosition(cvec2& destination) override;
 };

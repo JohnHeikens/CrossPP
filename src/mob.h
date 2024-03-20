@@ -77,7 +77,7 @@ struct mob :public entity
 	void flipBodyToLookingDirection();
 	void flipBodyToWalkingDirection();
 	void flipBodyToSpeedDirection();
-	virtual void goToPosition(cvec2& destination);
+	virtual bool goToPosition(cvec2& destination);
 	//look at 'lookingat'. CALL THIS ONCE YOU UPDATED ALL OTHER BODY PARTS
 	void updateHeadAngle()  const;
 };
@@ -90,7 +90,7 @@ inline void mob::renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const 
 		{
 			//took damage, draw red
 			const solidColorBrush& redSkinBrush = solidColorBrush(color(color::halfMaxValue, color::maxValue, 0, 0));
-			const auto& mixer = colorMixer<solidColorBrush, colorBrush>(redSkinBrush, skin);
+			const auto& mixer = colorMixer<solidColorBrush, brush0Type>(redSkinBrush, skin);
 			b->renderRecursive(targetData.renderTarget, transform, mixer);
 		}
 		else

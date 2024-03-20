@@ -413,7 +413,7 @@ void entity::physics()
 					{
 						false, true, true
 					};
-					if (index != -1)
+					if (index != std::wstring::npos)
 					{
 						collisionData stepCollision = data.hitboxes[index];
 						//step up block

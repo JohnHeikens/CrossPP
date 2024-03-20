@@ -4,12 +4,9 @@
             "name": "Mac",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/src",
-                "${workspaceFolder}/src/include",
+                "${workspaceFolder}/**",
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers",
-                "build/_deps/sfml-src/include",
-                "build/_deps/imgui-sfml-src",
-                "build/_deps/imgui-src"
+                "${workspaceFolder}/build/_deps/sfml-src/include"
             ],
             "cStandard": "gnu23",
             "cppStandard": "gnu++23",
@@ -20,14 +17,11 @@
             "name": "Win32",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/src/**",
-                "${workspaceFolder}/src/include",
+                "${workspaceFolder}/**",
                 "C:/msys64/mingw64/include/c++/13.2.0",
                 "C:/msys64/mingw64/include/c++/13.2.0/x86_64-w64-mingw32",
                 "C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/13.2.0/include",
-                "build/_deps/sfml-src/include",
-                "build/_deps/imgui-sfml-src",
-                "build/_deps/imgui-src"
+                "${workspaceFolder}/build/_deps/sfml-src/include"
             ],
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
             "cStandard": "gnu23",
@@ -38,11 +32,8 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/src",
-                "${workspaceFolder}/src/include",
-                "build/_deps/sfml-src/include",
-                "build/_deps/imgui-sfml-src",
-                "build/_deps/imgui-src"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/build/_deps/sfml-src/include"
             ],
             "compilerPath": "/usr/bin/g++",
             "cStandard": "gnu23",

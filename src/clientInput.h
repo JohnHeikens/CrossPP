@@ -14,6 +14,7 @@ struct clientInput {
 
 	//the keys which were pressed (0 = start)
 	std::vector<keyHistoryEvent> keyDownHistory = std::vector<keyHistoryEvent>();
+	std::wstring textEntered = std::wstring();
 
 	std::vector<vk> keysDown = std::vector<vk>();
 	std::vector<vk> keysUp = std::vector<vk>();

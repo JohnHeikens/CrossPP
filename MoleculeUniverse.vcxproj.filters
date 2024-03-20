@@ -3689,6 +3689,9 @@
     <ClInclude Include="src\stareDownAI.h">
       <Filter>Source Files\entity\AI\targetAI\angerAI\stareDownAI</Filter>
     </ClInclude>
+    <ClInclude Include="src\include\math\graphics\brush\colorMixer.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt">

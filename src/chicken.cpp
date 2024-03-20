@@ -80,8 +80,8 @@ fp chicken::getGravityForce() const
 	return ((fluidArea > 0) || (!flying)) ? mob::getGravityForce() : chickenAirGravityForce;
 }
 
-void chicken::goToPosition(cvec2& destination)
+bool chicken::goToPosition(cvec2& destination)
 {
-	mob::goToPosition(destination);
 	flying = !onGround && (speed.y() < 0);
+	return mob::goToPosition(destination);
 }

@@ -33,54 +33,71 @@ void client::render(cveci2& position, const texture& renderTarget)
 	write = true;
 	currentInput.serialize(*this);
 	cbool& takeScreenShot = currentInput.pressedKey((vk)keyID::screenshot);
+	auto screenSize = renderTarget.size;
+	serialize(screenSize);
 	s.sendPacket();
 	currentInput.clearTemporaryData();
 
 	write = false;
 
-	if (s.receivePacket() == sf::TcpSocket::Status::Disconnected) {
-		parent->switchVisibleChild(currentMainMenu);
-		if (currentServer) {
-			currentServer->stop();
-			currentWorldSelector->refresh();
+	sf::SocketSelector selector = sf::SocketSelector();
+	selector.add(*s.socket);
+
+	do {
+		if (s.receivePacket() != sf::TcpSocket::Status::Done) {
+			parent->switchVisibleChild(currentMainMenu);
+			if (currentServer) {
+				currentServer->stop();
+				currentWorldSelector->refresh();
+			}
+			return;
 		}
-		return;
-	}
-	//serialize colors of the screen
-	//sounds
-	serialize(earPosition);
-	size_t soundCount;
-	serialize(soundCount);
-	for (size_t i = 0; i < soundCount; i++) {
-		soundPacket packet = soundPacket();
-		packet.serialize(*this);
-		//globalSoundCollectionList[packet.soundCollectionID]->playSound()
+		//serialize colors of the screen
+		//sounds
+		serialize(earPosition);
+		size_t soundCount;
+		serialize(soundCount);
+		for (size_t i = 0; i < soundCount; i++) {
+			soundPacket packet = soundPacket();
 
-		std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(globalSoundCollectionList[packet.soundCollectionID]->audioToChooseFrom[packet.soundIndex].get(), packet.position, packet.volume, packet.pitch, true);
-		handler->playAudio(soundToPlay);
-	}
-	//screen
+			if (!packet.serialize(*this)) {
+				break;
+			}
+			//globalSoundCollectionList[packet.soundCollectionID]->playSound()
 
-	//std::vector<colorChannel> channels[rgbColorChannelCount];
-	////unpack
-	//for (int i = 0; i < rgbColorChannelCount; i++) {
-	//	serialize(channels[i]);
-	//}
-	//color* ptr = renderTarget.baseArray;
-	//for (fsize_t i = 0; i < renderTarget.size.volume(); i++, ptr++) {
-	//	*ptr = color(channels[2][i], channels[1][i], channels[0][i]);
-	//}
+			std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(globalSoundCollectionList[packet.soundCollectionID]->audioToChooseFrom[packet.soundIndex].get(), packet.position, packet.volume, packet.pitch, true);
+			handler->playAudio(soundToPlay);
+		}
+		//screen
 
-	//if (serialize((color::channelType*)renderTarget.baseArray, renderTarget.size.volume() * bgraColorChannelCount)) {
-	//
-	//}
+		//std::vector<colorChannel> channels[rgbColorChannelCount];
+		////unpack
+		//for (int i = 0; i < rgbColorChannelCount; i++) {
+		//	serialize(channels[i]);
+		//}
+		//color* ptr = renderTarget.baseArray;
+		//for (fsize_t i = 0; i < renderTarget.size.volume(); i++, ptr++) {
+		//	*ptr = color(channels[2][i], channels[1][i], channels[0][i]);
+		//}
+
+		//if (serialize((color::channelType*)renderTarget.baseArray, renderTarget.size.volume() * bgraColorChannelCount)) {
+		//
+		//}
+	} while (selector.wait(sf::microseconds(1)));//pop off all packets on the chain and catch up
 	std::vector<byte> compressedScreen;
 	if (serialize(compressedScreen)) {
 		std::vector<byte> decompressedScreen;
 		vectn<fsize_t, 2> size;
 		uint32_t channelCount;
 		fpng::fpng_decode_memory((const char*)&(*compressedScreen.begin()), (uint32_t)compressedScreen.size(), decompressedScreen, size.x(), size.y(), channelCount, bgraColorChannelCount);
-		std::copy(decompressedScreen.begin(), decompressedScreen.end(), (byte*)renderTarget.baseArray);
+		if (size == renderTarget.size) {
+			std::copy(decompressedScreen.begin(), decompressedScreen.end(), (byte*)renderTarget.baseArray);
+		}
+		else {
+			texture oldSizeTex = texture(size, false);
+			std::copy(decompressedScreen.begin(), decompressedScreen.end(), (byte*)oldSizeTex.baseArray);
+			fillTransformedTexture(crectangle2(renderTarget.getClientRect()), oldSizeTex, renderTarget);
+		}
 	}
 	if (takeScreenShot) {
 		//take screenshot
@@ -127,6 +144,10 @@ void client::mouseUp(cveci2& position, cmb& button)
 void client::scroll(cveci2& position, cint& scrollDelta)
 {
 	currentInput.scrollDelta += scrollDelta;
+}
+void client::enterText(cuint& keyCode)
+{
+	currentInput.textEntered += keyCode;
 }
 void client::hover(cveci2& position)
 {

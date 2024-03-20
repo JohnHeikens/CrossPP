@@ -8,6 +8,7 @@ public:
 	bool shift = false;
 	virtual void render(cveci2& position, const texture& renderTarget) override;
 	virtual void enterText(cuint& uniCode) override;
+	virtual void keyDown(cvk& keyCode) override;
 	//virtual void keyUp(cvk& keyCode) override;
 	virtual void lostFocus() override;
 	virtual void paste() override;

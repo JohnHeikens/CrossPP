@@ -5,16 +5,24 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "clientInput.h"
+#include "math/vectn.h"
+#include "GlobalFunctions.h"
 
 struct application:IDestructable
 {
 	//WINDOWPLACEMENT g_wpPrev = WINDOWPLACEMENT();
 
-	sf::RenderWindow window;
+	//pointer because a copy constructor isn't implemented
+	sf::RenderWindow* window = nullptr;
+	sf::Texture windowTexture;
+	sf::Sprite windowSprite;
+	clientInput input = clientInput();
+
 	//data
 	std::wstring windowCaption = std::wstring(L"");
 	//colorb* windowColorPtr = nullptr;
-	graphicsObject graphics = graphicsObject();
+	//graphicsObject graphics = graphicsObject();
+	texture graphics = texture(cvect2<fsize_t>());
 	form* mainForm;
 
 	//vecl2 MousePos = vecl2();
@@ -23,8 +31,8 @@ struct application:IDestructable
 	//function pointer to initialize the form
 	//void changeKeyboardLayout();
 	int run();
+	void layout(crectanglei2& newRect);
 	void processInput();
-	void render();
 	void linkGraphics();
 	//static application* getApplicationConnected(HWND mainWindow);
 	virtual ~application() override;

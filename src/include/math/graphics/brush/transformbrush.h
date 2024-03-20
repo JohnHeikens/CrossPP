@@ -36,7 +36,7 @@ struct transformBrush final : public colorBrush
 		this->modifiedTransform = mat3x3::cross(mat3x3::translate(add), transform);
 	}
 
-	inline color getValue(cvec2& pos) const final
+	inline color getValue(cvec2& pos) const
 	{
 		//if constexpr (std::is_integral_v<brush0Type::inputType>) {
 		//vec2 baseBrushPos = transform.multPointMatrix(pos);

@@ -36,6 +36,7 @@
 #include "client.h"
 #include "accountEditor.h"
 #include <numeric>
+#include <server.h>
 
 application* currentApplication = nullptr;
 
@@ -103,8 +104,12 @@ gameForm::~gameForm()
 
 bool gameForm::close()
 {
+	if (currentServer) {
+		currentServer->stop();
+	}
+	return true;
 	//can't close if you're not on the main menu
-	return currentMainMenu->visible;
+	//return currentMainMenu->visible;
 }
 
 void gameForm::layout(crectanglei2& rect)
@@ -171,7 +176,7 @@ void gameForm::render(cveci2& position, const texture& renderTarget)
 	}
 	handler->update(currentClient->earPosition, hearingRange, settings::soundSettings::headScreenDistance, settings::soundSettings::volume);
 
-	currentApplication->window.setMouseCursorVisible(focusedChild != currentClient);
+	currentApplication->window->setMouseCursorVisible(focusedChild != currentClient);
 
 	//draw all controls
 	renderChildren(position, renderTarget);

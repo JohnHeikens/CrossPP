@@ -19,6 +19,16 @@ or you initialized an extern in the declaration
 compilation slow: turn 'multi procession compilation' to 'yes' in the project settings. not in the soluition settings!
 unresolved external: cpp file not added to solution?
 
+unresolved external symbol (linker errors) with sfml? did you check if someone #set(SFML_BUILD_AUDIO FALSE) ?
+also, 
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+sfml-audio
+sfml-network
+sfml-graphics
+sfml-system
+sfml-window
+)
+
 'uint32_t' is not a member of 'std':
 #include <cstdint> not <stdint> (stdint has no std:: namespace in front of it)
 

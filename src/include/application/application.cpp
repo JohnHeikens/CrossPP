@@ -4,6 +4,7 @@
 #include "math/graphics/graphics.h"
 #include "optimization/stableTickLoop.h"
 #include "control/control.h"
+#include "math/graphics/texture.h"
 
 // works on windows only
 // void application::changeKeyboardLayout()
@@ -25,65 +26,119 @@
 int application::run()
 {
 	sf::ContextSettings settings;
-	settings.antialiasingLevel = 0;
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Tutorial", sf::Style::Close, settings);
-	settings = window.getSettings();
-	std::cout << SFML_VERSION_MAJOR << "." << SFML_VERSION_MINOR << "." << SFML_VERSION_PATCH << std::endl;
-	std::cout << settings.majorVersion << "." << settings.minorVersion << std::endl;
 
-	window.setFramerateLimit(60);
+	settings.antialiasingLevel = 0;
+
+	veci2 size = veci2(1920, 1080);
+	window = new sf::RenderWindow(sf::VideoMode(size.x(), size.y()), "Tutorial", sf::Style::Close | sf::Style::Resize, settings);
+	//settings = window->getSettings();
+	//std::cout << SFML_VERSION_MAJOR << "." << SFML_VERSION_MINOR << "." << SFML_VERSION_PATCH << std::endl;
+	//std::cout << settings.majorVersion << "." << settings.minorVersion << std::endl;
+
+	//window->setFramerateLimit(60);
 	// ImGui::SFML::Init(window);
 
 	// Create a texture with initial size
-	sf::Texture windowTexture;
-	windowTexture.create(window.getSize().x, window.getSize().y);
+	
 
 	// Create a sprite to display the texture
-	sf::Sprite sprite(windowTexture);
 
-	texture renderTex = texture(cvecs2(window.getSize().x, window.getSize().y));
 
 	// cap at 60fps
 	cmicroseconds &frameTime = (microseconds)(1000000 / cappedFps);
 	stableLoop loop = stableLoop(frameTime);
 	// changeKeyboardLayout();
+	//windowSprite->scale(1, -1);
+	//windowSprite->move(0, (float)size.y());
+	//windowSprite.scale(1, -1);
+	//windowSprite.move(0, (float)size.y());
+	layout(crectanglei2(cveci2(), size));
 	mainForm->focus();
-	while (window.isOpen())
+	while (window->isOpen())
 	{
 		loop.waitTillNextLoopTime();
-		processInput(); // process events from user
 		// Do stuff with graphics->colors
-		render();
+		mainForm->render(cveci2(0, 0), graphics);
 		// Draw graphics->colors to window
 
-		window.clear();
-		windowTexture.update((byte *)renderTex.baseArray);
-		window.draw(sprite);
+		window->clear();
+		graphics.switchChannels(graphics.baseArray, 0, 2);
+		windowTexture.update((byte *)graphics.baseArray);
+		window->draw(windowSprite);
 		// ImGui::SFML::Render(window);
-		window.display();
-	}
+		window->display();
 
+		processInput(); // process events from user right before the check if window->isOpen()
+	}
+	delete window;
 	return 0;
+}
+
+void application::layout(crectanglei2& newRect)
+{
+	window->setView(sf::View::View(sf::FloatRect((float)newRect.x(), (float)newRect.y(), (float)newRect.w(), (float)newRect.h())));
+	windowTexture.create(newRect.size.x(), newRect.size.y());
+	windowSprite.setTexture(windowTexture, true);
+	windowSprite.setScale(1, -1);
+	windowSprite.setPosition(0, (float)newRect.size.y());
+
+	graphics = texture(cvect2<fsize_t>(newRect.size));
+	mainForm->layout(crectanglei2(cveci2(), newRect.size));
 }
 
 void application::processInput()
 {
 	sf::Event event;
-	while (window.pollEvent(event))
+	while (window->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
-			window.close();
+		{
+			if (mainForm->close()) {
+				window->close();
+			}
+		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
-			mainForm->keyDown(event.key.code);
+			if (addWithoutDupes(input.keysHolding, event.key.code)) {
+				mainForm->keyDown(event.key.code);
+			}
 		}
 		else if (event.type == sf::Event::KeyReleased)
 		{
-			mainForm->keyUp(event.key.code);
+			const auto& it = std::find(input.keysHolding.begin(), input.keysHolding.end(), event.key.code);
+			if (it != input.keysHolding.end())
+			{
+				mainForm->keyUp(event.key.code);
+				input.keysHolding.erase(it);
+			}
 		}
 		else if (event.type == sf::Event::TextEntered)
 		{
 			mainForm->enterText(event.text.unicode);
+		}
+		else if (event.type == sf::Event::MouseButtonPressed)
+		{
+			mainForm->mouseDown(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y), event.mouseButton.button);
+		}
+		else if (event.type == sf::Event::MouseButtonReleased)
+		{
+			mainForm->mouseUp(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y), event.mouseButton.button);
+		}
+		else if (event.type == sf::Event::MouseWheelScrolled)
+		{
+			mainForm->scroll(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y), (int)event.mouseWheelScroll.delta);
+		}
+		else if (event.type == sf::Event::Resized) {
+			layout(rectanglei2(cveci2(), cveci2(event.size.width, event.size.height)));
+		}
+		else if (event.type == sf::Event::LostFocus) {
+			mainForm->lostFocus();
+		}
+		else if (event.type == sf::Event::GainedFocus) {
+			mainForm->focus();
+		}
+		else if (event.type == sf::Event::MouseMoved) {
+			mainForm->hover(cveci2(event.mouseMove.x, window->getSize().y - event.mouseMove.y));
 		}
 	}
 }
@@ -271,11 +326,6 @@ void application::processInput()
 //	}
 // }
 
-void application::render()
-{
-	mainForm->render(cveci2(0, 0), graphics);
-}
-
 // void application::linkGraphics()
 //{
 //	//adjust graphics size
@@ -339,6 +389,7 @@ void application::render()
 // }
 application::application(form *mainForm)
 {
+	graphics = texture(cvecs2());
 	this->mainForm = mainForm;
 	//std::fill(lastKeyDown, lastKeyDown + 0x100, false);
 }
@@ -386,8 +437,8 @@ application::~application()
 
 	// we dont have to delete its colors because they are part of the DIBSection
 
-	if (graphics.baseArray)
-	{
-		graphics.baseArray = nullptr;
-	}
+	//if (graphics.baseArray)
+	//{
+	//	graphics.baseArray = nullptr;
+	//}
 }

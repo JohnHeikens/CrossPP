@@ -9,6 +9,7 @@
 #include "math/graphics/brush/brush.h"
 #include "math/graphics/brush/transformbrush.h"
 #include "math/axis.h"
+#include "math/graphics/brush/colorMixer.h"
 
 template<typename t, fsize_t axisCount>
 struct arraynd :IDestructable
@@ -154,6 +155,29 @@ struct arraynd :IDestructable
 		for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos += step)
 		{
 			*ptr = b.baseBrush.getValue(pos);
+		}
+	}
+
+	template<typename brush0Type, typename brush1Type, typename = std::enable_if_t<std::is_base_of_v<arraynd<t, axisCount>, brush1Type>>>
+	inline void fillRowUnsafe(cfsize_t& rowY, cfsize_t& minX, cfsize_t& maxX, const colorMixer<brush0Type, brush1Type>& b) const
+	{
+		if (&b.bottomBrush == this) {
+			t* const rowPtr = baseArray + rowY * size.x();
+			t* const endPtr = rowPtr + maxX;
+
+			typedef typename brush0Type::inputType vectorType;
+			typedef typename vectorType::axisType axisType;
+
+			vectorType pos = vectorType((axisType)minX, (axisType)rowY);
+
+			for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos.x()++)
+			{
+				ccolor& topColor = b.topBrush.getValue(pos);
+				*ptr = topColor.a() == color::maxValue ? topColor : topColor.a() ? color::transition(topColor, *ptr) : *ptr;
+			}
+		}
+		else {
+			fillRowUnsafe(rowY, minX, maxX, b);
 		}
 	}
 

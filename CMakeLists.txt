@@ -31,10 +31,10 @@ set (CMAKE_CXX_FLAGS "-g -W -pedantic")
 
 # add .cpp-files
 
-file(GLOB_RECURSE source_list "src/*.cpp")
+file(GLOB_RECURSE source_list "src/*.*")
 
-list(FILTER source_list EXCLUDE REGEX "!(${PROJECT_SOURCE_DIR}/src/*)" )
-list(FILTER source_list EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/src/gzip/*" )
+list(FILTER source_list EXCLUDE REGEX "!(${PROJECT_SOURCE_DIR}/src/*.(c|cpp))" )
+#list(FILTER source_list EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/src/gzip/*" )
 
 foreach(header_dir ${source_list})
     message(STATUS "[INFO] source file included: ${header_dir}")
@@ -69,21 +69,45 @@ set(SOURCES ${source_list})
 include_directories(src) 
 include_directories(src/include)
 
-#include_directories(${header_dir_list})
-#include_directories(${CMAKE_SOURCE_DIR})
+include_directories(ZLIB src/gzip/zlib-1.2.11/zlib-1.2.11)
+
 #set(SOURCE_DIR )
 # 3rd party dependencies
 add_subdirectory(lib)
 
-
+add_subdirectory(src/gzip/zlib-1.2.11/zlib-1.2.11)
+find_package(ZLIB REQUIRED)
 # Here the .c/.cpp files get linked
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} src/gzip/zlib-1.2.11/zlib-1.2.11/gzip.h)
 
 # Here we link 3rd party library ImGui-SFML
 # No need to link SFML implicitly as ImGui-SFML does it for you!
 # Refer to https://eliasdaler.github.io/using-cmake/
-target_link_libraries(${PROJECT_NAME} PRIVATE ImGui-SFML::ImGui-SFML)
-#target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
+#target_link_libraries(${PROJECT_NAME} PRIVATE ImGui-SFML::ImGui-SFML)
+#https://stackoverflow.com/questions/59573574/how-do-i-use-sfml-with-cmake-fetchcontent
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+sfml-audio
+sfml-network
+sfml-graphics
+sfml-system
+sfml-window
+)
+
+#set(ZLIB_DIR C:/Program Files (x86)/GnuWin32/bin)
+#find_package( ZLIB )
+#if ( ZLIB_FOUND )
+#    include_directories( ${ZLIB_INCLUDE_DIRS} )
+#    target_link_libraries( YourProject ${ZLIB_LIBRARIES} )
+#endif( ZLIB_FOUND )
+
+#include(FindZLIB)
+#
+#FindZLIB()
+#set(ZLIB_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/src/zlib)
+#find_package(ZLIB)
+#set(ZLIB_INCLUDE_DIR src/zlib)
+##set(ZLIB_ROOT src/zlib)
+#target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
 # Additional resources like images and fonts
 # We want the to copy from permanent folder "res" to temporary folder "build"

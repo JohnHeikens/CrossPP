@@ -6,7 +6,7 @@ textBox::textBox() : control()
 {
 }
 
-void textBox::render(cveci2 &position, const texture &renderTarget)
+void textBox::render(cveci2& position, const texture& renderTarget)
 {
 	control::render(position, renderTarget);
 
@@ -20,11 +20,20 @@ void textBox::render(cveci2 &position, const texture &renderTarget)
 	}
 }
 
-void textBox::enterText(cuint &uniCode)
+void textBox::enterText(cuint& uniCode)
 {
 	checkCursorIndex();
-	text.insert(cursorIndex, 1, (wchar_t)uniCode);
-	cursorIndex++;
+	if (uniCode == L'\b') {//backspace
+		if (cursorIndex) {
+			text = text.erase(cursorIndex - 1, 1);
+			cursorIndex--;
+		}
+	}
+	else {
+		text.insert(cursorIndex, 1, (wchar_t)uniCode);
+		cursorIndex++;
+	}
+
 	// cbool shift = pressed(VK_LSHIFT) || pressed(VK_RSHIFT);
 	// shift |= (keyCode == vk::LShift);
 	////capsLock |= (keyCode == vk::);
@@ -145,6 +154,23 @@ void textBox::enterText(cuint &uniCode)
 	//}
 }
 
+void textBox::keyDown(cvk& keyCode)
+{
+	checkCursorIndex();
+	if (keyCode == vk::Delete && cursorIndex < text.length())
+	{
+		text = text.erase(cursorIndex, 1);
+	}
+	else if (keyCode == vk::Left && cursorIndex > 0)
+	{
+		cursorIndex--;
+	}
+	else if (keyCode == vk::Right && cursorIndex < text.length())
+	{
+		cursorIndex++;
+	}
+}
+
 //void textBox::keyUp(cvk &keyCode)
 //{
 //	shift &= (keyCode != VK_SHIFT);
@@ -168,11 +194,11 @@ void textBox::paste()
 	//}
 }
 
-void textBox::mouseDown(cveci2 &position, cmb &button)
+void textBox::mouseDown(cveci2& position, cmb& button)
 {
 	// check position of cursor
 
-	crectangle2 &relativeTextRect = crectangle2(rectanglei2(rect.size).expanded(-borderSize));
+	crectangle2& relativeTextRect = crectangle2(rectanglei2(rect.size).expanded(-borderSize));
 	vec2 offset = currentFont->MeasureStringOffset(relativeTextRect, L"");
 	fp closestDistance = INFINITY;
 	fsize_t closestIndex = 0;
@@ -180,7 +206,7 @@ void textBox::mouseDown(cveci2 &position, cmb &button)
 	{
 		if (position.y() > offset.y() && position.y() < offset.y() + currentFont->fontSize)
 		{
-			cfp &distance = math::absolute(position.x() - offset.x());
+			cfp& distance = math::absolute(position.x() - offset.x());
 			if (distance < closestDistance)
 			{
 				closestDistance = distance;

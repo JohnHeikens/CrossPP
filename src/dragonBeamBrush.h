@@ -11,7 +11,7 @@ struct dragonBeamBrush : colorBrush
 	cfp transparencyDistanceSquared = 0;
 	dragonBeamBrush(const brush0Type* backgroundBrush, cvec2& dragonScreenLocation, cfp& whiteDistance, cfp& transparencyDistance) :
 		backgroundBrush(backgroundBrush), dragonScreenLocation(dragonScreenLocation), whiteDistanceSquared(math::squared(whiteDistance)), transparencyDistanceSquared(math::squared(transparencyDistance)) {}
-	inline color getValue(cvec2& pos) const override
+	inline color getValue(cvec2& pos) const
 	{
 		cfp distanceToDragonSquared = (pos - dragonScreenLocation).lengthSquared();
 		return color::lerpcolor(

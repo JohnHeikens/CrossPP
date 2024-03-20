@@ -18,7 +18,7 @@
 #include <vector>
 #include <SFML/Network/SocketSelector.hpp>
 #include <SFML/System/Time.hpp>
-#pragma optimize("", off)
+#include <SFML/Graphics/RenderTexture.hpp>
 playerSocket::playerSocket(sf::TcpSocket* socket)
 {
 	screen = new gameControl(*this);
@@ -91,7 +91,7 @@ void renderAsync(playerSocket* socket)
 	//send sounds
 
 	vec2 earPosition = socket->screen->player->getHeadPosition();
-
+	constexpr bool b = std::is_base_of_v<arraynd<color, 2>, texture>;
 	socket->serialize(earPosition);
 
 	size_t soundCount = socket->screen->dataToSend.size();
@@ -120,6 +120,11 @@ void renderAsync(playerSocket* socket)
 
 			//read input while sending
 			socket->screen->mostRecentInput.serialize(*socket);
+			vect2<fsize_t> newScreenSize;
+			socket->serialize(newScreenSize);
+			if (veci2(newScreenSize) != socket->screen->rect.size) {
+				socket->screen->layout(crectanglei2(veci2(), veci2(newScreenSize)));
+			}
 			//socket->s.socket->setBlocking(true);
 			socket->screen->addClientInput(socket->screen->mostRecentInput);
 			socket->screen->processInput();
@@ -136,7 +141,28 @@ void sendRenderResultAsync(playerSocket* socket)
 	//we don't use the normal 'serialize' function so we don't have to use the 'write' boolean
 	//std::stringstream compressedScreenPacket = std::stringstream();
 	std::vector<byte> compressedBuf;
-	fpng::fpng_encode_image_to_memory(socket->lastRenderResult->baseArray, socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y(), bgraColorChannelCount, compressedBuf);
+	typedef colortn<byte, 3> color3;
+	color3* colorsWithoutAlpha = new color3[socket->lastRenderResult->size.volume()];
+	const color3 c = color3();
+	color3* ptr = colorsWithoutAlpha;
+	for (const color& c : *socket->lastRenderResult)
+	{
+		*ptr++ = color3(c);
+	}
+	//sf::RenderTexture tex = sf::RenderTexture();
+	//tex.create(socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y());
+	//tex.clear();
+	//sf::CircleShape s(500);
+	//s.setPosition(sf::Vector2f(300, 300));
+	//tex.draw(s);
+	//sf::Texture t = tex.getTexture();
+	//sf::Image i;
+	//i.create(socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y());
+	//t.copyToImage();
+
+	//std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
+	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y(), rgbColorChannelCount, compressedBuf);
+	delete[] colorsWithoutAlpha;
 	//color* ptr = socket->lastRenderResult->baseArray;
 	//std::vector<colorChannel> channels[rgbColorChannelCount]{};
 	//
@@ -174,4 +200,3 @@ void sendPacketAsync(playerSocket* socket) {
 
 	socket->s.sendPacket();
 }
-#pragma optimize("", on)

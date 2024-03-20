@@ -574,22 +574,34 @@ bool mob::shouldJump(bool& wantsToGoLeft, bool& wantsToGoRight) const
 	cvec2 testSpeed = cvec2(speedX, 0);
 	collisionDataCollection data = dimensionIn->getHitboxCollisionData(testHitbox, testSpeed * timeBeforeJump);
 
+	//filter on 'willcollide'
+	cbool allowCollisionType[3] = { false, false, true };
+
+
 	data.evaluate(testHitbox, testSpeed, timeBeforeJump);
+	const auto& noJumpData = data.getFirstCollision(allowCollisionType);
+
 	cbool& willCollideIfNotJumping = data.getMaximumCollision() == collisionTypeID::willCollide;
 
-	if (willCollideIfNotJumping)
+	if (noJumpData.collisionTime < timeBeforeJump)
 	{
 		//check if the mob will still collide when jumping
 		cvec2& positionJump = position + cvec2(0, JumpHeight);
 		crectangle2& testHitboxJump = calculateHitBox(positionJump);
 		collisionDataCollection jumpData = dimensionIn->getHitboxCollisionData(testHitboxJump, testSpeed);
 		jumpData.evaluate(testHitboxJump, testSpeed, timeBeforeJump);
-		if (jumpData.getMaximumCollision() != collisionTypeID::willCollide)
-		{
+
+		const auto& firstJumpCollision = jumpData.getFirstCollision(allowCollisionType);
+		if (firstJumpCollision.collisionTime > noJumpData.collisionTime) {
+
+			//cbool allowCollisionType[3] = { false, false, true };
+			//if(jumpData.getFirstCollision(allowCollisionType).collisionTime < 0.1)//
 			return true;
 		}
-		else {
-			wantsToGoLeft = wantsToGoRight = false;
+		else {//jumping won't help
+			if (noJumpData.collisionTime < 0.1) {
+				wantsToGoLeft = wantsToGoRight = false;
+			}
 		}
 	}
 	return false;
@@ -614,7 +626,7 @@ void mob::flipBodyToSpeedDirection()
 {
 	mainBodyPart->flipX = speed.x() < 0;
 }
-void mob::goToPosition(cvec2& destination)
+bool mob::goToPosition(cvec2& destination)
 {
 	if (destination.x() < position.x())
 	{
@@ -633,9 +645,15 @@ void mob::goToPosition(cvec2& destination)
 	{
 		wantsToGoUp = true;
 	}
-	//if the mob is flying but is on the ground we can still evaluate this
-	//also if the collision level is willNotCollide, it won't set onGround to true
-	wantsToJump = onGround && shouldJump(wantsToGoLeft, wantsToGoRight);
+	if (wantsToGoLeft || wantsToGoRight) {
+		//if the mob is flying but is on the ground we can still evaluate this
+		//also if the collision level is willNotCollide, it won't set onGround to true
+		wantsToJump = onGround && shouldJump(wantsToGoLeft, wantsToGoRight);
+		if (!wantsToGoLeft && !wantsToGoRight) {
+			return false;//cannot reach target point
+		}
+	}
+	return true;
 }
 
 void mob::updateHeadAngle() const

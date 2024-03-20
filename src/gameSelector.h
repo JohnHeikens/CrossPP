@@ -14,7 +14,7 @@ struct gameSelector : form
 	button* refreshButton = new button(L"Refresh");
 	virtual void mouseDown(cveci2& position, cmb& button) override;
 	void refresh();
-	virtual void keyPress(cvk& key) override;
+	virtual void keyDown(cvk& key) override;
 	virtual void layout(crectanglei2& newRect) override;
 	virtual void render(cveci2& position, const texture& renderTarget) override;
 	virtual void openGame(const control* const c) const = 0;

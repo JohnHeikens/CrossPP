@@ -46,7 +46,7 @@ lootTable* readDrop(const jsonContainer& container)
 				if (functionsIndex != -1)
 				{
 					const std::vector<jsonContainer>& functionContainers = container.children[functionsIndex].children;
-					for (int i = 0; i < functionContainers.size(); i++)
+					for (size_t i = 0; i < functionContainers.size(); i++)
 					{
 						const jsonContainer& functionContainer = functionContainers[i];
 						const std::wstring functionName = functionContainer[std::wstring(L"function")].children[0].value;

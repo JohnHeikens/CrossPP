@@ -16,6 +16,7 @@ struct client : control, socketContainer {
 	virtual void mouseDown(cveci2& position, cmb& button) override;
 	virtual void mouseUp(cveci2& position, cmb& button) override;
 	virtual void scroll(cveci2& position, cint& scrollDelta) override;
+	virtual void enterText(cuint& keyCode) override;
 
 	virtual void hover(cveci2& position) override;
 	virtual void keyDown(cvk& keyCode) override;

@@ -56,6 +56,12 @@ struct colortn : public vectn<t, channelCount>
 	{
 
 	}
+	//for converting bgr to bgra
+	template <typename = std::enable_if_t<channelCount == 4>>
+	explicit constexpr colortn(const vectn<t, 3>& in) : vectn<t, channelCount>(in) {}
+	//for converting bgra to bgr
+	template <typename = std::enable_if_t<channelCount == 3>>
+	explicit constexpr colortn(const vectn<t, 4>& in) : vectn<t, channelCount>(in) {}
 
 	//https://stackoverflow.com/questions/41011900/equivalent-ternary-operator-for-constexpr-if
 	template<typename t2>
@@ -153,7 +159,7 @@ struct colortn : public vectn<t, channelCount>
 	}
 
 	template<size_t colorCount>
-	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount> (&colorsToInterpolate)[colorCount], cfp weight[colorCount])
+	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount>(&colorsToInterpolate)[colorCount], cfp weight[colorCount])
 	{
 		colortn<fp, channelCount> result = colortn();
 		for (size_t i = 0; i < colorCount; i++)
@@ -166,7 +172,7 @@ struct colortn : public vectn<t, channelCount>
 	}
 
 	//https://en.wikipedia.org/wiki/Bilinear_interpolation
-	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount> (&colorsToInterpolate)[4], cvec2& weights)
+	inline static constexpr colortn interpolateColor(const colortn<fp, channelCount>(&colorsToInterpolate)[4], cvec2& weights)
 	{
 		cvec2& invertedWeigths = (fp)1 - weights;
 		cfp weightArray[4]

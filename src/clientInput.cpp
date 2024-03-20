@@ -15,6 +15,7 @@ bool clientInput::serialize(const socketContainer& s)
 	s.serialize(keysUp);
 	s.serialize(keysHolding);
 	s.serialize(scrollDelta);
+	s.serializeWStringAsString(textEntered);
 
 	size_t size = keyDownHistory.size();
 	s.serialize(size);
@@ -53,6 +54,7 @@ void clientInput::addClientInput(const clientInput& newInput)
 		}
 	}
 	keysHolding = newInput.keysHolding;
+	textEntered = newInput.textEntered;
 }
 
 bool clientInput::holdingDownKey(cvk& key) const
@@ -72,5 +74,5 @@ void clientInput::clearTemporaryData()
 	keysDown.clear();
 	keysUp.clear();
 	scrollDelta = 0;
-
+	textEntered.clear();
 }

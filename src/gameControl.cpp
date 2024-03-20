@@ -290,6 +290,9 @@ void gameControl::processInput()
 			form::keyUp(e.key);
 		}
 	}
+	for (const auto c : mostRecentInput.textEntered) {
+		form::enterText(c);
+	}
 }
 
 void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cbool& renderHUD)
@@ -697,7 +700,8 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 						if (currentLevel)
 						{
 							const minecraftFont f = minecraftFont(iconSize * hudScale);
-							std::wstring str = colorCodeChar + L"a" + std::to_wstring(currentLevel);
+							//std::wstring() to make it concatenate the string and not do other stuff
+							std::wstring str = std::wstring() + colorCodeChar + L"a" + std::to_wstring(currentLevel);
 							cvec2& size = f.fontSize * vec2(1, (fp)str.length());
 							f.DrawString(str, crectangle2((rect.w() - size.x()) * 0.5, currentYrowOffset + expBarSize.y() - scaledBarOffset, size.x(), size.y()), targetData.renderTarget);
 							attackIndicatorOffset += iconSize * hudScale + scaledBarOffset;

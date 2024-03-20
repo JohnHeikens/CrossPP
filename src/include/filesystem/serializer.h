@@ -78,7 +78,7 @@ struct serializer :iSerializer
 			}
 			else
 			{
-				if (fileEndianness != currentEndianness)
+				if (fileEndianness != currentEndianness && sizeof(valueType) > 1)
 				{
 					const valueType* const endPtr = valuesPointer + arraySize;
 					for (; valuesPointer < endPtr; )
@@ -134,13 +134,13 @@ struct serializer :iSerializer
 	inline bool serialize(vectn<valueType, axisCount>& value) const
 	{
 		return serialize(value.axis, axisCount);
-		for (fsize_t i = 0; i < axisCount; i++)
-		{
-			if (!serialize(value.axis[i]))
-			{
-				return false;
-			}
-		}
+		//for (fsize_t i = 0; i < axisCount; i++)
+		//{
+		//	if (!serialize(value.axis[i]))
+		//	{
+		//		return false;
+		//	}
+		//}
 		//return true;
 	}
 

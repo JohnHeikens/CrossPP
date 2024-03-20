@@ -168,7 +168,7 @@ void enchantingTableSlotContainer::recalculateEnchantments()
 			{
 				if (currentEnchantmentData->powerRanges[enchantmentPower - 1].contains(cveci1(finalLevel)))
 				{
-					if (enchantmentPower >= currentEnchantmentData->powerRanges.size || !currentEnchantmentData->powerRanges[enchantmentPower].contains(cveci1(finalLevel)))
+					if (enchantmentPower >= (int)currentEnchantmentData->powerRanges.size || !currentEnchantmentData->powerRanges[enchantmentPower].contains(cveci1(finalLevel)))
 					{
 						//this is the highest enchantment power power, choose this
 						enchantmentsToChooseFrom.push_back(enchantment(identifier, enchantmentPower));

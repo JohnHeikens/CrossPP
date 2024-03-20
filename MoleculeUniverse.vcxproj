@@ -581,6 +581,7 @@
     <ClInclude Include="src\effectParticleBrush.h" />
     <ClInclude Include="src\fpng.h" />
     <ClInclude Include="src\gameRenderData.h" />
+    <ClInclude Include="src\include\math\graphics\brush\colorMixer.h" />
     <ClInclude Include="src\include\math\graphics\brush\font\baseFont.h" />
     <ClInclude Include="src\minecraftFont.h" />
     <ClInclude Include="src\include\network\compressedPacket.h" />

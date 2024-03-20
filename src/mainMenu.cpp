@@ -64,7 +64,7 @@ void mainMenu::keyDown(cvk& key)
 	if (key == (vk)keyID::escape)
 	{
 		//might cause a crash
-		currentApplication->window.close();
+		currentApplication->window->close();
 		//PostMessage(currentApplication->hwnd, WM_CLOSE, 0, 0);
 	}
 	form::keyDown(key);

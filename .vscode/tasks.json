@@ -5,13 +5,13 @@
             "label": "make",
             "type": "shell",
             "windows" :{
-                "command": "mingw32-make.exe -j12"
+                "command": "mingw32-make.exe -j12 -lz"
             },
             "linux" :{
-                "command" : "make -j$((`nproc`))"
+                "command" : "make -j$((`nproc`)) -lz"
             },
             "osx" :{
-                "command" : "make -j$((`sysctl -n hw.ncpu`))"
+                "command" : "make -j$((`sysctl -n hw.ncpu`)) -lz"
             },
             "options": {
                 "cwd": "${workspaceFolder}/build"

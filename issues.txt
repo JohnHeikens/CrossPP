@@ -1,6 +1,8 @@
 
 van meest irritant naar minst irritant / nodig:
 
+ai list not serialized correctly
+
 playerdata copies to installation
 depth strider ook niet
 boat werkt niet

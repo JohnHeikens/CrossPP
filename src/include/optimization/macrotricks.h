@@ -50,7 +50,7 @@ addTemplateType(shortenedTemplateName, , fp)																		\
 addTemplateType(shortenedTemplateName, i, int)																		\
 addTemplateType(shortenedTemplateName, l, long)																		\
 addTemplateType(shortenedTemplateName, b, bool)																		\
-addTemplateType(shortenedTemplateName, s, bool)
+addTemplateType(shortenedTemplateName, s, size_t)
 
 //https://stackoverflow.com/questions/18290523/is-a-default-move-constructor-equivalent-to-a-member-wise-move-constructor
 #define addDefaultConstructors(structName, constructorType)																			\

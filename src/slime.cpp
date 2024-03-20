@@ -52,7 +52,7 @@ void slime::createBodyParts()
 	head = mainBodyPart;
 }
 
-void slime::goToPosition(cvec2& destination)
+bool slime::goToPosition(cvec2& destination)
 {
 	//jump to the destination
 	if (randChance(currentRandom, 3 * ticksPerRealLifeSecond))
@@ -64,6 +64,7 @@ void slime::goToPosition(cvec2& destination)
 	{
 		mob::goToPosition(destination);
 	}
+	return true;
 }
 
 vec2 slime::getJumpPower() const

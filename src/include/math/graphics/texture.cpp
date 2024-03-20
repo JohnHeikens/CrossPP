@@ -123,17 +123,6 @@ void texture::Fade(cfp& weight, const color& fadeto) const
 	}
 }
 
-void texture::visualizeFormula(crectangle2& screenRect, crectangle2& spaceRect, fp(*func)(cfp& x), const colorBrush& b)
-{
-	mat3x3 spaceToScreen = mat3x3::fromRectToRect(spaceRect, screenRect);
-	fp dotDistance = 0.01;
-	for (fp spaceX = math::ceil(spaceRect.pos0.x()); spaceX < spaceRect.pos1().x(); spaceX += dotDistance)
-	{
-		cvec2 pos = spaceToScreen.multPointMatrix(vec2(spaceX, func(spaceX)));
-		fillEllipseCentered(pos, vec2(4), b);
-	}
-}
-
 veci2 getImageSize(const std::wstring& path)
 {
 	veci2 size;
