@@ -29,6 +29,10 @@ sfml-system
 sfml-window
 )
 
+if you need a library like zlib, you can also install it with vcpkg.
+vcpkg install zlib
+it will give instructions on what to put in cmakelists.txt!
+
 'uint32_t' is not a member of 'std':
 #include <cstdint> not <stdint> (stdint has no std:: namespace in front of it)
 
@@ -105,6 +109,15 @@ https://stackoverflow.com/questions/16724041/cannot-start-concurrency-visualizer
 
 include file problems: specify include folder both in the c_cpp_properties.json and using include_directories() in CMakeLists.txt
 
+when having an empty build folder:
+run CMake: configure
+
+no builtin-baseline:
+https://stackoverflow.com/questions/75184879/builtin-baseline-in-vcpkg-for-installing-franka-matlab
+run vcpkg x-update-baseline --add-initial-baseline
+
+when installing vcpkg packages, browse on https://vcpkg.io/en/packages to find them and their version!
+
 c++ standard:
 change in CMakeLists.txt : 
 set(CMAKE_CXX_STANDARD ##) with ## being version number
@@ -116,6 +129,10 @@ type/value mismatch: f.e. use std::remove_const_t instead of std::remove_const::
 error with std::chrono::system_clock::now: use steady_clock everywhere 
 
 TODO:
+
+maybe add vcpkg-configuration.json for version consistency (see https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)
+
+add cmake-toolchain for cross-compile
 
 bonemeal particles
 creeper ontploft in gmc

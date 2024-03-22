@@ -5,12 +5,14 @@
 #include "filesystem/file/endian.h"
 #include "socketContainer.h"
 #include <thread>
+#include <SFML/Graphics/RenderTexture.hpp>
 struct playerSocket : socketContainer {
 	human* player = nullptr;
 	gameControl* screen = nullptr;
 	bool authenticated = false;
 	playerSocket(sf::TcpSocket* socket);
-	texture* lastRenderResult = nullptr;
+	//texture* lastRenderResult = nullptr;
+	sf::RenderTexture* lastRenderResult = nullptr;
 	void processSocketInput();
 	~playerSocket();
 	bool shouldDisconnect = false;

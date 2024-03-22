@@ -3,8 +3,8 @@
 #include "GlobalFunctions.h"
 #include <type_traits> 
 
-constexpr int bgraColorChannelCount = 4;
-constexpr int rgbColorChannelCount = 3;
+constexpr fsize_t bgraColorChannelCount = 4;
+constexpr fsize_t rgbColorChannelCount = 3;
 //bgra structure
 template<typename t, fsize_t channelCount>
 struct colortn : public vectn<t, channelCount>
@@ -34,6 +34,8 @@ struct colortn : public vectn<t, channelCount>
 	static constexpr t halfMaxValue = maxValue / 2;
 	static constexpr t quarterMaxValue = maxValue / 4;
 
+	constexpr colortn(const colortn& other) = default;
+
 	constexpr colortn(ccolort& c, const t& a) :vectn<t, channelCount>(c)
 	{
 		this->a() = a;
@@ -57,11 +59,12 @@ struct colortn : public vectn<t, channelCount>
 
 	}
 	//for converting bgr to bgra
-	template <typename = std::enable_if_t<channelCount == 4>>
-	explicit constexpr colortn(const vectn<t, 3>& in) : vectn<t, channelCount>(in) {}
+	//template <typename = std::enable_if_t<channelCount == 4>>
+	//explicit constexpr colortn(const colortn<t, 3 + 4 - channelCount>& in);
 	//for converting bgra to bgr
-	template <typename = std::enable_if_t<channelCount == 3>>
-	explicit constexpr colortn(const vectn<t, 4>& in) : vectn<t, channelCount>(in) {}
+	//template <typename = std::enable_if_t<channelCount == 3>>
+	//when channelcount = 3, then the other channelcount = 4
+	explicit constexpr colortn(const vectn<t, 7 - channelCount>& in) : vectn<t, channelCount>(in) {}
 
 	//https://stackoverflow.com/questions/41011900/equivalent-ternary-operator-for-constexpr-if
 	template<typename t2>

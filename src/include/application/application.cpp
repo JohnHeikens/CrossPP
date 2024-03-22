@@ -76,7 +76,7 @@ int application::run()
 
 void application::layout(crectanglei2& newRect)
 {
-	window->setView(sf::View::View(sf::FloatRect((float)newRect.x(), (float)newRect.y(), (float)newRect.w(), (float)newRect.h())));
+	window->setView(sf::View(sf::FloatRect((float)newRect.x(), (float)newRect.y(), (float)newRect.w(), (float)newRect.h())));
 	windowTexture.create(newRect.size.x(), newRect.size.y());
 	windowSprite.setTexture(windowTexture, true);
 	windowSprite.setScale(1, -1);

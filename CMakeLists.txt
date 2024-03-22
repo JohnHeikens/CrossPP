@@ -1,7 +1,15 @@
 
+
+# Use c++ 23
+set(CMAKE_CXX_STANDARD 23)
+
 # set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 # Shoutout to CMake guide: https://eliasdaler.github.io/using-cmake/
 cmake_minimum_required(VERSION 3.5)
+ 
+
+
+#set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
 IF (WIN32)
     set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)
@@ -17,14 +25,17 @@ ELSEIF (UNIX AND NOT APPLE)
     set(CMAKE_C_COMPILER /usr/bin/gcc)
     set(CMAKE_CXX_COMPILER /usr/bin/g++)
 ENDIF()
-    
+
+set(VCPKG_VERSION edge)
+include(vcpkg.cmake)
+
+#find_path(PLOG_INCLUDE_DIRS "gzip/compress.hpp" REQUIRED)
+
 # Get project name from folder name
 get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
-project(${ProjectId})
+project(${ProjectId}) 
 
-# Use c++ 23
-set(CMAKE_CXX_STANDARD 23)
 # Enable additional warnings and debug mode
 # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
 set (CMAKE_CXX_FLAGS "-g -W -pedantic")
@@ -69,16 +80,22 @@ set(SOURCES ${source_list})
 include_directories(src) 
 include_directories(src/include)
 
-include_directories(ZLIB src/gzip/zlib-1.2.11/zlib-1.2.11)
+#include_directories(ZLIB src/gzip/zlib-1.2.11/zlib-1.2.11)
 
 #set(SOURCE_DIR )
 # 3rd party dependencies
 add_subdirectory(lib)
 
-add_subdirectory(src/gzip/zlib-1.2.11/zlib-1.2.11)
-find_package(ZLIB REQUIRED)
+#add_subdirectory(src/gzip/zlib-1.2.11/zlib-1.2.11)
+#find_package(ZLIB REQUIRED)
+
+#vcpkg_init()
+#vcpkg_add_package(zlib)
+#find_package(ZLIB REQUIRED)
+
 # Here the .c/.cpp files get linked
-add_executable(${PROJECT_NAME} ${SOURCES} src/gzip/zlib-1.2.11/zlib-1.2.11/gzip.h)
+add_executable(${PROJECT_NAME} ${SOURCES})
+#target_link_libraries(main PRIVATE ZLIB::ZLIB)
 
 # Here we link 3rd party library ImGui-SFML
 # No need to link SFML implicitly as ImGui-SFML does it for you!
@@ -92,6 +109,7 @@ sfml-graphics
 sfml-system
 sfml-window
 )
+
 
 #set(ZLIB_DIR C:/Program Files (x86)/GnuWin32/bin)
 #find_package( ZLIB )

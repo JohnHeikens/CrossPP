@@ -19,6 +19,7 @@
 #include <SFML/Network/SocketSelector.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 playerSocket::playerSocket(sf::TcpSocket* socket)
 {
 	screen = new gameControl(*this);
@@ -75,8 +76,12 @@ playerSocket::~playerSocket()
 
 void renderAsync(playerSocket* socket)
 {
-	texture* newRenderResult = new texture(socket->screen->rect.size);
-	socket->screen->render(cveci2(), *newRenderResult);
+	sf::RenderTexture* newRenderResult = new sf::RenderTexture();
+	newRenderResult->create(socket->screen->rect.size.x(), socket->screen->rect.size.y(), sf::ContextSettings());
+	//TODO: check if it needs clear()
+	texture* dummyTex = new texture(socket->screen->rect.size);
+	socket->screen->render(cveci2(), *dummyTex);
+	delete dummyTex;
 	socket->screen->player->updateBodyParts();//update body parts so the correct ear position can be obtained
 
 	if (socket->lastRenderResult) {
@@ -140,28 +145,30 @@ void sendRenderResultAsync(playerSocket* socket)
 	//TODO: serialize the screen in 'sendrenderresultasync'. this is hard because s->write = false
 	//we don't use the normal 'serialize' function so we don't have to use the 'write' boolean
 	//std::stringstream compressedScreenPacket = std::stringstream();
-	std::vector<byte> compressedBuf;
-	typedef colortn<byte, 3> color3;
-	color3* colorsWithoutAlpha = new color3[socket->lastRenderResult->size.volume()];
-	const color3 c = color3();
-	color3* ptr = colorsWithoutAlpha;
-	for (const color& c : *socket->lastRenderResult)
-	{
-		*ptr++ = color3(c);
-	}
 	//sf::RenderTexture tex = sf::RenderTexture();
 	//tex.create(socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y());
 	//tex.clear();
-	//sf::CircleShape s(500);
-	//s.setPosition(sf::Vector2f(300, 300));
-	//tex.draw(s);
-	//sf::Texture t = tex.getTexture();
-	//sf::Image i;
-	//i.create(socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y());
-	//t.copyToImage();
+	//sf::CircleShape shape(500);
+	//shape.setPosition(sf::Vector2f(300, 300));
+	//tex.draw(shape);
+	socket->lastRenderResult->clear();
+	sf::Image i = socket->lastRenderResult->getTexture().copyToImage();
+
+	uint pixelCount = i.getSize().x * i.getSize().y;
+
+	std::vector<byte> compressedBuf;
+	typedef colortn<byte, 3> color3;
+	color3* colorsWithoutAlpha = new color3[pixelCount];
+	const color3 c = color3();
+	color3* ptr = colorsWithoutAlpha;
+	color* imagePtr = (color*)i.getPixelsPtr();
+	for (color* imageEndPtr = imagePtr + pixelCount; imagePtr < imageEndPtr; imagePtr++)//const color& c : *socket->lastRenderResult)
+	{
+		*ptr++ = color3(*imagePtr);
+	}
 
 	//std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
-	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y(), rgbColorChannelCount, compressedBuf);
+	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, i.getSize().x, i.getSize().y, rgbColorChannelCount, compressedBuf);
 	delete[] colorsWithoutAlpha;
 	//color* ptr = socket->lastRenderResult->baseArray;
 	//std::vector<colorChannel> channels[rgbColorChannelCount]{};

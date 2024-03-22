@@ -1,0 +1,9 @@
+{
+  "dependencies": [
+    {
+      "name": "gzip-hpp",
+      "version>=": "0.1.0"
+    }
+  ],
+  "builtin-baseline": "a1737683a6f8ec5d8673890581c2a8c55838d411"
+}
