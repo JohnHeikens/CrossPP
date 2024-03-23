@@ -118,6 +118,15 @@ run vcpkg x-update-baseline --add-initial-baseline
 
 when installing vcpkg packages, browse on https://vcpkg.io/en/packages to find them and their version!
 
+follow instructions of the packages! look what INCLUDE_DIRS they need on the command line!
+
+fatal error RC1107: invalid usage; use RC /? for Help:
+you included resource (.rc) files.
+
+in extensions: set extra arguments to -G "MinGW Makefiles"
+
+also set additional compilers to search for to C:\msys64\mingw64\bin
+
 c++ standard:
 change in CMakeLists.txt : 
 set(CMAKE_CXX_STANDARD ##) with ## being version number

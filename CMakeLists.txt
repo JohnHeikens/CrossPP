@@ -29,7 +29,8 @@ ENDIF()
 set(VCPKG_VERSION edge)
 include(vcpkg.cmake)
 
-#find_path(PLOG_INCLUDE_DIRS "gzip/compress.hpp" REQUIRED)
+
+#find_path(GZIP_INCLUDE_DIRS "gzip/compress.hpp" REQUIRED)
 
 # Get project name from folder name
 get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
@@ -42,9 +43,9 @@ set (CMAKE_CXX_FLAGS "-g -W -pedantic")
 
 # add .cpp-files
 
-file(GLOB_RECURSE source_list "src/*.*")
+file(GLOB_RECURSE source_list "src/*.cpp")
 
-list(FILTER source_list EXCLUDE REGEX "!(${PROJECT_SOURCE_DIR}/src/*.(c|cpp))" )
+#list(FILTER source_list EXCLUDE REGEX "!(${PROJECT_SOURCE_DIR}/src/*.(c|cpp))" )
 #list(FILTER source_list EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/src/gzip/*" )
 
 foreach(header_dir ${source_list})
@@ -77,8 +78,10 @@ set(SOURCES ${source_list})
 
 
 #add directories to add to #include statements for example we don't have to #include "include/math/..." but with this shortcut we can #include "math/..."
+find_package(ZLIB REQUIRED)
 include_directories(src) 
 include_directories(src/include)
+include_directories( ${ZLIB_INCLUDE_DIRS} )
 
 #include_directories(ZLIB src/gzip/zlib-1.2.11/zlib-1.2.11)
 
@@ -91,11 +94,13 @@ add_subdirectory(lib)
 
 #vcpkg_init()
 #vcpkg_add_package(zlib)
-#find_package(ZLIB REQUIRED)
 
 # Here the .c/.cpp files get linked
 add_executable(${PROJECT_NAME} ${SOURCES})
-#target_link_libraries(main PRIVATE ZLIB::ZLIB)
+
+#find_path(GZIP_HPP_INCLUDE_DIRS "gzip/compress.hpp")
+#target_include_directories(${PROJECT_NAME} PRIVATE ${ZLIB_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
 # Here we link 3rd party library ImGui-SFML
 # No need to link SFML implicitly as ImGui-SFML does it for you!
@@ -114,7 +119,6 @@ sfml-window
 #set(ZLIB_DIR C:/Program Files (x86)/GnuWin32/bin)
 #find_package( ZLIB )
 #if ( ZLIB_FOUND )
-#    include_directories( ${ZLIB_INCLUDE_DIRS} )
 #    target_link_libraries( YourProject ${ZLIB_LIBRARIES} )
 #endif( ZLIB_FOUND )
 
