@@ -285,7 +285,7 @@ structure* getStructureByName(std::wstring name)
 std::vector<structure*> getStructuresByName(const std::wstring& seekFolder, const std::wstring& name)
 {
 	std::vector<structure*> foundStructures = std::vector<structure*>();
-	for (int i = 0; i < structureList.size(); i++)
+	for (size_t i = 0; i < structureList.size(); i++)
 	{
 		structure* s = structureList[i];
 

@@ -14,7 +14,7 @@ void soundHandler2d::update(cvec2& earPosition, cfp& hearingRange, cfp& playerHe
 	cfp minimalVolume = 0.05f, maximalVolume = 1.0f;
 	cfp distanceFullVolume3D = hearingRange3d * minimalVolume;
 
-	for (int i = 0; i < currentlyPlayIngAudio.size; i++)
+	for (size_t i = 0; i < currentlyPlayIngAudio.size; i++)
 	{
 		std::shared_ptr<audio2d> s = currentlyPlayIngAudio[i];
 

@@ -9,7 +9,7 @@ void sapSpreadData::randomTick(tickableBlockContainer* containerIn, cveci2& posi
 {
 	int maxAdjacentSaplevel = 0;
 	//spread saps
-	for (int i = 0; i < directionCount2D; i++) {
+	for (fsize_t i = 0; i < directionCount2D; i++) {
 		cveci2& adjacentCheckPosition = position + directionVectors2D[i];
 
 		blockID adjacentBlockID = containerIn->getBlockID(adjacentCheckPosition);

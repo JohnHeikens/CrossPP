@@ -5,13 +5,13 @@
             "label": "make",
             "type": "shell",
             "windows" :{
-                "command": "mingw32-make.exe -j12 -lz"
+                "command": "ninja.exe CXXFLAGS=\"-g\" --version -j12"
             },
             "linux" :{
-                "command" : "make -j$((`nproc`)) -lz"
+                "command" : "make -j$((`nproc`))"
             },
             "osx" :{
-                "command" : "make -j$((`sysctl -n hw.ncpu`)) -lz"
+                "command" : "make -j$((`sysctl -n hw.ncpu`))"
             },
             "options": {
                 "cwd": "${workspaceFolder}/build"
@@ -21,6 +21,17 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "windows" :{
+                "command": "ninja --version -t clean"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": []
         }
     ]
 }

@@ -98,6 +98,8 @@ add_subdirectory(lib)
 # Here the .c/.cpp files get linked
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+target_precompile_headers(${PROJECT_NAME} PRIVATE src/stdafx.h src/stdafxdynamic.h)
+
 #find_path(GZIP_HPP_INCLUDE_DIRS "gzip/compress.hpp")
 #target_include_directories(${PROJECT_NAME} PRIVATE ${ZLIB_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
@@ -137,3 +139,12 @@ sfml-window
 
 # Set "a" to be the output filename, does not really matter, shorter is quicker to type...
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "a")
+
+#copy OpenAL32.dll
+message(STATUS "win32: ${WIN32} build audio: ${SFML_BUILD_AUDIO}")
+message(STATUS "copy command: ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/sfml-src/extlibs/bin/x64/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>")
+if (WIN32 AND SFML_BUILD_AUDIO)
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/sfml-src/extlibs/bin/x64/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>
+  )
+endif()

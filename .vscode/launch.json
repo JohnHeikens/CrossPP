@@ -15,13 +15,24 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/a",
-            "cwd": "${workspaceFolder}/build",
+            "cwd": "${workspaceFolder}",
             "preLaunchTask": "make",
             "args": [],
             "externalConsole": false,
             "environment": [],
             "visualizerFile": "${workspaceFolder}/visualization.natvis",
-            "showDisplayString": true
+            "showDisplayString": true,
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "catch throw",
+                    "description": "Catch all exceptions"
+                }
+            ],
         }
         //,
         //{

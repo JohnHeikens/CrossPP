@@ -121,11 +121,16 @@ when installing vcpkg packages, browse on https://vcpkg.io/en/packages to find t
 follow instructions of the packages! look what INCLUDE_DIRS they need on the command line!
 
 fatal error RC1107: invalid usage; use RC /? for Help:
-you included resource (.rc) files.
+you included resource (.rc) files?
 
 in extensions: set extra arguments to -G "MinGW Makefiles"
 
+for now disable the automatic recompile
+
 also set additional compilers to search for to C:\msys64\mingw64\bin
+
+powershell problems and debugger not breaking when std::terminate() is called:
+https://github.com/microsoft/vscode-cpptools/issues/9677
 
 c++ standard:
 change in CMakeLists.txt : 
