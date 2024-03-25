@@ -1,4 +1,19 @@
 {
     "C_Cpp.errorSquiggles": "enabled",
-    "dotnet.defaultSolution": "disable"
+    //"dotnet.defaultSolution": "disable"
+    "cmake.generator": "Ninja",
+    "files.associations": {
+        "cstdint": "cpp"
+    },
+    
+    //"cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe"
+    //"cmake.cmakePath": "C:\\ProgramData\\chocolatey\\bin\\ninja.exe",
+    //"cmake.cmakePath": "C:\\msys64\\mingw64\\bin\\mingw32-make.exe",
+    //"cmake.preferredGenerators": [
+    //    "MinGW Makefiles"
+    //],
+    //"cmake.configureSettings": {
+    //    "CMAKE_MAKE_PROGRAM": "${command:cmake.buildkit.generator.exe}",
+    //    "CMAKE_VERBOSE_MAKEFILE": false
+    //}
 }

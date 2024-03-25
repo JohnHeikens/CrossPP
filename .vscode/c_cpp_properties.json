@@ -18,12 +18,13 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/**",
-                "C:/msys64/mingw64/include/c++/13.2.0",
-                "C:/msys64/mingw64/include/c++/13.2.0/x86_64-w64-mingw32",
-                "C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/13.2.0/include",
+                "C:/msys64/ucrt64/include/c++/13.2.0",
+                "C:/msys64/ucrt64/include/c++/13.2.0/x86_64-w64-mingw32",
+                "C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include",
                 "${workspaceFolder}/build/_deps/sfml-src/include"
             ],
-            "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+            "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+            //"compilerPath": "cl.exe",
             "cStandard": "gnu23",
             "cppStandard": "gnu++23",
             "intelliSenseMode": "windows-gcc-x64"

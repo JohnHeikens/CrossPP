@@ -24,7 +24,6 @@ constexpr t getAverage(const std::vector<t>& values)
 
 
 
-
 template<typename listType, typename t>
 inline bool insertSortedWithoutDoubles(listType& list, const t& value)
 {

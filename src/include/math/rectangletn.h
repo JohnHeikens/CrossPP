@@ -7,6 +7,7 @@
 template<typename t, fsize_t axisCount>
 struct rectIteratortn;
 
+//#cannot make an union out of this, because the union would need to vary in size depending on the axisCount parameter
 template<typename t, fsize_t axisCount>
 struct rectangletn
 {
@@ -225,11 +226,11 @@ struct rectangletn
 		switch (alignment)
 		{
 		case verticalAlignment::bottom:
-			return y;
+			return y();
 		case verticalAlignment::middle:
-			return y + (h + rectangleHeight) / 2;
+			return y() + (h() + rectangleHeight) / 2;
 		case verticalAlignment::top:
-			return y + h - rectangleHeight;
+			return y() + h() - rectangleHeight;
 		}
 	}
 	constexpr t getAlignedX(const t rectangleWidth, const horizontalAlignment& alignment)
@@ -237,11 +238,11 @@ struct rectangletn
 		switch (alignment)
 		{
 		case horizontalAlignment::left:
-			return x;
+			return x();
 		case horizontalAlignment::middle:
-			return x + (w + rectangleWidth) / 2;
+			return x() + (w() + rectangleWidth) / 2;
 		case horizontalAlignment::right:
-			return x + w - rectangleWidth;
+			return x() + w() - rectangleWidth;
 		}
 	}
 	constexpr rectangletn rotatedInRectangle(const rectangletn& outerRect, const directionID& direction) const

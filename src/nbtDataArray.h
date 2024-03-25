@@ -56,7 +56,7 @@ struct nbtDataArray :nbtData
 			//copy array
 			arraySize = size;
 			data = new t[size];
-			std::copy(value, value + size, data);
+			std::copy(value, (t*)value + size, data);
 		}
 		else
 		{

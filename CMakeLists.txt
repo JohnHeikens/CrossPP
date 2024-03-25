@@ -1,7 +1,14 @@
 
 
 # Use c++ 23
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_STANDARD 23) #20 for MSVC, 23 for latest code
+
+
+# If you want to link SFML statically
+set(SFML_STATIC_LIBRARIES TRUE)
+
+#set(CMAKE_BUILD_TYPE Debug)
 
 # set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 # Shoutout to CMake guide: https://eliasdaler.github.io/using-cmake/
@@ -12,10 +19,17 @@ cmake_minimum_required(VERSION 3.5)
 #set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
 IF (WIN32)
+    #mingw:
     set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)
     set(CMAKE_CXX_COMPILER C:/msys64/mingw64/bin/g++.exe)
+    #to change to clang:
+    #set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/clang.exe)
+    #set(CMAKE_CXX_COMPILER C:/msys64/mingw64/bin/clang++.exe)
+    #cl:
+    #set(CMAKE_C_COMPILER "cl.exe")
+    #set(CMAKE_CXX_COMPILER "cl.exe")
     # this makes sure that .dll-files are build into build/ folder
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+    #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
 ELSEIF (APPLE)
     # run 'where clang' and 'where clang++' to get paths
     set(CMAKE_C_COMPILER /usr/bin/clang)
@@ -48,9 +62,11 @@ file(GLOB_RECURSE source_list "src/*.cpp")
 #list(FILTER source_list EXCLUDE REGEX "!(${PROJECT_SOURCE_DIR}/src/*.(c|cpp))" )
 #list(FILTER source_list EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/src/gzip/*" )
 
+IF (LOG_FILES_INCLUDED)
 foreach(header_dir ${source_list})
     message(STATUS "[INFO] source file included: ${header_dir}")
 endforeach()
+ENDIF()
 set(SOURCES ${source_list}) 
 
 # folder with .h files, e.g. include/
@@ -98,18 +114,33 @@ add_subdirectory(lib)
 # Here the .c/.cpp files get linked
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE src/stdafx.h src/stdafxdynamic.h)
+target_precompile_headers(${PROJECT_NAME} PUBLIC src/stdafx.h src/stdafxdynamic.h)
+
+#set(SFML_DIR "build\\_deps\\sfml-src")
+set(SFML_DIR "build\\_deps\\sfml-build")
+
+#find_package(SFML 2.6.1 COMPONENTS audio network graphics system window REQUIRED)
 
 #find_path(GZIP_HPP_INCLUDE_DIRS "gzip/compress.hpp")
 #target_include_directories(${PROJECT_NAME} PRIVATE ${ZLIB_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
+target_link_libraries(${PROJECT_NAME} PUBLIC ZLIB::ZLIB)
 
 # Here we link 3rd party library ImGui-SFML
 # No need to link SFML implicitly as ImGui-SFML does it for you!
 # Refer to https://eliasdaler.github.io/using-cmake/
 #target_link_libraries(${PROJECT_NAME} PRIVATE ImGui-SFML::ImGui-SFML)
 #https://stackoverflow.com/questions/59573574/how-do-i-use-sfml-with-cmake-fetchcontent
-target_link_libraries(${PROJECT_NAME} PRIVATE 
+
+## If you want to link SFML statically
+# set(SFML_STATIC_LIBRARIES TRUE)
+
+## In most cases better set in the CMake cache
+# set(SFML_DIR "<sfml root prefix>/lib/cmake/SFML")
+
+#add_executable(SFMLTest main.cpp)
+#target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC 
 sfml-audio
 sfml-network
 sfml-graphics

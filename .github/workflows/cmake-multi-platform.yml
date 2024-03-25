@@ -55,8 +55,22 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           update: true
+          #changed to clang for better debugging
+          #mingw-w64-x86_64-toolchain
+          #mingw-w64-x86_64-ninja
+          #mingw-w64-clang-x86_64-toolchain
+          #mingw-w64-clang-x86_64-ninja
+          #TODO: install cl
           install: >-
-            mingw-w64-x86_64-toolchain
+            mingw-w64-mingw-x86_64-toolchain
+            mingw-w64-mingw-x86_64-ninja
+
+      - name: install-ninja
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        #choco install visualstudio2022buildtools -y
+        run:
+          choco install ninja -y
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.

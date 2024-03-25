@@ -94,7 +94,7 @@ struct arraynd :IDestructable
 		{
 			if (index > size.y())
 			{
-				throw std::exception("index out of range");
+				throw std::out_of_range("index out of range");
 			}
 		}
 		return baseArray + index * size.x();

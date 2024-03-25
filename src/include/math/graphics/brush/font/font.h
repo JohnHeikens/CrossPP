@@ -12,7 +12,7 @@ struct font : baseFont
 {
 	const fontBrushType* fontBrush = nullptr;
 
-	font(fontFamily* family, fp fontSize = 0x10, const fontBrushType* fontBrush = &brushes::white) :
+	font(fontFamily& family, fp fontSize = 0x10, const fontBrushType* fontBrush = &brushes::white) :
 		baseFont(family, fontSize), fontBrush(fontBrush) {}
 	font(const baseFont& f, const fontBrushType* fontBrush = &brushes::white) :
 		baseFont(f.family, f.fontSize), fontBrush(fontBrush) {}

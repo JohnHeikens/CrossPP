@@ -127,10 +127,45 @@ in extensions: set extra arguments to -G "MinGW Makefiles"
 
 for now disable the automatic recompile
 
-also set additional compilers to search for to C:\msys64\mingw64\bin
+also set additional compilers to search for to C:\msys64\urct64\bin
 
 powershell problems and debugger not breaking when std::terminate() is called:
 https://github.com/microsoft/vscode-cpptools/issues/9677
+
+old make command:
+ninja.exe CXXFLAGS=\"-g\" --version -j12"
+
+https://code.visualstudio.com/docs/cpp/cpp-debug:
+ To debug your Cygwin or MinGW application, add the miDebuggerPath property and set its value to the location of the corresponding gdb.exe for your Cygwin or MinGW environment.
+
+For example:
+
+    "miDebuggerPath": "c:\\mingw\\bin\\gdb.exe"
+
+https://code.visualstudio.com/docs/cpp/cpp-debug:
+Debugging
+Windows:
+
+GDB on Cygwin and MinGW cannot break a running process. To set a breakpoint when the application is running (not stopped under the debugger), or to pause the application being debugged, press Ctrl-C in the application's terminal.
+GDB on Cygwin cannot open core dumps.
+
+(changed to clang)
+
+add support for mingw breakpoints:
+MSYS2/Cygwin/MinGW/Clang support extension
+
+add ninja:
+mingw-w64-x86_64-ninja
+to msys2
+
+cmake set to debug:
+"command": "cmake .. -G Ninja -DCMAKE_BUILD_TYPE:STRING=Debug"
+
+linker.exe exits with code 5:
+remove all other compiler paths from PATH
+
+ERROR: Unable to start debugging. GDB exited unexpectedly.
+to debug this, try running the exe by double clicking on it (not with a debugger)
 
 c++ standard:
 change in CMakeLists.txt : 

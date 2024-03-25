@@ -204,7 +204,7 @@ struct nbtSerializer :iSerializer
 	}
 
 	template<typename t>
-	inline static bool serializeArray(nbtData* data, t* value, int count = 1)
+	inline bool serializeArray(nbtData* data, t* value, int count = 1)
 	{
 		return serializeVariableArray<t>(data, value, count);
 	}

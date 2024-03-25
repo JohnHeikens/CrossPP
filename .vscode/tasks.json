@@ -4,14 +4,29 @@
         {
             "label": "make",
             "type": "shell",
-            "windows" :{
-                "command": "ninja.exe CXXFLAGS=\"-g\" --version -j12"
+            "windows": {
+                "command": "ninja.exe -j12"
             },
-            "linux" :{
-                "command" : "make -j$((`nproc`))"
+            "linux": {
+                "command": "make -j$((`nproc`))"
             },
-            "osx" :{
-                "command" : "make -j$((`sysctl -n hw.ncpu`))"
+            "osx": {
+                "command": "make -j$((`sysctl -n hw.ncpu`))"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "populate",
+            "type": "shell",
+            "windows": {
+                "command": "cmake .. -G Ninja -DCMAKE_BUILD_TYPE:STRING=Debug" // <-- ld returned 5 exit status
             },
             "options": {
                 "cwd": "${workspaceFolder}/build"
@@ -25,11 +40,22 @@
         {
             "label": "clean",
             "type": "shell",
-            "windows" :{
+            "windows": {
                 "command": "ninja --version -t clean"
             },
             "options": {
                 "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "empty build folder",
+            "type": "shell",
+            "windows": {
+                "command": "Remove-Item -Path \"${workspaceFolder}\\build\\*\" -Recurse"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": []
         }
