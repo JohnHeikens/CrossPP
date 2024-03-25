@@ -3,7 +3,9 @@
     //"dotnet.defaultSolution": "disable"
     "cmake.generator": "Ninja",
     "files.associations": {
-        "cstdint": "cpp"
+        "*.sk": "Sk-VSC",
+        "cstdint": "cpp",
+        "filesystem": "cpp"
     },
     
     //"cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe"

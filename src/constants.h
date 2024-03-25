@@ -477,12 +477,6 @@ extern microseconds lastTickTimeMicroseconds;
 extern seconds lastTickTime;
 extern seconds currentFrameStartSeconds;
 
-template<typename t>
-inline std::wstring getClassName(const t& instance)
-{
-	std::wstring name = stringToWString(typeid(instance).name());
-	return name.substr(name.rfind(L' '));
-}
 //template<typename t>
 //std::wstring getClassName(const t& instance);
 

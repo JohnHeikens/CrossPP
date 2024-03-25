@@ -63,6 +63,7 @@
 #include <sfml/Window.hpp>
 #include "GlobalFunctions.h"
 #include "constants.h"
+#include "type/types.h"
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
