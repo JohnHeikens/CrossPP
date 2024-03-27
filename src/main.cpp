@@ -18,6 +18,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Config.hpp>
+#include "application/thread/setThreadName.h"
 
 //#include <imgui-SFML.h>
 //#include <imgui.h>
@@ -54,6 +55,7 @@ int main(int argc, char *argv[])
 	//defaultTheme = new theme(new font(family)); 
 	currentApplication = new application(new gameForm());
 	currentApplication->windowCaption = gameName;
+	setCurrentThreadName(L"client thread");
 	cint& result = currentApplication->run();
 //
 //

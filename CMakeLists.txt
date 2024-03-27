@@ -114,6 +114,10 @@ add_subdirectory(lib)
 # Here the .c/.cpp files get linked
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+# Add compiler flags for generating debugging information
+#add_compile_options(-lefence)
+#target_compile_options(${PROJECT_NAME} PRIVATE /Zi)
+
 target_precompile_headers(${PROJECT_NAME} PUBLIC src/stdafx.h src/stdafxdynamic.h)
 
 #set(SFML_DIR "build\\_deps\\sfml-src")

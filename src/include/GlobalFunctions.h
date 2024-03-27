@@ -8,6 +8,11 @@
 //#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //#define new DEBUG_NEW
 //#endif
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#define onWindows true
+#elif defined(__linux__)
+#define onLinux true
+#endif
 
 #if __cplusplus >= 202002L
 	#define constexpr20 constexpr

@@ -27,13 +27,13 @@ struct blockContainer
 
 	virtual void removeBlock(cveci2& position, const blockID& oldBlockID, blockData* const& oldData, const chunkLoadLevel& minimalLoadLevel = chunkLoadLevel::worldGenerationLoaded);
 
-	bool blockRangeContains(cveci2& pos00, cveci2& pos11, const std::vector<blockID> checkList);
-	bool blockRangeContainsOnly(cveci2& pos00, cveci2& pos11, const std::vector<blockID> checkList);
+	bool blockRangeContains(cveci2& pos00, cveci2& pos11, const std::vector<blockID>& checkList);
+	bool blockRangeContainsOnly(cveci2& pos00, cveci2& pos11, const std::vector<blockID>& checkList);
 
 	void setBlockRange(cveci2& pos0, cveci2& pos1, const blockID& block, const chunkLoadLevel& minimalLoadLevel = chunkLoadLevel::worldGenerationLoaded);
 	void replaceBlockRange(cveci2& pos0, cveci2& pos1, const blockID& block, const std::vector<blockID>& replaceList, const chunkLoadLevel& minimalLoadLevel = chunkLoadLevel::worldGenerationLoaded);
 
-	bool blockContains(cveci2& position, const std::vector<blockID> checkList);
+	bool blockContains(cveci2& position, const std::vector<blockID>& checkList);
 
 	void replaceCircleCentered(cvec2& pos, cvec2& size, const blockID& block, const std::vector<blockID>& replaceList);
 	void replaceCircle(crectangle2& rect, const blockID& block, const std::vector<blockID>& replaceList);

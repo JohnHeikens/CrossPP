@@ -20,6 +20,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include "application/thread/setThreadName.h"
 playerSocket::playerSocket(sf::TcpSocket *socket)
 {
 	screen = new gameControl(*this);
@@ -84,6 +85,7 @@ playerSocket::~playerSocket()
 
 void renderAsync(playerSocket *socket)
 {
+	setCurrentThreadName(L"renderer for " + socket->player->name);
 	// we need to instantiate a context for openGL rendering. we don't need to do anything with it.
 	//texture &currentContext = socket->contexts[socket->thread0DoubleBufferIndex];
 	//currentContext.setActive(true);
@@ -177,6 +179,7 @@ void renderAsync(playerSocket *socket)
 
 void sendRenderResultAsync(playerSocket *socket)
 {
+	setCurrentThreadName(L"screen sender for " + socket->player->name);
 	byte thread1DoubleBufferIndex = 1 - socket->thread0DoubleBufferIndex;
 	//sf::Context &currentContext = socket->contexts[thread1DoubleBufferIndex];
 	texture* &currentRenderResult = socket->doubleBuffer[thread1DoubleBufferIndex];

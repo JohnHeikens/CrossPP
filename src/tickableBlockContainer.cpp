@@ -619,7 +619,7 @@ void tickableBlockContainer::addChildContainer(tickableBlockContainer* const& mo
 void tickableBlockContainer::removeChildContainer(tickableBlockContainer* const& movingBlocks)
 {
 	childContainers.erase(std::find(childContainers.begin(), childContainers.end(), movingBlocks));
-	for (int i = 0; i < movingBlocks->childContainers.size(); i++)
+	for (size_t i = 0; i < movingBlocks->childContainers.size(); i++)
 	{
 		addChildContainer(movingBlocks->childContainers[i], mat3x3::cross(movingBlocks->childToParentTransform, movingBlocks->childContainers[i]->childToParentTransform));
 	}

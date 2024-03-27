@@ -137,7 +137,7 @@ std::wstring getAvailableWorldName(std::wstring worldName)
 	{
 		std::wstring newName = std::wstring(L"");
 		bool addedUnderScore = false;
-		for (int i = 0; i < worldName.length(); i++)
+		for (size_t i = 0; i < worldName.length(); i++)
 		{
 			std::wstring allowedChars = std::wstring(L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-() ");
 			std::wstring allowedCharsAfterStart = std::wstring(L"01234556789");

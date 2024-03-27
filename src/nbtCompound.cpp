@@ -127,7 +127,7 @@ void nbtCompound::serialize(cbool& write, std::wstring& s)
 				if (trimmedString.size())
 				{
 					csize_t colonIndex = find(trimmedString, 0, std::wstring(L":"), skip);
-					const std::wstring name = colonIndex == -1 ? std::wstring(L"") : trim_copy(trimmedString.substr(0, colonIndex));
+					const std::wstring name = colonIndex == std::wstring::npos ? std::wstring(L"") : trim_copy(trimmedString.substr(0, colonIndex));
 					std::wstring value = trim_copy(trimmedString.substr(colonIndex + 1));
 					const nbtDataTag& tag = getTag(value);
 					nbtData* compound = createNBTData(name, tag);

@@ -177,7 +177,7 @@ world::~world()
 		delete d;
 	}
 
-	for (int i = 0; i < biomeList.size(); i++)
+	for (size_t i = 0; i < biomeList.size(); i++)
 	{
 		//new biomes don't have to exist
 		if (biomeList[i])

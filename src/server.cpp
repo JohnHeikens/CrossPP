@@ -9,11 +9,13 @@
 #include <optimization/stableTickLoop.h>
 #include "cpuUsageID.h"
 #include <future>
+#include "application/thread/setThreadName.h"
 server* currentServer = nullptr;
 std::thread* serverThread = nullptr;
 
 void server::execute()
 {
+	setCurrentThreadName(L"server main thread");
 	// bind the listener to a port
 	if (listener.listen(defaultPort) != sf::Socket::Done)
 	{

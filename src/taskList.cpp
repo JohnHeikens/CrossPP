@@ -2,7 +2,7 @@
 #include "type/types.h"
 void taskList::execute()
 {
-	for (int i = 0; i < tasks.size(); i++)
+	for (int i = 0; i < (int)tasks.size(); i++)
 	{
 		if (i == executingTaskIndex)
 		{

@@ -88,11 +88,11 @@ void blockContainer::replaceBlockRange(cveci2& pos0, cveci2& pos1, const blockID
 		}
 	}
 }
-bool blockContainer::blockContains(cveci2& position, const std::vector<blockID> checkList)
+bool blockContainer::blockContains(cveci2& position, const std::vector<blockID>& checkList)
 {
 	return std::find(checkList.begin(), checkList.end(), getBlockID(position)) != checkList.end();
 }
-bool blockContainer::blockRangeContains(cveci2& pos00, cveci2& pos11, const std::vector<blockID> checkList)
+bool blockContainer::blockRangeContains(cveci2& pos00, cveci2& pos11, const std::vector<blockID>& checkList)
 {
 	for (veci2 pos = pos00; pos.y <= pos11.y; pos.y++)
 	{
@@ -106,7 +106,7 @@ bool blockContainer::blockRangeContains(cveci2& pos00, cveci2& pos11, const std:
 	}
 	return false;
 }
-bool blockContainer::blockRangeContainsOnly(cveci2& pos00, cveci2& pos11, const std::vector<blockID> checkList)
+bool blockContainer::blockRangeContainsOnly(cveci2& pos00, cveci2& pos11, const std::vector<blockID>& checkList)
 {
 	for (veci2 pos = pos00; pos.y <= pos11.y; pos.y++)
 	{
@@ -721,7 +721,7 @@ collisionDataCollection blockContainer::getHitboxCollisionData(crectangle2& box)
 				collisionTypeID blockCollisionType = data->blockCollisionType;
 				if (blockCollisionType != collisionTypeID::willNotCollide)
 				{
-					const collisionDataCollection collision = data->getCollisionData(this, checkPos);
+					const collisionDataCollection& collision = data->getCollisionData(this, checkPos);
 					dataArray.addCollisionData(collision);
 				}
 

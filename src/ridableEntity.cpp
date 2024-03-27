@@ -81,7 +81,7 @@ void ridableEntity::addCollidingEntities()
 void ridableEntity::tick()
 {
 	entity::tick();
-	for (int i = 0; i < seats.size(); i++)
+	for (size_t i = 0; i < seats.size(); i++)
 	{
 		if (seats[i])
 		{

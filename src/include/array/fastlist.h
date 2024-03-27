@@ -227,7 +227,7 @@ struct fastList :IDestructable
 		if constexpr (isDebugging)
 		{
 			//index can't be less than 0
-			if (index >= size)
+			if ((size_t)index >= size)
 			{
 				throw std::out_of_range("index out of range");
 			}
