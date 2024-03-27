@@ -1,7 +1,9 @@
 
 
 # Use c++ 23
-set(CMAKE_BUILD_TYPE Release)
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
 set(CMAKE_CXX_STANDARD 23) #20 for MSVC, 23 for latest code
 
 
