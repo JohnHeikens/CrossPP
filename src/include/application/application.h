@@ -7,8 +7,9 @@
 #include "clientInput.h"
 #include "math/vectn.h"
 #include "GlobalFunctions.h"
+#include "interface/inamable.h"
 
-struct application:IDestructable
+struct application: INamable, IDestructable
 {
 	//WINDOWPLACEMENT g_wpPrev = WINDOWPLACEMENT();
 
@@ -19,7 +20,7 @@ struct application:IDestructable
 	clientInput input = clientInput();
 
 	//data
-	std::wstring windowCaption = std::wstring(L"");
+	//std::wstring windowCaption = std::wstring(L"");
 	//colorb* windowColorPtr = nullptr;
 	//graphicsObject graphics = graphicsObject();
 	texture graphics = texture(cvect2<fsize_t>());
@@ -36,7 +37,7 @@ struct application:IDestructable
 	void linkGraphics();
 	//static application* getApplicationConnected(HWND mainWindow);
 	virtual ~application() override;
-	application(form* mainForm);
+	application(form* mainForm, const std::wstring& name);
 	bool isFullScreen = false;
 	void switchFullScreen();
 	//void enableGLDebugCallback();

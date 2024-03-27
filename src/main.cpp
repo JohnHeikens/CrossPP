@@ -53,8 +53,7 @@ int main(int argc, char *argv[])
 //
 	//fontFamily* family = new fontFamily(new texture(std::wstring(L"data\\ascii.png"), true));
 	//defaultTheme = new theme(new font(family)); 
-	currentApplication = new application(new gameForm());
-	currentApplication->windowCaption = gameName;
+	currentApplication = new application(new gameForm(), gameName);
 	setCurrentThreadName(L"client thread");
 	cint& result = currentApplication->run();
 //

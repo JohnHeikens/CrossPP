@@ -62,8 +62,8 @@ jobs:
           #mingw-w64-clang-x86_64-ninja
           #TODO: install cl
           install: >-
-            mingw-w64-mingw-x86_64-toolchain
-            mingw-w64-mingw-x86_64-ninja
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-ninja
 
       - name: install-ninja
         if: matrix.os == 'windows-latest'

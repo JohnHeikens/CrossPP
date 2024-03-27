@@ -33,7 +33,7 @@ int application::run()
 	settings.antialiasingLevel = 0;
 
 	veci2 size = veci2(1920, 1080);
-	window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), "Tutorial", sf::Style::Close | sf::Style::Resize, settings);
+	window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name), sf::Style::Close | sf::Style::Resize, settings);
 	//settings = window->getSettings();
 	//std::cout << SFML_VERSION_MAJOR << "." << SFML_VERSION_MINOR << "." << SFML_VERSION_PATCH << std::endl;
 	//std::cout << settings.majorVersion << "." << settings.minorVersion << std::endl;
@@ -392,7 +392,7 @@ void application::processInput()
 //
 //	mainForm->layout(crectanglei2(0, 0, (int)graphics.size.x, (int)graphics.size.y));
 // }
-application::application(form *mainForm)
+application::application(form *mainForm, const std::wstring& name) : INamable (name)
 {
 	graphics = texture(cvecs2());
 	this->mainForm = mainForm;
