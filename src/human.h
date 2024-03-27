@@ -22,7 +22,7 @@
 //extern dispenserSlotContainer* dispenserSlots;
 //extern smithingTableSlotContainer* smithingTableSlots;
 //extern anvilSlotContainer* anvilSlots;
-extern std::shared_ptr<audio2d> currentWindSound;
+//extern std::shared_ptr<audio2d> currentWindSound;
 struct playerSocket;
 struct gameControl;
 struct human :public humanoid, public INamable

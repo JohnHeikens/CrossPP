@@ -3706,6 +3706,7 @@
     <Text Include="tips.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="visualization.natvis">
@@ -3713,12 +3714,12 @@
     </Natvis>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="MAINICON.ico">
+    <Image Include="res\MAINICON.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MedievalSurvival.rc">
+    <ResourceCompile Include="res\MedievalSurvival.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

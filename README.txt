@@ -164,6 +164,17 @@ cmake set to debug:
 linker.exe exits with code 5:
 remove all other compiler paths from PATH
 
+debug spitting library unload messages:
+seems to have to do with gl context creation. create as few as possible and reuse contexts!
+
+facts about sfml:
+rendertextures don't have their own contexts, they use the current context and bind to that
+
+setactive() must also be called when you don't use openGL but use multithreading
+
+it's better to have all openGL rendering in one thread! multiple rendering threads using OpenGL won't give any speedup, if they even work!
+for now, let's just use the CPU for rendering. later we could try to create a single render thread (which renders for server and client) and send all the data to that thread which executes it.
+
 ERROR: Unable to start debugging. GDB exited unexpectedly.
 to debug this, try running the exe by double clicking on it (not with a debugger)
 

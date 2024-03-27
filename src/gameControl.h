@@ -11,6 +11,7 @@
 #include "clientInput.h"
 #include "creditsForm.h"
 #include "soundPacket.h"
+#include <sfml/Graphics/RenderTexture.hpp>
 
 constexpr fp defaultGuiTextureSize = (fp)0x200;
 struct playerSocket;
@@ -18,7 +19,8 @@ struct playerSocket;
 struct gameControl : form, clientInput
 {
 	gameControl(playerSocket& socket);
-	virtual void render(cveci2& position, const texture& renderTarget) override;
+	//virtual void render(cveci2& position, const texture& renderTarget) override;
+	void render(cveci2& position, const texture& renderTarget);
 	virtual void processInput();
 	virtual void layout(crectanglei2& newRect) override;
 	virtual void focus() override;

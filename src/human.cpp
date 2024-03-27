@@ -113,7 +113,7 @@
 #include "treeItemTypeID.h"
 #include "woodtypeID.h"
 constexpr int pickUpDelayInTicks = ticksPerRealLifeSecond / 2;//2 seconds
-std::shared_ptr<audio2d> currentWindSound;
+//std::shared_ptr<audio2d> currentWindSound;
 
 void human::tick()
 {
@@ -389,28 +389,28 @@ rightClickUsed:;
 
 	calculateFood();
 
-	if (currentWindSound)
-	{
-		if (currentWindSound->getStatus() == sf::SoundSource::Stopped) {
-			currentWindSound->play();
-		}
-	}
-	else {
-		currentWindSound = windSound->playRandomSound();
-	}
+	//if (currentWindSound)
+	//{
+	//	if (currentWindSound->getStatus() == sf::SoundSource::Stopped) {
+	//		currentWindSound->play();
+	//	}
+	//}
+	//else {
+	//	currentWindSound = windSound->playRandomSound();
+	//}
 
-	cfp& windSpeed = dimensionIn->getWindSpeed(getHeadPosition()).length();
-	static const transition<fp> speedToVolume = transition<fp>({
-		keyFrame<fp>(2,0),
-		keyFrame<fp>(20,1),
-		});
-	currentWindSound->setVolume(math::lerp(currentWindSound->volume, speedToVolume.getValue(windSpeed), 0.2));
-	static const transition<fp> speedToPitch = transition<fp>({
-		keyFrame<fp>(6,1),
-		keyFrame<fp>(15,2),
-		});
-
-	currentWindSound->setPitch(math::lerp(currentWindSound->pitch, speedToPitch.getValue(windSpeed), 0.2));
+	//cfp& windSpeed = dimensionIn->getWindSpeed(getHeadPosition()).length();
+	//static const transition<fp> speedToVolume = transition<fp>({
+	//	keyFrame<fp>(2,0),
+	//	keyFrame<fp>(20,1),
+	//	});
+	//currentWindSound->setVolume(math::lerp(currentWindSound->volume, speedToVolume.getValue(windSpeed), 0.2));
+	//static const transition<fp> speedToPitch = transition<fp>({
+	//	keyFrame<fp>(6,1),
+	//	keyFrame<fp>(15,2),
+	//	});
+//
+	//currentWindSound->setPitch(math::lerp(currentWindSound->pitch, speedToPitch.getValue(windSpeed), 0.2));
 }
 
 void human::applyStatusEffect(const statusEffect& effect)

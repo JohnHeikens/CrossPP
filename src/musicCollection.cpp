@@ -20,6 +20,7 @@ std::shared_ptr<music2d> musicCollection::playRandomAudio(cfp& volume, cfp& pitc
 std::shared_ptr < music2d> musicCollection::playAudio(csize_t& index, cfp& volume, cfp& pitch)
 {//TODO: send music to client
 	std::shared_ptr<music2d> musicToPlay = std::make_shared<music2d>(audioPaths[index], cvec2(), volume, pitch, false);
+	(*musicToPlay).loadAudio();
 	handler->playAudio(musicToPlay);
 	return musicToPlay;
 }

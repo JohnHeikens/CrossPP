@@ -61,6 +61,11 @@
                     "text": "set breakpoint pending auto",
                     "description": "Setting back to default behaviour",
                     "ignoreFailures": true
+                },
+                {
+                   "description": "Disable ThreadEvent Messages",
+                   "text": "-interpreter-exec console \"set print thread-events off\"",
+                   "ignoreFailures": true
                 }
             ]
             

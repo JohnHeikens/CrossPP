@@ -1,37 +1,52 @@
 #pragma once
 #include "GlobalFunctions.h"
 #include "axis.h"
-//#include "array/zipiterator.h"
+// #include "array/zipiterator.h"
 #include "optimization/optimization.h"
 #include "direction.h"
 #include "mathfunctions.h"
 #include <ranges>
 
-template<typename t, fsize_t n>
-//alignment is already a power of two
-struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t) * 0x4) : math::getNextPowerOf2Multiplied(sizeof(t) * n)) vectn
+template <typename t, fsize_t n>
+struct baseVec
+{
+	t axis[math::maximum(n, (fsize_t)1)]{};
+};
+template <typename t>
+struct baseVec<t, 1>
+{
+	union
+	{
+		t axis[1]{};
+		t getx;
+	};
+};
+
+template <typename t, fsize_t n>
+// alignment is already a power of two
+struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t) * 0x4) : math::getNextPowerOf2Multiplied(sizeof(t) * n)) vectn
 {
 	typedef const vectn cvecn;
 	static constexpr fsize_t axisCount = n;
 	typedef t axisType;
-	t axis[math::maximum(axisCount, (fsize_t)1)]{};
+	using baseVec<t,n>::axis;
 
-	constexpr const t* begin() const noexcept
+	constexpr const t *begin() const noexcept
 	{
 		return axis;
 	}
 
-	constexpr const t* end() const noexcept
+	constexpr const t *end() const noexcept
 	{
 		return axis + axisCount;
 	}
 
-	constexpr t* begin() noexcept
+	constexpr t *begin() noexcept
 	{
 		return axis;
 	}
 
-	constexpr t* end() noexcept
+	constexpr t *end() noexcept
 	{
 		return axis + axisCount;
 	}
@@ -40,21 +55,21 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 	{
 	}
 
-	//fill with this value
-	constexpr vectn(const t& value)
+	// fill with this value
+	constexpr vectn(const t &value)
 	{
-		//references don't work in constexpr functions apparently
+		// references don't work in constexpr functions apparently
 
-		//both of these don't initialize them really.
-		//for (auto it = this->begin(); it != this->end(); it++)
+		// both of these don't initialize them really.
+		// for (auto it = this->begin(); it != this->end(); it++)
 		//{
 		//	const auto& v = *it;
 		//	v = value;
-		//}
-		//for (auto& val : (*this))
+		// }
+		// for (auto& val : (*this))
 		//{
 		//	val = value;
-		//}
+		// }
 
 		for (auto it = this->begin(); it != this->end(); it++)
 		{
@@ -62,20 +77,20 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		}
 	}
 
-	constexpr vectn(const t& x, const t& y)
+	constexpr vectn(const t &x, const t &y)
 	{
 		static_assert(axisCount >= 2, "too few axes for this constructor");
 		(*this)[0] = x;
 		(*this)[1] = y;
 	}
 
-	constexpr vectn(const t& x, const t& y, const t& z) : vectn(x, y)
+	constexpr vectn(const t &x, const t &y, const t &z) : vectn(x, y)
 	{
 		static_assert(axisCount >= 3, "too few axes for this constructor");
 		axis[2] = z;
 	}
 
-	constexpr vectn(const t& x, const t& y, const t& z, const t& w) : vectn(x, y, z)
+	constexpr vectn(const t &x, const t &y, const t &z, const t &w) : vectn(x, y, z)
 	{
 		static_assert(axisCount >= 4, "too few axes for this constructor");
 		axis[3] = w;
@@ -102,8 +117,8 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		return result;
 	}
 
-	template<typename t2, fsize_t axisCount2>
-	constexpr vectn(const vectn<t2, axisCount2>& in)
+	template <typename t2, fsize_t axisCount2>
+	constexpr vectn(const vectn<t2, axisCount2> &in)
 	{
 		constexpr fsize_t minimum = math::minimum(axisCount, axisCount2);
 
@@ -113,42 +128,41 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		}
 	}
 
-	constexpr vectn(const typename std::enable_if<(axisCount > 0), vectn<t, math::maximum(axisCount - 1, (fsize_t)1)>>
-		::type& in, const t& valueToAdd) : vectn(in)
+	constexpr vectn(const typename std::enable_if<(axisCount > 0), vectn<t, math::maximum(axisCount - 1, (fsize_t)1)>>::type &in, const t &valueToAdd) : vectn(in)
 	{
 		axis[axisCount - 1] = valueToAdd;
 	}
 
-	template<typename indexType, typename = std::enable_if<std::is_integral<t>::value>>
-	constexpr t& operator[](const indexType& axisIndex)
+	template <typename indexType, typename = std::enable_if<std::is_integral<t>::value>>
+	constexpr t &operator[](const indexType &axisIndex)
 	{
 		assumeInRelease((axisIndex < (indexType)axisCount) && (axisIndex >= 0));
 		return this->axis[axisIndex];
 	}
 
-	template<typename indexType, typename = std::enable_if<std::is_integral<t>::value>>
-	constexpr const t& operator[](const indexType& axisIndex) const
+	template <typename indexType, typename = std::enable_if<std::is_integral<t>::value>>
+	constexpr const t &operator[](const indexType &axisIndex) const
 	{
 		assumeInRelease((axisIndex < (indexType)axisCount) && (axisIndex >= 0));
 		return this->axis[axisIndex];
 	}
 
-	constexpr t& operator[](caxisID& axisIndex)
+	constexpr t &operator[](caxisID &axisIndex)
 	{
 		return operator[]((fsize_t)axisIndex);
 	}
 
-	constexpr const t& operator[](caxisID& axisIndex) const
+	constexpr const t &operator[](caxisID &axisIndex) const
 	{
 		return operator[]((fsize_t)axisIndex);
 	}
 
-	addMemberName(x, (*this)[0])
+	//addMemberName(x, (*this)[0])
 		addMemberName(y, (*this)[1])
-		addMemberName(z, (*this)[2])
-		addMemberName(w, (*this)[3])
+			addMemberName(z, (*this)[2])
+				addMemberName(w, (*this)[3])
 
-		constexpr t sum() const
+					constexpr t sum() const
 	{
 		t result = axis[0];
 		for (fsize_t i = 1; i < axisCount; i++)
@@ -194,47 +208,46 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 	{
 		*this *= (t)math::fastInverseSqrt((float)lengthSquared());
 
-		//to stop getrotation() from returning nan
-		for (auto& axisIt : *this)
+		// to stop getrotation() from returning nan
+		for (auto &axisIt : *this)
 		{
 			axisIt = math::clamp(axisIt, (t)-1, (t)1);
 		}
 	}
 
-	//can be 0, 90,180, 270
-	constexpr vectn rotateXY(cfsize_t& angle) const
+	// can be 0, 90,180, 270
+	constexpr vectn rotateXY(cfsize_t &angle) const
 	{
 
 		cint sina = math::sinDegrees(angle);
 		cint cosa = math::cosDegrees(angle);
 
 		return vectn(
-			x() * cosa + y() * sina, 
-			x() * -sina + y() * cosa
-		);
+			x() * cosa + y() * sina,
+			x() * -sina + y() * cosa);
 	}
 
-	//0 -> 0, 1
-	//pi / 2 -> 1,0
-	//pi -> 0, -1
-	//pi * 1.5 -> -1,0
-	inline static vectn getrotatedvector(const fp& yaw)
+	// 0 -> 0, 1
+	// pi / 2 -> 1,0
+	// pi -> 0, -1
+	// pi * 1.5 -> -1,0
+	inline static vectn getrotatedvector(const fp &yaw)
 	{
-		//rotate vector over y axis(pitch)
+		// rotate vector over y axis(pitch)
 		return vectn(sin(yaw), cos(yaw));
 	}
 
-	inline static vectn getrotatedvector(const t& yaw, const t& pitch)
+	inline static vectn getrotatedvector(const t &yaw, const t &pitch)
 	{
-		//rotate vector over y axis(pitch)
+		// rotate vector over y axis(pitch)
 		t cosp = cos(pitch), sinp = sin(pitch), siny = sin(yaw), cosy = cos(yaw);
 		return vectn(siny * cosp, cosy * cosp, sinp);
 	}
 
-	//this vector has to be normalized!
-	//clockwise
+	// this vector has to be normalized!
+	// clockwise
 	//+y = up
-	//x 0, y 1 : 0
+	// x 0, y 1 : 0
 	inline fp getRotation() const
 	{
 		fp angle = asin(x());
@@ -242,10 +255,11 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		{
 			angle = math::PI - angle;
 		}
-		if (angle < 0) {
+		if (angle < 0)
+		{
 			angle += math::PI2;
 		}
-		//x 0, y 1 : 0
+		// x 0, y 1 : 0
 		return angle;
 	}
 
@@ -259,13 +273,13 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		return result;
 	}
 
-	//axis has to be normalized!
-	inline static vectn rotate(const vectn& vec, const vectn& axis, const t& angle)
+	// axis has to be normalized!
+	inline static vectn rotate(const vectn &vec, const vectn &axis, const t &angle)
 	{
 		return (cos(angle) * vec) + (sin(angle) * cross(axis, vec));
 	}
 
-	inline static constexpr t dot(const vectn& lhs, const vectn& rhs)
+	inline static constexpr t dot(const vectn &lhs, const vectn &rhs)
 	{
 		t result = t();
 		for (fsize_t i = 0; i < axisCount; i++)
@@ -275,7 +289,7 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		return result;
 	}
 
-	inline static vectn cross(const vectn& lhs, const vectn& rhs)
+	inline static vectn cross(const vectn &lhs, const vectn &rhs)
 	{
 		return vectn(
 			lhs.y() * rhs.z() - lhs.z() * rhs.y(),
@@ -285,21 +299,19 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 
 	constexpr t maximum() const
 	{
-		return axis[minimumIndex([](auto&& lhs, auto&& rhs) {
-			return lhs > rhs;
-			})];
+		return axis[minimumIndex([](auto &&lhs, auto &&rhs)
+								 { return lhs > rhs; })];
 	}
 
 	constexpr t minimum() const
 	{
-		return axis[minimumIndex([](auto&& lhs, auto&& rhs) {
-			return lhs < rhs;
-			})];
+		return axis[minimumIndex([](auto &&lhs, auto &&rhs)
+								 { return lhs < rhs; })];
 	}
 
-	//comparefunction should return true if left < right
-	template<typename compareFunction>
-	constexpr fsize_t minimumIndex(compareFunction&& function) const
+	// comparefunction should return true if left < right
+	template <typename compareFunction>
+	constexpr fsize_t minimumIndex(compareFunction &&function) const
 	{
 		fsize_t result = 0;
 		for (fsize_t i = 1; i < axisCount; i++)
@@ -312,10 +324,9 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		return result;
 	}
 
+	// operators
 
-	//operators
-
-	constexpr bool operator ==(const vectn& other) const
+	constexpr bool operator==(const vectn &other) const
 	{
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
@@ -326,12 +337,12 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		}
 		return true;
 	}
-	constexpr bool operator !=(const vectn& other) const
+	constexpr bool operator!=(const vectn &other) const
 	{
 		return !operator==(other);
 	}
 
-	constexpr vectn operator -() const
+	constexpr vectn operator-() const
 	{
 		vectn result = vectn();
 		for (fsize_t i = 0; i < axisCount; i++)
@@ -341,12 +352,12 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		return result;
 	}
 
-	//used for sorting
-	//returns true if pos0 is 'lower' than pos1
-	//orders: 0,0 1,0 0,1 1,1
-	constexpr bool operator < (const vectn& other) const noexcept
+	// used for sorting
+	// returns true if pos0 is 'lower' than pos1
+	// orders: 0,0 1,0 0,1 1,1
+	constexpr bool operator<(const vectn &other) const noexcept
 	{
-		for (fsize_t i = axisCount - 1; ; i--)
+		for (fsize_t i = axisCount - 1;; i--)
 		{
 			if (axis[i] < other[i])
 			{
@@ -364,7 +375,7 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		return false;
 	}
 
-	constexpr t getDimensionalArrayIndex(const vectn& size) const
+	constexpr t getDimensionalArrayIndex(const vectn &size) const
 	{
 		t index = (*this)[axisCount - 1];
 		if constexpr (axisCount == 1)
@@ -373,7 +384,7 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 		}
 		else
 		{
-			for (fsize_t i = axisCount - 2; ; i--)
+			for (fsize_t i = axisCount - 2;; i--)
 			{
 				index *= size[i];
 				index += (*this)[i];
@@ -382,12 +393,12 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 					return index;
 				}
 			}
-			//can't come here
+			// can't come here
 			assumeInRelease(false);
 		}
 	}
 
-	constexpr bool indexInBounds(const vectn& size) const
+	constexpr bool indexInBounds(const vectn &size) const
 	{
 		for (auto it : std::views::zip((*this), size))
 		{
@@ -406,8 +417,8 @@ struct vectn //alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t)
 
 addTemplateTypes(vec)
 
-template<typename outputType = int, typename inputType, fsize_t axisCount>
-constexpr vectn<outputType, axisCount> floorVector(const vectn<inputType, axisCount>& vec)
+	template <typename outputType = int, typename inputType, fsize_t axisCount>
+	constexpr vectn<outputType, axisCount> floorVector(const vectn<inputType, axisCount> &vec)
 {
 	vectn<outputType, axisCount> result = vectn<outputType, axisCount>();
 	for (fsize_t i = 0; i < axisCount; i++)
@@ -417,8 +428,8 @@ constexpr vectn<outputType, axisCount> floorVector(const vectn<inputType, axisCo
 	return result;
 }
 
-template<typename outputType = int, typename inputType, fsize_t axisCount>
-constexpr vectn<outputType, axisCount> ceilVector(const vectn<inputType, axisCount>& vec)
+template <typename outputType = int, typename inputType, fsize_t axisCount>
+constexpr vectn<outputType, axisCount> ceilVector(const vectn<inputType, axisCount> &vec)
 {
 	vectn<outputType, axisCount> result = vectn<outputType, axisCount>();
 	for (fsize_t i = 0; i < axisCount; i++)
@@ -428,36 +439,34 @@ constexpr vectn<outputType, axisCount> ceilVector(const vectn<inputType, axisCou
 	return result;
 }
 
-//https://www.omnicalculator.com/math/angle-between-two-vectors
-//a and b have to be NORMALIZED
-template<typename t>
-inline fp angleBetween(const vect2<t>& a, const vect2<t>& b)
+// https://www.omnicalculator.com/math/angle-between-two-vectors
+// a and b have to be NORMALIZED
+template <typename t>
+inline fp angleBetween(const vect2<t> &a, const vect2<t> &b)
 {
 	return acos(vec2::dot(a, b));
 }
 
-//y is greater at the top
-template<typename t>
-constexpr bool woundClockwise(const vect2<t>& a, const vect2<t>& b, const vect2<t>& c)
+// y is greater at the top
+template <typename t>
+constexpr bool woundClockwise(const vect2<t> &a, const vect2<t> &b, const vect2<t> &c)
 {
-	//counter-clockwise
-	const vect2<t>& dab = b - a;
-	const vect2<t>& dac = c - a;
-	const t& winding = dab.x() * dac.y() - dab.y() * dac.x();
+	// counter-clockwise
+	const vect2<t> &dab = b - a;
+	const vect2<t> &dac = c - a;
+	const t &winding = dab.x() * dac.y() - dab.y() * dac.x();
 	return winding < 0;
 }
 
-//inline constexpr static std::array<int, 2> arr = std::array<int, 2>({ 2 });
-//inline constexpr static vec2 vec2Test = vec2(1);
-//inline constexpr static fp valueTest = vec2Test.sum();
-//inline constexpr static vectn<fp, 2> lessThan1 = vec2Test - vec2(0, 4);
-//inline constexpr static cvect3<fp> vectest = { 0, 1 };
+// inline constexpr static std::array<int, 2> arr = std::array<int, 2>({ 2 });
+// inline constexpr static vec2 vec2Test = vec2(1);
+// inline constexpr static fp valueTest = vec2Test.sum();
+// inline constexpr static vectn<fp, 2> lessThan1 = vec2Test - vec2(0, 4);
+// inline constexpr static cvect3<fp> vectest = { 0, 1 };
 
-
-constexpr veci2 directionVectors2D[directionCount<2>()]
-{
-	cveci2(-1,0),
-	cveci2(1,0),
-	cveci2(0,-1),
-	cveci2(0,1),
+constexpr veci2 directionVectors2D[directionCount<2>()]{
+	cveci2(-1, 0),
+	cveci2(1, 0),
+	cveci2(0, -1),
+	cveci2(0, 1),
 };

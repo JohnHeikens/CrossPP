@@ -11,8 +11,14 @@ struct playerSocket : socketContainer {
 	gameControl* screen = nullptr;
 	bool authenticated = false;
 	playerSocket(sf::TcpSocket* socket);
+
+	//2 contexts and rendertextures, 1 for each thread. this is to prevent contexts from being created and deleted constantly
+	byte thread0DoubleBufferIndex = 0;
+	texture* doubleBuffer[2]{};
+	//sf::RenderTexture doubleBuffer[2]{};
+	//sf::Context contexts[2]{};
 	//texture* lastRenderResult = nullptr;
-	sf::RenderTexture* lastRenderResult = nullptr;
+	//sf::RenderTexture* lastRenderResult = nullptr;
 	void processSocketInput();
 	~playerSocket();
 	bool shouldDisconnect = false;
@@ -21,4 +27,4 @@ struct playerSocket : socketContainer {
 };
 void renderAsync(playerSocket* socket);
 void sendRenderResultAsync(playerSocket* socket);
-void sendPacketAsync(playerSocket* socket);
+//void sendPacketAsync(playerSocket* socket);

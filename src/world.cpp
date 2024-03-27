@@ -185,10 +185,10 @@ world::~world()
 			delete biomeList[i];
 		}
 	}
-	if (currentWindSound)
-	{
-		currentWindSound->stop();
-	}
+	//if (currentWindSound)
+	//{
+	//	currentWindSound->stop();
+	//}
 }
 
 world::world()

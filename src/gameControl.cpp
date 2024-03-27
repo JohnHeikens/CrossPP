@@ -64,6 +64,7 @@
 #include "GlobalFunctions.h"
 #include "constants.h"
 #include "type/types.h"
+#include <SFML/Graphics/RectangleShape.hpp>
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
@@ -78,7 +79,6 @@ seconds currentFrameStartSeconds;
 
 void gameControl::render(cveci2& position, const texture& renderTarget)
 {
-
 	updateMusic();
 
 

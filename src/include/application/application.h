@@ -39,4 +39,5 @@ struct application:IDestructable
 	application(form* mainForm);
 	bool isFullScreen = false;
 	void switchFullScreen();
+	//void enableGLDebugCallback();
 };

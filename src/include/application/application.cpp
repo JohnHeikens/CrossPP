@@ -6,6 +6,9 @@
 #include "control/control.h"
 #include "math/graphics/texture.h"
 
+#include <SFML/OpenGL.hpp>
+//#include <gl/glew.h>
+
 // works on windows only
 // void application::changeKeyboardLayout()
 //{
@@ -64,9 +67,11 @@ int application::run()
 		window->clear();
 		graphics.switchChannels(graphics.baseArray, 0, 2);
 		windowTexture.update((byte *)graphics.baseArray);
+		//window->setActive(true);
 		window->draw(windowSprite);
 		// ImGui::SFML::Render(window);
 		window->display();
+		//window->setActive(false);
 
 		processInput(); // process events from user right before the check if window->isOpen()
 	}
@@ -393,6 +398,29 @@ application::application(form *mainForm)
 	this->mainForm = mainForm;
 	//std::fill(lastKeyDown, lastKeyDown + 0x100, false);
 }
+
+// OpenGL debug callback function
+
+//void GLAPIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
+//    GLsizei length, const GLchar* message, const void* userParam)
+//{
+//    // Trigger breakpoint when an error occurs
+//    if (type == GL_DEBUG_TYPE_ERROR)
+//    {
+//
+//    }
+//
+//    // Print error message
+//    std::cerr << "OpenGL Error: " << message << std::endl;
+//}
+//
+//void application::enableGLDebugCallback()
+//{
+//	// Enable OpenGL debug output
+//    glEnable(GL_DEBUG_OUTPUT);
+//    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+//    glDebugMessageCallback(debugCallback, nullptr);
+//}
 // void application::switchFullScreen()
 //{
 //	//all styles will be kept except all overlappedwindow styles
