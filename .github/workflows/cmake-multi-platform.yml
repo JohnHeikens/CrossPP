@@ -65,12 +65,12 @@ jobs:
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-ninja
 
-      - name: install-ninja
-        if: matrix.os == 'windows-latest'
-        shell: bash
-        #choco install visualstudio2022buildtools -y
-        run:
-          choco install ninja -y
+      #- name: install-ninja
+      #  if: matrix.os == 'windows-latest'
+      #  shell: bash
+      #  #choco install visualstudio2022buildtools -y
+      #  run:
+      #    choco install ninja -y
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -95,6 +95,10 @@ jobs:
             # elif [ "$RUNNER_OS" == "macOS" ]; then
           fi
 
+      - name: update git
+        shell: bash
+        run:
+          git pull
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
