@@ -206,10 +206,10 @@ particle::~particle()
 }
 rectangle2 getParticleBrushRect(const resolutionTexture& tex)
 {
-	cfp texturePart = 0.2 * tex.defaultSize.x();
+	cfp texturePart = 0.2 * tex.defaultSize.x;
 	cvec2 location = vec2(
-		randFp(currentRandom, tex.defaultSize.x() - texturePart),
-		randFp(currentRandom, tex.defaultSize.x() - texturePart)
+		randFp(currentRandom, tex.defaultSize.x - texturePart),
+		randFp(currentRandom, tex.defaultSize.x - texturePart)
 	);
 	return rectangle2(location, vec2(texturePart));
 }

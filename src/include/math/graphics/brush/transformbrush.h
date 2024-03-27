@@ -51,8 +51,8 @@ struct transformBrush final : public colorBrush
 		//		baseBrushPos[i]--;
 		//	}
 		//}
-		//if (pos.y() == (int)pos.y()) {
-		//	pos.y()--;
+		//if (pos.y == (int)pos.y) {
+		//	pos.y--;
 		//}
 	//}
 		//return baseBrush.getValue(baseBrushPos);

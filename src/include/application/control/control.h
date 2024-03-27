@@ -105,13 +105,13 @@ public:
 
 	template<typename childListType>
 	void layoutTableCentered(const childListType& children, cveci2& childSize = buttonSize, cint& margin = buttonMargin) {
-		cint& offsetStep = childSize.y() + margin;
+		cint& offsetStep = childSize.y + margin;
 		//using end - begin instead of size() because fastlist doesn't have size()
-		cveci2& tablePos = rect.rectPos0Centered(cveci2(childSize.x(), childSize.y() + offsetStep * ((int)(children.end() - children.begin()) - 1)));
+		cveci2& tablePos = rect.rectPos0Centered(cveci2(childSize.x, childSize.y + offsetStep * ((int)(children.end() - children.begin()) - 1)));
 		rectanglei2 currentChildRect = rectanglei2(tablePos, childSize);
 		for (auto c : children) {
 			c->layout(currentChildRect);
-			currentChildRect.y() += offsetStep;
+			currentChildRect.y += offsetStep;
 		}
 	}
 
@@ -129,7 +129,7 @@ public:
 
 	virtual ~control() override;
 	constexpr bool hasBeenLayout() const {
-		return rect.size.x();
+		return rect.size.x;
 	}
 
 	//raycasts from top to bottom to check which child is hit

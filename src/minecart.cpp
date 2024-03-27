@@ -31,13 +31,13 @@ void minecart::tick()
 			{
 				cfp acceleration = poweredRailsAcceleration * getPowerStrength(level);
 
-				if (speed.x() < 0)
+				if (speed.x < 0)
 				{
-					speed.x() -= acceleration;
+					speed.x -= acceleration;
 				}
-				else if (speed.x() > 0)
+				else if (speed.x > 0)
 				{
-					speed.x() += acceleration;
+					speed.x += acceleration;
 				}
 				else
 				{
@@ -47,7 +47,7 @@ void minecart::tick()
 						constexpr fp revertDistance = 1.0 / 0x10;
 						if (dimensionIn->getHitboxCollisionType(calculateHitBox(position + speedNormal * revertDistance)) != collisionTypeID::willNotCollide)
 						{
-							speed.x() -= speedNormal.x() * acceleration;
+							speed.x -= speedNormal.x * acceleration;
 							break;
 						}
 					}
@@ -70,7 +70,7 @@ vec3 minecart::getGroundFriction() const
 {
 	const vect2<blockID> wheelsOn = getBlockWheelsOn();
 
-	cbool& hasRail = isRail(wheelsOn.x()) || isRail(wheelsOn.y());
+	cbool& hasRail = isRail(wheelsOn.x) || isRail(wheelsOn.y);
 
 	//better calculation
 	return hasRail ? vec3(cvec2(), railsFrictionPerBlock * getLengthTouchingGround()) : entity::getGroundFriction();
@@ -78,7 +78,7 @@ vec3 minecart::getGroundFriction() const
 
 vec2 minecart::getRelativeSeatPosition(cint& seatIndex) const
 {
-	return cvec2(0, minecartHitboxSize.y() * 0.5);
+	return cvec2(0, minecartHitboxSize.y * 0.5);
 }
 
 const vect2<blockID> minecart::getBlockWheelsOn() const
@@ -101,8 +101,8 @@ const vect2<blockID> minecart::getBlockWheelsOn() const
 		{
 			cvecb2 topConnection = dimensionIn->railTopConnection(flooredWheelPosition);
 
-			cfp lerpValue = math::lerp(topConnection[0] ? (fp)1 : (fp)0, topConnection[1] ? (fp)1 : (fp)0, substractedWheelPosition.x());
-			if (substractedWheelPosition.y() < lerpValue + railsHeight && substractedWheelPosition.y() > sleepersHeight)
+			cfp lerpValue = math::lerp(topConnection[0] ? (fp)1 : (fp)0, topConnection[1] ? (fp)1 : (fp)0, substractedWheelPosition.x);
+			if (substractedWheelPosition.y < lerpValue + railsHeight && substractedWheelPosition.y > sleepersHeight)
 			{
 				wheelsOn[i] = railsOn;
 			}

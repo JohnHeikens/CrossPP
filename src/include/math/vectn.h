@@ -10,18 +10,71 @@
 template <typename t, fsize_t n>
 struct baseVec
 {
-	t axis[math::maximum(n, (fsize_t)1)]{};
+public:
+	union
+	{
+		t axis[n]{};
+		struct
+		{
+			t x;
+			t y;
+			t z;
+		};
+	};
+#define baseVecDestructor                            \
+	constexpr ~baseVec()                             \
+		requires std::is_trivially_destructible_v<t> \
+	= default;                                       \
+	constexpr ~baseVec()                             \
+                                                     \
+	{                                                \
+		for (t & member : axis)                      \
+			member.~t();                             \
+	}
+	baseVecDestructor
+};
+template <typename t>
+struct baseVec<t, 0>
+{
+public:
+	union
+	{
+		t axis[0]{};
+		struct
+		{
+		};
+	};
+	baseVecDestructor
 };
 template <typename t>
 struct baseVec<t, 1>
 {
+public:
 	union
 	{
 		t axis[1]{};
-		t getx;
+		struct
+		{
+			t x;
+		};
 	};
+	baseVecDestructor
 };
-
+template <typename t>
+struct baseVec<t, 2>
+{
+public:
+	union
+	{
+		t axis[2]{};
+		struct
+		{
+			t x;
+			t y;
+		};
+	};
+	baseVecDestructor
+};
 template <typename t, fsize_t n>
 // alignment is already a power of two
 struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t) <= 0x4)) ? (alignof(t) * 0x4) : math::getNextPowerOf2Multiplied(sizeof(t) * n)) vectn
@@ -29,7 +82,10 @@ struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t
 	typedef const vectn cvecn;
 	static constexpr fsize_t axisCount = n;
 	typedef t axisType;
-	using baseVec<t,n>::axis;
+	using baseVec<t, n>::axis;
+	// template <typename = std::enable_if_t<n>>
+	// using x = baseVec<t, n>::x;
+	//  using baseVec<t, n>::y;
 
 	constexpr const t *begin() const noexcept
 	{
@@ -157,12 +213,12 @@ struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t
 		return operator[]((fsize_t)axisIndex);
 	}
 
-	//addMemberName(x, (*this)[0])
-		addMemberName(y, (*this)[1])
-			addMemberName(z, (*this)[2])
-				addMemberName(w, (*this)[3])
+	addMemberName(getX, (*this)[0])
+		addMemberName(getY, (*this)[1])
+			addMemberName(getZ, (*this)[2])
+		// addMemberName(w, (*this)[3])
 
-					constexpr t sum() const
+		constexpr t sum() const
 	{
 		t result = axis[0];
 		for (fsize_t i = 1; i < axisCount; i++)
@@ -221,10 +277,12 @@ struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t
 
 		cint sina = math::sinDegrees(angle);
 		cint cosa = math::cosDegrees(angle);
+		using baseVec<t, n>::x;
+		using baseVec<t, n>::y;
 
 		return vectn(
-			x() * cosa + y() * sina,
-			x() * -sina + y() * cosa);
+			x * cosa + y * sina,
+			x * -sina + y * cosa);
 	}
 
 	// 0 -> 0, 1
@@ -240,7 +298,7 @@ struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t
 	inline static vectn getrotatedvector(const t &yaw, const t &pitch)
 	{
 		// rotate vector over y axis(pitch)
-		t cosp = cos(pitch), sinp = sin(pitch), siny = sin(yaw), cosy = cos(yaw);
+		const t &cosp = cos(pitch), sinp = sin(pitch), siny = sin(yaw), cosy = cos(yaw);
 		return vectn(siny * cosp, cosy * cosp, sinp);
 	}
 
@@ -250,8 +308,8 @@ struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t
 	// x 0, y 1 : 0
 	inline fp getRotation() const
 	{
-		fp angle = asin(x());
-		if (y() < 0)
+		fp angle = asin(getX());
+		if (getY() < 0)
 		{
 			angle = math::PI - angle;
 		}
@@ -291,10 +349,13 @@ struct vectn : public baseVec<t, n> // alignas(((n == 3 || n == 4) && (alignof(t
 
 	inline static vectn cross(const vectn &lhs, const vectn &rhs)
 	{
+		using baseVec<t, n>::x;
+		using baseVec<t, n>::y;
+		using baseVec<t, n>::z;
 		return vectn(
-			lhs.y() * rhs.z() - lhs.z() * rhs.y(),
-			lhs.z() * rhs.x() - lhs.x() * rhs.z(),
-			lhs.x() * rhs.y() - lhs.y() * rhs.x());
+			lhs.y * rhs.z - lhs.z * rhs.y,
+			lhs.z * rhs.x - lhs.x * rhs.z,
+			lhs.x * rhs.y - lhs.y * rhs.x);
 	}
 
 	constexpr t maximum() const
@@ -454,7 +515,7 @@ constexpr bool woundClockwise(const vect2<t> &a, const vect2<t> &b, const vect2<
 	// counter-clockwise
 	const vect2<t> &dab = b - a;
 	const vect2<t> &dac = c - a;
-	const t &winding = dab.x() * dac.y() - dab.y() * dac.x();
+	const t &winding = dab.x * dac.y - dab.y * dac.x;
 	return winding < 0;
 }
 

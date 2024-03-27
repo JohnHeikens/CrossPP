@@ -39,42 +39,42 @@ void structureBlockSaveModeUI::serializeWithTemporaryData(cbool& write)
 	structureBlockUI* structureBlockOptions = (structureBlockUI*)parent;
 	if (!write)
 	{
-		relativeXTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.x());
-		relativeYTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.y());
+		relativeXTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.x);
+		relativeYTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.y);
 
-		sizeXTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->structureSize.x());
-		sizeYTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->structureSize.y());
+		sizeXTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->structureSize.x);
+		sizeYTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->structureSize.y);
 	}
 }
 
 void structureBlockSaveModeUI::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	cint showInvisibleBlocksWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, showInvisibleBlocksLabel->text).x() + defaultTheme().borderSize * 2;
-	cint detectLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, detectLabel->text).x() + defaultTheme().borderSize * 2;
-	cint includeEntitiesLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x() + defaultTheme().borderSize * 2;
-	cint smallRightButtonX = rect.w() - smallRightButtonSize;
-	int currentY = rect.h() - buttonSize.y();
+	cint showInvisibleBlocksWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, showInvisibleBlocksLabel->text).x + defaultTheme().borderSize * 2;
+	cint detectLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, detectLabel->text).x + defaultTheme().borderSize * 2;
+	cint includeEntitiesLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x + defaultTheme().borderSize * 2;
+	cint smallRightButtonX = rect.w - smallRightButtonSize;
+	int currentY = rect.h - buttonSize.y;
 
-	relativePositionLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	showInvisibleBlocksLabel->layout(crectanglei2(0 + rect.w() - showInvisibleBlocksWidth, currentY, showInvisibleBlocksWidth, buttonSize.y()));
-	currentY -= buttonSize.y();
-	relativeXTextbox->layout(crectanglei2(0, currentY, rect.w() / 3, buttonSize.y()));
-	relativeYTextbox->layout(crectanglei2(0 + rect.w() / 3, currentY, rect.w() / 3, buttonSize.y()));
-	showInvisibleBlocksButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
-	currentY -= buttonSize.y();
-	sizeLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	detectLabel->layout(crectanglei2(rect.w() - detectLabelWidth, currentY, detectLabelWidth, buttonSize.y()));
-	currentY -= buttonSize.y();
-	sizeXTextbox->layout(crectanglei2(0, currentY, rect.w() / 3, buttonSize.y()));
-	sizeYTextbox->layout(crectanglei2(rect.w() / 3, currentY, rect.w() / 3, buttonSize.y()));
-	detectButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
-	currentY -= buttonSize.y();
-	includeEntitiesLabel->layout(crectanglei2(rect.w() - includeEntitiesLabelWidth, currentY, includeEntitiesLabelWidth, buttonSize.y()));
-	currentY -= buttonSize.y();
-	includeEntitiesButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
-	currentY -= buttonSize.y();
-	saveButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
+	relativePositionLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	showInvisibleBlocksLabel->layout(crectanglei2(0 + rect.w - showInvisibleBlocksWidth, currentY, showInvisibleBlocksWidth, buttonSize.y));
+	currentY -= buttonSize.y;
+	relativeXTextbox->layout(crectanglei2(0, currentY, rect.w / 3, buttonSize.y));
+	relativeYTextbox->layout(crectanglei2(0 + rect.w / 3, currentY, rect.w / 3, buttonSize.y));
+	showInvisibleBlocksButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y));
+	currentY -= buttonSize.y;
+	sizeLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	detectLabel->layout(crectanglei2(rect.w - detectLabelWidth, currentY, detectLabelWidth, buttonSize.y));
+	currentY -= buttonSize.y;
+	sizeXTextbox->layout(crectanglei2(0, currentY, rect.w / 3, buttonSize.y));
+	sizeYTextbox->layout(crectanglei2(rect.w / 3, currentY, rect.w / 3, buttonSize.y));
+	detectButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y));
+	currentY -= buttonSize.y;
+	includeEntitiesLabel->layout(crectanglei2(rect.w - includeEntitiesLabelWidth, currentY, includeEntitiesLabelWidth, buttonSize.y));
+	currentY -= buttonSize.y;
+	includeEntitiesButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y));
+	currentY -= buttonSize.y;
+	saveButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y));
 }
 
 void structureBlockSaveModeUI::mouseDown(cveci2& position, cmb& button)
@@ -131,8 +131,8 @@ void structureBlockSaveModeUI::mouseDown(cveci2& position, cmb& button)
 					relativeNearestPosition = relativePosition;
 				}
 			}
-			sizeXTextbox->text = std::to_wstring(relativeNearestPosition.x());
-			sizeYTextbox->text = std::to_wstring(relativeNearestPosition.y());
+			sizeXTextbox->text = std::to_wstring(relativeNearestPosition.x);
+			sizeYTextbox->text = std::to_wstring(relativeNearestPosition.y);
 		}
 	}
 	else if (highestChild == includeEntitiesButton)
@@ -149,14 +149,14 @@ void structureBlockSaveModeUI::render(cveci2& position, const texture& renderTar
 	showInvisibleBlocksButton->text = structureBlockOptions->showInvisibleBlocks ? std::wstring(L"On") : std::wstring(L"Off");
 	includeEntitiesButton->text = structureBlockOptions->temporaryStructureBlockData->includeEntities ? std::wstring(L"On") : std::wstring(L"Off");
 	veci2 newRelativePosition = veci2();
-	if (convertToInt(relativeXTextbox->text, newRelativePosition.x()) &&
-		convertToInt(relativeYTextbox->text, newRelativePosition.y()))
+	if (convertToInt(relativeXTextbox->text, newRelativePosition.x) &&
+		convertToInt(relativeYTextbox->text, newRelativePosition.y))
 	{
 		structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition = newRelativePosition;
 	}
 	veci2 newSize = veci2();
-	if (convertToInt(sizeXTextbox->text, newSize.x()) &&
-		convertToInt(sizeYTextbox->text, newSize.y()))
+	if (convertToInt(sizeXTextbox->text, newSize.x) &&
+		convertToInt(sizeYTextbox->text, newSize.y))
 	{
 		structureBlockOptions->temporaryStructureBlockData->structureSize = newSize;
 	}

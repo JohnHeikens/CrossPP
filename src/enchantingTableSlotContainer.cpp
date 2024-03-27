@@ -42,11 +42,11 @@ enchantingTableSlotContainer::~enchantingTableSlotContainer()
 void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cmb& button, itemStack& stackHolding)
 {
 	human* currentHuman = (human*)linkedPlayer;
-	constexpr rectangle2 optionsRect = crectangle2(enchantmentBottomOptionPos.x(), enchantmentBottomOptionPos.y(), enchantmentOptionSize.x(), enchantmentOptionSize.y() * enchantmentOptionCount);
+	constexpr rectangle2 optionsRect = crectangle2(enchantmentBottomOptionPos.getX(), enchantmentBottomOptionPos.getY(), enchantmentOptionSize.getX(), enchantmentOptionSize.getY() * enchantmentOptionCount);
 	if (optionsRect.contains(pixelPosition) && hasEnchantableItem())
 	{
 		//try to enchant
-		int selectedOptionIndex = (enchantmentOptionCount - 1) - ((pixelPosition.y() - enchantmentBottomOptionPos.y()) / enchantmentOptionSize.y());
+		int selectedOptionIndex = (enchantmentOptionCount - 1) - ((pixelPosition.y - enchantmentBottomOptionPos.y) / enchantmentOptionSize.y);
 		recalculateEnchantments();
 		if (this->isAvailable(selectedOptionIndex))
 		{
@@ -92,19 +92,19 @@ void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cmb& button,
 
 void enchantingTableSlotContainer::drawExtraData(cmat3x3& transform, const texture& renderTarget)
 {
-	veci2 optionPosition = cvec2(enchantmentBottomOptionPos + cveci2(0, enchantmentOptionSize.y() * (enchantmentOptionCount - 1)));
+	veci2 optionPosition = cvec2(enchantmentBottomOptionPos + cveci2(0, enchantmentOptionSize.y * (enchantmentOptionCount - 1)));
 	if (hasEnchantableItem())
 	{
 		recalculateEnchantments();//you never know if it changed
 		//draw enchantments
-		for (int i = 0; i < enchantmentOptionCount; i++, optionPosition.y() -= enchantmentOptionSize.y())
+		for (int i = 0; i < enchantmentOptionCount; i++, optionPosition.y -= enchantmentOptionSize.y)
 		{
 			cbool available = isAvailable(i);
 			rectanglei2 textRect = rectanglei2(optionPosition, enchantmentOptionSize);
 			crectanglei2& textBackgroundBrushRect = crectanglei2(0, available ? 71 : 52, 108, 19);
 			inventory::drawExtraData(crectanglei2(0, available ? 71 : 52, 108, 19), textRect.pos0, transform, renderTarget);
-			textRect.x() += textRect.h();//substract the 'lapis square'
-			textRect.w() -= textRect.h();
+			textRect.x += textRect.h;//substract the 'lapis square'
+			textRect.w -= textRect.h;
 			crectangle2& optionBrushRect = crectangle2(i * 0x10, available ? 0x10 : 0, 0x10, 0x10);
 			inventory::drawExtraData(crectanglei2(i * 0x10, available ? 0x10 : 0, 0x10, 0x10), optionPosition, transform, renderTarget);
 

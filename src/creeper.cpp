@@ -12,7 +12,7 @@ creeper::creeper(dimension* dimensionIn, cvec2& position) :fourLeggedMob(dimensi
 	new wanderAI(this), });
 
 	//intialize body parts
-	mainBodyPart = new bodyPart2D(creeperBodyTextureRect, nullptr, vec2(position.x(), position.y() + creeperLegSize.y()), creeperBodySize, creeperBodyRotationCentre);
+	mainBodyPart = new bodyPart2D(creeperBodyTextureRect, nullptr, vec2(position.x, position.y + creeperLegSize.y), creeperBodySize, creeperBodyRotationCentre);
 
 	frontRightLeg = new bodyPart2D(creeperFrontRightLegTextureRect, mainBodyPart, creeperFrontLegOffset, creeperLegSize, creeperFrontLegRotationCentre);
 	frontLeftLeg = new bodyPart2D(creeperFrontLeftLegTextureRect, mainBodyPart, creeperFrontLegOffset, creeperLegSize, creeperFrontLegRotationCentre);
@@ -20,7 +20,7 @@ creeper::creeper(dimension* dimensionIn, cvec2& position) :fourLeggedMob(dimensi
 	backRightLeg = new bodyPart2D(creeperFrontRightLegTextureRect, mainBodyPart, creeperBackLegOffset, creeperLegSize, creeperBackLegRotationCentre);
 	backLeftLeg = new bodyPart2D(creeperFrontLeftLegTextureRect, mainBodyPart, creeperBackLegOffset, creeperLegSize, creeperBackLegRotationCentre);
 
-	head = new bodyPart2D(creeperHeadTextureRect, mainBodyPart, vec2(0, creeperBodySize.y()), creeperHeadSize, creeperHeadRotationCentre);
+	head = new bodyPart2D(creeperHeadTextureRect, mainBodyPart, vec2(0, creeperBodySize.y), creeperHeadSize, creeperHeadRotationCentre);
 	connectBodyParts();
 
 }

@@ -20,21 +20,21 @@ chicken::chicken(dimension* dimensionIn, cvec2& position) :passiveMob(dimensionI
 	timeUntilNextEgg = rand(currentRandom, minimalChickenEggTime, maximalChickenEggTime);
 
 	//intialize body parts
-	mainBodyPart = new bodyPart2D(chickenBodyTextureRect, nullptr, vec2(position.x(), position.y() + chickenUpperLegSize.y()), chickenBodySize, chickenBodyRotationCentre, 0, 90);
+	mainBodyPart = new bodyPart2D(chickenBodyTextureRect, nullptr, vec2(position.x, position.y + chickenUpperLegSize.y), chickenBodySize, chickenBodyRotationCentre, 0, 90);
 
 	rightUpperLeg = new bodyPart2D(chickenUpperLegTextureRect, mainBodyPart, cvec2(), chickenUpperLegSize, chickenUpperLegRotationCentre);
-	rightLowerLeg = new bodyPart2D(chickenLowerLegTextureRect, rightUpperLeg, cvec2(chickenUpperLegSize.x() * 0.5, 0) - chickenUpperLegRotationCentre, chickenLowerLegSize, chickenLowerLegRotationCentre, 0, 90);
+	rightLowerLeg = new bodyPart2D(chickenLowerLegTextureRect, rightUpperLeg, cvec2(chickenUpperLegSize.x * 0.5, 0) - chickenUpperLegRotationCentre, chickenLowerLegSize, chickenLowerLegRotationCentre, 0, 90);
 
 	leftUpperLeg = new bodyPart2D(chickenUpperLegTextureRect, mainBodyPart, cvec2(), chickenUpperLegSize, chickenUpperLegRotationCentre, 0, 90);
-	leftLowerLeg = new bodyPart2D(chickenLowerLegTextureRect, leftUpperLeg, cvec2(chickenUpperLegSize.x() * 0.5, 0) - chickenUpperLegRotationCentre, chickenLowerLegSize, chickenLowerLegRotationCentre, 0, 90);
+	leftLowerLeg = new bodyPart2D(chickenLowerLegTextureRect, leftUpperLeg, cvec2(chickenUpperLegSize.x * 0.5, 0) - chickenUpperLegRotationCentre, chickenLowerLegSize, chickenLowerLegRotationCentre, 0, 90);
 
-	rightWing = new bodyPart2D(chickenWingTextureRect, mainBodyPart, cvec2(chickenBodySize.x() * 0.5, chickenBodySize.y()) - chickenBodyRotationCentre, chickenWingSize, chickenWingRotationCentre);
-	leftWing = new bodyPart2D(chickenWingTextureRect, mainBodyPart, cvec2(chickenBodySize.x() * 0.5, chickenBodySize.y()) - chickenBodyRotationCentre, chickenWingSize, chickenWingRotationCentre);
+	rightWing = new bodyPart2D(chickenWingTextureRect, mainBodyPart, cvec2(chickenBodySize.x * 0.5, chickenBodySize.y) - chickenBodyRotationCentre, chickenWingSize, chickenWingRotationCentre);
+	leftWing = new bodyPart2D(chickenWingTextureRect, mainBodyPart, cvec2(chickenBodySize.x * 0.5, chickenBodySize.y) - chickenBodyRotationCentre, chickenWingSize, chickenWingRotationCentre);
 
-	head = new bodyPart2D(chickenHeadTextureRect, mainBodyPart, vec2(chickenBodySize.x(), chickenBodySize.y()) - chickenBodyRotationCentre, chickenHeadSize, chickenHeadRotationCentre);
+	head = new bodyPart2D(chickenHeadTextureRect, mainBodyPart, vec2(chickenBodySize.x, chickenBodySize.y) - chickenBodyRotationCentre, chickenHeadSize, chickenHeadRotationCentre);
 
-	bodyPart2D* wattles = new bodyPart2D(chickenWattlesTextureRect, head, cvec2(chickenHeadSize.x(), chickenWattlesSize.y()) - chickenHeadRotationCentre, chickenWattlesSize, chickenWattlesRotationCentre);
-	bodyPart2D* beak = new bodyPart2D(chickenBeakTextureRect, head, cvec2(chickenHeadSize.x(), chickenWattlesSize.y() + chickenBeakSize.y() * 0.5) - chickenHeadRotationCentre, chickenWattlesSize, chickenBeakRotationCentre);
+	bodyPart2D* wattles = new bodyPart2D(chickenWattlesTextureRect, head, cvec2(chickenHeadSize.x, chickenWattlesSize.y) - chickenHeadRotationCentre, chickenWattlesSize, chickenWattlesRotationCentre);
+	bodyPart2D* beak = new bodyPart2D(chickenBeakTextureRect, head, cvec2(chickenHeadSize.x, chickenWattlesSize.y + chickenBeakSize.y * 0.5) - chickenHeadRotationCentre, chickenWattlesSize, chickenBeakRotationCentre);
 
 	head->children.push_back(wattles);
 	head->children.push_back(beak);
@@ -52,7 +52,7 @@ chicken::chicken(dimension* dimensionIn, cvec2& position) :passiveMob(dimensionI
 
 void chicken::updateBodyParts() const
 {
-	mainBodyPart->translate = position + cvec2(0, chickenLowerLegSize.y() + chickenUpperLegSize.y());
+	mainBodyPart->translate = position + cvec2(0, chickenLowerLegSize.y + chickenUpperLegSize.y);
 
 	cfp rightLegangle = ((mobData*)entityDataList[(int)entityType])->legSwingSynchronizer.getSwingAngle(totalLegDistance);
 
@@ -82,6 +82,6 @@ fp chicken::getGravityForce() const
 
 bool chicken::goToPosition(cvec2& destination)
 {
-	flying = !onGround && (speed.y() < 0);
+	flying = !onGround && (speed.y < 0);
 	return mob::goToPosition(destination);
 }

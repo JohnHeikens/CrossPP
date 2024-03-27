@@ -15,23 +15,23 @@ colorPicker::colorPicker()
 
 void colorPicker::layout(crectanglei2& newRect)
 {
-	int colorPlaneWidth = newRect.w() * 4 / 10;
-	colorPlane->layout(crectanglei2(newRect.x(), newRect.y(), colorPlaneWidth, newRect.h()));
+	int colorPlaneWidth = newRect.w * 4 / 10;
+	colorPlane->layout(crectanglei2(newRect.x, newRect.y, colorPlaneWidth, newRect.h));
 
-	int colorPlaneAndSideSliderWidth = newRect.w() / 2;
+	int colorPlaneAndSideSliderWidth = newRect.w / 2;
 	int sideSliderWidth = colorPlaneAndSideSliderWidth - colorPlaneWidth;
-	sideSlider->layout(crectanglei2(newRect.x() + colorPlaneWidth, newRect.y(), sideSliderWidth, newRect.h()));
+	sideSlider->layout(crectanglei2(newRect.x + colorPlaneWidth, newRect.y, sideSliderWidth, newRect.h));
 
-	int channelSliderX = newRect.x() + colorPlaneAndSideSliderWidth;
-	int channelTextboxX = newRect.x() + newRect.w() * 9 / 10;
+	int channelSliderX = newRect.x + colorPlaneAndSideSliderWidth;
+	int channelTextboxX = newRect.x + newRect.w * 9 / 10;
 
-	int channelSliderHeight = newRect.h() / 4;
+	int channelSliderHeight = newRect.h / 4;
 
 
 	for (int channel = 0; channel < bgraColorChannelCount; channel++)
 	{
-		channelSliders[channel]->layout(crectanglei2(channelSliderX, newRect.y() + newRect.h() - channelSliderHeight * (channel + 1), channelTextboxX - channelSliderX, channelSliderHeight));
-		channelBoxes[channel]->layout(crectanglei2(channelTextboxX, newRect.y() + newRect.h() - channelSliderHeight * (channel + 1), (newRect.x() + newRect.w()) - channelTextboxX, channelSliderHeight));
+		channelSliders[channel]->layout(crectanglei2(channelSliderX, newRect.y + newRect.h - channelSliderHeight * (channel + 1), channelTextboxX - channelSliderX, channelSliderHeight));
+		channelBoxes[channel]->layout(crectanglei2(channelTextboxX, newRect.y + newRect.h - channelSliderHeight * (channel + 1), (newRect.x + newRect.w) - channelTextboxX, channelSliderHeight));
 	}
 }
 void colorPicker::setColor(const color& newColor)

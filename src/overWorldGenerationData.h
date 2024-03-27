@@ -8,7 +8,7 @@ struct overworldGenerationData :generationData
 {
 	int* heights = nullptr;
 	biomeID* biomes = nullptr;
-	overworldGenerationData() :heights(new int[chunkSize.x()]), biomes(new biomeID[chunkSize.x()]) {}
+	overworldGenerationData() :heights(new int[chunkSize.x]), biomes(new biomeID[chunkSize.x]) {}
 	virtual void serializeValue(nbtSerializer& s) override;
 	virtual ~overworldGenerationData() override;
 };

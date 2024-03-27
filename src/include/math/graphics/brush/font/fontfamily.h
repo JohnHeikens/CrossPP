@@ -53,7 +53,7 @@ inline void fontFamily::DrawLetter(cletter& l, cmat3x3& transformFrom1x1, const 
 	//cint& letterIndex = l & 0xff;
 	cveci2& asciiOffset = getAsciiOffset((byte)l);
 
-	cveci2& texLetterSize = cveci2((int)(tex->defaultSize.x() / asciiRowWidth));
+	cveci2& texLetterSize = cveci2((int)(tex->defaultSize.x / asciiRowWidth));
 
 	crectangle2& texMaskRect = crectangle2(asciiOffset * texLetterSize, texLetterSize);
 

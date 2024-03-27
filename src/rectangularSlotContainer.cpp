@@ -4,23 +4,23 @@
 rectangularSlotContainer::rectangularSlotContainer(cveci2& rowsAndColumns)
 {
 	this->rowsAndColumns = rowsAndColumns;
-	slots = new itemStack[rowsAndColumns.x() * rowsAndColumns.y()]();//initialize to default value(nullptr)
+	slots = new itemStack[rowsAndColumns.x * rowsAndColumns.y]();//initialize to default value(nullptr)
 }
 
 void rectangularSlotContainer::render(const gameRenderData& targetData, cvec2& pos, cfp& offset, cfp& itemDrawSize)
 {
 	//draw slots
 	const itemStack* currentSlot = this->slots;
-	for (int j = 0; j < rowsAndColumns.y(); j++)
+	for (int j = 0; j < rowsAndColumns.y; j++)
 	{
-		for (int i = 0; i < rowsAndColumns.x(); i++, currentSlot++)
+		for (int i = 0; i < rowsAndColumns.x; i++, currentSlot++)
 		{
 			if (currentSlot->count)
 			{
 				cvec2& currentPosition = pos + cvec2(i, j) * offset;
 				currentSlot->render(crectangle2(currentPosition, cvec2(itemDrawSize)), targetData);
 			}
-			//renderTarget.fillTexture(crectangle2(slots[i + j * rowsAndColumns.x()].item->textureCoords, veci2(blockTextureSize)), crectangle2(offset, cvec2(blockTextureSize)), *blockTextures);
+			//renderTarget.fillTexture(crectangle2(slots[i + j * rowsAndColumns.x].item->textureCoords, veci2(blockTextureSize)), crectangle2(offset, cvec2(blockTextureSize)), *blockTextures);
 		}
 	}
 }
@@ -31,13 +31,13 @@ bool rectangularSlotContainer::getSlot(cveci2& mousePos, cveci2& drawPos, cint& 
 	//convert to 'hotbar slot space'
 	veci2 relativeMousePosition = mousePos - drawPos;
 
-	if (relativeMousePosition.x() >= 0 && relativeMousePosition.y() >= 0 && relativeMousePosition.x() < offset * (rowsAndColumns.x() - 1) + itemDrawSize && relativeMousePosition.y() < offset * (rowsAndColumns.y() - 1) + itemDrawSize)
+	if (relativeMousePosition.x >= 0 && relativeMousePosition.y >= 0 && relativeMousePosition.x < offset * (rowsAndColumns.x - 1) + itemDrawSize && relativeMousePosition.y < offset * (rowsAndColumns.y - 1) + itemDrawSize)
 	{
 		//somewhere clicked
-		veci2 selectedItemPosition = veci2(relativeMousePosition.x() / offset, relativeMousePosition.y() / offset);
+		veci2 selectedItemPosition = veci2(relativeMousePosition.x / offset, relativeMousePosition.y / offset);
 		//if clicked on the borders between items, dont select any item.
 		veci2 border = selectedItemPosition * offset + itemDrawSize;
-		if (selectedItemPosition.x() < border.x() && selectedItemPosition.y() < border.y())
+		if (selectedItemPosition.x < border.x && selectedItemPosition.y < border.y)
 		{
 			slotPosition = selectedItemPosition;
 			return true;
@@ -55,7 +55,7 @@ bool rectangularSlotContainer::addStack(itemStack& stack) const
 		return false;
 	}
 	itemStack* slotptr = this->slots;
-	itemStack* endptr = slotptr + rowsAndColumns.x() * rowsAndColumns.y();
+	itemStack* endptr = slotptr + rowsAndColumns.x * rowsAndColumns.y;
 	//use this if there is not enough room in the slots with the same item 
 	itemStack* emptySlot = nullptr;
 	while (slotptr < endptr)
@@ -91,7 +91,7 @@ bool rectangularSlotContainer::addStack(itemStack& stack) const
 
 int rectangularSlotContainer::countAmount(const itemStack& s) const
 {
-	const itemStack* const endPtr = slots + rowsAndColumns.x() * rowsAndColumns.y();
+	const itemStack* const endPtr = slots + rowsAndColumns.x * rowsAndColumns.y;
 	int count = 0;
 	for (const itemStack* slot = slots; slot < endPtr; slot++)
 	{
@@ -110,7 +110,7 @@ bool rectangularSlotContainer::substractStack(itemStack& stack)
 		return false;
 	}
 	itemStack* slotptr = this->slots;
-	const itemStack* const endptr = slotptr + rowsAndColumns.x() * rowsAndColumns.y();
+	const itemStack* const endptr = slotptr + rowsAndColumns.x * rowsAndColumns.y;
 	//use this if there are not enough partially filled slots to substract from
 	itemStack* fullSlot = nullptr;
 	while (slotptr < endptr)
@@ -155,7 +155,7 @@ rectangularSlotContainer::~rectangularSlotContainer()
 
 void rectangularSlotContainer::dropContent(tickableBlockContainer* containerIn, cvec2& dropPos, cfp& maxSpeed)
 {
-	cint slotCount = rowsAndColumns.x() * rowsAndColumns.y();
+	cint slotCount = rowsAndColumns.x * rowsAndColumns.y;
 
 	std::vector<itemStack> containerLoot = std::vector<itemStack>();
 
@@ -173,7 +173,7 @@ void rectangularSlotContainer::dropContent(tickableBlockContainer* containerIn, 
 
 void rectangularSlotContainer::transfer(slotContainer* const containerTo, tickableBlockContainer* containerIn, cvec2& dropPos) const
 {
-	cint slotCount = rowsAndColumns.x() * rowsAndColumns.y();
+	cint slotCount = rowsAndColumns.x * rowsAndColumns.y;
 	for (int i = 0; i < slotCount; i++)
 	{
 		if (slots[i].count)
@@ -193,7 +193,7 @@ void rectangularSlotContainer::serializeValue(nbtSerializer& s)
 	{
 		if (s.write)
 		{
-			for (int i = 0; i < rowsAndColumns.x() * rowsAndColumns.y(); i++)
+			for (int i = 0; i < rowsAndColumns.x * rowsAndColumns.y; i++)
 			{
 				if (s.push<nbtDataTag::tagCompound>())
 				{
@@ -205,7 +205,7 @@ void rectangularSlotContainer::serializeValue(nbtSerializer& s)
 		else
 		{
 			std::vector<nbtData*> serializedSlots = s.getChildren();
-			for (int i = 0; i < rowsAndColumns.x() * rowsAndColumns.y(); i++)
+			for (int i = 0; i < rowsAndColumns.x * rowsAndColumns.y; i++)
 			{
 				if (s.push(serializedSlots[i]))
 				{
@@ -220,7 +220,7 @@ void rectangularSlotContainer::serializeValue(nbtSerializer& s)
 
 void rectangularSlotContainer::clearData()
 {
-	cint slotCount = rowsAndColumns.x() * rowsAndColumns.y();
+	cint slotCount = rowsAndColumns.x * rowsAndColumns.y;
 	for (int i = 0; i < slotCount; i++)
 	{
 		if (slots[i].count)

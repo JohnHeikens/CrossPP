@@ -81,13 +81,13 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		// Looping for each element of the matrix 
 		for (fsize_t row = 0, i = 0; row < rows; row++)
 		{
-			if (row != pos.x())
+			if (row != pos.x)
 			{
 				for (fsize_t col = 0, j = 0; col < cols; col++)
 				{
 					//  Copying into temporary matrix only those element 
 					//  which are not in given row and column 
-					if (col != pos.y())
+					if (col != pos.y)
 					{
 						result[i][j++] = this->axis[row][col];
 					}
@@ -276,15 +276,15 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		//https://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle
 		return mattnxn
 		{
-			cosr + axis.x() * axis.x() * mincos,
-			axis.x() * axis.y() * mincos - axis.z() * sinr,
-			axis.x() * axis.z() * mincos + axis.y() * sinr,
-			axis.y() * axis.x() * mincos + axis.z() * sinr,
-			cosr + axis.y() * axis.y() * mincos,
-			axis.y() * axis.z() * mincos - axis.x() * sinr,
-			axis.z() * axis.x() * mincos - axis.y() * sinr,
-			axis.z() * axis.y() * mincos + axis.x() * sinr,
-			cosr + axis.z() * axis.z() * mincos
+			cosr + axis.x * axis.x * mincos,
+			axis.x * axis.y * mincos - axis.z * sinr,
+			axis.x * axis.z * mincos + axis.y * sinr,
+			axis.y * axis.x * mincos + axis.z * sinr,
+			cosr + axis.y * axis.y * mincos,
+			axis.y * axis.z * mincos - axis.x * sinr,
+			axis.z * axis.x * mincos - axis.y * sinr,
+			axis.z * axis.y * mincos + axis.x * sinr,
+			cosr + axis.z * axis.z * mincos
 		};
 		//axis.Normalize();
 		//Matrix lhs = axis;
@@ -346,7 +346,7 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		mattnxn transform = mattnxn();
 		if (angle == 90 || angle == 270)
 		{
-			transform = fromRectToRect(rectanglet2<t>(rectFrom.x() + rectFrom.w() * 0.5 - rectFrom.h() * 0.5, rectFrom.y() + rectFrom.h() * 0.5 - rectFrom.w() * 0.5, rectFrom.h(), rectFrom.w()), rectTo);
+			transform = fromRectToRect(rectanglet2<t>(rectFrom.x + rectFrom.w * 0.5 - rectFrom.h * 0.5, rectFrom.y + rectFrom.h * 0.5 - rectFrom.w * 0.5, rectFrom.h, rectFrom.w), rectTo);
 		}
 		else
 		{
@@ -354,7 +354,7 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		}
 		if (angle != 0)
 		{
-			transform = cross(transform, rotateDegrees(vect2<t>(rectFrom.x() + rectFrom.w() * 0.5, rectFrom.y() + rectFrom.h() * 0.5), angle));
+			transform = cross(transform, rotateDegrees(vect2<t>(rectFrom.x + rectFrom.w * 0.5, rectFrom.y + rectFrom.h * 0.5), angle));
 		}
 		return transform;
 	}
@@ -375,17 +375,17 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		Eigen::Matrix<t, 8, 8> A = Eigen::Matrix<t, 8, 8>();
 		for (int i = 0; i < 4; i++)
 		{
-			const t rowXValues[8] = { from[i].x(), from[i].y(), 1, 0, 0, 0, -from[i].x() * to[i].x(), -from[i].y() * to[i].x() };
+			const t rowXValues[8] = { from[i].x, from[i].y, 1, 0, 0, 0, -from[i].x * to[i].x, -from[i].y * to[i].x };
 			A.row(yRowIndex++) = auto(rowXValues);
-			const t rowYValues[8] = { 0, 0, 0, from[i].x(), from[i].y(), 1, -from[i].x() * to[i].y(), -from[i].y() * to[i].y() };
+			const t rowYValues[8] = { 0, 0, 0, from[i].x, from[i].y, 1, -from[i].x * to[i].y, -from[i].y * to[i].y };
 			A.setYRow(yRowIndex++, rowYValues);
 		}
 		int yRowIndex = 0;
 		glm<t, 8, 1> b = mattnxn<t, 8, 1>();
 			for (int i = 0; i < 4; i++)
 			{
-				b.values[yRowIndex++] = to[i].x();
-				b.values[yRowIndex++] = to[i].x();
+				b.values[yRowIndex++] = to[i].x;
+				b.values[yRowIndex++] = to[i].x;
 
 					# Solve A* h = b for h
 					h = numeric.solve(A, b)
@@ -397,9 +397,9 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 
 					# Sanity check that H actually maps `from` to `to`
 					for i in[0 ... 4]
-						lhs = numeric.dot(H, [from[i].x(), from[i].y(), 0, 1])
+						lhs = numeric.dot(H, [from[i].x, from[i].y, 0, 1])
 						k_i = lhs[3]
-						rhs = numeric.dot(k_i, [to[i].x(), to[i].y(), 0, 1])
+						rhs = numeric.dot(k_i, [to[i].x, to[i].y, 0, 1])
 						console.assert(numeric.norm2(numeric.sub(lhs, rhs)) < 1e-9, "Not equal:", lhs, rhs)
 						H
 
@@ -549,15 +549,15 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 		cvect3<t>& screeny(vect3<t>::cross(screenz, screenx));//the upwards direction
 
 		mattnxn result = mattnxn();
-		result[0][0] = screenx.x();//the new x
-		result[1][0] = screenx.y();
-		result[2][0] = screenx.z();
-		result[0][1] = screeny.x();//the new y
-		result[1][1] = screeny.y();
-		result[2][1] = screeny.z();
-		result[0][2] = -screenz.x();//the new z
-		result[1][2] = -screenz.y();
-		result[2][2] = -screenz.z();
+		result[0][0] = screenx.x;//the new x
+		result[1][0] = screenx.y;
+		result[2][0] = screenx.z;
+		result[0][1] = screeny.x;//the new y
+		result[1][1] = screeny.y;
+		result[2][1] = screeny.z;
+		result[0][2] = -screenz.x;//the new z
+		result[1][2] = -screenz.y;
+		result[2][2] = -screenz.z;
 		result[3][0] = -vect3<t>::dot(screenx, eye);
 		result[3][1] = -vect3<t>::dot(screeny, eye);
 		result[3][2] = vect3<t>::dot(screenz, eye);
@@ -573,11 +573,11 @@ struct mattnxn : public vectn<vectn<t, cols>, rows>
 
 		rectanglet2<t> boundaries;
 		boundaries.pos0 = vect2<t>(
-			math::minimum(math::minimum(pos00.x(), pos10.x()), math::minimum(pos01.x(), pos11.x())),
-			math::minimum(math::minimum(pos00.y(), pos10.y()), math::minimum(pos01.y(), pos11.y())));
+			math::minimum(math::minimum(pos00.x, pos10.x), math::minimum(pos01.x, pos11.x)),
+			math::minimum(math::minimum(pos00.y, pos10.y), math::minimum(pos01.y, pos11.y)));
 		boundaries.size = vect2<t>(
-			math::maximum(math::maximum(pos00.x(), pos10.x()), math::maximum(pos01.x(), pos11.x())),
-			math::maximum(math::maximum(pos00.y(), pos10.y()), math::maximum(pos01.y(), pos11.y())))
+			math::maximum(math::maximum(pos00.x, pos10.x), math::maximum(pos01.x, pos11.x)),
+			math::maximum(math::maximum(pos00.y, pos10.y), math::maximum(pos01.y, pos11.y)))
 			- boundaries.pos0;
 		return boundaries;
 	}

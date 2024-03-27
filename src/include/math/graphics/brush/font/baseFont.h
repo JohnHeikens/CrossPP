@@ -29,7 +29,7 @@ struct baseFont
 	{
 		if (l == L'\n')
 		{
-			return vec2(bounds.x(), position.y() - getLineHeight());
+			return vec2(bounds.x, position.y - getLineHeight());
 		}
 		else
 		{
@@ -38,15 +38,15 @@ struct baseFont
 				fontSize : 
 				fontSize * (family.letterWidths[(byte)l] + relativeLetterSpacing);
 
-			cfp& newX = position.x() + letterWidth;
-			if (position.x() > bounds.w() + bounds.x())
+			cfp& newX = position.x + letterWidth;
+			if (position.x > bounds.w + bounds.x)
 			{
 				//new line
-				return vec2(bounds.x() + letterWidth, position.y() - getLineHeight());
+				return vec2(bounds.x + letterWidth, position.y - getLineHeight());
 			}
 			else
 			{
-				return vec2(newX, position.y());
+				return vec2(newX, position.y);
 			}
 		}
 
@@ -54,7 +54,7 @@ struct baseFont
 	inline vec2 MeasureStringOffset(crectangle2& bounds, const std::wstring& text = L"") const
 	{
 		//start at top left
-		vec2 offset = vec2(bounds.pos0.x(), bounds.pos0.y() + bounds.h() - fontSize);
+		vec2 offset = vec2(bounds.pos0.x, bounds.pos0.y + bounds.h - fontSize);
 		for (const auto& c : text)
 		{
 			offset = MeasureLetterOffset(bounds, offset, c);
@@ -66,13 +66,13 @@ struct baseFont
 		//start at top left
 		fp widestX = 0;
 		vec2 offset = vec2();
-		crectangle2 maximalBounds = crectangle2(0, maximumSize.y(), maximumSize.x(), maximumSize.y());
+		crectangle2 maximalBounds = crectangle2(0, maximumSize.y, maximumSize.x, maximumSize.y);
 		for (const auto& c : text)
 		{
 			offset = MeasureLetterOffset(maximalBounds, offset, c);
-			widestX = math::maximum(offset.x(), widestX);
+			widestX = math::maximum(offset.x, widestX);
 		}
-		return vec2(widestX, -offset.y() + getLineHeight());
+		return vec2(widestX, -offset.y + getLineHeight());
 	}
 
 	template<typename fontBrushType, typename = std::enable_if_t < is_brush_v<fontBrushType>>>
@@ -88,7 +88,7 @@ struct baseFont
 			{
 				if (drawable(*textptr))
 				{
-					family.DrawLetter(*textptr, vec2(offset.x(), offset.y()), fontSize, renderTarget, b, matrix);
+					family.DrawLetter(*textptr, vec2(offset.x, offset.y), fontSize, renderTarget, b, matrix);
 				}
 				offset = MeasureLetterOffset(rect, offset, *textptr);
 				textptr++;

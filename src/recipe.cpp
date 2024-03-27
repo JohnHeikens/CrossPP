@@ -74,16 +74,16 @@ void readRecipe(const jsonContainer& recipeDescription)
 
 		keyList->update();
 		//fill the pattern
-		for (int j = 0; j < patternSize.y(); j++)
+		for (int j = 0; j < patternSize.y; j++)
 		{
-			for (int i = 0; i < patternSize.x(); i++)
+			for (int i = 0; i < patternSize.x; i++)
 			{
 				letter currentSymbol = patternContainer.children[j].value[i];
 				int keyIndex = keysContainer.getChildIndex(std::wstring(1, currentSymbol));
 				if (keyIndex != -1)
 				{
 					//flip recipes vertically
-					currentRecipe->requiredPattern->setValue(cveci2(i, patternSize.y() - j - 1), (*keyList)[keyIndex]);
+					currentRecipe->requiredPattern->setValue(cveci2(i, patternSize.y - j - 1), (*keyList)[keyIndex]);
 				}
 			}
 		}
@@ -171,9 +171,9 @@ void substractOneOfEachSlot(rectangularSlotContainer* container)
 {
 	veci2 substractPos = veci2();
 	//substract 1 from all filled slots in the crafting workspace
-	for (substractPos.y() = 0; substractPos.y() < container->rowsAndColumns.y(); substractPos.y()++)
+	for (substractPos.y = 0; substractPos.y < container->rowsAndColumns.y; substractPos.y++)
 	{
-		for (substractPos.x() = 0; substractPos.x() < container->rowsAndColumns.x(); substractPos.x()++)
+		for (substractPos.x = 0; substractPos.x < container->rowsAndColumns.x; substractPos.x++)
 		{
 			itemStack* craftingSlot = container->getSlot(substractPos);
 			if (craftingSlot->count)

@@ -110,7 +110,7 @@ vec2 overWorld::getWindSpeed(cvec2& position)
 	//https://sciencing.com/units-anemometer-measure-8146408.html
 	if (getHitboxCollisionType(crectangle2(position, cvec2(0))) != collisionTypeID::willCollide)
 	{
-		cfp& elevation = position.y();
+		cfp& elevation = position.y;
 
 		cvec3& combinedArguments = cvec3(position, currentWorld->currentTime);
 
@@ -290,16 +290,16 @@ generationData* overWorld::generateTerrain(chunk* generateIn)
 
 	cint interpolationRadius = 0x20;//0x10;
 	cint interpolationSize = interpolationRadius * 2;
-	fastArray<biomeID> biomesToInterpolate = fastArray<biomeID>((int)chunkSize.x() + interpolationSize);
+	fastArray<biomeID> biomesToInterpolate = fastArray<biomeID>((int)chunkSize.x + interpolationSize);
 	//get heights to interpolate
-	for (int x = -interpolationRadius; x < ((int)chunkSize.x() + interpolationRadius); x++)
+	for (int x = -interpolationRadius; x < ((int)chunkSize.x + interpolationRadius); x++)
 	{
-		biomesToInterpolate[x + interpolationRadius] = getBiome(cvec2(x + generateIn->worldPos.x(), 0));
+		biomesToInterpolate[x + interpolationRadius] = getBiome(cvec2(x + generateIn->worldPos.x, 0));
 	}
 	//initialize biome list
-	for (int relativeX = 0; relativeX < (int)chunkSize.x(); relativeX++)
+	for (int relativeX = 0; relativeX < (int)chunkSize.x; relativeX++)
 	{
-		data->biomes[relativeX] = getBiome(cvec2(relativeX + generateIn->worldPos.x(), 0));
+		data->biomes[relativeX] = getBiome(cvec2(relativeX + generateIn->worldPos.x, 0));
 		fp height = 0;
 		fp totalWeight = 0;
 		std::vector<biomeID> currentBiomes;
@@ -325,16 +325,16 @@ generationData* overWorld::generateTerrain(chunk* generateIn)
 		}
 		for (int biomeIndex = 0; biomeIndex < currentBiomes.size(); biomeIndex++)
 		{
-			height += ((overWorldBiomeGenerator*)currentWorld->biomeList[(int)currentBiomes[biomeIndex]])->getHeight(generateIn->worldPos.x() + relativeX) * currentBiomeWeights[biomeIndex];
+			height += ((overWorldBiomeGenerator*)currentWorld->biomeList[(int)currentBiomes[biomeIndex]])->getHeight(generateIn->worldPos.x + relativeX) * currentBiomeWeights[biomeIndex];
 		}
 		height /= totalWeight;
 		data->heights[relativeX] = (int)floor(height);
 
 
-		if (data->heights[relativeX] > generateIn->worldPos.y())
+		if (data->heights[relativeX] > generateIn->worldPos.y)
 		{
-			csize_t& relativeHeight = data->heights[relativeX] - generateIn->worldPos.y();
-			csize_t& cappedHeight = math::minimum(relativeHeight, chunkSize.y());
+			csize_t& relativeHeight = data->heights[relativeX] - generateIn->worldPos.y;
+			csize_t& cappedHeight = math::minimum(relativeHeight, chunkSize.y);
 			setBlockRange(generateIn->worldPos + cveci2(relativeX, 0), generateIn->worldPos + cveci2(relativeX, (int)cappedHeight - 1), blockID::stone);
 		}
 	}
@@ -365,17 +365,17 @@ void overWorld::generateStructures(chunk* generateIn)
 
 	cfp caveSteepness = 0.4;
 	veci2 caveSquare = veci2();
-	for (caveSquare.y() = 0; caveSquare.y() < chunkSize.y(); caveSquare.y() += caveStep)
+	for (caveSquare.y = 0; caveSquare.y < chunkSize.y; caveSquare.y += caveStep)
 	{
-		for (caveSquare.x() = 0; caveSquare.x() < chunkSize.x(); caveSquare.x() += caveStep)
+		for (caveSquare.x = 0; caveSquare.x < chunkSize.x; caveSquare.x += caveStep)
 		{
 			veci2 caveSquareIndex = veci2(randIndex(generateIn->chunkRandom, caveStep), randIndex(generateIn->chunkRandom, caveStep)) + caveSquare;
-			if (caveSquareIndex.x() < chunkSize.x() && caveSquareIndex.y() < chunkSize.y() && (randFp(generateIn->chunkRandom) < caveChance))
+			if (caveSquareIndex.x < chunkSize.x && caveSquareIndex.y < chunkSize.y && (randFp(generateIn->chunkRandom) < caveChance))
 			{
 				vec2 caveCentre = caveSquareIndex + generateIn->worldPos;
 				std::vector<vec2> caveSegments = std::vector<vec2>();
 				cfp caveHeightMultiplier = sqrt(randFp(generateIn->chunkRandom));//deeper are more caves
-				if (caveCentre.y() < (data->heights[(int)caveCentre.x() - generateIn->worldPos.x()] * caveHeightMultiplier))
+				if (caveCentre.y < (data->heights[(int)caveCentre.x - generateIn->worldPos.x] * caveHeightMultiplier))
 				{
 					fp size = caveSizeDistribution.getValue(randFp(generateIn->chunkRandom));
 					fp rot = randFp(generateIn->chunkRandom, math::PI2);
@@ -419,10 +419,10 @@ void overWorld::generateStructures(chunk* generateIn)
 	{
 		//more chance on pools the lower you get
 		cfp& heightPart = math::squared(randFp(generateIn->chunkRandom));
-		cveci2& pos = generateIn->worldPos + cveci2(randIndex(generateIn->chunkRandom, (int)chunkSize.x()), randIndex(generateIn->chunkRandom, (int)chunkSize.y()));
+		cveci2& pos = generateIn->worldPos + cveci2(randIndex(generateIn->chunkRandom, (int)chunkSize.x), randIndex(generateIn->chunkRandom, (int)chunkSize.y));
 
 		//more lava at the bottom at warmer biomes
-		cfp& temperature = ((1 - heightPart) + biomeTemperatureNoise->evaluate(vec1(pos.x()))) * 0.5;
+		cfp& temperature = ((1 - heightPart) + biomeTemperatureNoise->evaluate(vec1(pos.x))) * 0.5;
 
 		const blockID poolBlock = (temperature > randFp()) ? blockID::lava : blockID::water;
 
@@ -431,9 +431,9 @@ void overWorld::generateStructures(chunk* generateIn)
 	}
 
 	//add structures
-	for (size_t i = 0; i < chunkSize.x(); i++)
+	for (size_t i = 0; i < chunkSize.x; i++)
 	{
-		if ((data->heights[i] >= generateIn->worldPos.y()) && (data->heights[i] < (generateIn->worldPos.y() + (int)chunkSize.y())))
+		if ((data->heights[i] >= generateIn->worldPos.y) && (data->heights[i] < (generateIn->worldPos.y + (int)chunkSize.y)))
 		{
 			biomeID biomeToUse = data->biomes[i];
 
@@ -441,7 +441,7 @@ void overWorld::generateStructures(chunk* generateIn)
 			{
 				biomeToUse = biomeID::ocean;
 			}
-			currentWorld->biomeList[(int)biomeToUse]->attemptgenerateStructures(this, cveci2((int)i + generateIn->worldPos.x(), data->heights[i]), generateIn->chunkRandom);
+			currentWorld->biomeList[(int)biomeToUse]->attemptgenerateStructures(this, cveci2((int)i + generateIn->worldPos.x, data->heights[i]), generateIn->chunkRandom);
 		}
 	}
 	//generate ores
@@ -478,7 +478,7 @@ void overWorld::generateStructures(chunk* generateIn)
 		8,
 	};
 
-	cint& compressionLevel = math::maximum(-generateIn->worldPos.y(), 0);
+	cint& compressionLevel = math::maximum(-generateIn->worldPos.y, 0);
 
 	//coal has more chance to convert to diamond when deeper
 	//gold is weighty, so it has more chance to be lower
@@ -520,7 +520,7 @@ void overWorld::generateStructures(chunk* generateIn)
 
 				for (size_t j = 0; j < count; j++)
 				{
-					veci2 depositPosition = generateIn->worldPos + veci2(rand(generateIn->chunkRandom, (int)chunkSize.x() - 1), rand(generateIn->chunkRandom, (int)chunkSize.x() - 1));
+					veci2 depositPosition = generateIn->worldPos + veci2(rand(generateIn->chunkRandom, (int)chunkSize.x - 1), rand(generateIn->chunkRandom, (int)chunkSize.x - 1));
 
 
 					addOres(depositPosition, currentOre, rand(generateIn->chunkRandom, maxVeinSize[i]), generateIn->chunkRandom, { blockID::stone });
@@ -531,9 +531,9 @@ void overWorld::generateStructures(chunk* generateIn)
 void overWorld::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const gameRenderData& targetData) const
 {
 	cvec2& position = blockRect.getCenter();
-	cfp height = position.y();
-	cfp temperature = biomeTemperatureNoise->evaluate(vec1(position.x()));
-	cfp humidity = biomeHumidityNoise->evaluate(vec1(position.x()));
+	cfp height = position.y;
+	cfp temperature = biomeTemperatureNoise->evaluate(vec1(position.x));
+	cfp humidity = biomeHumidityNoise->evaluate(vec1(position.x));
 	cfp cloudThickness = cloudThicknessNoise->evaluate(cvec1(currentWorld->currentTime));
 
 	//color(40, 94, 181);
@@ -553,21 +553,21 @@ void overWorld::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const 
 		cfp& timeOfDay = currentWorld->getTimeOfDay();
 		cfp& sunAngle = ((timeOfDay - noon) / (fp)ticksPerDay) * math::PI2;
 
-		cvec2& sunPosition = cvec2(targetData.renderTarget.size.x() * 0.5, 0) + vec2::getrotatedvector(sunAngle) * targetData.renderTarget.size.x() * 0.5;
-		cfp& sunSize = targetData.renderTarget.size.x() * 0.2;
+		cvec2& sunPosition = cvec2(targetData.renderTarget.size.x * 0.5, 0) + vec2::getrotatedvector(sunAngle) * targetData.renderTarget.size.x * 0.5;
+		cfp& sunSize = targetData.renderTarget.size.x * 0.2;
 		crectangle2& sunRect = crectangle2(sunPosition, cvec2()).expanded(sunSize * 0.5);
 
 		rectangle2 croppedSunRect = sunRect;
 		if (drawRect.cropClientRect(croppedSunRect))
 		{
-			const auto& backGroundToSun = transformBrush<resolutionTexture>(mat3x3::fromRectToRect(sunRect, crectangle2(0, 0, sunTexture->defaultSize.x(), sunTexture->defaultSize.y())), *sunTexture);
+			const auto& backGroundToSun = transformBrush<resolutionTexture>(mat3x3::fromRectToRect(sunRect, crectangle2(0, 0, sunTexture->defaultSize.x, sunTexture->defaultSize.y)), *sunTexture);
 
 			const auto& maximizer = colorMaximizer<texture, transformBrush<resolutionTexture>>(targetData.renderTarget, backGroundToSun);
 			targetData.renderTarget.fillRectangle(ceilRectangle(croppedSunRect), maximizer);
 
 			if (cloudThickness > 0.7)//raining
 			{
-				/*cfp velocity = targetData.worldToRenderTargetTransform.multSizeMatrix(cvec1(TerminalGravityVelocityAirPerTick)).x();
+				/*cfp velocity = targetData.worldToRenderTargetTransform.multSizeMatrix(cvec1(TerminalGravityVelocityAirPerTick)).x;
 
 				const auto& weatherBrush = repeatingBrush<resolutionTexture>(*rainTexture);
 				const auto& movingWeatherBrush = transformBrush<repeatingBrush<resolutionTexture>>(mat3x3::cross(mat3x3::translate(cvec2(0, currentWorld->ticksSinceStart * velocity)), mat3x3::scale(cvec2(0.25))), weatherBrush);

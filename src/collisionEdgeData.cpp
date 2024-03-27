@@ -10,18 +10,18 @@ collisionEdgeData collisionEdgeData::substractCoveringEdges(const collisionEdgeD
 	{
 		vec2 currentEdge = *edgesToCheck.begin();
 		edgesToCheck.pop_front();
-		cfp currentPos11 = currentEdge.x() + currentEdge.y();
+		cfp currentPos11 = currentEdge.x + currentEdge.y;
 
 		for (cvec2& coveringEdge : edgesCovering.edges)
 		{
-			cfp coveringPos11 = coveringEdge.x() + coveringEdge.y();
-			if (collides1d(currentEdge.x(), currentEdge.y(), coveringEdge.x(), coveringEdge.y()))
+			cfp coveringPos11 = coveringEdge.x + coveringEdge.y;
+			if (collides1d(currentEdge.x, currentEdge.y, coveringEdge.x, coveringEdge.y))
 			{
 				//cut at both axes
 				//-
-				if (coveringEdge.x() > currentEdge.x())
+				if (coveringEdge.x > currentEdge.x)
 				{
-					edgesToCheck.push_back(cvec2(currentEdge.x(), coveringEdge.x() - currentEdge.x()));
+					edgesToCheck.push_back(cvec2(currentEdge.x, coveringEdge.x - currentEdge.x));
 				}
 				//+
 				if (coveringPos11 < currentPos11)
@@ -32,7 +32,7 @@ collisionEdgeData collisionEdgeData::substractCoveringEdges(const collisionEdgeD
 				goto collidingPosition;
 			}
 		}
-		substracted.addEdge(currentEdge.x(), currentEdge.y());
+		substracted.addEdge(currentEdge.x, currentEdge.y);
 	collidingPosition:;
 	}
 	return substracted;
@@ -40,12 +40,12 @@ collisionEdgeData collisionEdgeData::substractCoveringEdges(const collisionEdgeD
 
 bool collisionEdgeData::edgeInRange(cvec2& edge)
 {
-	cfp edgePos1 = edge.x() + edge.y();
+	cfp edgePos1 = edge.x + edge.y;
 	for (cvec2& checkEdge : edges)
 	{
-		if ((checkEdge.x() + checkEdge.y()) > edge.x())
+		if ((checkEdge.x + checkEdge.y) > edge.x)
 		{
-			if (checkEdge.x() > edgePos1)
+			if (checkEdge.x > edgePos1)
 			{
 				return false;
 			}
@@ -63,18 +63,18 @@ void collisionEdgeData::addEdge(fp edgeStart, fp edgeLength)
 	size_t insertPosition = edges.size();
 	for (size_t i = 0; i < edges.size(); i++)
 	{
-		if ((edgeStart + edgeLength) >= edges[i].x())
+		if ((edgeStart + edgeLength) >= edges[i].x)
 		{
 
 			size_t mergeIndex;
 			//this is the insert position
-			if (edgeStart <= edges[i].x() + edges[i].y())
+			if (edgeStart <= edges[i].x + edges[i].y)
 			{
 				//merge backwards
-				if (edges[i].x() < edgeStart)
+				if (edges[i].x < edgeStart)
 				{
-					edgeLength = (edgeStart + edgeLength) - edges[i].x();
-					edgeStart = edges[i].x();
+					edgeLength = (edgeStart + edgeLength) - edges[i].x;
+					edgeStart = edges[i].x;
 				}
 				mergeIndex = i;
 			}
@@ -84,10 +84,10 @@ void collisionEdgeData::addEdge(fp edgeStart, fp edgeLength)
 				mergeIndex = i + 1;
 			}
 			//don't increment nextindex, because all merging edges will be removed
-			while (mergeIndex < edges.size() && (edgeStart + edgeLength) >= edges[mergeIndex].x())
+			while (mergeIndex < edges.size() && (edgeStart + edgeLength) >= edges[mergeIndex].x)
 			{
 				//merge forwards
-				edgeLength = math::maximum(edgeLength, (edges[mergeIndex].x() + edges[mergeIndex].y()) - edgeStart);
+				edgeLength = math::maximum(edgeLength, (edges[mergeIndex].x + edges[mergeIndex].y) - edgeStart);
 
 				edges.erase(edges.begin() + mergeIndex);
 			}

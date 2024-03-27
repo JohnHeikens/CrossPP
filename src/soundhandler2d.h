@@ -178,7 +178,7 @@ inline microseconds audio2dt<t>::getPlayingOffset()
 template<typename t>
 inline void audio2dt<t>::setPosition(cvec2& newPosition)
 {
-	playingAudio->setPosition((float)newPosition.x(), (float)newPosition.y(), 0);
+	playingAudio->setPosition((float)newPosition.x, (float)newPosition.y, 0);
 	audio2d::setPosition(newPosition);
 }
 
@@ -191,7 +191,7 @@ inline void audio2dt<t>::play()
 		playingAudio->setPitch((float)pitch);
 	}
 	playingAudio->setVolume((float)volume * 100.0f);
-	playingAudio->setPosition((float)pos.x(), (float)pos.y(), 0);
+	playingAudio->setPosition((float)pos.x, (float)pos.y, 0);
 }
 
 template<typename t>

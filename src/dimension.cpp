@@ -51,16 +51,16 @@
 color dimension::getColorMultiplier(cfp& sunLight, cfp& blockLight) const
 {
 	const texture& lightMapTexture = *dimensionDataList[identifier]->lightMapTexture->scaledTextures[0];
-	cfp preciseSunlightLevel = (timeToLightLevel.getValue(currentWorld->getTimeOfDay()) / maxLightLevel) * (fp)(lightMapTexture.size.x() - 2);//-2 for thunder
+	cfp preciseSunlightLevel = (timeToLightLevel.getValue(currentWorld->getTimeOfDay()) / maxLightLevel) * (fp)(lightMapTexture.size.x - 2);//-2 for thunder
 
-	csize_t& quarter = lightMapTexture.size.y() / 4;
+	csize_t& quarter = lightMapTexture.size.y / 4;
 
-	cfp sunLightYRow = lightMapTexture.size.y() - (sunLight / maxLightLevel) * (quarter - 1) - 1;
-	cfp blockLightYRow = (lightMapTexture.size.y() - quarter) - ((blockLight / maxLightLevel) * (quarter - 1) + 1);
+	cfp sunLightYRow = lightMapTexture.size.y - (sunLight / maxLightLevel) * (quarter - 1) - 1;
+	cfp blockLightYRow = (lightMapTexture.size.y - quarter) - ((blockLight / maxLightLevel) * (quarter - 1) + 1);
 	const auto& interpolator = bilinearInterpolator(lightMapTexture);
 
 	return color::maximizeColors(
-		interpolator.getValue(cvec2(currentWorld->ticksSinceStart % (int)lightMapTexture.size.x(), blockLightYRow)),
+		interpolator.getValue(cvec2(currentWorld->ticksSinceStart % (int)lightMapTexture.size.x, blockLightYRow)),
 		interpolator.getValue(cvec2(preciseSunlightLevel, sunLightYRow))
 	);
 }
@@ -94,7 +94,7 @@ veci2 dimension::searchPortal(cveci2& positionNear)
 		cint netherSpawnSearchRange = (int)(netherPortalSearchRange * 0.8);
 		for (int i = 0; i < portalTryCount; i++)
 		{
-			cveci2 pos = veci2(positionNear.x() + rand(currentRandom, -netherSpawnSearchRange, netherSpawnSearchRange),
+			cveci2 pos = veci2(positionNear.x + rand(currentRandom, -netherSpawnSearchRange, netherSpawnSearchRange),
 				rand(currentRandom, netherLavaLevel, netherCeilingStart));
 			if (getBlockID(pos + cveci2(0, -1), chunkLoadLevel::updateLoaded) == blockID::air &&
 				getBlock(pos + cveci2(0, -2), chunkLoadLevel::updateLoaded)->blockCollisionType == collisionTypeID::willCollide)
@@ -328,7 +328,7 @@ bool dimension::locateBiomes(const std::vector<biomeID>& biomesToLocate, cvec2& 
 	{
 		for (int j = 0; j < 2; j++)
 		{
-			searchPosition[j].x() += searchStep[j];
+			searchPosition[j].x += searchStep[j];
 			cvec2& currentPosition = searchPosition[j];
 			if (std::find(biomesToLocate.begin(), biomesToLocate.end(), getBiome(currentPosition)) != biomesToLocate.end())
 			{
@@ -396,8 +396,8 @@ bool dimension::meetsSpawningConditions(entity* const& e)
 		//check if the floor does collide
 		if ((e->entityType != entityID::blaze) && (e->entityType != entityID::ghast) && (e->entityType != entityID::drowned))
 		{
-			cvec2 posStandingOn = absoluteHitboxTopLeft + cvec2(e->relativeHitbox.w() * 0.5, -1);
-			crectangle2 floorRectangle = crectangle2(absoluteHitboxTopLeft.x(), posStandingOn.y(), e->relativeHitbox.size.x(), 1);
+			cvec2 posStandingOn = absoluteHitboxTopLeft + cvec2(e->relativeHitbox.w * 0.5, -1);
+			crectangle2 floorRectangle = crectangle2(absoluteHitboxTopLeft.x, posStandingOn.y, e->relativeHitbox.size.x, 1);
 			collisionTypeID floorCollision = getHitboxCollisionType(floorRectangle);
 			if (floorCollision == collisionTypeID::willCollide)
 			{
@@ -626,9 +626,9 @@ chunk* dimension::loadChunkIfNotLoaded(cveci2& chunkCoordinates, const chunkLoad
 void dimension::keepPlayerLoaded(crectanglei2& chunkRange)
 {
 	cveci2 pos1 = chunkRange.pos1();
-	for (veci2 position = chunkRange.pos0; position.y() < pos1.y(); position.y()++)
+	for (veci2 position = chunkRange.pos0; position.y < pos1.y; position.y++)
 	{
-		for (position.x() = chunkRange.pos0.x(); position.x() < pos1.x(); position.x()++)
+		for (position.x = chunkRange.pos0.x; position.x < pos1.x; position.x++)
 		{
 			chunk* c = loadChunkIfNotLoaded(position, chunkLoadLevel::entityLoaded);
 			c->ticksSincePlayer = 0;
@@ -684,7 +684,7 @@ void* dimension::getArrayValuePointerUnsafe(cveci2& position, const arrayDataTyp
 	cveci2& chunkCoordinates = getChunkCoordinates(position);
 	chunk* chunkToGet = loadChunkIfNotLoaded(chunkCoordinates, minimalLoadLevel);
 
-	csize_t& arrayIndex = (size_t)(position.x() - chunkToGet->worldPos.x()) + ((size_t)(position.y() - chunkToGet->worldPos.y()) * chunkSize.x());
+	csize_t& arrayIndex = (size_t)(position.x - chunkToGet->worldPos.x) + ((size_t)(position.y - chunkToGet->worldPos.y) * chunkSize.x);
 	switch (dataType)
 	{
 	case arrayDataType::blockIDType:

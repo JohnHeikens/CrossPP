@@ -29,7 +29,7 @@ jungle::jungle() : overWorldBiomeGenerator(biomeID::jungle)
 
 void jungle::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std::mt19937& randomToUse) const
 {
-	if (dimensionIn->getBlockID(cveci2(pos.x(), pos.y() - 1)) == blockID::stone)
+	if (dimensionIn->getBlockID(cveci2(pos.x, pos.y - 1)) == blockID::stone)
 	{
 		generateTopping(dimensionIn, pos, { blockID::stone }, blockID::dirt);
 

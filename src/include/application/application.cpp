@@ -33,7 +33,7 @@ int application::run()
 	settings.antialiasingLevel = 0;
 
 	veci2 size = veci2(1920, 1080);
-	window = new sf::RenderWindow(sf::VideoMode(size.x(), size.y()), "Tutorial", sf::Style::Close | sf::Style::Resize, settings);
+	window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), "Tutorial", sf::Style::Close | sf::Style::Resize, settings);
 	//settings = window->getSettings();
 	//std::cout << SFML_VERSION_MAJOR << "." << SFML_VERSION_MINOR << "." << SFML_VERSION_PATCH << std::endl;
 	//std::cout << settings.majorVersion << "." << settings.minorVersion << std::endl;
@@ -52,9 +52,9 @@ int application::run()
 	stableLoop loop = stableLoop(frameTime);
 	// changeKeyboardLayout();
 	//windowSprite->scale(1, -1);
-	//windowSprite->move(0, (float)size.y());
+	//windowSprite->move(0, (float)size.y);
 	//windowSprite.scale(1, -1);
-	//windowSprite.move(0, (float)size.y());
+	//windowSprite.move(0, (float)size.y);
 	layout(crectanglei2(cveci2(), size));
 	mainForm->focus();
 	while (window->isOpen())
@@ -81,11 +81,11 @@ int application::run()
 
 void application::layout(crectanglei2& newRect)
 {
-	window->setView(sf::View(sf::FloatRect((float)newRect.x(), (float)newRect.y(), (float)newRect.w(), (float)newRect.h())));
-	windowTexture.create(newRect.size.x(), newRect.size.y());
+	window->setView(sf::View(sf::FloatRect((float)newRect.x, (float)newRect.y, (float)newRect.w, (float)newRect.h)));
+	windowTexture.create(newRect.size.x, newRect.size.y);
 	windowSprite.setTexture(windowTexture, true);
 	windowSprite.setScale(1, -1);
-	windowSprite.setPosition(0, (float)newRect.size.y());
+	windowSprite.setPosition(0, (float)newRect.size.y);
 
 	graphics = texture(cvect2<fsize_t>(newRect.size));
 	mainForm->layout(crectanglei2(cveci2(), newRect.size));
@@ -229,10 +229,10 @@ void application::processInput()
 //	case WM_MBUTTONUP:
 //	{
 //		cvk mouseButtonReleased = msg == WM_LBUTTONUP ? VK_LBUTTON : msg == WM_RBUTTONUP ? VK_RBUTTON : VK_MBUTTON;
-//		//f->onMouseUp(cveci2(MousePos.x(), MousePos.y()));
+//		//f->onMouseUp(cveci2(MousePos.x, MousePos.y));
 //		app->lastKeyDown[mouseButtonReleased] = false;
 //
-//		app->mainForm->mouseUp(cveci2(app->MousePos.x(), app->MousePos.y()), mouseButtonReleased);
+//		app->mainForm->mouseUp(cveci2(app->MousePos.x, app->MousePos.y), mouseButtonReleased);
 //	}
 //	break;
 //	case WM_SETFOCUS:
@@ -272,7 +272,7 @@ void application::processInput()
 //		PAINTSTRUCT ps;
 //		HDC hdc = BeginPaint(hwnd, &ps);
 //		// Draw graphics->colors to window when window needs repainting
-//		BitBlt(hdc, 0, 0, (int)app->graphics.size.x(), (int)app->graphics.size.y(), app->hdcMem, 0, 0, SRCCOPY);
+//		BitBlt(hdc, 0, 0, (int)app->graphics.size.x, (int)app->graphics.size.y, app->hdcMem, 0, 0, SRCCOPY);
 //		EndPaint(hwnd, &ps);
 //	}
 //	break;
@@ -309,18 +309,18 @@ void application::processInput()
 //	POINT p;
 //	if (GetCursorPos(&p))
 //	{
-//		//cursor position now in p.x() and p.y()
+//		//cursor position now in p.x and p.y
 //		if (ScreenToClient(hwnd, &p))
 //		{
-//			//p.x() and p.y() are now relative to hwnd's client area
+//			//p.x and p.y are now relative to hwnd's client area
 //			MousePos = vecl2(p.x, p.y);
 //			//swap y
-//			MousePos.y() = (int)graphics.size.y() - MousePos.y() - 1;
+//			MousePos.y = (int)graphics.size.y - MousePos.y - 1;
 //		}
 //	}
 //	if (mainForm->focused)
 //	{
-//		mainForm->hover(cveci2(MousePos.x(), MousePos.y()));
+//		mainForm->hover(cveci2(MousePos.x, MousePos.y));
 //		for (vk keyCode = 0x0; keyCode < 0xff; keyCode++)
 //		{
 //			if (pressed(keyCode))
@@ -356,12 +356,12 @@ void application::processInput()
 //	 */
 //	 // Desired bitmap properties
 //	bmi.bmiHeader.biSize = sizeof(BITMAPINFO);//sizeof(BITMAPINFO);
-//	bmi.bmiHeader.biWidth = (LONG)graphics.size.x();
-//	bmi.bmiHeader.biHeight = (LONG)graphics.size.y(); //-graphics->size.y() to order graphics->colors from top to bottom
+//	bmi.bmiHeader.biWidth = (LONG)graphics.size.x;
+//	bmi.bmiHeader.biHeight = (LONG)graphics.size.y; //-graphics->size.y to order graphics->colors from top to bottom
 //	bmi.bmiHeader.biPlanes = 1;
 //	bmi.bmiHeader.biBitCount = 32; // last byte not used, 32 bit for alignment
 //	bmi.bmiHeader.biCompression = BI_RGB;
-//	bmi.bmiHeader.biSizeImage = 0;// graphics->width* graphics->size.y() * 4;
+//	bmi.bmiHeader.biSizeImage = 0;// graphics->width* graphics->size.y * 4;
 //	bmi.bmiHeader.biXPelsPerMeter = 0;
 //	bmi.bmiHeader.biYPelsPerMeter = 0;
 //	bmi.bmiHeader.biClrUsed = 0;
@@ -379,7 +379,7 @@ void application::processInput()
 //	}
 //	else
 //	{
-//		graphics.baseArray = new color[graphics.size.x() * graphics.size.y()];
+//		graphics.baseArray = new color[graphics.size.x * graphics.size.y];
 //	}
 //
 //	DeleteDC(hdc);
@@ -390,7 +390,7 @@ void application::processInput()
 //	hdcMem = CreateCompatibleDC(wndDC);//HDC must be wndDC!! :)
 //	hbmOld = (HBITMAP)SelectObject(hdcMem, hbmp);
 //
-//	mainForm->layout(crectanglei2(0, 0, (int)graphics.size.x(), (int)graphics.size.y()));
+//	mainForm->layout(crectanglei2(0, 0, (int)graphics.size.x, (int)graphics.size.y));
 // }
 application::application(form *mainForm)
 {

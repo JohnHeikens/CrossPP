@@ -58,7 +58,7 @@ void mob::tick()
 	ticksSinceToolUsed++;
 
 	walking = wantsToGoRight ^ wantsToGoLeft;
-	cbool moving = abs(speed.x()) > 0;
+	cbool moving = abs(speed.x) > 0;
 	fp lastLegDistance;
 	if (!walking)
 	{
@@ -68,7 +68,7 @@ void mob::tick()
 	else
 	{
 		lastLegDistance = totalLegDistance;
-		totalLegDistance += speed.x() * secondsPerTick;
+		totalLegDistance += speed.x * secondsPerTick;
 	}
 
 	if (((mobData*)entityDataList[(int)entityType])->ambientSound)
@@ -116,7 +116,7 @@ void mob::tick()
 				fp durabilityDecrease = 1;
 
 				//crits
-				bool criticalDamage = !onGround && (speed.y() < -3) && (speed.x() <= getMobData(entityType)->walkingSpeed) && (coolDownMultiplier > 0.848);
+				bool criticalDamage = !onGround && (speed.y < -3) && (speed.x <= getMobData(entityType)->walkingSpeed) && (coolDownMultiplier > 0.848);
 				if (criticalDamage)
 				{
 					attackDamage *= 1.5;
@@ -185,7 +185,7 @@ void mob::tick()
 				//mob is in the way, hit the mob instead
 
 				cint knockBackLevel = isHumanoid(entityType) ? ((humanoid*)this)->itemHolding->getEnchantmentLevel(enchantmentID::knockback) : 0;
-				cfp difference = entityToAttack->position.x() - position.x();
+				cfp difference = entityToAttack->position.x - position.x;
 				cfp knockbackDistance = 0.5;//the mob has to be this amount of blocks away to recieve knockback
 				cfp baseKnockBackSpeed = 5;
 				cvec2 sideWaysBonusSpeed = cvec2((knockBackLevel + 1) * baseKnockBackSpeed *
@@ -226,11 +226,11 @@ void mob::tick()
 		{
 			if (wantsToGoUp || wantsToJump)
 			{
-				forceToAdd.y() += climbUpSpeed;
+				forceToAdd.y += climbUpSpeed;
 			}
 			else if (wantsToGoDown)
 			{
-				forceToAdd.y() += -climbDownSpeed;
+				forceToAdd.y += -climbDownSpeed;
 			}
 			terminalVelocityMultiplier = getTerminalVelocityMultiplier(ladderFrictionMultiplier);
 		}
@@ -240,11 +240,11 @@ void mob::tick()
 			terminalVelocityMultiplier = getTerminalVelocityMultiplier(fluidFrictionMultiplier);
 			if (wantsToGoUp || wantsToJump)
 			{
-				forceToAdd.y() += SwimUpspeed + gravityForce / terminalVelocityMultiplier;
+				forceToAdd.y += SwimUpspeed + gravityForce / terminalVelocityMultiplier;
 			}
 			else if (wantsToGoDown)
 			{
-				forceToAdd.y() += swimDownSpeed + gravityForce / terminalVelocityMultiplier;
+				forceToAdd.y += swimDownSpeed + gravityForce / terminalVelocityMultiplier;
 			}
 			MovementSpeed = swimSpeed;
 
@@ -258,11 +258,11 @@ void mob::tick()
 			{
 				cvec2 jumpPower = getJumpPower();
 				// Jumpheight = 1.252203 -> vanilla mc: 1.25
-				cfp Jumpspeed = (jumpPower.y() * pow(1.5, getEffectLevel(statusEffectID::jumpBoost))) + gravityForce; //gravity also gets substracted
+				cfp Jumpspeed = (jumpPower.y * pow(1.5, getEffectLevel(statusEffectID::jumpBoost))) + gravityForce; //gravity also gets substracted
 				fp power = Jumpspeed;
-				speed.y() += power;
+				speed.y += power;
 				jumpStamina = 9;
-				MovementSpeed *= jumpPower.x();//horizontal jump power
+				MovementSpeed *= jumpPower.x;//horizontal jump power
 				exhaustionIncrease += wantsToSprint ? 0.2 : 0.05;
 			}
 			else
@@ -286,21 +286,21 @@ void mob::tick()
 		terminalVelocityMultiplier = airTerminalVelocityMultiplier;
 		if (wantsToGoUp || wantsToJump)
 		{
-			forceToAdd.y() += MovementSpeed;
+			forceToAdd.y += MovementSpeed;
 		}
 		if (wantsToGoDown || wantsToSneak)
 		{
-			forceToAdd.y() -= MovementSpeed;
+			forceToAdd.y -= MovementSpeed;
 		}
 	}
 
 	if (wantsToGoRight)
 	{
-		forceToAdd.x() += MovementSpeed;
+		forceToAdd.x += MovementSpeed;
 	}
 	if (wantsToGoLeft)
 	{
-		forceToAdd.x() -= MovementSpeed;
+		forceToAdd.x -= MovementSpeed;
 	}
 
 	cfp& effectMultiplier = 1 + 0.2 * getEffectLevel(statusEffectID::speed);
@@ -324,11 +324,11 @@ void mob::tick()
 
 	if (onGround)
 	{
-		if ((speed.x() > 0) ? (!wantsToGoRight) : (!wantsToGoLeft))
+		if ((speed.x > 0) ? (!wantsToGoRight) : (!wantsToGoLeft))
 		{
 			//use feet as brakes
 			cfp feetFriction = 0.5;
-			speed.x() = speed.x() * feetFriction;
+			speed.x = speed.x * feetFriction;
 		}
 	}
 	else if (flying)
@@ -355,7 +355,7 @@ void mob::tick()
 		{
 			//use wings as brakes
 			cfp wingFriction = 0.8;
-			speed.x() = speed.x() * wingFriction;
+			speed.x = speed.x * wingFriction;
 		}
 	dontBrake:;
 	}
@@ -367,7 +367,7 @@ void mob::tick()
 		if (((mobData*)entityDataList[(int)entityType])->legSwingSynchronizer.maximumBetween(lastLegDistance, totalLegDistance))
 		{
 			//check block
-			block* b = blockList[(int)dimensionIn->getBlockID(veci2((int)floor(position.x()), (int)floor(position.y() - 0.05)))];
+			block* b = blockList[(int)dimensionIn->getBlockID(veci2((int)floor(position.x), (int)floor(position.y - 0.05)))];
 			if (b->blockCollisionType != collisionTypeID::willNotCollide)
 			{
 				std::shared_ptr<soundCollection> mobStepSound = getMobData(entityType)->stepSound;
@@ -379,7 +379,7 @@ void mob::tick()
 					//add particle
 					summonParticle(dimensionIn, position, new blockParticleBrush(b->identifier));
 				}
-				else if (abs(speed.x()) > legBrakeSpeed.x())
+				else if (abs(speed.x) > legBrakeSpeed.x)
 				{
 					stepSound->playRandomSound(dimensionIn, position, volume, mobStepSound ? 1 : 0.5);
 					//add particle
@@ -521,7 +521,7 @@ void mob::onCollisionWithGround(cfp& verticalSpeed)
 {
 	//play block sound of block below
 	rectangle2 h = calculateHitBox(position);
-	block* below = blockList[(int)dimensionIn->getBlockID(cveci2(math::floor(position.x()), math::floor(position.y()) - 1))];
+	block* below = blockList[(int)dimensionIn->getBlockID(cveci2(math::floor(position.x), math::floor(position.y) - 1))];
 	cfp damage = CalculateFallDamage(verticalSpeed);
 	if (damage > 0)
 	{
@@ -531,7 +531,7 @@ void mob::onCollisionWithGround(cfp& verticalSpeed)
 	//wont play the sound if you dont fall right onto the block
 	if (below->blockCollisionType != collisionTypeID::willNotCollide)
 	{
-		if (-verticalSpeed > legBrakeSpeed.y())
+		if (-verticalSpeed > legBrakeSpeed.y)
 		{
 			below->fallSound->playRandomSound(dimensionIn, position, 1, 0.5);
 		}
@@ -616,7 +616,7 @@ void mob::lookAtEntity(entity* const& e)
 }
 void mob::flipBodyToLookingDirection()
 {
-	mainBodyPart->flipX = lookingAt.x() < position.x();
+	mainBodyPart->flipX = lookingAt.x < position.x;
 }
 void mob::flipBodyToWalkingDirection()
 {
@@ -624,24 +624,24 @@ void mob::flipBodyToWalkingDirection()
 }
 void mob::flipBodyToSpeedDirection()
 {
-	mainBodyPart->flipX = speed.x() < 0;
+	mainBodyPart->flipX = speed.x < 0;
 }
 bool mob::goToPosition(cvec2& destination)
 {
-	if (destination.x() < position.x())
+	if (destination.x < position.x)
 	{
 		wantsToGoLeft = true;
 	}
-	else if (destination.x() > position.x())
+	else if (destination.x > position.x)
 	{
 		wantsToGoRight = true;
 	}
 
-	if (destination.y() < position.y())
+	if (destination.y < position.y)
 	{
 		wantsToGoDown = true;
 	}
-	else if (destination.y() > position.y())
+	else if (destination.y > position.y)
 	{
 		wantsToGoUp = true;
 	}
@@ -663,9 +663,9 @@ void mob::updateHeadAngle() const
 	cvec2 headJoint = getHeadPosition();
 	vec2 headLookingAtDifference = lookingAt - headJoint;
 	headLookingAtDifference.normalize();
-	cvec2 headLookingAtDifferenceFlipped = vec2(abs(headLookingAtDifference.x()), headLookingAtDifference.y());
+	cvec2 headLookingAtDifferenceFlipped = vec2(abs(headLookingAtDifference.x), headLookingAtDifference.y);
 	head->angle = headLookingAtDifferenceFlipped.getRotation() - math::PI * 0.5;
-	if ((headLookingAtDifference.x() < 0) ^ mainBodyPart->flipX)
+	if ((headLookingAtDifference.x < 0) ^ mainBodyPart->flipX)
 	{
 		head->flipX = true;
 		//head->angle = -head->angle;
@@ -700,7 +700,7 @@ void mob::updateSelection()
 	selectedUUID = uuid();
 	fp minimalMobCollideDistance = minimalBlockCollideDistance;
 
-	cfp marginRange = (fp)chunkSize.x();//for if the 'position' is their feet and you want to hit their head
+	cfp marginRange = (fp)chunkSize.x;//for if the 'position' is their feet and you want to hit their head
 
 	std::vector<entity*> nearEntities = dimensionIn->findNearEntities(position, armRange + marginRange);
 	for (entity* e : nearEntities)

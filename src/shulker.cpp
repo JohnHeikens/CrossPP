@@ -12,8 +12,8 @@ shulker::shulker(dimension* dimensionIn, cvec2& position) : mob(dimensionIn, pos
 	head = new bodyPart2D(shulkerHeadTextureRect, nullptr, position, shulkerHeadSize, shulkerHeadSize * 0.5);
 	mainBodyPart = head;
 
-	bottomShell = new bodyPart2D(shulkerBottomShellTextureRect, head, cvec2(0, -0.5 + shulkerBottomShellSize.y() * 0.5), shulkerBottomShellSize, shulkerBottomShellSize * 0.5, 0, 0, true);
-	topShell = new bodyPart2D(shulkerTopShellTextureRect, head, cvec2(0, 0.5 - shulkerTopShellSize.y() * 0.5), shulkerTopShellSize, shulkerTopShellSize * 0.5, 0, 0, true);
+	bottomShell = new bodyPart2D(shulkerBottomShellTextureRect, head, cvec2(0, -0.5 + shulkerBottomShellSize.y * 0.5), shulkerBottomShellSize, shulkerBottomShellSize * 0.5, 0, 0, true);
+	topShell = new bodyPart2D(shulkerTopShellTextureRect, head, cvec2(0, 0.5 - shulkerTopShellSize.y * 0.5), shulkerTopShellSize, shulkerTopShellSize * 0.5, 0, 0, true);
 
 	head->children.push_back(bottomShell);
 	head->children.push_back(topShell);

@@ -138,11 +138,11 @@ constexpr int netherLavaOceanBedEnd = -0x140;
 
 //chunk blocks to 2d: 0x10000
 constexpr vect3<size_t> minecraftChunkSize = vect3<size_t>(0x10, 0x100, 0x10);
-constexpr size_t minecraftChunkLayerSize = minecraftChunkSize.x() * minecraftChunkSize.x();
-constexpr size_t minecraftChunkArraySize = minecraftChunkSize.y() * minecraftChunkLayerSize;
+constexpr size_t minecraftChunkLayerSize = minecraftChunkSize.getX() * minecraftChunkSize.getX();
+constexpr size_t minecraftChunkArraySize = minecraftChunkSize.getY() * minecraftChunkLayerSize;
 
 constexpr int averageMinecraftHeight = 0x40;
-constexpr size_t minecraftSubChunkHeight = minecraftChunkSize.x();
+constexpr size_t minecraftSubChunkHeight = minecraftChunkSize.getX();
 constexpr int vanillaChunkBlockCount = minecraftChunkLayerSize * averageMinecraftHeight;
 constexpr int averageChunkBlockCountUnderGround = chunkArraySize;//in an endless world, the average amount of blocks underground = filled
 //you will have to stripmine the same amount of time to find ores
@@ -151,7 +151,7 @@ constexpr fp chunkOreMultiplier = (averageChunkBlockCountUnderGround / (fp)vanil
 
 constexpr int ticksPerMinecraftSubChunk = 3;
 
-constexpr fp defaultRandomTickSpeed = (fp)(chunkSize.x() * chunkSize.y() * ticksPerMinecraftSubChunk) / (fp)(minecraftChunkSize.x() * minecraftChunkSize.z() * minecraftSubChunkHeight);
+constexpr fp defaultRandomTickSpeed = (fp)(chunkSize.getX() * chunkSize.getY() * ticksPerMinecraftSubChunk) / (fp)(minecraftChunkSize.getX() * minecraftChunkSize.getZ() * minecraftSubChunkHeight);
 
 //the average amount of ticks until a block recieves a random tick
 constexpr fp defaultTicksPerRandomTick = chunkArraySize / defaultRandomTickSpeed;
@@ -228,7 +228,7 @@ constexpr fp visibleRangeTransitionSpeedPerSecond = 0.9;//in 1 second, it's 10x 
 
 constexpr int iconSize = 8;
 
-constexpr int smallRightButtonSize = buttonSize.y() * 4;
+constexpr int smallRightButtonSize = buttonSize.getY() * 4;
 
 #pragma optimize( "", off )
 constexpr rectangle2 blockTextureRect = crectangle2(cvec2(), cvec2(blockTextureSize));
@@ -254,7 +254,7 @@ constexpr int enchantmentOptionCount = 3;
 constexpr int woodTypeCount = 0x8;
 
 constexpr vec2 boatHitboxSize = cvec2(1.375, 0.565);
-constexpr vec2 boatRotationCentre = cvec2(boatHitboxSize.x() * 0.5, 0);
+constexpr vec2 boatRotationCentre = cvec2(boatHitboxSize.getX() * 0.5, 0);
 
 constexpr fp armorExpansion = 0.03;
 
@@ -318,10 +318,10 @@ constexpr vec2 torchSize = cvec2(torchTextureRect.size) / blockTextureSize;
 constexpr rectangle2 bedFrontTextureRect = crectangle2(0, 42, 6, 16);
 constexpr rectangle2 bedBackTextureRect = crectangle2(0, 20, 6, 16);
 constexpr rectangle2 bedLegTextureRect = crectangle2(50, 40, 4, 3);
-constexpr fp bedHeightPixels = (bedLegTextureRect.size.y() + bedFrontTextureRect.size.x());
+constexpr fp bedHeightPixels = (bedLegTextureRect.size.getY() + bedFrontTextureRect.size.getX());
 constexpr fp bedHeight = bedHeightPixels / (fp)blockTextureSize;
 constexpr int bedBottomThicknessPixels = 2;
-constexpr fp bedHitboxHeight = (bedLegTextureRect.h() + bedBottomThicknessPixels) / (fp)blockTextureSize;
+constexpr fp bedHitboxHeight = (bedLegTextureRect.getH() + bedBottomThicknessPixels) / (fp)blockTextureSize;
 
 constexpr fp enchantingTableHeight = 0xc / (fp)0x10;
 constexpr fp grassPathHeight = 0xf / (fp)0x10;
@@ -368,14 +368,14 @@ constexpr fp hearingRange = 0x20;
 constexpr fp soundLoadRange = hearingRange + 0x40;
 
 constexpr rectangle2 endPortalBlockRect = crectangle2(0, 0, 1, 13 / (fp)blockTextureSize);
-constexpr vec2 endPortalFrameEyeSize = cvec2(0x8 / (fp)blockTextureSize, 1 - endPortalBlockRect.size.y());
-constexpr rectangle2 endPortalFrameEyeBlockRect = crectangle2((1 - endPortalFrameEyeSize.x()) * 0.5, endPortalBlockRect.size.y(), endPortalFrameEyeSize.x(), endPortalFrameEyeSize.y());
+constexpr vec2 endPortalFrameEyeSize = cvec2(0x8 / (fp)blockTextureSize, 1 - endPortalBlockRect.size.getY());
+constexpr rectangle2 endPortalFrameEyeBlockRect = crectangle2((1 - endPortalFrameEyeSize.getX()) * 0.5, endPortalBlockRect.size.getY(), endPortalFrameEyeSize.getX(), endPortalFrameEyeSize.getY());
 
 constexpr vec2 arrowHitboxSize = cvec2(0.1);
 constexpr rectangle2 relativeArrowHitbox = crectangle2(arrowHitboxSize * -0.5, arrowHitboxSize);
 constexpr vec2 arrowRenderSize = cvec2(0.5);
 constexpr rectangle2 arrowTextureRect = crectangle2(cvec2(0, 27), cvec2(0x10, 5));
-constexpr fp arrowPixelSize = arrowRenderSize.x() / arrowTextureRect.size.x();
+constexpr fp arrowPixelSize = arrowRenderSize.getX() / arrowTextureRect.size.getX();
 constexpr vec2 arrowSize = cvec2(arrowTextureRect.size) * arrowPixelSize;
 
 //hotbar
@@ -388,8 +388,8 @@ constexpr rectangle2 middleTextureRect = crectangle2(0, 0, 0x10, 1);
 constexpr rectangle2 railsTextureRect = crectangle2(0, 0, 0x10, 4);
 constexpr rectangle2 sleepersTextureRect = crectangle2(0, 0, 0x10, 2);
 
-constexpr fp railsHeight = railsTextureRect.size.y() / (fp)blockTextureSize;
-constexpr fp sleepersHeight = sleepersTextureRect.size.y() / (fp)blockTextureSize;
+constexpr fp railsHeight = railsTextureRect.size.getY() / (fp)blockTextureSize;
+constexpr fp sleepersHeight = sleepersTextureRect.size.getY() / (fp)blockTextureSize;
 
 const color waterColor = color(color::FromHex(0x050533), color::halfMaxValue);//50 percent transparency
 const color lavaColor = color(color::FromHex(0xd16018), (colorChannel)(color::maxValue * 0.9));//10 percent transparency
@@ -458,8 +458,8 @@ constexpr fp ironBarsPoleX = (1 - ironBarsPoleWidth) / 2;
 constexpr rectangle2 endRodBaseTextureRelativeRect = crectangle2(4.0 / blockTextureSize, 16.0 / blockTextureSize, 8.0 / blockTextureSize, 2.0 / blockTextureSize);
 constexpr rectangle2 endRodPoleTextureRelativeRect = crectangle2(0, 2.0 / blockTextureSize, 4.0 / blockTextureSize, 20.0 / blockTextureSize);
 
-constexpr rectangle2 endRodBaseRelativeRect = crectangle2((1 - endRodBaseTextureRelativeRect.size.x()) * 0.5, 0, endRodBaseTextureRelativeRect.size.x(), endRodBaseTextureRelativeRect.size.y());
-constexpr rectangle2 endRodPoleRelativeRect = crectangle2((1 - endRodPoleTextureRelativeRect.size.x()) * 0.5, endRodBaseTextureRelativeRect.size.y(), endRodPoleTextureRelativeRect.size.x(), endRodPoleTextureRelativeRect.size.y());
+constexpr rectangle2 endRodBaseRelativeRect = crectangle2((1 - endRodBaseTextureRelativeRect.size.getX()) * 0.5, 0, endRodBaseTextureRelativeRect.size.getX(), endRodBaseTextureRelativeRect.size.getY());
+constexpr rectangle2 endRodPoleRelativeRect = crectangle2((1 - endRodPoleTextureRelativeRect.size.getX()) * 0.5, endRodBaseTextureRelativeRect.size.getY(), endRodPoleTextureRelativeRect.size.getX(), endRodPoleTextureRelativeRect.size.getY());
 
 constexpr directionID standardUpFacingBlockDirection = directionID::positiveY;
 constexpr directionID standardSideFacingBlockDirection = directionID::negativeX;

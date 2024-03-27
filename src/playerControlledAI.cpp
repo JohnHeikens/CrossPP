@@ -84,11 +84,11 @@ void playerControlledAI::execute()
 
 						if (connectedPlayer->wantsToGoLeft)
 						{
-							entityRidingOn->speed.x() -= paddleForce;
+							entityRidingOn->speed.x -= paddleForce;
 						}
 						else if (connectedPlayer->wantsToGoRight)
 						{
-							entityRidingOn->speed.x() += paddleForce;
+							entityRidingOn->speed.x += paddleForce;
 						}
 					}
 				}
@@ -142,6 +142,6 @@ void playerControlledAI::serializeValue(nbtSerializer& s)
 {
 	//we don't have to serialize tickssincestoppedjumping, that would only cause surprise moments where you f.e. stop flying when you reconnect because you're holding space
 
-	//s.serializeValue(std::wstring(L"visible range x"), visibleRange.x());
+	//s.serializeValue(std::wstring(L"visible range x"), visibleRange.x);
 	//s.serializeValue(std::wstring(L"visible range when walking"), visibleRangeXWalk);
 }

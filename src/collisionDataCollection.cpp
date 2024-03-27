@@ -42,7 +42,7 @@ collisionTypeID collisionDataCollection::getMaximumCollision() const
 	collisionData nearestCollision = collisionData();
 	for (size_t i = ((size_t)collisionTypeID::count - 1); i > 0; i--)
 	{
-		if (firstCollisions[i].axisCollided.x() || firstCollisions[i].axisCollided.y())
+		if (firstCollisions[i].axisCollided.x || firstCollisions[i].axisCollided.y)
 		{
 			return (collisionTypeID)i;
 		}

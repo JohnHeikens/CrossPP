@@ -16,5 +16,5 @@ overWorldBiomeGenerator::~overWorldBiomeGenerator()
 
 bool overWorldBiomeGenerator::shouldPlaceSugarCane(cveci2& pos, std::mt19937& randomToUse)
 {
-	return pos.y() < sugarCaneSpawnHeight && randChance(currentRandom, (pos.y() - seaLevel) + 2);
+	return pos.y < sugarCaneSpawnHeight && randChance(currentRandom, (pos.y - seaLevel) + 2);
 }

@@ -64,7 +64,7 @@ void ridableEntity::addCollidingEntities()
 		{
 			crectangle2 hitbox = possiblyCollidingEntities[i]->calculateHitBox();
 			//entity must fit inside
-			if (hitbox.size.x() < currentHitbox.size.x())
+			if (hitbox.size.x < currentHitbox.size.x)
 			{
 				if (collides2d(hitbox, currentHitbox))
 				{

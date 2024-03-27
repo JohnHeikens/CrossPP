@@ -165,9 +165,9 @@ inline std::vector<veci2> blockContainer::getAffectedPositions(crectanglei2& rec
 	std::vector<veci2> affectedPositions = std::vector<veci2>();
 	cveci2& pos11 = rectToSearch.pos1();
 
-	for (veci2 position = rectToSearch.pos0; position.y() < pos11.y(); position.y()++)
+	for (veci2 position = rectToSearch.pos0; position.y < pos11.y; position.y++)
 	{
-		for (position.x() = rectToSearch.pos0.x(); position.x() < pos11.x(); position.x()++)
+		for (position.x = rectToSearch.pos0.x; position.x < pos11.x; position.x++)
 		{
 			if (inBounds(position) && checkFunctionToUse(position))
 			{

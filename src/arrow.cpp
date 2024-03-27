@@ -11,7 +11,7 @@ arrow::arrow(dimension* dimensionIn, cvec2& position) : throwable(dimensionIn, p
 void arrow::render(const gameRenderData& targetData) const
 {
 	mainBodyPart->translate = position;
-	if (speed.x() != 0 || speed.y() != 0)
+	if (speed.x != 0 || speed.y != 0)
 	{
 		cvec2 normalizedSpeed = speed.normalized();
 		cfp speedRotation = normalizedSpeed.getRotation();

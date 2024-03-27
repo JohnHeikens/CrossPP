@@ -12,21 +12,21 @@ void serverEditor::layout(crectanglei2& newRect)
 	form::layout(newRect);
 	//center controls
 	cint offsetFromCenter = 0x3;
-	cint middleX = (rect.w() - buttonSize.x()) / 2;
-	cint leftSideX = rect.w() / 2 - buttonSize.x() - offsetFromCenter;
-	cint rightSideX = rect.w() / 2 + offsetFromCenter;
-	cint spacing = buttonSize.y() + offsetFromCenter;
+	cint middleX = (rect.w - buttonSize.x) / 2;
+	cint leftSideX = rect.w / 2 - buttonSize.x - offsetFromCenter;
+	cint rightSideX = rect.w / 2 + offsetFromCenter;
+	cint spacing = buttonSize.y + offsetFromCenter;
 
-	int currentY = rect.h() / 2 + spacing * 3;
-	nameLabel->layout(crectanglei2(middleX, currentY, buttonSize.x(), buttonSize.y()));
+	int currentY = rect.h / 2 + spacing * 3;
+	nameLabel->layout(crectanglei2(middleX, currentY, buttonSize.x, buttonSize.y));
 	currentY -= spacing;
-	nameTextBox->layout(crectanglei2(middleX, currentY, buttonSize.x(), buttonSize.y()));
+	nameTextBox->layout(crectanglei2(middleX, currentY, buttonSize.x, buttonSize.y));
 	currentY -= spacing;
-	ipAddressLabel->layout(crectanglei2(middleX, currentY, buttonSize.x(), buttonSize.y()));
+	ipAddressLabel->layout(crectanglei2(middleX, currentY, buttonSize.x, buttonSize.y));
 	currentY -= spacing;
-	ipAddressTextBox->layout(crectanglei2(middleX, currentY, buttonSize.x(), buttonSize.y()));
+	ipAddressTextBox->layout(crectanglei2(middleX, currentY, buttonSize.x, buttonSize.y));
 	currentY -= spacing;
-	doneButton->layout(crectanglei2(middleX, currentY, buttonSize.x(), buttonSize.y()));
+	doneButton->layout(crectanglei2(middleX, currentY, buttonSize.x, buttonSize.y));
 	currentY -= spacing;
 }
 

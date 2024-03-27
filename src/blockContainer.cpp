@@ -53,11 +53,11 @@
 #include "renderBrush.h"
 void blockContainer::setBlockRange(cveci2& pos0, cveci2& pos1, const blockID& block, const chunkLoadLevel& minimalLoadLevel)
 {
-	cveci2 pos00 = cveci2(math::minimum(pos0.x(), pos1.x()), math::minimum(pos0.y(), pos1.y()));
-	cveci2 pos11 = cveci2(math::maximum(pos0.x(), pos1.x()), math::maximum(pos0.y(), pos1.y()));
-	for (veci2 pos = pos00; pos.y() <= pos11.y(); pos.y()++)
+	cveci2 pos00 = cveci2(math::minimum(pos0.x, pos1.x), math::minimum(pos0.y, pos1.y));
+	cveci2 pos11 = cveci2(math::maximum(pos0.x, pos1.x), math::maximum(pos0.y, pos1.y));
+	for (veci2 pos = pos00; pos.y <= pos11.y; pos.y++)
 	{
-		for (pos.x() = pos00.x(); pos.x() <= pos11.x(); pos.x()++)
+		for (pos.x = pos00.x; pos.x <= pos11.x; pos.x++)
 		{
 			setBlockID(pos, block, minimalLoadLevel);
 		}
@@ -80,9 +80,9 @@ void blockContainer::replaceBlockRange(cveci2& pos0, cveci2& pos1, const blockID
 {
 	crectanglei2& affectedRect = crectanglei2::fromOppositeCorners(pos0, pos1);
 	cveci2& rectPos11 = affectedRect.pos1();
-	for (veci2 pos = affectedRect.pos0; pos.y() <= rectPos11.y(); pos.y()++)
+	for (veci2 pos = affectedRect.pos0; pos.y <= rectPos11.y; pos.y++)
 	{
-		for (pos.x() = affectedRect.pos0.x(); pos.x() <= rectPos11.x(); pos.x()++)
+		for (pos.x = affectedRect.pos0.x; pos.x <= rectPos11.x; pos.x++)
 		{
 			replaceBlock(pos, block, replaceList, minimalLoadLevel);
 		}
@@ -94,9 +94,9 @@ bool blockContainer::blockContains(cveci2& position, const std::vector<blockID> 
 }
 bool blockContainer::blockRangeContains(cveci2& pos00, cveci2& pos11, const std::vector<blockID> checkList)
 {
-	for (veci2 pos = pos00; pos.y() <= pos11.y(); pos.y()++)
+	for (veci2 pos = pos00; pos.y <= pos11.y; pos.y++)
 	{
-		for (pos.x() = pos00.x(); pos.x() <= pos11.x(); pos.x()++)
+		for (pos.x = pos00.x; pos.x <= pos11.x; pos.x++)
 		{
 			if (blockContains(pos, checkList))
 			{
@@ -108,9 +108,9 @@ bool blockContainer::blockRangeContains(cveci2& pos00, cveci2& pos11, const std:
 }
 bool blockContainer::blockRangeContainsOnly(cveci2& pos00, cveci2& pos11, const std::vector<blockID> checkList)
 {
-	for (veci2 pos = pos00; pos.y() <= pos11.y(); pos.y()++)
+	for (veci2 pos = pos00; pos.y <= pos11.y; pos.y++)
 	{
-		for (pos.x() = pos00.x(); pos.x() <= pos11.x(); pos.x()++)
+		for (pos.x = pos00.x; pos.x <= pos11.x; pos.x++)
 		{
 			if (std::find(checkList.begin(), checkList.end(), getBlockID(pos)) == checkList.end())
 			{
@@ -199,14 +199,14 @@ void blockContainer::replaceCircleCentered(cvec2& pos, cvec2& size, const blockI
 }
 void blockContainer::replaceCircle(crectangle2& rect, const blockID& block, const std::vector<blockID>& replaceList)
 {
-	cint MinY = (int)ceil(rect.y());
-	cint MaxY = (int)ceil(rect.y() + rect.h());//+1 for also filling the last pixel
+	cint MinY = (int)ceil(rect.y);
+	cint MaxY = (int)ceil(rect.y + rect.h);//+1 for also filling the last pixel
 	//crop
 
-	cfp midx = rect.x() + rect.w() * .5;
-	cfp midy = rect.y() + rect.h() * .5;
-	cfp multx = 2.0 / rect.w();
-	cfp multy = 2.0 / rect.h();
+	cfp midx = rect.x + rect.w * .5;
+	cfp midy = rect.y + rect.h * .5;
+	cfp multx = 2.0 / rect.w;
+	cfp multy = 2.0 / rect.h;
 
 	for (int j = MinY; j < MaxY; j++)
 	{
@@ -595,7 +595,7 @@ bool blockContainer::fitExpandingHitbox(crectangle2& relativeHitbox, crectangle2
 		rectangle2 currentCheckHitbox = *possibleHitboxes.begin();
 		possibleHitboxes.pop_front();
 
-		if (currentCheckHitbox.size.x() >= relativeHitbox.size.x() && currentCheckHitbox.size.y() >= relativeHitbox.size.y())
+		if (currentCheckHitbox.size.x >= relativeHitbox.size.x && currentCheckHitbox.size.y >= relativeHitbox.size.y)
 		{
 			for (const collisionData& collision : collisionCollection.hitboxes)
 			{
@@ -702,19 +702,19 @@ collisionDataCollection blockContainer::getHitboxCollisionData(crectangle2& box)
 	//check collision with chunk border
 	collisionDataCollection dataArray = collisionDataCollection();
 
-	if ((box.size.x() > 0) && (box.size.y() > 0))
+	if ((box.size.x > 0) && (box.size.y > 0))
 	{
-		cint fromX = (int)floor(box.x());
-		cint fromY = (int)floor(box.y());
+		cint fromX = (int)floor(box.x);
+		cint fromY = (int)floor(box.y);
 		cvec2 topRight = box.pos1();
-		cint toX = (int)floor(topRight.x());
-		cint toY = (int)floor(topRight.y());
+		cint toX = (int)floor(topRight.x);
+		cint toY = (int)floor(topRight.y);
 
 		//check hitbox
 		veci2 checkPos = cveci2();
-		for (checkPos.y() = fromY; checkPos.y() <= toY; checkPos.y()++)
+		for (checkPos.y = fromY; checkPos.y <= toY; checkPos.y++)
 		{
-			for (checkPos.x() = fromX; checkPos.x() <= toX; checkPos.x()++)
+			for (checkPos.x = fromX; checkPos.x <= toX; checkPos.x++)
 			{
 				blockID identifier = getBlockID(checkPos);
 				block* data = blockList[(int)identifier];
@@ -773,29 +773,29 @@ bool blockContainer::canConnect(cveci2& from, cveci2& relativeCheckPosition)
 		collisionDataCollection otherBlockData = connectionBlock->getCollisionData(this, to);
 
 		collisionEdgeData toEdgeData;
-		if (relativeCheckPosition.x() == 1)
+		if (relativeCheckPosition.x == 1)
 		{
-			toEdgeData = otherBlockData.getEdges(to.x(), directionID::positiveX);
+			toEdgeData = otherBlockData.getEdges(to.x, directionID::positiveX);
 		}
 		else
 		{
-			toEdgeData = otherBlockData.getEdges(from.x(), directionID::negativeX);
+			toEdgeData = otherBlockData.getEdges(from.x, directionID::negativeX);
 		}
 
 		collisionEdgeData fromEdgeData = collisionEdgeData();
 		const blockID connectingBlock = getBlockID(from);
 		if (isFence(connectingBlock) || isFenceGate(connectingBlock))
 		{
-			fromEdgeData.addEdge(from.y() + fenceConnectionPoleY[0], fenceConnectionPoleWidth);
-			fromEdgeData.addEdge(from.y() + fenceConnectionPoleY[1], fenceConnectionPoleWidth);
+			fromEdgeData.addEdge(from.y + fenceConnectionPoleY[0], fenceConnectionPoleWidth);
+			fromEdgeData.addEdge(from.y + fenceConnectionPoleY[1], fenceConnectionPoleWidth);
 		}
 		else if (isWall(connectingBlock))
 		{
-			fromEdgeData.addEdge(from.y(), wallConnectionHeight);
+			fromEdgeData.addEdge(from.y, wallConnectionHeight);
 		}
 		else if (connectingBlock == blockID::iron_bars)
 		{
-			fromEdgeData.addEdge(from.y(), 1);
+			fromEdgeData.addEdge(from.y, 1);
 		}
 
 		collisionEdgeData substracted = fromEdgeData.substractCoveringEdges(toEdgeData);
@@ -821,7 +821,7 @@ vecb2 blockContainer::railTopConnection(cveci2& pos)
 	}
 
 	//can't be both a top connection
-	return (topConnection.x() && topConnection.y()) ? vecb2() : topConnection;
+	return (topConnection.x && topConnection.y) ? vecb2() : topConnection;
 }
 
 void serializeBlocks(nbtSerializer& s, const array2d<blockID>& blockIDArray, const array2d<blockData*>& blockDataArray, const array2d<powerLevel>& powerLevelArray)
@@ -836,9 +836,9 @@ void serializeBlocks(nbtSerializer& s, const array2d<blockID>& blockIDArray, con
 		if (s.write)
 		{
 			auto it = blockDataArray.begin();
-			for (fsize_t relativeY = 0; relativeY < blockDataArray.size.y(); relativeY++)
+			for (fsize_t relativeY = 0; relativeY < blockDataArray.size.y; relativeY++)
 			{
-				for (fsize_t relativeX = 0; relativeX < blockDataArray.size.x(); relativeX++, it++)
+				for (fsize_t relativeX = 0; relativeX < blockDataArray.size.x; relativeX++, it++)
 				{
 					if (*it)
 					{

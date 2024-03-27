@@ -8,7 +8,7 @@ constexpr int topEyeSliceIndex = 6;
 
 
 constexpr int magmaCubeLayerCount = 0x8;
-constexpr int magmaCubeLayerThickness = (int)slimeOuterBodyTextureRect.size.y() / magmaCubeLayerCount;
+constexpr int magmaCubeLayerThickness = (int)slimeOuterBodyTextureRect.size.getY() / magmaCubeLayerCount;
 struct magmaCube : public slime
 {
 	bodyPart2D* layers[magmaCubeLayerCount]{};

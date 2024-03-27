@@ -88,7 +88,7 @@ void inventoryForm::render(cveci2& position, const texture& renderTarget)
 
 void inventoryForm::updateScale()
 {
-	scaleMultiplier = ((fp)parent->rect.size.x() / (fp)defaultUIRectangle.size.x()) * 0.25 * settings::videoSettings::guiScale;//normally the UI should take up 1/4th of the screen
+	scaleMultiplier = ((fp)parent->rect.size.x / (fp)defaultUIRectangle.size.x) * 0.25 * settings::videoSettings::guiScale;//normally the UI should take up 1/4th of the screen
 	rect.size = cveci2(cvec2(inventoryToDisplay->uiTexturePartToDraw.size) * scaleMultiplier);
 	rect.moveToCenter(parent->rect);
 }

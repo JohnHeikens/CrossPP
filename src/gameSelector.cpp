@@ -86,15 +86,15 @@ void gameSelector::keyDown(cvk& key)
 void gameSelector::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	openButton->layout(crectanglei2(0, 0, rect.w() / 2, (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2));
-	newButton->layout(crectanglei2(openButton->rect.w(), 0, rect.w() - openButton->rect.w(), openButton->rect.h()));
-	deleteButton->layout(crectanglei2(0, openButton->rect.h(), rect.w() / 2, (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2));
-	refreshButton->layout(crectanglei2(openButton->rect.w(), openButton->rect.h(), rect.w() - openButton->rect.w(), openButton->rect.h()));
+	openButton->layout(crectanglei2(0, 0, rect.w / 2, (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2));
+	newButton->layout(crectanglei2(openButton->rect.w, 0, rect.w - openButton->rect.w, openButton->rect.h));
+	deleteButton->layout(crectanglei2(0, openButton->rect.h, rect.w / 2, (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2));
+	refreshButton->layout(crectanglei2(openButton->rect.w, openButton->rect.h, rect.w - openButton->rect.w, openButton->rect.h));
 
-	cint optionSpace = openButton->rect.h() * 2;
+	cint optionSpace = openButton->rect.h * 2;
 
-	gameListControl->childSize = cveci2(rect.w() / 2, rect.h() / 5);
-	crectanglei2 saveFolderListControlRect = crectanglei2((rect.w() - gameListControl->childSize.x()) / 2, optionSpace, gameListControl->childSize.x() + gameListControl->sideSliderWidth, rect.h() - optionSpace);
+	gameListControl->childSize = cveci2(rect.w / 2, rect.h / 5);
+	crectanglei2 saveFolderListControlRect = crectanglei2((rect.w - gameListControl->childSize.x) / 2, optionSpace, gameListControl->childSize.x + gameListControl->sideSliderWidth, rect.h - optionSpace);
 	gameListControl->layout(saveFolderListControlRect);
 }
 

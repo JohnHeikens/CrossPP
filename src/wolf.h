@@ -16,11 +16,11 @@ constexpr rectangle2 wolfHeadTextureRect = crectangle2(0, 22, 4, 6);
 
 
 constexpr vec2 wolfHitboxSize = cvec2(0.6, 0.8);
-constexpr rectangle2 relativeWolfHitbox = crectangle2(cvec2(wolfHitboxSize.x() * -0.5, 0), wolfHitboxSize);
+constexpr rectangle2 relativeWolfHitbox = crectangle2(cvec2(wolfHitboxSize.getX() * -0.5, 0), wolfHitboxSize);
 
-constexpr fp wolfHeadExpansion = (wolfHeadTextureRect.h() - wolfBodyTextureRect.h()) * 0.5;
+constexpr fp wolfHeadExpansion = (wolfHeadTextureRect.getH() - wolfBodyTextureRect.getH()) * 0.5;
 
-constexpr fp wolfTextureScale = wolfHitboxSize.y() / (wolfRightLegTextureRect.h() + ((wolfBodyTextureRect.w() + wolfBodyTextureRect.w()) * 0.5) + wolfRightEarTextureRect.h());
+constexpr fp wolfTextureScale = wolfHitboxSize.getY() / (wolfRightLegTextureRect.getH() + ((wolfBodyTextureRect.getW() + wolfBodyTextureRect.getW()) * 0.5) + wolfRightEarTextureRect.getH());
 
 constexpr vec2 wolfBodySize = wolfBodyTextureRect.size.switchAxes() * wolfTextureScale;
 constexpr vec2 wolfNeckSize = wolfNeckTextureRect.size.switchAxes() * wolfTextureScale;
@@ -31,9 +31,9 @@ constexpr vec2 wolfHeadSize = wolfHeadTextureRect.size * wolfTextureScale;
 constexpr vec2 wolfTailSize = wolfTailTextureRect.size.switchAxes() * wolfTextureScale;
 
 //offset from the sides
-constexpr fp wolfBackLegOffset = (wolfBodySize.x() * -0.5) + wolfLegSize.x();
+constexpr fp wolfBackLegOffset = (wolfBodySize.getX() * -0.5) + wolfLegSize.getX();
 
-constexpr fp wolfFrontLegOffset = ((wolfBodySize.x() * 0.5) + wolfNeckSize.x()) - wolfLegSize.x();
+constexpr fp wolfFrontLegOffset = ((wolfBodySize.getX() * 0.5) + wolfNeckSize.getX()) - wolfLegSize.getX();
 
 struct wolf : public fourLeggedMob
 {

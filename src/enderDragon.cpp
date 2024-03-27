@@ -42,55 +42,55 @@ enderDragon::enderDragon(dimension* dimensionIn, cvec2& position) :mob(dimension
 
 	cvec2 enderDragonHeadSize = cvec2(enderDragonHeadTextureRect.size) * enderDragonPixelSize;
 
-	head = new bodyPart2D(enderDragonHeadTextureRect, nullptr, vec2(0, 0), enderDragonHeadSize, cvec2(0, enderDragonHeadSize.y() * 0.5));
+	head = new bodyPart2D(enderDragonHeadTextureRect, nullptr, vec2(0, 0), enderDragonHeadSize, cvec2(0, enderDragonHeadSize.y * 0.5));
 	mainBodyPart = head;
 
 	cvec2 enderDragonHeadPlateSize = cvec2(enderDragonLeftHeadPlateTextureRect.size) * enderDragonPixelSize;
-	bodyPart2D* rightHeadPlate = new bodyPart2D(enderDragonRightHeadPlateTextureRect, head, cvec2(enderDragonHeadPlateSize.x(), head->size.y()) - head->rotationCentre, enderDragonHeadPlateSize, cvec2(enderDragonHeadPlateSize.x() * 0.5, 0));
-	bodyPart2D* leftHeadPlate = new bodyPart2D(enderDragonLeftHeadPlateTextureRect, head, cvec2(enderDragonHeadPlateSize.x(), head->size.y()) - head->rotationCentre, enderDragonHeadPlateSize, cvec2(enderDragonHeadPlateSize.x() * 0.5, 0));
+	bodyPart2D* rightHeadPlate = new bodyPart2D(enderDragonRightHeadPlateTextureRect, head, cvec2(enderDragonHeadPlateSize.x, head->size.y) - head->rotationCentre, enderDragonHeadPlateSize, cvec2(enderDragonHeadPlateSize.x * 0.5, 0));
+	bodyPart2D* leftHeadPlate = new bodyPart2D(enderDragonLeftHeadPlateTextureRect, head, cvec2(enderDragonHeadPlateSize.x, head->size.y) - head->rotationCentre, enderDragonHeadPlateSize, cvec2(enderDragonHeadPlateSize.x * 0.5, 0));
 
 	cvec2 enderDragonLowerJawSize = cvec2(enderDragonLowerJawTextureRect.size) * enderDragonPixelSize;
 	cvec2 enderDragonUpperJawSize = cvec2(enderDragonUpperJawTextureRect.size) * enderDragonPixelSize;
-	cvec2 enderDragonJawRotationCentre = cvec2(head->size.x(), (enderDragonLowerJawSize.y() + enderDragonUpperJawSize.y()) * 0.5) - head->rotationCentre;
+	cvec2 enderDragonJawRotationCentre = cvec2(head->size.x, (enderDragonLowerJawSize.y + enderDragonUpperJawSize.y) * 0.5) - head->rotationCentre;
 
-	lowerJaw = new bodyPart2D(enderDragonLowerJawTextureRect, head, enderDragonJawRotationCentre, enderDragonLowerJawSize, cvec2(0, enderDragonLowerJawSize.y()));
+	lowerJaw = new bodyPart2D(enderDragonLowerJawTextureRect, head, enderDragonJawRotationCentre, enderDragonLowerJawSize, cvec2(0, enderDragonLowerJawSize.y));
 
 	bodyPart2D* upperJaw = new bodyPart2D(enderDragonUpperJawTextureRect, head, enderDragonJawRotationCentre, enderDragonUpperJawSize, cvec2());
 
 	cvec2 enderDragonNostrilSize = cvec2(enderDragonNostrilTextureRect.size) * enderDragonPixelSize;
-	bodyPart2D* rightNostril = new bodyPart2D(enderDragonNostrilTextureRect, upperJaw, cvec2(upperJaw->size.x() - enderDragonNostrilSize.x(), upperJaw->size.y()) - upperJaw->rotationCentre, enderDragonNostrilSize, cvec2(enderDragonNostrilSize.x() * 0.5, 0));
-	bodyPart2D* leftNostril = new bodyPart2D(enderDragonNostrilTextureRect, upperJaw, cvec2(upperJaw->size.x() - enderDragonNostrilSize.x(), upperJaw->size.y()) - upperJaw->rotationCentre, enderDragonNostrilSize, cvec2(enderDragonNostrilSize.x() * 0.5, 0));
+	bodyPart2D* rightNostril = new bodyPart2D(enderDragonNostrilTextureRect, upperJaw, cvec2(upperJaw->size.x - enderDragonNostrilSize.x, upperJaw->size.y) - upperJaw->rotationCentre, enderDragonNostrilSize, cvec2(enderDragonNostrilSize.x * 0.5, 0));
+	bodyPart2D* leftNostril = new bodyPart2D(enderDragonNostrilTextureRect, upperJaw, cvec2(upperJaw->size.x - enderDragonNostrilSize.x, upperJaw->size.y) - upperJaw->rotationCentre, enderDragonNostrilSize, cvec2(enderDragonNostrilSize.x * 0.5, 0));
 
 	createSpine(head, neckSpines, enderDragonNeckSpineCount);
 
-	body = new bodyPart2D(enderDragonBodyTextureRect, neckSpines[enderDragonNeckSpineCount - 1], vec2(-enderDragonspineSize.x(), 0), enderDragonBodySize, cvec2(enderDragonBodySize.x(), enderDragonBodySize.y() * 0.5));
+	body = new bodyPart2D(enderDragonBodyTextureRect, neckSpines[enderDragonNeckSpineCount - 1], vec2(-enderDragonspineSize.x, 0), enderDragonBodySize, cvec2(enderDragonBodySize.x, enderDragonBodySize.y * 0.5));
 	bodyPart2D* bodySpinePlates[enderDragonBodySpinePlateCount];
 	for (int i = 0; i < enderDragonBodySpinePlateCount; i++)
 	{
 		cvec2 enderDragonBodySpinePlateSize = cvec2(enderDragonBodySpineTextureRect.size) * enderDragonPixelSize;
-		bodySpinePlates[i] = new bodyPart2D(enderDragonBodySpineTextureRect, body, cvec2((body->size.x() / enderDragonBodySpinePlateCount) * (i + 0.5), body->size.y()) - body->rotationCentre, enderDragonBodySpinePlateSize, cvec2(enderDragonBodySpinePlateSize.x() * 0.5, 0));
+		bodySpinePlates[i] = new bodyPart2D(enderDragonBodySpineTextureRect, body, cvec2((body->size.x / enderDragonBodySpinePlateCount) * (i + 0.5), body->size.y) - body->rotationCentre, enderDragonBodySpinePlateSize, cvec2(enderDragonBodySpinePlateSize.x * 0.5, 0));
 	}
 
 	createSpine(body, tailSpines, enderDragonTailSpineCount);
 
-	cvec2 frontLegAttachmentPoint = cvec2(enderDragonBodySize.x() - frontAttachmentOffset, frontAttachmentOffset) - body->rotationCentre;
+	cvec2 frontLegAttachmentPoint = cvec2(enderDragonBodySize.x - frontAttachmentOffset, frontAttachmentOffset) - body->rotationCentre;
 
 	bodyPart2D* frontRightLeg = createDragonLeg(frontLegAttachmentPoint, enderDragonFrontRightUpperLegTextureRect, enderDragonFrontUpperLegAngle, enderDragonFrontRightLowerLegTextureRect, enderDragonFrontLowerLegAngle, enderDragonFrontRightFootTextureRect, enderDragonFrontFootAngle);
 	bodyPart2D* frontLeftLeg = createDragonLeg(frontLegAttachmentPoint, enderDragonFrontLeftUpperLegTextureRect, enderDragonFrontUpperLegAngle, enderDragonFrontLeftLowerLegTextureRect, enderDragonFrontLowerLegAngle, enderDragonFrontLeftFootTextureRect, enderDragonFrontFootAngle);
 
 	cvec2 wingAttachmentPoint = body->size + cvec2(-frontAttachmentOffset) - body->rotationCentre;
 
-	rightInnerWingTop = new bodyPart2D(enderDragonInnerWingTopTextureRect, body, wingAttachmentPoint, enderDragonInnerWingTopSize, cvec2(enderDragonInnerWingTopSize.x(), 0), 0, 90, true);
+	rightInnerWingTop = new bodyPart2D(enderDragonInnerWingTopTextureRect, body, wingAttachmentPoint, enderDragonInnerWingTopSize, cvec2(enderDragonInnerWingTopSize.x, 0), 0, 90, true);
 	rightInnerWingTop->flipX = true;
-	leftInnerWingTop = new bodyPart2D(enderDragonInnerWingTopTextureRect, body, wingAttachmentPoint, enderDragonInnerWingTopSize, cvec2(enderDragonInnerWingTopSize.x(), 0), 0, 90, true);
+	leftInnerWingTop = new bodyPart2D(enderDragonInnerWingTopTextureRect, body, wingAttachmentPoint, enderDragonInnerWingTopSize, cvec2(enderDragonInnerWingTopSize.x, 0), 0, 90, true);
 	leftInnerWingTop->flipX = true;
-	rightOuterWingTop = new bodyPart2D(enderDragonOuterWingTopTextureRect, rightInnerWingTop, cvec2(), enderDragonOuterWingTopSize, cvec2(enderDragonOuterWingTopSize.x(), 0), 0, 90, true);
-	leftOuterWingTop = new bodyPart2D(enderDragonOuterWingTopTextureRect, leftInnerWingTop, cvec2(), enderDragonOuterWingTopSize, cvec2(enderDragonOuterWingTopSize.x(), 0), 0, 90, true);
+	rightOuterWingTop = new bodyPart2D(enderDragonOuterWingTopTextureRect, rightInnerWingTop, cvec2(), enderDragonOuterWingTopSize, cvec2(enderDragonOuterWingTopSize.x, 0), 0, 90, true);
+	leftOuterWingTop = new bodyPart2D(enderDragonOuterWingTopTextureRect, leftInnerWingTop, cvec2(), enderDragonOuterWingTopSize, cvec2(enderDragonOuterWingTopSize.x, 0), 0, 90, true);
 
-	rightOuterWingSide = new bodyPart2D(enderDragonOuterWingSideTextureRect, rightOuterWingTop, cvec2(), enderDragonOuterWingSideSize, cvec2(enderDragonOuterWingSideSize.x(), 0), 0, 90, true);
-	leftOuterWingSide = new bodyPart2D(enderDragonOuterWingSideTextureRect, leftOuterWingTop, cvec2(), enderDragonOuterWingSideSize, cvec2(enderDragonOuterWingSideSize.x(), 0), 0, 90, true);
+	rightOuterWingSide = new bodyPart2D(enderDragonOuterWingSideTextureRect, rightOuterWingTop, cvec2(), enderDragonOuterWingSideSize, cvec2(enderDragonOuterWingSideSize.x, 0), 0, 90, true);
+	leftOuterWingSide = new bodyPart2D(enderDragonOuterWingSideTextureRect, leftOuterWingTop, cvec2(), enderDragonOuterWingSideSize, cvec2(enderDragonOuterWingSideSize.x, 0), 0, 90, true);
 
-	cvec2 backLegAttachmentPoint = cvec2(enderDragonBodySize.y() * 0.5 - enderDragonBodySize.x(), 0);
+	cvec2 backLegAttachmentPoint = cvec2(enderDragonBodySize.y * 0.5 - enderDragonBodySize.x, 0);
 
 	bodyPart2D* backRightLeg = createDragonLeg(backLegAttachmentPoint, enderDragonBackRightUpperLegTextureRect, enderDragonBackUpperLegAngle, enderDragonBackRightLowerLegTextureRect, enderDragonBackLowerLegAngle, enderDragonBackRightFootTextureRect, enderDragonBackFootAngle);
 	bodyPart2D* backLeftLeg = createDragonLeg(backLegAttachmentPoint, enderDragonBackLeftUpperLegTextureRect, enderDragonBackUpperLegAngle, enderDragonBackLeftLowerLegTextureRect, enderDragonBackLowerLegAngle, enderDragonBackLeftFootTextureRect, enderDragonBackFootAngle);
@@ -136,12 +136,12 @@ enderDragon::enderDragon(dimension* dimensionIn, cvec2& position) :mob(dimension
 bodyPart2D* enderDragon::createDragonLeg(cvec2& attachmentPoint, crectangle2& upperLegTextureRect, cfp& upperLegAngle, crectangle2& lowerLegTextureRect, cfp& lowerLegAngle, crectangle2& footTextureRect, cfp& footAngle)
 {
 	cvec2 upperLegSize = cvec2(upperLegTextureRect.size) * enderDragonPixelSize;
-	bodyPart2D* upperLeg = new bodyPart2D(upperLegTextureRect, body, attachmentPoint, upperLegSize, cvec2(upperLegSize.x() * 0.5, upperLegSize.y() - upperLegSize.x() * 0.5), upperLegAngle);
+	bodyPart2D* upperLeg = new bodyPart2D(upperLegTextureRect, body, attachmentPoint, upperLegSize, cvec2(upperLegSize.x * 0.5, upperLegSize.y - upperLegSize.x * 0.5), upperLegAngle);
 
 	//attachment: substract half the width two times and negate
 
 	cvec2 lowerLegSize = cvec2(lowerLegTextureRect.size) * enderDragonPixelSize;
-	bodyPart2D* lowerLeg = new bodyPart2D(lowerLegTextureRect, upperLeg, cvec2(0, -upperLegSize.y() + upperLegSize.x()), lowerLegSize, cvec2(lowerLegSize.x() * 0.5, lowerLegSize.y() - lowerLegSize.x() * 0.5), lowerLegAngle);
+	bodyPart2D* lowerLeg = new bodyPart2D(lowerLegTextureRect, upperLeg, cvec2(0, -upperLegSize.y + upperLegSize.x), lowerLegSize, cvec2(lowerLegSize.x * 0.5, lowerLegSize.y - lowerLegSize.x * 0.5), lowerLegAngle);
 
 	cvec2 footSize = cvec2(footTextureRect.size) * enderDragonPixelSize;
 	bodyPart2D* foot = new bodyPart2D(footTextureRect, lowerLeg, -lowerLeg->rotationCentre, footSize, cvec2(), footAngle);
@@ -156,10 +156,10 @@ void enderDragon::createSpine(bodyPart2D* attachTo, bodyPart2D** spinePtr, cint 
 {
 	for (int i = 0; i < spineCount; i++)
 	{
-		bodyPart2D* currentVertebra = new bodyPart2D(enderDragonSpineTextureRect, attachTo, cvec2(0, attachTo->size.y() * 0.5) - attachTo->rotationCentre, enderDragonspineSize, cvec2(enderDragonspineSize.x(), enderDragonspineSize.y() * 0.5));
+		bodyPart2D* currentVertebra = new bodyPart2D(enderDragonSpineTextureRect, attachTo, cvec2(0, attachTo->size.y * 0.5) - attachTo->rotationCentre, enderDragonspineSize, cvec2(enderDragonspineSize.x, enderDragonspineSize.y * 0.5));
 
 		cvec2 enderDragonSpinePlateSize = cvec2(enderDragonSpinePlateTextureRect.size) * enderDragonPixelSize;
-		bodyPart2D* spinePlate = new bodyPart2D(enderDragonSpinePlateTextureRect, currentVertebra, cvec2(currentVertebra->size.x() * 0.5, currentVertebra->size.y()) - currentVertebra->rotationCentre, enderDragonSpinePlateSize, cvec2(enderDragonSpinePlateSize.x() * 0.5, 0));
+		bodyPart2D* spinePlate = new bodyPart2D(enderDragonSpinePlateTextureRect, currentVertebra, cvec2(currentVertebra->size.x * 0.5, currentVertebra->size.y) - currentVertebra->rotationCentre, enderDragonSpinePlateSize, cvec2(enderDragonSpinePlateSize.x * 0.5, 0));
 		currentVertebra->children.push_back(spinePlate);
 
 		if (i > 0)
@@ -179,20 +179,20 @@ void enderDragon::render(const gameRenderData& targetData) const
 		cfp deathAnimationPart = deathAnimationTicks / (fp)enderDragonDeathAnimationDuration;
 		for (int i = 0; i < dragonDyingBeamCount; i++)
 		{
-			cfp beamLengthMultiplier = deathAnimationPart * dyingBeams[i].z();
+			cfp beamLengthMultiplier = deathAnimationPart * dyingBeams[i].z;
 			cfp whiteDistance = dragonDyingBeamPurpleDistance * beamLengthMultiplier;
 			cfp transparencyDistance = dragonDyingBeamTransparencyDistance * beamLengthMultiplier;
 
-			cvec2 p0 = position + vec2::getrotatedvector(dyingBeams[i].x()) * transparencyDistance;
-			cvec2 p1 = position + vec2::getrotatedvector(dyingBeams[i].x() + dyingBeams[i].y()) * transparencyDistance;
+			cvec2 p0 = position + vec2::getrotatedvector(dyingBeams[i].x) * transparencyDistance;
+			cvec2 p1 = position + vec2::getrotatedvector(dyingBeams[i].x + dyingBeams[i].y) * transparencyDistance;
 			targetData.renderTarget.fillPolygon({
 				targetData.worldToRenderTargetTransform.multPointMatrix(position),
 				targetData.worldToRenderTargetTransform.multPointMatrix(p0),
 				targetData.worldToRenderTargetTransform.multPointMatrix(p1)
 				},
 				dragonBeamBrush<texture>(&targetData.renderTarget, targetData.worldToRenderTargetTransform.multPointMatrix(position),
-					targetData.worldToRenderTargetTransform.multSizeMatrix(cvec1(whiteDistance)).x(),
-					targetData.worldToRenderTargetTransform.multSizeMatrix(cvec1(transparencyDistance)).x()));
+					targetData.worldToRenderTargetTransform.multSizeMatrix(cvec1(whiteDistance)).x,
+					targetData.worldToRenderTargetTransform.multSizeMatrix(cvec1(transparencyDistance)).x));
 		}
 	}
 	//render healing beam
@@ -298,7 +298,7 @@ void enderDragon::onDeath()
 
 				//add end portal and egg
 				const structure* endExitPortalStructure = getStructureByName(structureFolder + std::wstring(L"the_end/exit_portal"));
-				cveci2 dragonEggPosition = currentEnd->exitPortalLevel + cveci2(0, (int)endExitPortalStructure->blockIDArray.size.y());
+				cveci2 dragonEggPosition = currentEnd->exitPortalLevel + cveci2(0, (int)endExitPortalStructure->blockIDArray.size.y);
 				dimensionIn->setBlockID(dragonEggPosition, blockID::dragon_egg);
 
 				cveci2& exitPortalLocation = cveci2(0, currentEnd->exitPortalLevel);
@@ -330,14 +330,14 @@ void enderDragon::updateBodyParts() const
 {
 	//update angles
 
-	vec2 relativeHeadPosition = cvec2(enderDragonHitboxSize.x() * 0.5, 0) + cvec2(-(lowerJaw->size.x()), head->size.y() * -0.5) - head->rotationCentre;
+	vec2 relativeHeadPosition = cvec2(enderDragonHitboxSize.x * 0.5, 0) + cvec2(-(lowerJaw->size.x), head->size.y * -0.5) - head->rotationCentre;
 	if (mainBodyPart->flipX)
 	{
-		relativeHeadPosition.x() = -relativeHeadPosition.x();
+		relativeHeadPosition.x = -relativeHeadPosition.x;
 	}
 	else
 	{
-		relativeHeadPosition.x() -= head->size.x();
+		relativeHeadPosition.x -= head->size.x;
 	}
 	head->translate = position + relativeHeadPosition;
 
@@ -348,8 +348,8 @@ void enderDragon::updateBodyParts() const
 	cfp innerWingAngle = enderDragonInnerWingSynchronizer.getSwingAngle(currentFrameStartSeconds);
 	cfp outerWingAngle = enderDragonOuterWingSynchronizer.getSwingAngle(currentFrameStartSeconds);
 
-	cfp innerWingTopSize = sin(innerWingAngle) * (enderDragonInnerWingTopSize.y());
-	fp outerWingTopSize = sin(outerWingAngle) * (enderDragonOuterWingTopSize.y());
+	cfp innerWingTopSize = sin(innerWingAngle) * (enderDragonInnerWingTopSize.y);
+	fp outerWingTopSize = sin(outerWingAngle) * (enderDragonOuterWingTopSize.y);
 
 	fp innerWingSize;
 	fp innerWingRotationCentre;
@@ -380,7 +380,7 @@ void enderDragon::updateBodyParts() const
 	{
 		outerWingSize = -outerWingTopSize;
 		outerWingRotationCentre = outerWingSize;
-		outerWingSideOffset = enderDragonOuterWingSideSize.y();
+		outerWingSideOffset = enderDragonOuterWingSideSize.y;
 	}
 	else
 	{
@@ -389,29 +389,29 @@ void enderDragon::updateBodyParts() const
 		outerWingSideOffset = 0;
 	}
 
-	leftInnerWingTop->size.y() = innerWingSize;
-	leftInnerWingTop->rotationCentre.y() = innerWingRotationCentre;
+	leftInnerWingTop->size.y = innerWingSize;
+	leftInnerWingTop->rotationCentre.y = innerWingRotationCentre;
 	leftInnerWingTop->flipY = innerWingTopSize < 0;
 
-	rightInnerWingTop->size.y() = innerWingSize;
-	rightInnerWingTop->rotationCentre.y() = innerWingRotationCentre;
+	rightInnerWingTop->size.y = innerWingSize;
+	rightInnerWingTop->rotationCentre.y = innerWingRotationCentre;
 	rightInnerWingTop->flipY = innerWingTopSize < 0;
 
-	leftOuterWingTop->size.y() = outerWingSize;
-	leftOuterWingTop->rotationCentre.y() = outerWingRotationCentre;
-	leftOuterWingTop->translate.y() = outerWingOffset;
+	leftOuterWingTop->size.y = outerWingSize;
+	leftOuterWingTop->rotationCentre.y = outerWingRotationCentre;
+	leftOuterWingTop->translate.y = outerWingOffset;
 	leftOuterWingTop->flipY = outerWingTopSize < 0;
 
-	rightOuterWingTop->size.y() = outerWingSize;
-	rightOuterWingTop->rotationCentre.y() = outerWingRotationCentre;
-	rightOuterWingTop->translate.y() = outerWingOffset;
+	rightOuterWingTop->size.y = outerWingSize;
+	rightOuterWingTop->rotationCentre.y = outerWingRotationCentre;
+	rightOuterWingTop->translate.y = outerWingOffset;
 	rightOuterWingTop->flipY = outerWingTopSize < 0;
 
-	leftOuterWingSide->rotationCentre.y() = outerWingSideOffset;
-	leftOuterWingSide->translate.y() = outerWingSideOffset;
+	leftOuterWingSide->rotationCentre.y = outerWingSideOffset;
+	leftOuterWingSide->translate.y = outerWingSideOffset;
 
-	rightOuterWingSide->rotationCentre.y() = outerWingSideOffset;
-	rightOuterWingSide->translate.y() = outerWingSideOffset;
+	rightOuterWingSide->rotationCentre.y = outerWingSideOffset;
+	rightOuterWingSide->translate.y = outerWingSideOffset;
 
 	leftInnerWingTop->changed = true;
 	rightInnerWingTop->changed = true;

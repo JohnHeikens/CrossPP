@@ -5,7 +5,7 @@
 resolutionTexture::resolutionTexture(const texture& highestResolution, cvec2& size)
 {
 	fsize_t resolutionSteps = math::getNextPowerOf2((fsize_t)size.minimum());
-	//for (fsize_t i = 1; i < highestResolution.size.x() && i < highestResolution.size.y(); i *= 2)
+	//for (fsize_t i = 1; i < highestResolution.size.x && i < highestResolution.size.y; i *= 2)
 	//{
 	//	resolutionSteps++;
 	//}
@@ -56,7 +56,7 @@ const texture& resolutionTexture::mipmap(mat3x3& transform, rectangle2& textureR
 {
 	cfp& renderSizeX = getTransformedTextureWidth(transform);
 	const texture& tex = getMipmapTexture(renderSizeX);
-	cfp& multiplier = defaultSize.x() / tex.size.x();
+	cfp& multiplier = defaultSize.x / tex.size.x;
 	transform = mat3x3::cross(transform, mat3x3::scale(vec3(multiplier, multiplier, 1)));
 	textureRect.pos0 /= multiplier;
 	textureRect.size /= multiplier;
@@ -68,19 +68,19 @@ texture resolutionTexture::getHalfResolution(const texture& doubleResolution)
 	texture result = texture(doubleResolution.size / 2);
 
 	//average colors
-	for (fsize_t y = 0; y < result.size.y(); y++)
+	for (fsize_t y = 0; y < result.size.y; y++)
 	{
-		const color* srcY = doubleResolution.baseArray + doubleResolution.size.x() * (y + y);
-		color* destY = result.baseArray + result.size.x() * y;
-		for (fsize_t x = 0; x < result.size.x(); x++)
+		const color* srcY = doubleResolution.baseArray + doubleResolution.size.x * (y + y);
+		color* destY = result.baseArray + result.size.x * y;
+		for (fsize_t x = 0; x < result.size.x; x++)
 		{
 			const color* srcX = srcY + (x + x);
 			*(destY + x) = color::Average(
 				//xy
 				*srcX,											//00
 				*(srcX + 1),									//10
-				*(srcX + doubleResolution.size.x()),		//01
-				*(srcX + doubleResolution.size.x() + 1)	//11
+				*(srcX + doubleResolution.size.x),		//01
+				*(srcX + doubleResolution.size.x + 1)	//11
 			);
 		}
 	}

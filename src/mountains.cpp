@@ -31,8 +31,8 @@ void mountains::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, s
 {
 	if (dimensionIn->getBlockID(pos + cveci2(0, -1)) == blockID::stone)
 	{
-		fp weakness = coverageNoise->evaluate(vec1(pos.x()));
-		if (pos.y() > snowHeight)
+		fp weakness = coverageNoise->evaluate(vec1(pos.x));
+		if (pos.y > snowHeight)
 		{
 			dimensionIn->replaceBlock(pos, blockID::snow, { blockID::air });
 		}
@@ -42,7 +42,7 @@ void mountains::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, s
 			generateGrassTopping(dimensionIn, pos, randomToUse);
 			if (randChance(randomToUse, 0x8))
 			{
-				if (pos.y() <= snowHeight)
+				if (pos.y <= snowHeight)
 				{
 					placeTree(dimensionIn, pos, woodTypeID::oak, true, randomToUse);
 				}

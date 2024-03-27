@@ -20,8 +20,8 @@ ghast::ghast(dimension* dimensionIn, cvec2& position) :mob(dimensionIn, position
 
 	for (int i = 0; i < ghastLegCount; i++)
 	{
-		cfp legLength = randFp(currentRandom, ghastMaxLegSize.y() * 0.5, ghastMaxLegSize.y());
-		legs[i] = new bodyPart2D(ghastLegTextureRect, head, cvec2(randFp(currentRandom, ghastMaxLegSize.x() * 0.5, ghastHeadSize.x() - ghastMaxLegSize.x() * 0.5), 0) - ghastHeadRotationCentre, cvec2(ghastMaxLegSize.x(), legLength), cvec2(ghastMaxLegSize.x() * 0.5, legLength));
+		cfp legLength = randFp(currentRandom, ghastMaxLegSize.y * 0.5, ghastMaxLegSize.y);
+		legs[i] = new bodyPart2D(ghastLegTextureRect, head, cvec2(randFp(currentRandom, ghastMaxLegSize.x * 0.5, ghastHeadSize.x - ghastMaxLegSize.x * 0.5), 0) - ghastHeadRotationCentre, cvec2(ghastMaxLegSize.x, legLength), cvec2(ghastMaxLegSize.x * 0.5, legLength));
 		head->children.push_back(legs[i]);
 		legSynchronizers[i] = swingSynchronizer(randFp(currentRandom, 0x4, 0x8), 20 * math::degreesToRadians, 40 * math::degreesToRadians);
 	}

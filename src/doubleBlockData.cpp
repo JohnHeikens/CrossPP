@@ -23,7 +23,7 @@ veci2 getOtherPartRelativeLocation(const blockID& id, cbool& isPart0, const dire
 		{
 			if (directionFacing != standardSideFacingBlockDirection)
 			{
-				otherRelativeLocation.x() = -otherRelativeLocation.x();
+				otherRelativeLocation.x = -otherRelativeLocation.x;
 			}
 		}
 	}

@@ -12,7 +12,7 @@ constexpr rectangle2 humanRightArmTextureRect = crectangle2(20, 16, 2, 6); //out
 constexpr rectangle2 humanLeftLegTextureRect = crectangle2(8, 0, 2, 6); //inside facing texture of left leg
 constexpr rectangle2 humanLeftArmTextureRect = crectangle2(16, 0, 2, 6); //inside facing texture of left arm
 
-constexpr fp humanPixelSize = humanHitboxSize.y() / (humanHeadTextureRect.size.y() + humanBodyTextureRect.size.y() + humanRightLegTextureRect.size.y());
+constexpr fp humanPixelSize = humanHitboxSize.getY() / (humanHeadTextureRect.size.getY() + humanBodyTextureRect.size.getY() + humanRightLegTextureRect.size.getY());
 constexpr fp humanEyeLevel = (2 + 6 + 6) * humanPixelSize;
 
 constexpr vec2 humanBodySize = vec2(humanBodyTextureRect.size) * humanPixelSize;
@@ -25,7 +25,7 @@ constexpr fp maxhumanhealth = 20;
 constexpr int maxhumanfoodlevel = 20;
 constexpr fp maxArmor = 20;
 constexpr fp cooldownTreshold = 0.8;//you will deal full damage from this point on
-constexpr rectangle2 humanHitbox = crectangle2(-humanHitboxSize.x() * 0.5, 0, humanHitboxSize.x(), humanHitboxSize.y());
+constexpr rectangle2 humanHitbox = crectangle2(-humanHitboxSize.getX() * 0.5, 0, humanHitboxSize.getX(), humanHitboxSize.getY());
 
 constexpr int waitTime = 5;//the time in ticks to wait before you actually start breaking a block
 

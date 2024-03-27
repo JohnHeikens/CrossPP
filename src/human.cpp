@@ -124,7 +124,7 @@ void human::tick()
 		pickUpFloatingSlots();
 	}
 
-	mainBodyPart->flipX = lookingAt.x() < position.x();
+	mainBodyPart->flipX = lookingAt.x < position.x;
 
 	if (sleeping)
 	{
@@ -294,7 +294,7 @@ void human::tick()
 						if (canSleep())
 						{
 							sleeping = true;
-							cvec2 middlePosition = cvec2(selectedBlockPosition.x() + getOtherPartRelativeLocation(selectedBlockID, data->isPart0, data->directionFacing).x() * 0.5 + 0.5, selectedBlockPosition.y() + bedHitboxHeight + math::fpepsilon);
+							cvec2 middlePosition = cvec2(selectedBlockPosition.x + getOtherPartRelativeLocation(selectedBlockID, data->isPart0, data->directionFacing).x * 0.5 + 0.5, selectedBlockPosition.y + bedHitboxHeight + math::fpepsilon);
 							//set respawn point
 							currentWorld->worldSpawnPoint = middlePosition;
 							currentWorld->worldSpawnDimension = dimensionIn->identifier;
@@ -441,7 +441,7 @@ void human::onDeath()
 		for (rectangularSlotContainer* container : containers)
 		{
 			//container->dropContent(getDropPosition(), floatingSlotSpeedOnDeath);
-			cint& slotCount = container->rowsAndColumns.x() * container->rowsAndColumns.y();
+			cint& slotCount = container->rowsAndColumns.x * container->rowsAndColumns.y;
 			cvec2& dropPosition = getDropPosition();
 			for (int i = 0; i < slotCount; i++)
 			{
@@ -586,7 +586,7 @@ void human::render(const gameRenderData& targetData) const
 		constexpr fp letterSize = averageNameTagSize / (averageNameLetterCount * averageLetterRelativeWidth);
 		constexpr fp maxNameLength = 2.0;
 		minecraftFont clonedFont = minecraftFont(letterSize);
-		cvec2& nameTagMiddleBottom = hitbox.pos0 + cvec2(hitbox.size.x() * 0.5, hitbox.size.y());
+		cvec2& nameTagMiddleBottom = hitbox.pos0 + cvec2(hitbox.size.x * 0.5, hitbox.size.y);
 		cvec2& movedBottom = nameTagMiddleBottom + cvec2(clonedFont.measureStringSize(cvec2(maxNameLength, letterSize), name) * -0.5, 0);
 
 		rectangle2 nameTagRect = crectangle2(movedBottom, cvec2(maxNameLength, letterSize));
@@ -693,7 +693,7 @@ void human::drop(itemStack& s)
 }
 vec2 human::getDropPosition()
 {
-	return cvec2(position.x(), position.y() + humanLegSize.y());
+	return cvec2(position.x, position.y + humanLegSize.y);
 }
 
 bool human::canSleep() const
@@ -859,7 +859,7 @@ void human::onItemRightClick(itemStack& stackIn)
 
 		//check if hitbox collides
 		collisionTypeID top = dimensionIn->getHitboxCollisionType(r->calculateHitBox());
-		collisionTypeID bottom = dimensionIn->getHitboxCollisionType(crectangle2(boatPos00.x(), boatPos00.y() - 1, initialRelativeHitbox.size.x(), initialRelativeHitbox.size.y()));
+		collisionTypeID bottom = dimensionIn->getHitboxCollisionType(crectangle2(boatPos00.x, boatPos00.y - 1, initialRelativeHitbox.size.x, initialRelativeHitbox.size.y));
 		if (top != collisionTypeID::willCollide && (bottom > top || (isBoat(stackIn.stackItemID) && selectedBlockContainer->getBlockID(selectedBlockPosition) == blockID::water && selectedBlockContainer->getBlockID(selectedBlockPosition + cveci2(0, 1)) == blockID::air)))
 		{
 			r->addToWorld();
@@ -1425,5 +1425,5 @@ void human::addExhaustion(cfp& exhaustion)
 
 rectangle2 human::calculateHitBox(cvec2& position) const
 {
-	return sleeping ? crectangle2(position.x() - humanHitboxSize.y() / 2, position.y(), humanHitboxSize.y(), humanHitboxSize.x()) : humanoid::calculateHitBox(position);
+	return sleeping ? crectangle2(position.x - humanHitboxSize.y / 2, position.y, humanHitboxSize.y, humanHitboxSize.x) : humanoid::calculateHitBox(position);
 }

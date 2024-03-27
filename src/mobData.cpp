@@ -27,7 +27,7 @@ fp mobData::getSpawnWeight(dimension* dimensionIn, cveci2& position)
 			{
 				return 0x4;
 			}
-			else if (position.y() < minimumHillHeight)
+			else if (position.y < minimumHillHeight)
 			{
 				return 0x1;
 			}

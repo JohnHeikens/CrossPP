@@ -47,23 +47,23 @@ void badlands::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, st
 		colorID::brown,
 		colorID::pink
 	};
-	for (int height = pos.y() - 0x10; height < pos.y(); height++)
+	for (int height = pos.y - 0x10; height < pos.y; height++)
 	{
 		blockID blockToPlace;
-		if ((height == pos.y() - 1) && (height < redSandHeight))
+		if ((height == pos.y - 1) && (height < redSandHeight))
 		{
 			blockToPlace = blockID::red_sand;
 		}
 		else
 		{
-			fp noiseValue = terracottaNoise->evaluate<2>(cvec2(pos.x() * noiseStretch.x(), height * noiseStretch.y())) + height * elevationInfluence;
+			fp noiseValue = terracottaNoise->evaluate<2>(cvec2(pos.x * noiseStretch.x, height * noiseStretch.y)) + height * elevationInfluence;
 			cint seedValue1 = (int)floor(noiseValue);
 			cint seedValue2 = (int)currentWorld->seed;
 			cint value = (int)perfectlyHashToDoubleSizedType(seedValue1, seedValue2);
 			cint paletteIndex = math::mod(value, paletteSize);
 			blockToPlace = (blockID)((int)blockID::terracotta + (int)palette[paletteIndex]);
 		}
-		if (dimensionIn->replaceBlock(cveci2(pos.x(), height), blockToPlace, { blockID::stone })) {
+		if (dimensionIn->replaceBlock(cveci2(pos.x, height), blockToPlace, { blockID::stone })) {
 			if (blockToPlace == blockID::red_sand && randChance(randomToUse, 0x10))
 			{
 				dimensionIn->replaceBlock(pos, blockID::dead_bush, { blockID::air });

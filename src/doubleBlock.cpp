@@ -17,22 +17,22 @@ void doubleBlock::render(const gameRenderData& targetData, blockData* const data
 		//	directionID facing = (dynamic_cast<doorData*>(data))->directionFacing;
 		//	rectangle2 textureRect;
 		//	rectangle2 partialDrawRect;
-		//	cfp openDoorDrawWidth = drawRect.w() * (fp)openDoorDrawPixels / blockTextureSize;
+		//	cfp openDoorDrawWidth = drawRect.w * (fp)openDoorDrawPixels / blockTextureSize;
 		//	if (facing == directionID::negativeX)
 		//	{
-		//		partialDrawRect = rectangle2(drawRect.x(), drawRect.y(), openDoorDrawWidth, drawRect.h());
-		//		textureRect = rectangle2(0, 0, openDoorDrawPixels, blockPartTexture.size.y());
+		//		partialDrawRect = rectangle2(drawRect.x, drawRect.y, openDoorDrawWidth, drawRect.h);
+		//		textureRect = rectangle2(0, 0, openDoorDrawPixels, blockPartTexture.size.y);
 		//	}
 		//	else
 		//	{
-		//		partialDrawRect = rectangle2(drawRect.x() + drawRect.w() - openDoorDrawWidth, drawRect.y(), openDoorDrawWidth, drawRect.h());
-		//		textureRect = rectangle2(blockPartTexture.size.x() - openDoorDrawPixels, 0, openDoorDrawPixels, blockPartTexture.size.y());
+		//		partialDrawRect = rectangle2(drawRect.x + drawRect.w - openDoorDrawWidth, drawRect.y, openDoorDrawWidth, drawRect.h);
+		//		textureRect = rectangle2(blockPartTexture.size.x - openDoorDrawPixels, 0, openDoorDrawPixels, blockPartTexture.size.y);
 		//	}
 		//	renderBrush(textureRect, partialDrawRect, true, directionID::positiveY, false, blockPartTexture, targetData.renderTarget);
 		//}
 	}
 	else
 	{
-		block::render(blockPartTexture, crectangle2(0, 0, blockPartTexture.defaultSize.x(), blockPartTexture.defaultSize.y()), crectangle2(cvec2(blockPosition), cvec2(1)), targetData, data, containerIn);
+		block::render(blockPartTexture, crectangle2(0, 0, blockPartTexture.defaultSize.x, blockPartTexture.defaultSize.y), crectangle2(cvec2(blockPosition), cvec2(1)), targetData, data, containerIn);
 	}
 }

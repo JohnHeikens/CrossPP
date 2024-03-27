@@ -36,7 +36,7 @@ void* movableBlockContainer::getArrayValuePointerUnsafe(cveci2& position, const 
 		throw "";
 	}
 
-	csize_t& arrayIndex = movedPosition.x() + movedPosition.y() * blockIDArray.size.x();
+	csize_t& arrayIndex = movedPosition.x + movedPosition.y * blockIDArray.size.x;
 	switch (dataType)
 	{
 	case arrayDataType::blockIDType:

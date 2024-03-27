@@ -198,7 +198,7 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 		}
 		else
 		{
-			constexpr fp attachmentHeight = (1 - torchSize.y()) / 2;
+			constexpr fp attachmentHeight = (1 - torchSize.getY()) / 2;
 			if (toAttachmentDirectionData->attachmentDirection == directionID::negativeX)
 			{
 				renderTorch(blockPosition, cvec2(0, attachmentHeight), 30 * math::degreesToRadians, textureToUse, targetData);
@@ -269,13 +269,13 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 	{
 		constexpr fp relativeMiddle = 0.5;
 
-		cint directionX = directionVectors2D[(int) dynamic_cast<facingData*>(data)->directionFacing].x();
+		cint directionX = directionVectors2D[(int) dynamic_cast<facingData*>(data)->directionFacing].x;
 
 		constexpr fp cutSlabPart = 1.0 / 8;
 		constexpr rectangle2 cutSlabRelativeRect = crectangle2(0, 0, 1, cutSlabPart);
 
-		cfp normalTorchDepth = cutSlabPart + torchSize.x() * 2 - torchSize.y();
-		cfp deepTorchDepth = cutSlabPart + torchSize.x() - torchSize.y();
+		cfp normalTorchDepth = cutSlabPart + torchSize.x * 2 - torchSize.y;
+		cfp deepTorchDepth = cutSlabPart + torchSize.x - torchSize.y;
 
 		const powerLevel outputLevel = containerIn->getEmittanceLevel(blockPosition, levelID::powerLevel);
 
@@ -286,7 +286,7 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 			//todo: check if it had to be emittanceLevel[2]
 			renderTorch(blockPosition, cvec2(relativeMiddle + (directionX * 0.25), normalTorchDepth), 0, outputLevel ? *blockList[blockID::redstone_torch]->tex : *unLitRedstoneTorchTexture, targetData);
 
-			cfp torchOffset = relativeMiddle + (directionX * (0.25 - torchSize.x() - (((toRepeaterData->delayArrayIndex) / (fp)delayArraySize) * 0.5)));
+			cfp torchOffset = relativeMiddle + (directionX * (0.25 - torchSize.x - (((toRepeaterData->delayArrayIndex) / (fp)delayArraySize) * 0.5)));
 
 			if (toRepeaterData->lastPowerLevelBelow == 0)
 			{
@@ -295,7 +295,7 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 			else
 			{
 				//render a small blockage instead of the torch
-				crectangle2 relativeRect = crectangle2(torchOffset - torchSize.x() * 0.5, cutSlabPart, torchSize.x(), torchSize.x());
+				crectangle2 relativeRect = crectangle2(torchOffset - torchSize.x * 0.5, cutSlabPart, torchSize.x, torchSize.x);
 				fillTransformedBrushRectangle(getAbsoluteRect(crectangle2(tex->getClientRect()), relativeRect), getTextureToWorldTransform(tex->defaultSize, targetData.renderTargetToWorldTransform, cvec2(blockPosition)), *blockList[blockID::bedrock]->tex, targetData.renderTarget);
 			}
 		}
@@ -331,8 +331,8 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 		const directionID& attachmentDirection = dynamic_cast<attachmentDirectionData*>(data)->attachmentDirection;
 		cmat3x3& rotationTransform =
 			mat3x3::rotateDegrees(cvec2(blockPosition) + cvec2(0.5), getAngle2DDegrees(flipDirection(attachmentDirection)));
-		crectangle2& endRodBaseTextureRect = crectangle2(endRodBaseTextureRelativeRect.pos0 * (fp)tex->defaultSize.x(), endRodBaseTextureRelativeRect.size * (fp)tex->defaultSize.x());
-		crectangle2& endRodPoleTextureRect = crectangle2(endRodPoleTextureRelativeRect.pos0 * (fp)tex->defaultSize.x(), endRodPoleTextureRelativeRect.size * (fp)tex->defaultSize.x());
+		crectangle2& endRodBaseTextureRect = crectangle2(endRodBaseTextureRelativeRect.pos0 * (fp)tex->defaultSize.x, endRodBaseTextureRelativeRect.size * (fp)tex->defaultSize.x);
+		crectangle2& endRodPoleTextureRect = crectangle2(endRodPoleTextureRelativeRect.pos0 * (fp)tex->defaultSize.x, endRodPoleTextureRelativeRect.size * (fp)tex->defaultSize.x);
 		fillTransformedBrushRectangle(crectangle2(endRodBaseTextureRect),
 			mat3x3::cross(targetData.worldToRenderTargetTransform,
 				mat3x3::cross(rotationTransform,
@@ -375,10 +375,10 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 				//arm
 				crectangle2& relativePushRect = crectangle2((1 - pistonTopSize) * 0.5, (2 - pistonTopSize) - pushProgress0To1, pistonTopSize, pushProgress0To1);
 
-				render(*tex, getAbsoluteRect(blockTextureRect, relativePushRect), crectangle2((fp)blockPosition.x() + relativePushRect.x(), (fp)blockPosition.y() + (1 - pistonTopSize), relativePushRect.w(), relativePushRect.h()), targetData, data, containerIn, false);
+				render(*tex, getAbsoluteRect(blockTextureRect, relativePushRect), crectangle2((fp)blockPosition.x + relativePushRect.x, (fp)blockPosition.y + (1 - pistonTopSize), relativePushRect.w, relativePushRect.h), targetData, data, containerIn, false);
 			}
 			//top
-			render(*tex, crectangle2(0, blockTextureSize * 2 - pistonTopPixelSize, blockTextureSize, pistonTopPixelSize), crectangle2((fp)blockPosition.x() + 0, (fp)blockPosition.y() + (1 - pistonTopSize) + pushProgress0To1, 1, pistonTopSize), targetData, data, containerIn, false, cvec2(blockPosition) + vec2(0.5));
+			render(*tex, crectangle2(0, blockTextureSize * 2 - pistonTopPixelSize, blockTextureSize, pistonTopPixelSize), crectangle2((fp)blockPosition.x + 0, (fp)blockPosition.y + (1 - pistonTopSize) + pushProgress0To1, 1, pistonTopSize), targetData, data, containerIn, false, cvec2(blockPosition) + vec2(0.5));
 
 		}
 	}
@@ -397,7 +397,7 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 		//		cvec2& rootPosition = c->containerToRootTransform.multPointMatrix(cvec2(blockPosition) + 0.5);
 		//
 		//		//multiply by the biome color
-		//		const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition.x())]->grassColor);
+		//		const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition.x)]->grassColor);
 		//		if (identifier == blockID::grass_block)
 		//		{
 		//			//fill back texture
@@ -455,34 +455,34 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	else if (isRail(identifier))
 	{
 		cvecb2 topConnection = containerIn->railTopConnection(position);
-		cfp from = topConnection.x() ? position.y() + 1 : position.y();
-		cfp to = topConnection.y() ? position.y() + 1 : position.y();
+		cfp from = topConnection.x ? position.y + 1 : position.y;
+		cfp to = topConnection.y ? position.y + 1 : position.y;
 		constexpr int sleeperCount = 4;
 		constexpr int sleeperTextureSize = 4;
 		constexpr fp sleeperHitboxSize = sleeperTextureSize / (fp)blockTextureSize;
 		for (int i = 0; i < sleeperCount; i++)
 		{
 			cfp lerpValue = (i + 0.5) / sleeperCount;
-			collisionCollection.hitboxes.push_back(collisionData(crectangle2(cvec2(position.x() + lerpValue - sleeperHitboxSize * 0.5, math::lerp(from, to, lerpValue)), cvec2(sleeperHitboxSize)), collisionTypeID::willCollideTop));
+			collisionCollection.hitboxes.push_back(collisionData(crectangle2(cvec2(position.x + lerpValue - sleeperHitboxSize * 0.5, math::lerp(from, to, lerpValue)), cvec2(sleeperHitboxSize)), collisionTypeID::willCollideTop));
 		}
 		return collisionCollection;
 	}
 	else if (isStairs(identifier))
 	{
 		stairsData* data = dynamic_cast<stairsData*>(containerIn->getBlockData(position));
-		collisionData broadCollision = collisionData(rectangle2(position.x(), position.y(), 1, 0.5), blockCollisionType);
-		collisionData narrowCollision = collisionData(rectangle2(position.x(), position.y(), 0.5, 0.5), blockCollisionType);
+		collisionData broadCollision = collisionData(rectangle2(position.x, position.y, 1, 0.5), blockCollisionType);
+		collisionData narrowCollision = collisionData(rectangle2(position.x, position.y, 0.5, 0.5), blockCollisionType);
 		if (data->upsideDown)
 		{
-			broadCollision.hitboxCollidingWith.y() += 0.5;
+			broadCollision.hitboxCollidingWith.y += 0.5;
 		}
 		else
 		{
-			narrowCollision.hitboxCollidingWith.y() += 0.5;
+			narrowCollision.hitboxCollidingWith.y += 0.5;
 		}
 		if (data->directionFacing == directionID::positiveX)
 		{
-			narrowCollision.hitboxCollidingWith.x() += 0.5;
+			narrowCollision.hitboxCollidingWith.x += 0.5;
 		}
 		collisionCollection.hitboxes.push_back(narrowCollision);
 		collisionCollection.hitboxes.push_back(broadCollision);
@@ -512,7 +512,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 
 					if (toFenceGateData->directionFacing == directionID::positiveX)
 					{
-						relativeHandleRect.x() = 1 - fenceConnectionPoleWidth;
+						relativeHandleRect.x = 1 - fenceConnectionPoleWidth;
 					}
 
 					collisionCollection.hitboxes.push_back(collisionData(crectangle2(relativeHandleRect.pos0 + cvec2(position), relativeHandleRect.size), collisionTypeID::willCollideTop));
@@ -523,7 +523,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 				}
 			}
 
-			collisionCollection.hitboxes.push_back(collisionData(crectangle2(position.x() + fencePoleX, position.y(), fencePoleWidth, fenceGateCollisionHeight), poleCollisionType));
+			collisionCollection.hitboxes.push_back(collisionData(crectangle2(position.x + fencePoleX, position.y, fencePoleWidth, fenceGateCollisionHeight), poleCollisionType));
 			for (size_t connectionIndex = 0; connectionIndex < fenceConnectionPossibilityCount; connectionIndex++)
 			{
 				if (connect[connectionIndex])
@@ -602,7 +602,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 			rectangle2 relativeHitbox = rectangle2(1 - currentMiddleHitboxOffset, currentMiddleHitboxOffset, extensionLength, currentMiddleHitboxSize);
 			if (!isPositive((directionID)i))
 			{
-				relativeHitbox.x() = currentMiddleHitboxOffset - extensionLength;
+				relativeHitbox.x = currentMiddleHitboxOffset - extensionLength;
 			}
 			if (getAxis((directionID)i) == axisID::y)
 			{
@@ -623,7 +623,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 		collisionCollection.hitboxes.push_back(collisionData(crectangle2(cvec2(position) + poleRelativeHitbox.pos0, poleRelativeHitbox.size), collisionTypeID::willCollideTop));
 		return collisionCollection;
 	}
-	collisionData collision = collisionData(rectangle2(position.x(), position.y(), 1, 1), blockCollisionType);
+	collisionData collision = collisionData(rectangle2(position.x, position.y, 1, 1), blockCollisionType);
 
 	if (isDoor(identifier))
 	{
@@ -635,10 +635,10 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 		else
 		{
 			const facingData* toFacingData = dynamic_cast<facingData*>(containerIn->getBlockData(position));
-			collision.hitboxCollidingWith = rectangle2(position.x(), position.y(), openDoorBlockSize, 1);
+			collision.hitboxCollidingWith = rectangle2(position.x, position.y, openDoorBlockSize, 1);
 			if (toFacingData->directionFacing == directionID::positiveX)
 			{
-				collision.hitboxCollidingWith.pos0.x() += 1 - openDoorBlockSize;
+				collision.hitboxCollidingWith.pos0.x += 1 - openDoorBlockSize;
 			}
 			collision.type = collisionTypeID::willCollide;
 		}
@@ -658,18 +658,18 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 		const trapDoorData* toTrapDoorData = dynamic_cast<trapDoorData*>(containerIn->getBlockData(position));
 		if (toTrapDoorData->isOpen)
 		{
-			collision.hitboxCollidingWith.w() = openDoorBlockSize;
+			collision.hitboxCollidingWith.w = openDoorBlockSize;
 			if (toTrapDoorData->directionFacing == directionID::positiveX)
 			{
-				collision.hitboxCollidingWith.x() += 1 - openDoorBlockSize;
+				collision.hitboxCollidingWith.x += 1 - openDoorBlockSize;
 			}
 		}
 		else
 		{
-			collision.hitboxCollidingWith.h() = openDoorBlockSize;
+			collision.hitboxCollidingWith.h = openDoorBlockSize;
 			if (!toTrapDoorData->upsideDown)
 			{
-				collision.hitboxCollidingWith.y() += 1 - openDoorBlockSize;
+				collision.hitboxCollidingWith.y += 1 - openDoorBlockSize;
 			}
 		}
 	}
@@ -678,43 +678,43 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 		const slabData* data = dynamic_cast<slabData*>(containerIn->getBlockData(position));
 		if (data->type == slabType::topSlab)
 		{
-			collision.hitboxCollidingWith = crectangle2(position.x(), position.y() + 0.5, 1, 0.5);
+			collision.hitboxCollidingWith = crectangle2(position.x, position.y + 0.5, 1, 0.5);
 		}
 		else if (data->type == slabType::bottomSlab)
 		{
-			collision.hitboxCollidingWith = crectangle2(position.x(), position.y(), 1, 0.5);
+			collision.hitboxCollidingWith = crectangle2(position.x, position.y, 1, 0.5);
 		}
 	}
 	else if (isPressurePlate(identifier))
 	{
-		collision.hitboxCollidingWith.h() = containerIn->getEmittanceLevel(position, levelID::powerLevel) > 0 ? pressedPressurePlateHeight : unPressedPressurePlateHeight;
+		collision.hitboxCollidingWith.h = containerIn->getEmittanceLevel(position, levelID::powerLevel) > 0 ? pressedPressurePlateHeight : unPressedPressurePlateHeight;
 	}
 	else if (isChest(identifier))
 	{
 		collision.hitboxCollidingWith = getAbsoluteRect(collision.hitboxCollidingWith, chestBlockRect);
 	}
 	else if (isBed(identifier)) {
-		collision.hitboxCollidingWith.h() = bedHitboxHeight;
+		collision.hitboxCollidingWith.h = bedHitboxHeight;
 	}
 	else if (identifier == blockID::snow)
 	{
-		collision.hitboxCollidingWith.h() = dynamic_cast<snowLayerData*>(containerIn->getBlockData(position))->layerThickness;
+		collision.hitboxCollidingWith.h = dynamic_cast<snowLayerData*>(containerIn->getBlockData(position))->layerThickness;
 	}
 	else if (identifier == blockID::soul_sand)
 	{
-		collision.hitboxCollidingWith.h() = soulSandHeight;
+		collision.hitboxCollidingWith.h = soulSandHeight;
 	}
 	else if (identifier == blockID::grass_path)
 	{
-		collision.hitboxCollidingWith.h() = grassPathHeight;
+		collision.hitboxCollidingWith.h = grassPathHeight;
 	}
 	else if (identifier == blockID::enchanting_table)
 	{
-		collision.hitboxCollidingWith.h() = enchantingTableHeight;
+		collision.hitboxCollidingWith.h = enchantingTableHeight;
 	}
 	else if (identifier == blockID::end_portal_frame)
 	{
-		collision.hitboxCollidingWith.h() = endPortalBlockRect.h();
+		collision.hitboxCollidingWith.h = endPortalBlockRect.h;
 	}
 	collisionCollection.hitboxes.push_back(collision);
 	return collisionCollection;
@@ -727,7 +727,7 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 	mat3x3 transform;
 	if (renderAnimation)
 	{
-		transform = mat3x3::fromRectToRect(crectangle2(brushRect.x(), brushRect.y(), brushRect.w(), brushRect.w()), blockRect);
+		transform = mat3x3::fromRectToRect(crectangle2(brushRect.x, brushRect.y, brushRect.w, brushRect.w), blockRect);
 	}
 	else
 	{
@@ -743,8 +743,8 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 		if (tickableBlockContainer* c = dynamic_cast<tickableBlockContainer*>(containerIn)) {
 			cvec2& rootPosition = c->containerToRootTransform.multPointMatrix(blockRect.getCenter());
 			//multiply by the biome color
-			const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition.x())]->grassColor);
-			//const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->getBiome(blockRect.getCenter().x())]->grassColor);
+			const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition.x)]->grassColor);
+			//const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->getBiome(blockRect.getCenter().x)]->grassColor);
 
 			constexpr bool mipmap = std::is_same<brush0Type, resolutionTexture>::value;
 			using finalBrushType = std::conditional<mipmap, texture, brush0Type>::type;
@@ -800,7 +800,7 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 		}
 		else if (toFacingData->directionFacing != standardSideFacingBlockDirection)
 		{
-			transform = mat3x3::cross(mat3x3::mirror(axisID::x, rotationCentreOnScreen.x()), transform);
+			transform = mat3x3::cross(mat3x3::mirror(axisID::x, rotationCentreOnScreen.x), transform);
 		}
 	}
 	renderBrush(brushRect, transform, rotationCentreOnScreen, true, facingDirection, currentBrush, targetData.renderTarget, renderAnimation);
@@ -809,10 +809,10 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 
 void renderTorch(cveci2& blockPosition, cvec2& relativeRotationCentre, cfp& angle, const resolutionTexture& tex, const gameRenderData& targetData)
 {
-	mat3x3 transform = mat3x3::fromRectToRect(crectangle2(torchTextureRect), crectangle2(cvec2(blockPosition) + relativeRotationCentre + cvec2(torchSize.x() * -0.5, 0), torchSize));
+	mat3x3 transform = mat3x3::fromRectToRect(crectangle2(torchTextureRect), crectangle2(cvec2(blockPosition) + relativeRotationCentre + cvec2(torchSize.x * -0.5, 0), torchSize));
 	if (angle != 0)
 	{
-		transform = mat3x3::cross(transform, mat3x3::rotate(cvec2(torchTextureRect.pos0) + cvec2(torchTextureRect.size.x() * 0.5, 0), angle));
+		transform = mat3x3::cross(transform, mat3x3::rotate(cvec2(torchTextureRect.pos0) + cvec2(torchTextureRect.size.x * 0.5, 0), angle));
 	}
 	fillTransparentRectangle(crectangle2(torchTextureRect), mat3x3::cross(targetData.worldToRenderTargetTransform, transform), tex, targetData.renderTarget);
 }
@@ -820,14 +820,14 @@ void renderTorch(cveci2& blockPosition, cvec2& relativeRotationCentre, cfp& angl
 
 void renderTexture(crectangle2& rectangleToTransform, cmat3x3& transform, cbool& hasTransparency, const directionID& directionFacing, const resolutionTexture& tex, const texture& renderTarget, cbool& renderAnimation)
 {
-	mat3x3 finalTransform = mat3x3::cross(transform, mat3x3::fromRectToRect(crectangle2(0, 0, tex.defaultSize.x(), tex.defaultSize.x()), rectangleToTransform));
-	rectangle2 brushRect = crectangle2(0, 0, tex.defaultSize.x(), tex.defaultSize.y());
+	mat3x3 finalTransform = mat3x3::cross(transform, mat3x3::fromRectToRect(crectangle2(0, 0, tex.defaultSize.x, tex.defaultSize.x), rectangleToTransform));
+	rectangle2 brushRect = crectangle2(0, 0, tex.defaultSize.x, tex.defaultSize.y);
 	const texture& appropriateTexture = tex.mipmap(finalTransform, brushRect);
 	renderBrush(brushRect, finalTransform, transform.multPointMatrix(rectangleToTransform.getCenter()), hasTransparency, directionFacing, appropriateTexture, renderTarget, renderAnimation);
 }
 void renderTexture(crectangle2& drawRect, cbool& hasTransparency, const directionID& directionFacing, const resolutionTexture& tex, const texture& renderTarget, cbool& renderAnimation)
 {
-	const texture& appropriateTexture = tex.getMipmapTexture(drawRect.size.x());
+	const texture& appropriateTexture = tex.getMipmapTexture(drawRect.size.x);
 	renderBrush(crectangle2(appropriateTexture.getClientRect()), drawRect, hasTransparency, directionFacing, appropriateTexture, renderTarget, renderAnimation);
 }
 void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData)

@@ -10,7 +10,7 @@ constexpr vec2 shulkerHitboxSize = vec2(1);
 
 constexpr rectangle2 shulkerRelativeHitbox = crectangle2(shulkerHitboxSize * -0.5, shulkerHitboxSize);
 
-constexpr fp shulkerTextureScale = shulkerHitboxSize.y() / (fp)0x20;
+constexpr fp shulkerTextureScale = shulkerHitboxSize.getY() / (fp)0x20;
 
 constexpr vec2 shulkerHeadSize = cvec2(shulkerHeadTextureRect.size) * shulkerTextureScale;
 constexpr vec2 shulkerBottomShellSize = cvec2(shulkerBottomShellTextureRect.size) * shulkerTextureScale;

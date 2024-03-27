@@ -54,7 +54,7 @@ void dropExperienceOrbs(tickableBlockContainer * containerIn, cvec2& position, c
 	std::vector<int> experienceTable = divideExperience(amount);
 	for (int i : experienceTable)
 	{
-		experienceOrb* orb = (experienceOrb*)summonEntity(entityID::experience_orb, containerIn, position - relativeExperienceHitbox.pos0 - vec2(relativeExperienceHitbox.size.x(), 0.0));
+		experienceOrb* orb = (experienceOrb*)summonEntity(entityID::experience_orb, containerIn, position - relativeExperienceHitbox.pos0 - vec2(relativeExperienceHitbox.size.x, 0.0));
 		orb->value = i;
 		orb->speed = vec2::getrotatedvector(randFp(currentRandom, math::PI2)) * maxExperienceSpeed;
 	}

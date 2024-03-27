@@ -91,7 +91,7 @@
 #include "tickableBlockContainer.h"
 
 constexpr veci2 endBlockSpawningOn = cveci2(mainEndIslandMaxRadius / 2, 0);
-constexpr vec2 endSpawningLocation = cvec2(endBlockSpawningOn.x() + 0.5, endBlockSpawningOn.y() + 1 + math::fpepsilon);
+constexpr vec2 endSpawningLocation = cvec2(endBlockSpawningOn.getX() + 0.5, endBlockSpawningOn.getY() + 1 + math::fpepsilon);
 constexpr int endPlatformRadius = 0x2;
 constexpr int endPlatformSpaceHeight = 0x4;
 
@@ -291,7 +291,7 @@ void entity::tick()
 	{
 		addFireTicks = true;
 	}
-	if (isUndeadMob(entityType) && (getVisibleSunLightLevel(dimensionIn->getInternalSunLightLevel(floorVector(position + cvec2(relativeHitbox.getCenter().x(), relativeHitbox.pos01().y())))) == maxLightLevel) && (fluidArea == 0))
+	if (isUndeadMob(entityType) && (getVisibleSunLightLevel(dimensionIn->getInternalSunLightLevel(floorVector(position + cvec2(relativeHitbox.getCenter().x, relativeHitbox.pos01().y)))) == maxLightLevel) && (fluidArea == 0))
 	{
 		if (!isHumanoid(entityType) || ((humanoid*)this)->armorSlots->slots[helmetArmorType - bootsArmorType].count == 0)
 		{
@@ -387,21 +387,21 @@ void entity::physics()
 					fp firstCollisionTime = INFINITY;
 
 					//check if another hitbox collided
-					const fp hitbox00 = positionAfterCollisions.y() + relativeHitbox.y();
+					const fp hitbox00 = positionAfterCollisions.y + relativeHitbox.y;
 
 					for (size_t stepIndex = 0; stepIndex < data.hitboxes.size(); stepIndex++)
 					{
 						const collisionData& checkData = data.hitboxes[stepIndex];
 						if ((checkData.collisionTime > math::fpepsilon) && (checkData.collisionTime < firstCollisionTime))
 						{
-							cfp collisionTop = checkData.hitboxCollidingWith.y() + checkData.hitboxCollidingWith.h();
+							cfp collisionTop = checkData.hitboxCollidingWith.y + checkData.hitboxCollidingWith.h;
 							if ((checkData.type != collisionTypeID::willNotCollide) && (checkData.collisionTime > 0) && (checkData.collisionTime < secondsToCalculateLeft) && (collisionTop > hitbox00) && (collisionTop <= (hitbox00 + maxStepHeight)))
 							{
 								//check if covered
-								collisionEdgeData edgeToCheck = collisionEdgeData({ cvec2(checkData.hitboxCollidingWith.x(),checkData.hitboxCollidingWith.w()) });
+								collisionEdgeData edgeToCheck = collisionEdgeData({ cvec2(checkData.hitboxCollidingWith.x,checkData.hitboxCollidingWith.w) });
 								edgeToCheck = edgeToCheck.substractCoveringEdges(data.getEdges(collisionTop, directionID::positiveY));
 
-								if (edgeToCheck.edgeInRange(cvec2((speed.x() > checkData.speed.x()) ? checkData.hitboxCollidingWith.x() : ((checkData.hitboxCollidingWith.x() + checkData.hitboxCollidingWith.w()) - math::fpepsilon), math::fpepsilon)))
+								if (edgeToCheck.edgeInRange(cvec2((speed.x > checkData.speed.x) ? checkData.hitboxCollidingWith.x : ((checkData.hitboxCollidingWith.x + checkData.hitboxCollidingWith.w) - math::fpepsilon), math::fpepsilon)))
 								{
 									index = stepIndex;
 									firstCollisionTime = checkData.collisionTime;
@@ -417,11 +417,11 @@ void entity::physics()
 					{
 						collisionData stepCollision = data.hitboxes[index];
 						//step up block
-						cfp hitboxHeight = stepCollision.hitboxCollidingWith.y() + stepCollision.hitboxCollidingWith.h();
+						cfp hitboxHeight = stepCollision.hitboxCollidingWith.y + stepCollision.hitboxCollidingWith.h;
 
 						//stepped up position should be positionaftercollisions
 
-						cvec2 steppedUpPosition = cvec2(speed.x() < stepCollision.speed.x() ? (stepCollision.hitboxCollidingWith.pos1() - relativeHitbox.pos0) : (stepCollision.hitboxCollidingWith.pos01()) - relativeHitbox.pos10()) + cvec2(0, math::fpepsilon);
+						cvec2 steppedUpPosition = cvec2(speed.x < stepCollision.speed.x ? (stepCollision.hitboxCollidingWith.pos1() - relativeHitbox.pos0) : (stepCollision.hitboxCollidingWith.pos01()) - relativeHitbox.pos10()) + cvec2(0, math::fpepsilon);
 
 						crectangle2 stepHitbox = calculateHitBox(steppedUpPosition);
 
@@ -429,7 +429,7 @@ void entity::physics()
 
 						if (steppedCollisionType != collisionTypeID::willCollide)
 						{
-							speed.y() = stepCollision.speed.y();
+							speed.y = stepCollision.speed.y;
 							newOnGround = true;
 							positionAfterCollisions = steppedUpPosition;
 							secondsToCalculateLeft -= stepCollision.collisionTime;
@@ -450,7 +450,7 @@ void entity::physics()
 			if (firstCollision.collisionTime < secondsToCalculateLeft)
 			{
 				axisCollided = firstCollision.axisCollided;
-				if (firstCollision.axisCollided.y())
+				if (firstCollision.axisCollided.y)
 				{
 					newOnGround = true;
 				}
@@ -460,28 +460,28 @@ void entity::physics()
 				const std::vector<collisionData> validCollisions = data.getCollisions(collisionTypeID::willCollideTop);
 				for (const collisionData& collision : validCollisions)
 				{
-					if ((speed.y() < collision.speed.y()) && (collision.collisionTime < firstCollision.collisionTime && collision.collisionTime < secondsToCalculateLeft) &&
-						((collision.hitboxCollidingWith.pos0.y() + collision.hitboxCollidingWith.h()) < positionAfterCollisions.y()))
+					if ((speed.y < collision.speed.y) && (collision.collisionTime < firstCollision.collisionTime && collision.collisionTime < secondsToCalculateLeft) &&
+						((collision.hitboxCollidingWith.pos0.y + collision.hitboxCollidingWith.h) < positionAfterCollisions.y))
 					{
 						crectangle2 collisionTopBorder = crectangle2(
-							collision.hitboxCollidingWith.x(),
-							collision.hitboxCollidingWith.y() + collision.hitboxCollidingWith.h(),
-							collision.hitboxCollidingWith.w(), 0);
+							collision.hitboxCollidingWith.x,
+							collision.hitboxCollidingWith.y + collision.hitboxCollidingWith.h,
+							collision.hitboxCollidingWith.w, 0);
 						//check if the border is not covered up by other blocks
 						for (const collisionData& coverData : validCollisions)
 						{
 							crectangle2 coverHitbox = coverData.hitboxCollidingWith;
 							/*covers partially:
-							coverHitbox.x() < collisionTopBorder.x() + collisionTopBorder.w() &&
-								coverHitbox.x() + coverHitbox.w() > collisionTopBorder.x() &&
-								coverHitbox.y() <= collisionTopBorder.y() &&
-								coverHitbox.y() + coverHitbox.h() > collisionTopBorder.y()
+							coverHitbox.x < collisionTopBorder.x + collisionTopBorder.w &&
+								coverHitbox.x + coverHitbox.w > collisionTopBorder.x &&
+								coverHitbox.y <= collisionTopBorder.y &&
+								coverHitbox.y + coverHitbox.h > collisionTopBorder.y
 							*/
 							//must cover completely
-							if (coverHitbox.x() <= collisionTopBorder.x() &&
-								coverHitbox.x() + coverHitbox.w() >= collisionTopBorder.x() + collisionTopBorder.w() &&
-								coverHitbox.y() <= collisionTopBorder.y() &&
-								coverHitbox.y() + coverHitbox.h() > collisionTopBorder.y()
+							if (coverHitbox.x <= collisionTopBorder.x &&
+								coverHitbox.x + coverHitbox.w >= collisionTopBorder.x + collisionTopBorder.w &&
+								coverHitbox.y <= collisionTopBorder.y &&
+								coverHitbox.y + coverHitbox.h > collisionTopBorder.y
 								)
 							{
 								goto coveredUp;
@@ -489,7 +489,7 @@ void entity::physics()
 						}
 						firstCollision = collision;
 						newOnGround = true;
-						axisCollided.y() = true;
+						axisCollided.y = true;
 
 					}
 				coveredUp:;
@@ -503,14 +503,14 @@ void entity::physics()
 					cvec2& noCollisionPosition = newPosition + speed * secondsToCalculateLeft;
 					//check if walking on a cactus
 									//todo: better method than measuring the entire block height while keeping accuracy
-					crectangle2& topHitbox = calculateHitBox(vec2(positionAfterCollisions.x(), positionAfterCollisions.y()));
-					crectangle2& bottomHitbox = calculateHitBox(vec2(positionAfterCollisions.x(), noCollisionPosition.y()));
+					crectangle2& topHitbox = calculateHitBox(vec2(positionAfterCollisions.x, positionAfterCollisions.y));
+					crectangle2& bottomHitbox = calculateHitBox(vec2(positionAfterCollisions.x, noCollisionPosition.y));
 
-					cint left = (int)floor(topHitbox.x());
-					cint right = (int)floor(topHitbox.x() + topHitbox.w());
+					cint left = (int)floor(topHitbox.x);
+					cint right = (int)floor(topHitbox.x + topHitbox.w);
 
-					cint currentYLevel = (int)floor(topHitbox.y());
-					cint newYLevel = (int)floor(bottomHitbox.y());
+					cint currentYLevel = (int)floor(topHitbox.y);
+					cint newYLevel = (int)floor(bottomHitbox.y);
 
 					cint fromYLevel = math::minimum(currentYLevel, newYLevel);
 					cint toYLevel = math::maximum(currentYLevel, newYLevel);
@@ -530,8 +530,8 @@ void entity::physics()
 								//stuck in a magma_block block will also damage you
 								if ((currentData.collisionTime < (firstCollision.collisionTime + math::fpepsilon)) && ((currentData.type == collisionTypeID::willCollide) || (currentData.collisionTime > 0)))
 								{
-									collisionEdgeData edgeData = collisionEdgeData({ vec2(currentData.hitboxCollidingWith.x(), currentData.hitboxCollidingWith.w()) });
-									edgeData = edgeData.substractCoveringEdges(data.getEdges(currentData.hitboxCollidingWith.pos01().y(), directionID::positiveY));
+									collisionEdgeData edgeData = collisionEdgeData({ vec2(currentData.hitboxCollidingWith.x, currentData.hitboxCollidingWith.w) });
+									edgeData = edgeData.substractCoveringEdges(data.getEdges(currentData.hitboxCollidingWith.pos01().y, directionID::positiveY));
 
 									if (edgeData.edges.size())
 									{
@@ -574,7 +574,7 @@ void entity::physics()
 
 				if (!oldOnGround && newOnGround)
 				{
-					onCollisionWithGround(speed.y() - firstCollision.speed.y());
+					onCollisionWithGround(speed.y - firstCollision.speed.y);
 				}
 				positionAfterCollisions += speed * firstCollision.collisionTime;
 				//multiply by friction
@@ -626,14 +626,14 @@ void entity::physics()
 	newPosition = positionAfterCollisions;
 	onGround = newOnGround;
 
-	inCobweb = dimensionIn->blockRangeContains(cveci2((int)floor(blockCheckHitbox.x()), (int)floor(blockCheckHitbox.y())),
-		cveci2((int)floor(blockCheckHitbox.x() + blockCheckHitbox.w()), (int)floor(blockCheckHitbox.y() + blockCheckHitbox.h())),
+	inCobweb = dimensionIn->blockRangeContains(cveci2((int)floor(blockCheckHitbox.x), (int)floor(blockCheckHitbox.y)),
+		cveci2((int)floor(blockCheckHitbox.x + blockCheckHitbox.w), (int)floor(blockCheckHitbox.y + blockCheckHitbox.h)),
 		{ blockID::cobweb });
 
 	//check for fluids at the new position, BEFORE friction is applied, so you can jump out of low water streams with ease
 	fluidArea = getFluidArea(blockCheckHitbox, std::vector<blockID>(fluidList, fluidList + fluidCount));
 
-	speed.y() -= getGravityForce();
+	speed.y -= getGravityForce();
 
 	//if (fluidArea > 0)
 	//{
@@ -652,7 +652,7 @@ void entity::physics()
 
 	for (vec3 fric : frictions)
 	{
-		speed = math::lerp(cvec2(fric), speed, fric.z()); //getSpeedAfterFriction(cvect2<vec2>(speed, cvec2(fric)), cvec2(getWeight(), fric.z()));
+		speed = math::lerp(cvec2(fric), speed, fric.z); //getSpeedAfterFriction(cvect2<vec2>(speed, cvec2(fric)), cvec2(getWeight(), fric.z));
 	}
 }
 bool entity::canTeleportTo(cvec2& position) const
@@ -748,7 +748,7 @@ fp entity::getFluidArea(crectangle2& box, const std::vector<blockID>& fluids) co
 		if (std::find(fluids.begin(), fluids.end(), fluid) != fluids.end())
 		{
 			rectangle2 fluidRect;
-			if (block == fluid && checkPos.y() == checkRect.y())
+			if (block == fluid && checkPos.y == checkRect.y)
 			{
 				fluidLevel level = ((fluidData*)dimensionIn->getBlockData(checkPos))->currentFluidLevel;
 
@@ -766,16 +766,16 @@ fp entity::getFluidArea(crectangle2& box, const std::vector<blockID>& fluids) co
 
 bool entity::hitboxContains(crectangle2& box, const std::vector<blockID>& blockIDArray)
 {
-	cint fromX = (int)floor(box.x());
-	cint fromY = (int)floor(box.y());
+	cint fromX = (int)floor(box.x);
+	cint fromY = (int)floor(box.y);
 	cvec2 topRight = box.pos1();
-	cint toX = (int)floor(topRight.x());
-	cint toY = (int)floor(topRight.y());
+	cint toX = (int)floor(topRight.x);
+	cint toY = (int)floor(topRight.y);
 	//check hitbox for water
 	veci2 checkPos = cveci2();
-	for (checkPos.y() = fromY; checkPos.y() <= toY; checkPos.y()++)
+	for (checkPos.y = fromY; checkPos.y <= toY; checkPos.y++)
 	{
-		for (checkPos.x() = fromX; checkPos.x() <= toX; checkPos.x()++)
+		for (checkPos.x = fromX; checkPos.x <= toX; checkPos.x++)
 		{
 			blockID block = dimensionIn->getBlockID(checkPos);
 			if (std::find(blockIDArray.begin(), blockIDArray.end(), block) != blockIDArray.end())
@@ -788,16 +788,16 @@ bool entity::hitboxContains(crectangle2& box, const std::vector<blockID>& blockI
 }
 bool entity::hitboxContainsOnly(crectangle2& box, const std::vector<blockID>& blockIDArray)
 {
-	cint fromX = (int)floor(box.x());
-	cint fromY = (int)floor(box.y());
+	cint fromX = (int)floor(box.x);
+	cint fromY = (int)floor(box.y);
 	cvec2 topRight = box.pos1();
-	cint toX = (int)floor(topRight.x());
-	cint toY = (int)floor(topRight.y());
+	cint toX = (int)floor(topRight.x);
+	cint toY = (int)floor(topRight.y);
 	//check hitbox for water
 	veci2 checkPos = cveci2();
-	for (checkPos.y() = fromY; checkPos.y() <= toY; checkPos.y()++)
+	for (checkPos.y = fromY; checkPos.y <= toY; checkPos.y++)
 	{
-		for (checkPos.x() = fromX; checkPos.x() <= toX; checkPos.x()++)
+		for (checkPos.x = fromX; checkPos.x <= toX; checkPos.x++)
 		{
 			blockID block = dimensionIn->getBlockID(checkPos);
 			if (std::find(blockIDArray.begin(), blockIDArray.end(), block) == blockIDArray.end())
@@ -1241,7 +1241,7 @@ vec3 entity::getFluidFriction() const
 
 fp entity::getLengthTouchingGround() const
 {
-	return onGround ? relativeHitbox.size.x() : 0;
+	return onGround ? relativeHitbox.size.x : 0;
 }
 
 fp entity::getWeight() const
@@ -1275,5 +1275,5 @@ bool collidesThisTick(const entity& e1, const entity& e2)
 {
 	vect2<bool> axisCollided = vect2<bool>();
 	collideTime2d(e1.calculateHitBox(), e2.calculateHitBox(), (e2.speed - e1.speed) * secondsPerTick, axisCollided);
-	return axisCollided.x() || axisCollided.y();
+	return axisCollided.x || axisCollided.y;
 }

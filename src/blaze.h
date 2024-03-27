@@ -12,22 +12,22 @@ constexpr size_t blazeRingCount = 0x3;
 constexpr size_t blazeRodCount = blazeRingCount * blazeRingRodCount;
 //the amount of rods per ring that are drawn behind the blaze
 constexpr int blazeRingBackRodCount = blazeRingRodCount / 2;
-constexpr fp blazePixelSize = humanHeadSize.x() / blazeHeadTextureRect.w();
+constexpr fp blazePixelSize = humanHeadSize.getX() / blazeHeadTextureRect.getW();
 
 constexpr vec2 blazeHeadSize = vec2(blazeHeadTextureRect.size) * blazePixelSize;
 constexpr vec2 blazeRodSize = vec2(blazeRodTextureRect.size) * blazePixelSize;
 constexpr fp relativeBlazeRingHeight[blazeRingCount]
 {
-	blazeHeadSize.y() * 0.5,
+	blazeHeadSize.getY() * 0.5,
 	0,
-	-blazeHeadSize.y()
+	-blazeHeadSize.getY()
 };
 //RADIUS (MAXIMUM DISTANCE)
 constexpr fp blazeRingRadius[blazeRingCount]
 {
-	blazeHeadSize.x(),
-	blazeHeadSize.x() * 0.7,
-	blazeHeadSize.x() * 0.5,
+	blazeHeadSize.getX(),
+	blazeHeadSize.getX() * 0.7,
+	blazeHeadSize.getX() * 0.5,
 };
 
 //circles per second

@@ -39,7 +39,7 @@ void enderDragonPortalFlyingAI::updateTask()
 			enderDragonDeathSound->playRandomSound(connectedEntity->dimensionIn, connectedEntity->position);
 		}
 		connectedEnderdragon->speed *= 0.8;
-		connectedEnderdragon->speed.y() += enderDragonDyingAscendSpeed * (1 - 0.8);
+		connectedEnderdragon->speed.y += enderDragonDyingAscendSpeed * (1 - 0.8);
 		connectedEnderdragon->deathAnimationTicks++;
 	}
 }

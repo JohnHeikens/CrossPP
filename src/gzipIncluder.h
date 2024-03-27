@@ -1,7 +1,7 @@
 //#pragma once
 #define ZLIB_CONST
-//#pragma warning(push, 0)
-//#pragma warning(disable : 4068)
+#pragma warning(push, 0)
+#pragma warning(disable : 4068)
 #include <zlib.h>
 
 //https://github.com/mapbox/gzip-hpp/blob/master/include/gzip/decompress.hpp
@@ -239,4 +239,4 @@ namespace gzip {
 } // namespace gzip
 
 //#include <gzip/decompress.hpp>
-//#pragma warning(pop)
+#pragma warning(pop)

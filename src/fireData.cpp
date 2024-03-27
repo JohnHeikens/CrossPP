@@ -37,9 +37,9 @@ void fireData::randomTick(tickableBlockContainer* containerIn, cveci2& position)
 				}
 			}
 		}
-		for (spreadPosition.y() = position.y() - 1; spreadPosition.y() <= position.y() + 4; spreadPosition.y()++)
+		for (spreadPosition.y = position.y - 1; spreadPosition.y <= position.y + 4; spreadPosition.y++)
 		{
-			for (spreadPosition.x() = position.x() - 1; spreadPosition.x() <= position.x() + 1; spreadPosition.x()++)
+			for (spreadPosition.x = position.x - 1; spreadPosition.x <= position.x + 1; spreadPosition.x++)
 			{
 				if (containerIn->getBlockID(spreadPosition) == blockID::air)
 				{

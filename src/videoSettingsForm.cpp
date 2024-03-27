@@ -8,18 +8,18 @@ videoSettingsForm::videoSettingsForm()
 void videoSettingsForm::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	int currentY = rect.h() / 2 + buttonSize.y() * 2;
-	graphicsModeButton->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, currentY, buttonSize.x(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	transparencyButton->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, currentY, buttonSize.x(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	showShadowsButton->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, currentY, buttonSize.x(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	biomeColorsButton->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, currentY, buttonSize.x(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	fullScreenButton->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, currentY, buttonSize.x(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	guiScaleSlider->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, currentY, buttonSize.x(), buttonSize.y()));
+	int currentY = rect.h / 2 + buttonSize.y * 2;
+	graphicsModeButton->layout(crectanglei2((rect.w - buttonSize.x) / 2, currentY, buttonSize.x, buttonSize.y));
+	currentY -= buttonSize.y;
+	transparencyButton->layout(crectanglei2((rect.w - buttonSize.x) / 2, currentY, buttonSize.x, buttonSize.y));
+	currentY -= buttonSize.y;
+	showShadowsButton->layout(crectanglei2((rect.w - buttonSize.x) / 2, currentY, buttonSize.x, buttonSize.y));
+	currentY -= buttonSize.y;
+	biomeColorsButton->layout(crectanglei2((rect.w - buttonSize.x) / 2, currentY, buttonSize.x, buttonSize.y));
+	currentY -= buttonSize.y;
+	fullScreenButton->layout(crectanglei2((rect.w - buttonSize.x) / 2, currentY, buttonSize.x, buttonSize.y));
+	currentY -= buttonSize.y;
+	guiScaleSlider->layout(crectanglei2((rect.w - buttonSize.x) / 2, currentY, buttonSize.x, buttonSize.y));
 }
 
 void videoSettingsForm::mouseDown(cveci2& position, cmb& button)

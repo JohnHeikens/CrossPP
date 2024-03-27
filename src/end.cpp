@@ -60,12 +60,12 @@ void end::generateStructures(chunk* generateIn)
 		cveci2& endPortalSearchPos = cveci2(0, mainEndIslandMaxRadius);
 
 		cveci2& exitPortalPos = findBlock(endPortalSearchPos, cveci2(0, -1), cveci2(), [](const auto& a) {return a == blockID::end_stone; });
-		exitPortalLevel = exitPortalPos.y() + 1;
+		exitPortalLevel = exitPortalPos.y + 1;
 
 
 		//place portal bedrock
 		structure* endExitPortalStructure = getStructureByName(structureFolder + std::wstring(L"the_end/exit_portal"));
-		structureFeature().placeStructurePart(endExitPortalStructure, this, cveci2(0, exitPortalLevel) + cveci2(-(int)((endExitPortalStructure->blockIDArray.size.x() - 1) / 2), 0), false);
+		structureFeature().placeStructurePart(endExitPortalStructure, this, cveci2(0, exitPortalLevel) + cveci2(-(int)((endExitPortalStructure->blockIDArray.size.x - 1) / 2), 0), false);
 
 		summonEntity(entityID::ender_dragon, this, cvec2(0, exitPortalLevel + 0x20));
 
@@ -75,7 +75,7 @@ void end::generateStructures(chunk* generateIn)
 
 			cveci2& pillarSearchPos = cveci2(pillarX, mainEndIslandMaxRadius);
 			cveci2& pillarPos = findBlock(pillarSearchPos, cveci2(0, -1), cveci2(pillarX, 0), [](const auto& a) {return a == blockID::end_stone; });
-			obsidianPillarLevel[i] = pillarPos.y() + 1;
+			obsidianPillarLevel[i] = pillarPos.y + 1;
 
 			replaceBlockRange(cveci2(pillarX - obsidianPillarRadius[i], obsidianPillarLevel[i] - 1), cveci2(pillarX + obsidianPillarRadius[i], obsidianPillarLevel[i] + obsidianPillarHeight[i] - 1), blockID::obsidian, { blockID::air }, chunkLoadLevel::updateLoaded);
 
@@ -191,7 +191,7 @@ fp end::getThickness(cvec2& position) const
 	case biomeID::the_end:
 	{
 		cfp& distance = ((position.lengthSquared()) / math::squared(mainEndIslandMaxRadius));
-		return (1 - distance) * ((position.y() < 0) ? 1 : (1 - position.y() / mainEndIslandMaxRadius));
+		return (1 - distance) * ((position.y < 0) ? 1 : (1 - position.y / mainEndIslandMaxRadius));
 	}
 	case biomeID::end_void:
 	{

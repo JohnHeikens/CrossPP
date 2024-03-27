@@ -46,9 +46,9 @@ layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vecto
 	cfp& TotalWeight = std::accumulate(octaveWeights.begin(), octaveWeights.end(), (fp)0);
 
 	//map weights
-	cfp& mid = outputRange.getCenter().x();
+	cfp& mid = outputRange.getCenter().x;
 	this->OutputPlus = mid;
-	cfp& amplitude = outputRange.pos1().x() - mid;
+	cfp& amplitude = outputRange.pos1().x - mid;
 	cfp& mult = amplitude * NOISE_MULT / TotalWeight;
 	for (size_t i = 0; i < octaveWeights.size(); i++)
 	{

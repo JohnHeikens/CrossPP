@@ -36,27 +36,27 @@ void structureBlockUI::serializeWithTemporaryData(cbool& write)
 void structureBlockUI::layout(crectanglei2& rect)
 {
 	form::layout(rect);
-	cint structureBlocklabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, structureBlockLabel->text).x() + defaultTheme().borderSize * 2;
-	cint middle = rect.w() / 2;
-	int descendingY = rect.h() - buttonSize.y();
+	cint structureBlocklabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, structureBlockLabel->text).x + defaultTheme().borderSize * 2;
+	cint middle = rect.w / 2;
+	int descendingY = rect.h - buttonSize.y;
 
-	structureBlockLabel->layout(crectanglei2(middle - structureBlocklabelWidth / 2, descendingY, structureBlocklabelWidth, buttonSize.y()));
-	descendingY -= buttonSize.y() * 2;
-	nameLabel->layout(crectanglei2(0, descendingY, rect.w(), buttonSize.y()));
-	descendingY -= buttonSize.y();
-	nameTextbox->layout(crectanglei2(0, descendingY, rect.w(), buttonSize.y()));
+	structureBlockLabel->layout(crectanglei2(middle - structureBlocklabelWidth / 2, descendingY, structureBlocklabelWidth, buttonSize.y));
+	descendingY -= buttonSize.y * 2;
+	nameLabel->layout(crectanglei2(0, descendingY, rect.w, buttonSize.y));
+	descendingY -= buttonSize.y;
+	nameTextbox->layout(crectanglei2(0, descendingY, rect.w, buttonSize.y));
 
 	int ascendingY = 0;
-	doneButton->layout(crectanglei2(0, ascendingY, middle, buttonSize.y()));
-	cancelButton->layout(crectanglei2(middle, ascendingY, rect.w() - middle, buttonSize.y()));
+	doneButton->layout(crectanglei2(0, ascendingY, middle, buttonSize.y));
+	cancelButton->layout(crectanglei2(middle, ascendingY, rect.w - middle, buttonSize.y));
 
-	ascendingY += buttonSize.y();
-	modeButton->layout(crectanglei2(0, ascendingY, smallRightButtonSize, buttonSize.y()));
-	ascendingY += buttonSize.y();
-	modeLabel->layout(crectanglei2(0, ascendingY, 0, buttonSize.y()));
-	ascendingY += buttonSize.y();
+	ascendingY += buttonSize.y;
+	modeButton->layout(crectanglei2(0, ascendingY, smallRightButtonSize, buttonSize.y));
+	ascendingY += buttonSize.y;
+	modeLabel->layout(crectanglei2(0, ascendingY, 0, buttonSize.y));
+	ascendingY += buttonSize.y;
 
-	crectanglei2 modeRect = crectanglei2(0, ascendingY, rect.w(), descendingY - ascendingY);
+	crectanglei2 modeRect = crectanglei2(0, ascendingY, rect.w, descendingY - ascendingY);
 	saveUI->layout(modeRect);
 	loadUI->layout(modeRect);
 }
@@ -88,8 +88,8 @@ void structureBlockUI::render(cveci2& position, const texture& renderTarget)
 	}
 	}
 	temporaryStructureBlockData->structureName = nameTextbox->text;
-	cint modeLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, modeLabel->text).x() + defaultTheme().borderSize * 2;
-	modeLabel->layout(crectanglei2(modeLabel->rect.x(), modeLabel->rect.y(), modeLabelWidth, modeLabel->rect.h()));
+	cint modeLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, modeLabel->text).x + defaultTheme().borderSize * 2;
+	modeLabel->layout(crectanglei2(modeLabel->rect.x, modeLabel->rect.y, modeLabelWidth, modeLabel->rect.h));
 	renderChildren(position, renderTarget);
 }
 void structureBlockUI::mouseDown(cveci2& position, cmb& button)

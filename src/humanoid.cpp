@@ -94,15 +94,15 @@ void humanoid::updateBodyParts() const
 	//update bodyparts
 	if (sitting)
 	{
-		mainBodyPart->translate = vec2(position.x(), position.y() + mainBodyPart->size.y() * 0.5);
+		mainBodyPart->translate = vec2(position.x, position.y + mainBodyPart->size.y * 0.5);
 	}
 	else if (sleeping)
 	{
-		mainBodyPart->translate = vec2(position.x(), position.y() + mainBodyPart->size.x() * 0.5);
+		mainBodyPart->translate = vec2(position.x, position.y + mainBodyPart->size.x * 0.5);
 	}
 	else
 	{
-		mainBodyPart->translate = vec2(position.x(), position.y() + leftLeg->size.y() + mainBodyPart->size.y() * 0.5);
+		mainBodyPart->translate = vec2(position.x, position.y + leftLeg->size.y + mainBodyPart->size.y * 0.5);
 	}
 
 	//draw laying down
@@ -113,11 +113,11 @@ void humanoid::updateBodyParts() const
 	if (sleeping)//looking to the left
 	{
 		//flip body
-		mainBodyPart->flipX = lookingAt.y() < position.y();;
+		mainBodyPart->flipX = lookingAt.y < position.y;;
 	}
 
 	fp rightArmWalkingAngle;
-	if ((entityType != entityID::human || !((human*)this)->flying) && (!walking && onGround && (abs(speed.x()) > legBrakeSpeed.x())) || (abs(speed.y()) > legBrakeSpeed.y()))
+	if ((entityType != entityID::human || !((human*)this)->flying) && (!walking && onGround && (abs(speed.x) > legBrakeSpeed.x)) || (abs(speed.y) > legBrakeSpeed.y))
 	{
 		cfp legBrakeAngle = -20 * math::degreesToRadians;
 		//brakes animation
@@ -183,7 +183,7 @@ void humanoid::render(const gameRenderData& targetData) const
 		fp itemHandSize;
 		if (itemList[(int)itemHolding->stackItemID]->hasHilt)
 		{
-			itemHandSize = humanArmSize.y();
+			itemHandSize = humanArmSize.y;
 			//rotate after scaling
 			itemTransform = mat3x3::rotate(vec2(itemHandSize * 0.5), math::degreesToRadians * 45);
 			//mirror after rotating
@@ -192,13 +192,13 @@ void humanoid::render(const gameRenderData& targetData) const
 		else
 		{
 			itemTransform = mat3x3();
-			itemHandSize = humanHeadSize.x();
+			itemHandSize = humanHeadSize.x;
 		}
 		//transform so the size appears natural
 		itemTransform = mat3x3::cross(itemTransform, mat3x3::fromRectToRect(crectangle2(textureRect), rectangle2(0, 0, itemHandSize, itemHandSize)));
 
 		fp handHoldingPart = 0.6;//the part of the texture the hand 'holds'
-		fp handFingerThickness = humanArmSize.x() * 0.2;//the thickness of the finger that blocks a part of the item
+		fp handFingerThickness = humanArmSize.x * 0.2;//the thickness of the finger that blocks a part of the item
 		mat3x3 moveToHand = mat3x3::translate(-rightArm->rotationCentre + vec2(handFingerThickness, itemHandSize * (-1 + handHoldingPart)));
 		//get right arm transform
 		mat3x3 rightArmTransform = mat3x3::cross(mainBodyPart->applied, rightArm->applied);
@@ -442,15 +442,15 @@ humanoid::humanoid(dimension* dimensionIn, cvec2& position, const entityID& enti
 
 void humanoid::initializeBodyParts(crectangle2& headTextureRect, crectangle2& bodyTextureRect, crectangle2& leftLegTextureRect, crectangle2& rightLegTextureRect, crectangle2& leftArmTextureRect, crectangle2& rightArmTextureRect, cfp& pixelSize)
 {
-	cfp legHeight = leftLegTextureRect.h() * pixelSize;
-	cfp legWidth = leftLegTextureRect.w() * pixelSize;
-	cfp bodyHeight = bodyTextureRect.h() * pixelSize;
-	cfp bodyWidth = bodyTextureRect.w() * pixelSize;
-	cfp armHeight = leftArmTextureRect.h() * pixelSize;
-	cfp armWidth = leftArmTextureRect.w() * pixelSize;
-	cfp headHeight = headTextureRect.h() * pixelSize;
-	cfp headWidth = headTextureRect.w() * pixelSize;
-	mainBodyPart = new bodyPart2D(bodyTextureRect, nullptr, vec2(position.x(), position.y() + legHeight + bodyHeight * 0.5), vec2(bodyWidth, bodyHeight), vec2(bodyWidth, bodyHeight) * 0.5);
+	cfp legHeight = leftLegTextureRect.h * pixelSize;
+	cfp legWidth = leftLegTextureRect.w * pixelSize;
+	cfp bodyHeight = bodyTextureRect.h * pixelSize;
+	cfp bodyWidth = bodyTextureRect.w * pixelSize;
+	cfp armHeight = leftArmTextureRect.h * pixelSize;
+	cfp armWidth = leftArmTextureRect.w * pixelSize;
+	cfp headHeight = headTextureRect.h * pixelSize;
+	cfp headWidth = headTextureRect.w * pixelSize;
+	mainBodyPart = new bodyPart2D(bodyTextureRect, nullptr, vec2(position.x, position.y + legHeight + bodyHeight * 0.5), vec2(bodyWidth, bodyHeight), vec2(bodyWidth, bodyHeight) * 0.5);
 
 	rightLeg = new bodyPart2D(rightLegTextureRect, mainBodyPart, vec2(0, bodyHeight * -0.5), vec2(legWidth, legHeight), vec2(legWidth * 0.5, legHeight));
 	leftLeg = new bodyPart2D(leftLegTextureRect, mainBodyPart, vec2(0, bodyHeight * -0.5), vec2(legWidth, legHeight), vec2(legWidth * 0.5, legHeight));
@@ -515,7 +515,7 @@ void humanoid::launchItem(const itemID& itemType)
 }
 vec2 humanoid::getHandPosition() const
 {
-	return rightArm->getCumulativeTransform().multPointMatrix(cvec2(humanArmSize.x() * 0.5, humanArmSize.y() - humanArmSize.x() * 0.5) - rightArm->rotationCentre);
+	return rightArm->getCumulativeTransform().multPointMatrix(cvec2(humanArmSize.x * 0.5, humanArmSize.y - humanArmSize.x * 0.5) - rightArm->rotationCentre);
 }
 void humanoid::decreaseDurability(itemStack& stack, cfp& amount)
 {
@@ -646,7 +646,7 @@ void humanoid::tick()
 							//harvest block
 							if (b->canHarvest(itemHolding->stackItemID) && (!inCreative))
 							{
-								cvec2 harvestPosition = vec2(selectedBlockPosition.x() + 0.5, selectedBlockPosition.y());
+								cvec2 harvestPosition = vec2(selectedBlockPosition.x + 0.5, selectedBlockPosition.y);
 								selectedBlockContainer->harvestBlock(dropData(nullptr, itemHolding), selectedBlockPosition, chunkLoadLevel::updateLoaded);
 
 								//add experience
@@ -768,7 +768,7 @@ bool humanoid::placeBlock(blockID blockToPlace)
 			cvec2 relativePosition = exactBlockIntersection - getHeadPosition();
 			if (hasUpsideDownData(blockToPlace))
 			{
-				bool upsideDown = exactBlockIntersection.y() < newBlockMiddle.y();
+				bool upsideDown = exactBlockIntersection.y < newBlockMiddle.y;
 				if (isStairs(blockToPlace))
 				{
 					upsideDown = !upsideDown;
@@ -781,7 +781,7 @@ bool humanoid::placeBlock(blockID blockToPlace)
 				if (canFaceUp(blockToPlace))
 				{
 
-					if (relativePosition.x() < 0)
+					if (relativePosition.x < 0)
 					{
 						direction = directionID::negativeX;
 					}
@@ -789,9 +789,9 @@ bool humanoid::placeBlock(blockID blockToPlace)
 					{
 						direction = directionID::positiveX;
 					}
-					if (abs(relativePosition.y()) > abs(relativePosition.x()))
+					if (abs(relativePosition.y) > abs(relativePosition.x))
 					{
-						if (relativePosition.y() < 0)
+						if (relativePosition.y < 0)
 						{
 							direction = directionID::negativeY;
 						}
@@ -803,7 +803,7 @@ bool humanoid::placeBlock(blockID blockToPlace)
 				}
 				else
 				{
-					if (exactBlockIntersection.x() < newBlockMiddle.x())
+					if (exactBlockIntersection.x < newBlockMiddle.x)
 					{
 						direction = directionID::negativeX;
 					}
@@ -878,7 +878,7 @@ bool humanoid::placeBlock(blockID blockToPlace)
 			}
 			if (isSlab(blockToPlace))
 			{
-				dynamic_cast<slabData*> (placedBlockData)->type = exactBlockIntersection.y() > newBlockMiddle.y() ? slabType::topSlab : slabType::bottomSlab;
+				dynamic_cast<slabData*> (placedBlockData)->type = exactBlockIntersection.y > newBlockMiddle.y ? slabType::topSlab : slabType::bottomSlab;
 			}
 			selectedBlockContainer->setBlockWithData(adjacentBlockPosition, blockToPlace, placedBlockData, chunkLoadLevel::updateLoaded);
 

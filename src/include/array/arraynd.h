@@ -45,7 +45,7 @@ struct arraynd :IDestructable
 		for (const fastArray<t>& arr : elements)
 		{
 			std::copy(arr.begin(), arr.end(), ptr);
-			ptr += size.x();
+			ptr += size.x;
 		}
 	}
 
@@ -92,12 +92,12 @@ struct arraynd :IDestructable
 	{
 		if constexpr (isDebugging)
 		{
-			if (index > size.y())
+			if (index > size.y)
 			{
 				throw std::out_of_range("index out of range");
 			}
 		}
-		return baseArray + index * size.x();
+		return baseArray + index * size.x;
 	}
 
 #define newMacro(copySize) arraynd result = arraynd((copySize).size);
@@ -108,7 +108,7 @@ struct arraynd :IDestructable
 		//adds the sum of each x row to one element of the output
 		inline fastArray<t> multPointMatrix(const fastArray<t>& in) const
 	{
-		fastArray<t> result = fastArray<t>(size.x());
+		fastArray<t> result = fastArray<t>(size.x);
 		for (fsize_t toIndex = 0; toIndex < result.size; toIndex++)
 		{
 			fsize_t fromIndex = 0;
@@ -129,7 +129,7 @@ struct arraynd :IDestructable
 	template<typename brush0Type>
 	inline void fillRowUnsafe(cfsize_t& rowY, cfsize_t& minX, cfsize_t& maxX, const brush0Type& b) const
 	{
-		t* const rowPtr = baseArray + rowY * size.x();
+		t* const rowPtr = baseArray + rowY * size.x;
 		t* const endPtr = rowPtr + maxX;
 
 		typedef typename brush0Type::inputType vectorType;
@@ -137,7 +137,7 @@ struct arraynd :IDestructable
 
 		vectorType pos = vectorType((axisType)minX, (axisType)rowY);
 
-		for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos.x()++)
+		for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos.x++)
 		{
 			*ptr = b.getValue(pos);
 		}
@@ -145,7 +145,7 @@ struct arraynd :IDestructable
 	template<typename brush0Type>
 	inline void fillRowUnsafe(cfsize_t& rowY, cfsize_t& minX, cfsize_t& maxX, const transformBrush<brush0Type>& b) const
 	{
-		t* const rowPtr = baseArray + rowY * size.x();
+		t* const rowPtr = baseArray + rowY * size.x;
 		t* const endPtr = rowPtr + maxX;
 
 
@@ -162,7 +162,7 @@ struct arraynd :IDestructable
 	inline void fillRowUnsafe(cfsize_t& rowY, cfsize_t& minX, cfsize_t& maxX, const colorMixer<brush0Type, brush1Type>& b) const
 	{
 		if (&b.bottomBrush == this) {
-			t* const rowPtr = baseArray + rowY * size.x();
+			t* const rowPtr = baseArray + rowY * size.x;
 			t* const endPtr = rowPtr + maxX;
 
 			typedef typename brush0Type::inputType vectorType;
@@ -170,7 +170,7 @@ struct arraynd :IDestructable
 
 			vectorType pos = vectorType((axisType)minX, (axisType)rowY);
 
-			for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos.x()++)
+			for (t* ptr = rowPtr + minX; ptr < endPtr; ptr++, pos.x++)
 			{
 				ccolor& topColor = b.topBrush.getValue(pos);
 				*ptr = topColor.a() == color::maxValue ? topColor : topColor.a() ? color::transition(topColor, *ptr) : *ptr;
@@ -186,7 +186,7 @@ struct arraynd :IDestructable
 	{
 		if ((rowY >= 0) && (maxX > 0))
 		{
-			fillRowUnsafe(rowY, (fsize_t)math::maximum(minX, 0), math::minimum((fsize_t)maxX, size.x()), b);
+			fillRowUnsafe(rowY, (fsize_t)math::maximum(minX, 0), math::minimum((fsize_t)maxX, size.x), b);
 		}
 	}
 
@@ -194,15 +194,15 @@ struct arraynd :IDestructable
 	inline void fillRow(cint& rowY, cfp& minX, cfp& maxX, const brush0Type& b) const
 	{
 		//ceil rule
-		fillRow(rowY, math::maximum((int)ceil(minX), 0), math::minimum((int)ceil(maxX), size.x()), b);
+		fillRow(rowY, math::maximum((int)ceil(minX), 0), math::minimum((int)ceil(maxX), size.x), b);
 	}
 	template<typename brush0Type>
 	inline void fillRectangleUnsafe(crectanglet2<fsize_t>& rect, const brush0Type& b) const
 	{
 		cvect2<fsize_t>& pos11 = rect.pos1();
-		for (fsize_t currentY = rect.y(); currentY < pos11.y(); currentY++)
+		for (fsize_t currentY = rect.y; currentY < pos11.y; currentY++)
 		{
-			fillRowUnsafe<brush0Type>(currentY, rect.pos0.x(), pos11.x(), b);
+			fillRowUnsafe<brush0Type>(currentY, rect.pos0.x, pos11.x, b);
 		}
 	}
 
@@ -384,28 +384,28 @@ struct arraynd :IDestructable
 			//8.     Remove first element from Q.
 			Q.pop_front();
 			//9.     If the value of the node to the west of n is target,
-			if (n.x() > 0 && getValue(n.x() - 1, n.y()) == target) {
+			if (n.x > 0 && getValue(n.x - 1, n.y) == target) {
 				//set the value of that node to replacement and add that node to the end of Q.
-				setValue(n.x() - 1, n.y(), value);
-				Q.push_back(veci2(n.x() - 1, n.y()));
+				setValue(n.x - 1, n.y, value);
+				Q.push_back(veci2(n.x - 1, n.y));
 			}
 			//10.     If the value of the node to the east of n is target,
-			if (n.x() < size.x() - 1 && getValue(n.x() + 1, n.y()) == target) {
+			if (n.x < size.x - 1 && getValue(n.x + 1, n.y) == target) {
 				//set the value of that node to replacement and add that node to the end of Q.
-				setValue(n.x() + 1, n.y(), value);
-				Q.push_back(veci2(n.x() + 1, n.y()));
+				setValue(n.x + 1, n.y, value);
+				Q.push_back(veci2(n.x + 1, n.y));
 			}
 			//11.     If the value of the node to the north of n is target,
-			if (n.y() > 0 && getValue(n.x(), n.y() - 1) == target) {
+			if (n.y > 0 && getValue(n.x, n.y - 1) == target) {
 				//set the value of that node to replacement and add that node to the end of Q.
-				setValue(n.x(), n.y() - 1, value);
-				Q.push_back(veci2(n.x(), n.y() - 1));
+				setValue(n.x, n.y - 1, value);
+				Q.push_back(veci2(n.x, n.y - 1));
 			}
 			//12.     If the value of the node to the south of n is target,
-			if (n.y() < size.y() - 1 && getValue(n.x(), n.y() + 1) == target) {
+			if (n.y < size.y - 1 && getValue(n.x, n.y + 1) == target) {
 				//set the value of that node to replacement and add that node to the end of Q.
-				setValue(n.x(), n.y() + 1, value);
-				Q.push_back(veci2(n.x(), n.y() + 1));
+				setValue(n.x, n.y + 1, value);
+				Q.push_back(veci2(n.x, n.y + 1));
 			}
 			//13. Continue looping until Q is exhausted.
 		}
@@ -416,29 +416,29 @@ struct arraynd :IDestructable
 	{
 		cvect2<fsize_t>& pos11 = destinationRect.pos1();
 
-		t* const& xPtr = baseArray + destinationRect.x();
-		const t* const& endPtr = xPtr + pos11.y() * size.x();
+		t* const& xPtr = baseArray + destinationRect.x;
+		const t* const& endPtr = xPtr + pos11.y * size.x;
 
 		for (
-			t* ptr = xPtr + (destinationRect.pos0.y() * size.x());
+			t* ptr = xPtr + (destinationRect.pos0.y * size.x);
 			ptr < endPtr;
-			ptr += size.x(), otherArrayPointer += otherArrayWidth)
+			ptr += size.x, otherArrayPointer += otherArrayWidth)
 		{
-			std::copy(otherArrayPointer, otherArrayPointer + destinationRect.size.x(), ptr);
+			std::copy(otherArrayPointer, otherArrayPointer + destinationRect.size.x, ptr);
 		}
 	}
 
 	inline void copyArrayUnsafe(crectanglet2<fsize_t>& sourceRect, cvect2<fsize_t>& destinationPosition, const arraynd& source) const
 	{
-		copyArrayUnsafe(crectanglei2(destinationPosition, sourceRect.size), source.size.x(), source.baseArray + sourceRect.pos0.x() + sourceRect.pos0.y() * source.size.x());
+		copyArrayUnsafe(crectanglei2(destinationPosition, sourceRect.size), source.size.x, source.baseArray + sourceRect.pos0.x + sourceRect.pos0.y * source.size.x);
 	}
 
 	inline void copyArray(cveci2& destinationPosition, const arraynd& source) const
 	{
 		//crop rectangle
-		rectanglei2 rect = rectanglei2(destinationPosition.x(), destinationPosition.y(), source.size.x(), source.size.y());
+		rectanglei2 rect = rectanglei2(destinationPosition.x, destinationPosition.y, source.size.x, source.size.y);
 		getClientRect().cropClientRect(rect);
-		copyArrayUnsafe(crectanglet2<fsize_t>(rect), source.size.x(), source.baseArray);
+		copyArrayUnsafe(crectanglet2<fsize_t>(rect), source.size.x, source.baseArray);
 	}
 
 	inline void copyArray(crectanglei2& sourceRect, cveci2& destinationPosition, const arraynd& source) const
@@ -455,7 +455,7 @@ struct arraynd :IDestructable
 		crectanglei2(getClientRect()).cropClientRect(croppedDestinationRect);
 
 		cveci2 croppedSourcePosition = croppedSourceRect.pos0 + (croppedDestinationRect.pos0 - croppedDestinationPosition);
-		copyArrayUnsafe(crectanglet2<fsize_t>(croppedDestinationRect), source.size.x(), source.baseArray + croppedSourcePosition.x() + croppedSourcePosition.y() * source.size.x());
+		copyArrayUnsafe(crectanglet2<fsize_t>(croppedDestinationRect), source.size.x, source.baseArray + croppedSourcePosition.x + croppedSourcePosition.y * source.size.x);
 	}
 
 	inline arraynd expanded(crectanglei2& newRect) const
@@ -480,10 +480,10 @@ struct arraynd :IDestructable
 	template<typename brush0Type>
 	inline void fillRectangleBorders(crectanglei2& rect, cint& borderThickness, const brush0Type& b) const
 	{
-		fillRectangle(crectanglei2(rect.x(), rect.y(), rect.size.x(), borderThickness), b);
-		fillRectangle(crectanglei2(rect.x(), rect.y() + rect.size.y() - borderThickness, rect.size.x(), borderThickness), b);
-		fillRectangle(crectanglei2(rect.x(), rect.y(), borderThickness, rect.size.y()), b);
-		fillRectangle(crectanglei2(rect.x() + rect.size.x() - borderThickness, rect.y(), borderThickness, rect.size.y()), b);
+		fillRectangle(crectanglei2(rect.x, rect.y, rect.size.x, borderThickness), b);
+		fillRectangle(crectanglei2(rect.x, rect.y + rect.size.y - borderThickness, rect.size.x, borderThickness), b);
+		fillRectangle(crectanglei2(rect.x, rect.y, borderThickness, rect.size.y), b);
+		fillRectangle(crectanglei2(rect.x + rect.size.x - borderThickness, rect.y, borderThickness, rect.size.y), b);
 	}
 	//expands inward
 	template<typename brush0Type>
@@ -497,17 +497,17 @@ struct arraynd :IDestructable
 		//https://www.redblobgames.com/grids/line-drawing.html
 			//http://www.cse.yorku.ca/~amana/research/grid.pdf
 		cvec2 d0to1 = p1 - p0;//dx
-		cveci2 sign = veci2(d0to1.x() > 0 ? 1 : -1, d0to1.y() > 0 ? 1 : -1);
+		cveci2 sign = veci2(d0to1.x > 0 ? 1 : -1, d0to1.y > 0 ? 1 : -1);
 
 		//not dx * sign_x, because you can get -0 and -inf
 		cvec2 absd0to1 = d0to1.absolute();//nx
-		veci2 currentPosition = veci2((int)floor(p0.x()), (int)floor(p0.y()));
+		veci2 currentPosition = veci2((int)floor(p0.x), (int)floor(p0.y));
 		int dimension = -1;
-		cvec2 delta = { 1 / absd0to1.x(),1 / absd0to1.y() };//deltax
+		cvec2 delta = { 1 / absd0to1.x,1 / absd0to1.y };//deltax
 		//vx
 		vec2 progress = {
-		d0to1.x() > 0 ? currentPosition.axis[0] + 1 - p0.x() : p0.x() - currentPosition.axis[0],
-		d0to1.y() > 0 ? currentPosition.axis[1] + 1 - p0.y() : p0.y() - currentPosition.axis[1]
+		d0to1.x > 0 ? currentPosition.axis[0] + 1 - p0.x : p0.x - currentPosition.axis[0],
+		d0to1.y > 0 ? currentPosition.axis[1] + 1 - p0.y : p0.y - currentPosition.axis[1]
 		};
 		progress *= delta;//'divide' by total length
 		int count = 0;
@@ -520,7 +520,7 @@ struct arraynd :IDestructable
 			{
 				break;
 			}
-			dimension = progress.x() < progress.y() ? 0 : 1;
+			dimension = progress.x < progress.y ? 0 : 1;
 			currentPosition.axis[dimension] += sign.axis[dimension];//step in the active dimenstion
 			looping = progress.axis[dimension] <= 1;
 			progress.axis[dimension] += delta.axis[dimension];//update progress
@@ -569,11 +569,11 @@ struct arraynd :IDestructable
 	template<typename compareFunction>
 	inline bool find2dBox(cveci2& pos00, cveci2& pos11, const compareFunction&& function)
 	{
-		for (veci2 position = pos00; position.y() < pos11.y(); position.y()++)
+		for (veci2 position = pos00; position.y < pos11.y; position.y++)
 		{
-			for (position.x() = pos00.x(); position.x() < pos11.x(); position.x()++)
+			for (position.x = pos00.x; position.x < pos11.x; position.x++)
 			{
-				if (function(getValue(position.x(), position.y())))
+				if (function(getValue(position.x, position.y)))
 				{
 					return true;
 				}
@@ -590,7 +590,7 @@ struct arraynd :IDestructable
 		rectanglei2 croppedRect = ceilRectangle(rect);
 
 		//+1 for also filling the last pixel
-		croppedRect.h()++;
+		croppedRect.h++;
 
 		//crectanglei2& croppedRect = ceiledRect.cropped(crectanglei2(cveci2(), size));
 		if (crectanglei2(cveci2(), size).cropClientRect(croppedRect))
@@ -598,12 +598,12 @@ struct arraynd :IDestructable
 			cveci2& croppedPos1 = croppedRect.pos1();
 			//crop
 
-			cfp& midx = rect.x() + rect.w() * .5;
-			cfp& midy = rect.y() + rect.h() * .5;
-			cfp& multx = 2.0 / rect.w();
-			cfp& multy = 2.0 / rect.h();
+			cfp& midx = rect.x + rect.w * .5;
+			cfp& midy = rect.y + rect.h * .5;
+			cfp& multx = 2.0 / rect.w;
+			cfp& multy = 2.0 / rect.h;
 
-			for (int j = croppedRect.y(); j < croppedPos1.y(); j++)
+			for (int j = croppedRect.y; j < croppedPos1.y; j++)
 			{
 				//circle equation:
 				//x * x + y * y = r * r
@@ -621,10 +621,10 @@ struct arraynd :IDestructable
 
 					//0.5 to 1.5:
 					//only fill two pixels
-					cint& minX = math::maximum((int)ceil(midx - dx), croppedRect.x());
-					cint& maxX = math::minimum((int)floor(midx + dx) + 1, croppedPos1.x());//+1 for also filling the last pixel
+					cint& minX = math::maximum((int)ceil(midx - dx), croppedRect.x);
+					cint& maxX = math::minimum((int)floor(midx + dx) + 1, croppedPos1.x);//+1 for also filling the last pixel
 
-					t* ptr = baseArray + j * size.x() + minX;
+					t* ptr = baseArray + j * size.x + minX;
 
 					fillRow(j, minX, maxX, b);
 				}
@@ -658,26 +658,26 @@ struct arraynd :IDestructable
 	template<typename brush0Type>
 	inline void fillLineUnsafe(cvec2& p0, cvec2& p1, const brush0Type& b) const
 	{
-		veci2 currentPosition = veci2((int)p0.x(), (int)p0.y());
-		veci2 endPosition = veci2((int)p1.x(), (int)p1.y());
-		veci2 difference = veci2(abs(endPosition.x() - currentPosition.x()), abs(endPosition.y() - currentPosition.y()));
-		veci2 sign = veci2(currentPosition.x() < endPosition.x() ? 1 : -1, currentPosition.y() < endPosition.y() ? 1 : -1);
-		int err = difference.x() - difference.y();
+		veci2 currentPosition = veci2((int)p0.x, (int)p0.y);
+		veci2 endPosition = veci2((int)p1.x, (int)p1.y);
+		veci2 difference = veci2(abs(endPosition.x - currentPosition.x), abs(endPosition.y - currentPosition.y));
+		veci2 sign = veci2(currentPosition.x < endPosition.x ? 1 : -1, currentPosition.y < endPosition.y ? 1 : -1);
+		int err = difference.x - difference.y;
 
 		while (true)
 		{
 			setValue(currentPosition, b.getValue(currentPosition));
 			if (currentPosition == endPosition) return;
 			cint& e2 = err * 2;//will result in a bit shift operation because of the optimizer.
-			if (e2 > -difference.y())
+			if (e2 > -difference.y)
 			{
-				err -= difference.y();
-				currentPosition.x() += sign.x();
+				err -= difference.y;
+				currentPosition.x += sign.x;
 			}
-			if (e2 < difference.x())
+			if (e2 < difference.x)
 			{
-				err += difference.x();
-				currentPosition.y() += sign.y();
+				err += difference.x;
+				currentPosition.y += sign.y;
 			}
 		}
 	}
@@ -699,14 +699,14 @@ struct arraynd :IDestructable
 		cfsize_t sideCount = 0x2;
 		fp currentX[2]{ 0,0 };
 
-		cfsize_t maxYCropped = (fsize_t)math::minimum(math::ceil<fp, fsize_t>(maxY), size.y());
+		cfsize_t maxYCropped = (fsize_t)math::minimum(math::ceil<fp, fsize_t>(maxY), size.y);
 		//initialize the first two lines by default
 		for (fsize_t currentY = (fsize_t)math::maximum((int)ceil(minY), 0); currentY < maxYCropped; currentY++)
 		{
 			for (fsize_t side = 0; side < sideCount; side++)
 			{
 				bool changed = false;
-				while (currentY >= shiftedPositions[nextPointIndex[side]].y())
+				while (currentY >= shiftedPositions[nextPointIndex[side]].y)
 				{
 					//maybe there is a straight line or something
 					if ((nextPointIndex[side] == 0) && (windDirection[side] == -1))
@@ -725,8 +725,8 @@ struct arraynd :IDestructable
 					cvec2& selectedPos0 = shiftedPositions[(nextPointIndex[side] - windDirection[side]) % shiftedPositions.size];
 					cvec2& selectedPos1 = shiftedPositions[nextPointIndex[side]];
 					//update
-					slope[side] = (selectedPos1.x() - selectedPos0.x()) / (selectedPos1.y() - selectedPos0.y());
-					currentX[side] = selectedPos0.x() + slope[side] * (currentY - selectedPos0.y());
+					slope[side] = (selectedPos1.x - selectedPos0.x) / (selectedPos1.y - selectedPos0.y);
+					currentX[side] = selectedPos0.x + slope[side] * (currentY - selectedPos0.y);
 				}
 				else
 				{
@@ -747,23 +747,23 @@ struct arraynd :IDestructable
 	{
 		//find highest y pos
 		fp highestY = 0;
-		fp lowestY = (fp)size.y();
+		fp lowestY = (fp)size.y;
 		fsize_t lowestIndex = 0;
 		//get boundaries and highest y index
 		for (fsize_t index = 0; index < positions.size; index++)
 		{
-			if (positions[index].y() > highestY)
+			if (positions[index].y > highestY)
 			{
-				highestY = positions[index].y();
+				highestY = positions[index].y;
 			}
-			if (positions[index].y() < lowestY)
+			if (positions[index].y < lowestY)
 			{
-				lowestY = positions[index].y();
+				lowestY = positions[index].y;
 				lowestIndex = index;
 			}
 		}
 
-		if (highestY > 0 && lowestY < size.y())
+		if (highestY > 0 && lowestY < size.y)
 		{
 			cbool& clockWise = woundClockwise(positions[0], positions[1], positions[2]);
 			//shift

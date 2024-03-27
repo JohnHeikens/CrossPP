@@ -204,9 +204,9 @@ void textBox::mouseDown(cveci2& position, cmb& button)
 	fsize_t closestIndex = 0;
 	for (fsize_t i = 0;; i++, offset = currentFont->MeasureLetterOffset(relativeTextRect, offset, text[i]))
 	{
-		if (position.y() > offset.y() && position.y() < offset.y() + currentFont->fontSize)
+		if (position.y > offset.y && position.y < offset.y + currentFont->fontSize)
 		{
-			cfp& distance = math::absolute(position.x() - offset.x());
+			cfp& distance = math::absolute(position.x - offset.x);
 			if (distance < closestDistance)
 			{
 				closestDistance = distance;
@@ -224,7 +224,7 @@ void textBox::mouseDown(cveci2& position, cmb& button)
 	}
 	else
 	{
-		if (position.y() < offset.y() + currentFont->fontSize)
+		if (position.y < offset.y + currentFont->fontSize)
 		{
 			cursorIndex = text.length();
 		}

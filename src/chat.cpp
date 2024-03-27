@@ -224,7 +224,7 @@ void chat::say(human& sender, std::wstring line)
 				{
 					if (getWord(lines, 0) == std::wstring(L"setworldspawn"))
 					{
-						currentWorld->worldSpawnPoint = veci2((int)floor(sender.position.x()), (int)floor(sender.position.y()));
+						currentWorld->worldSpawnPoint = veci2((int)floor(sender.position.x), (int)floor(sender.position.y));
 						currentWorld->worldSpawnDimension = sender.dimensionIn->identifier;
 					}
 					else if (getWord(lines, 0) == std::wstring(L"kill"))
@@ -471,7 +471,7 @@ void chat::say(human& sender, std::wstring line)
 							selectedPositions[posIndex] = pos0Position;
 							selectedDimensions[posIndex] = pos0Dimension;
 
-							addLine(std::wstring(L"pos") + std::to_wstring(posIndex) + std::wstring(L" set to: ") + std::to_wstring(selectedPositions[posIndex].x()) + std::wstring(L", ") + std::to_wstring(selectedPositions[posIndex].y()) + std::wstring(L" (dimension: ") + dimensionDataList[selectedDimensions[posIndex]]->name + std::wstring(L")"));
+							addLine(std::wstring(L"pos") + std::to_wstring(posIndex) + std::wstring(L" set to: ") + std::to_wstring(selectedPositions[posIndex].x) + std::wstring(L", ") + std::to_wstring(selectedPositions[posIndex].y) + std::wstring(L" (dimension: ") + dimensionDataList[selectedDimensions[posIndex]]->name + std::wstring(L")"));
 							return;
 						}
 					}
@@ -490,7 +490,7 @@ void chat::say(human& sender, std::wstring line)
 							if (getLocation(sender, lines, wordOffset, getDimension, getPosition))
 							{
 								selectedSerializable = currentWorld->dimensions[(int)getDimension]->getBlockData(floorVector(getPosition));
-								const std::wstring positionString = std::to_wstring(getPosition.x()) + std::wstring(L" ") + std::to_wstring(getPosition.y()) + std::wstring(L" ");
+								const std::wstring positionString = std::to_wstring(getPosition.x) + std::wstring(L" ") + std::to_wstring(getPosition.y) + std::wstring(L" ");
 								outputString += positionString;
 							}
 							else
@@ -753,7 +753,7 @@ void chat::render(const texture& renderTarget, const gameControl& screen) const
 			veci2 size = f.measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
 			f.DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
 			lineCount++;
-			offset.y() += size.y();
+			offset.y += size.y;
 		}
 		else
 		{

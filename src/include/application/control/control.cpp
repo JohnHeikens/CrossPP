@@ -45,7 +45,7 @@ void control::renderChildren(cveci2& position, const texture& renderTarget)
 {
 	for (control* element : children)
 	{
-		if (element->visible && element->rect.size.x() > 0 && element->rect.size.y() > 0)
+		if (element->visible && element->rect.size.x > 0 && element->rect.size.y > 0)
 		{
 			element->render(position + element->rect.pos0, renderTarget);
 		}

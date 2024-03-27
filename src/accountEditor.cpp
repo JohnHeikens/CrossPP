@@ -16,7 +16,7 @@ void accountEditor::layout(crectanglei2& newRect)
 	layoutTableCentered(children);
 	//rectanglei2 r = newRect.rectCentered(buttonSize);
 	//saveButton->layout(r);
-	//r.y() += buttonSize.y() + buttonMargin;
+	//r.y += buttonSize.y + buttonMargin;
 	//playerNameTextBox->layout(r);
 	//
 }

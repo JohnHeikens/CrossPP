@@ -9,7 +9,7 @@ constexpr rectangle2 endermanLeftLegTextureRect = crectangle2(60, 0, 2, 30); //i
 constexpr rectangle2 endermanLeftArmTextureRect = endermanLeftLegTextureRect; //inside facing texture of left arm
 
 constexpr vec2 endermanHitboxSize = vec2(0.6, 2.9);
-constexpr fp endermanPixelSize = endermanHitboxSize.y() / (endermanHeadTextureRect.size.y() + endermanBodyTextureRect.size.y() + endermanRightLegTextureRect.size.y());
+constexpr fp endermanPixelSize = endermanHitboxSize.getY() / (endermanHeadTextureRect.size.getY() + endermanBodyTextureRect.size.getY() + endermanRightLegTextureRect.size.getY());
 constexpr fp endermanEyeLevel = (2 + 6 + 6) * endermanPixelSize;
 
 constexpr vec2 endermanBodySize = vec2(endermanBodyTextureRect.size) * endermanPixelSize;
@@ -17,7 +17,7 @@ constexpr vec2 endermanLegSize = vec2(endermanRightLegTextureRect.size) * enderm
 constexpr vec2 endermanHeadSize = vec2(endermanHeadTextureRect.size) * endermanPixelSize;
 constexpr vec2 endermanArmSize = vec2(endermanRightArmTextureRect.size) * endermanPixelSize;
 
-constexpr rectangle2 endermanHitbox = crectangle2(-endermanHitboxSize.x() * 0.5, 0, endermanHitboxSize.x(), endermanHitboxSize.y());
+constexpr rectangle2 endermanHitbox = crectangle2(-endermanHitboxSize.getX() * 0.5, 0, endermanHitboxSize.getX(), endermanHitboxSize.getY());
 struct enderman : public humanoid
 {
 	enderman(dimension* dimensionIn, cvec2& position);

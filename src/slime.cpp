@@ -69,7 +69,7 @@ bool slime::goToPosition(cvec2& destination)
 
 vec2 slime::getJumpPower() const
 {
-	return cvec2(humanJumpPower.x() * 0x2, humanJumpPower.y()) * (size / humanStandHeight);
+	return cvec2(humanJumpPower.x * 0x2, humanJumpPower.y) * (size / humanStandHeight);
 }
 
 fp slime::getAttackDamage() const

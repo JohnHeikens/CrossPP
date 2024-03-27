@@ -14,7 +14,7 @@ struct collisionData
 	
 };
 constexpr bool operator < (const collisionData& a, const collisionData& b) {
-	return (a.axisCollided.x() || a.axisCollided.y()) &&
-		!(b.axisCollided.x() || b.axisCollided.y()) ||
+	return (a.axisCollided.x || a.axisCollided.y) &&
+		!(b.axisCollided.x || b.axisCollided.y) ||
 		a.collisionTime < b.collisionTime;
 }

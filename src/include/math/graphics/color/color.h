@@ -180,10 +180,10 @@ struct colortn : public vectn<t, channelCount>
 		cvec2& invertedWeigths = (fp)1 - weights;
 		cfp weightArray[4]
 		{
-			invertedWeigths.x() * invertedWeigths.y(),
-			weights.x() * invertedWeigths.y(),
-			invertedWeigths.x() * weights.y(),
-			weights.x() * weights.y(),
+			invertedWeigths.x * invertedWeigths.y,
+			weights.x * invertedWeigths.y,
+			invertedWeigths.x * weights.y,
+			weights.x * weights.y,
 		};
 
 		return interpolateColor<4>(colorsToInterpolate, weightArray);

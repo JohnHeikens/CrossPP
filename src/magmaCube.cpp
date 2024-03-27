@@ -14,7 +14,7 @@ void magmaCube::createBodyParts()
 	for (int i = 0; i < magmaCubeLayerCount; i++)
 	{
 		crectangle2 textureRect = (i == bottomEyeSliceIndex) ? bottomEyeSliceTextureRect : ((i == topEyeSliceIndex) ? topEyeSliceTextureRect :
-			crectangle2(slimeOuterBodyTextureRect.pos0 + cvec2(0, magmaCubeLayerThickness * i), cvec2(slimeOuterBodyTextureRect.size.x(), magmaCubeLayerThickness)));
+			crectangle2(slimeOuterBodyTextureRect.pos0 + cvec2(0, magmaCubeLayerThickness * i), cvec2(slimeOuterBodyTextureRect.size.x, magmaCubeLayerThickness)));
 		layers[i] = new bodyPart2D(textureRect, head, cvec2(0, size * (((i + 0.5) / magmaCubeLayerCount) - 0.5)), layerSize, layerSize * 0.5);
 		head->children.push_back(layers[i]);
 	}

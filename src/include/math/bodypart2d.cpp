@@ -22,12 +22,12 @@ void bodyPart2D::CalculateTransform()
 
 	if (flipX)
 	{
-		transforms.push_back(mat3x3::mirror(axisID::x, -rotationCentre.x() + size.x() * 0.5));
+		transforms.push_back(mat3x3::mirror(axisID::x, -rotationCentre.x + size.x * 0.5));
 	}
 
 	if (flipY)
 	{
-		transforms.push_back(mat3x3::mirror(axisID::y, -rotationCentre.y() + size.y() * 0.5));
+		transforms.push_back(mat3x3::mirror(axisID::y, -rotationCentre.y + size.y * 0.5));
 	}
 
 	if (angle != 0)

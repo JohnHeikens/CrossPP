@@ -22,16 +22,16 @@ void endCrystal::render(const gameRenderData& targetData) const
 	innerPart->angle = (currentFrameStartSeconds / 6) * math::PI2;
 
 	//0.5 to 1.5
-	outerPart->translate = position + cvec2(0, math::mapValue((fp)sin(currentFrameStartSeconds * math::PI2 * 0.5), (fp)-1, (fp)1, endCrystalBaseSize.y() + 0.5, endCrystalHitboxSize.y() - 0.5));
+	outerPart->translate = position + cvec2(0, math::mapValue((fp)sin(currentFrameStartSeconds * math::PI2 * 0.5), (fp)-1, (fp)1, endCrystalBaseSize.y + 0.5, endCrystalHitboxSize.y - 0.5));
 
 	outerPart->changed = true;
 	innerPart->changed = true;
 	outerPart->renderRecursive(targetData.renderTarget, targetData.worldToRenderTargetTransform, *endCrystalTexture);
 
-	cveci2 blockPosFloatingOn = cveci2((int)floor(position.x()), (int)floor(position.y() - 1.5));
+	cveci2 blockPosFloatingOn = cveci2((int)floor(position.x), (int)floor(position.y - 1.5));
 	if (dimensionIn->getBlockID(blockPosFloatingOn) == blockID::bedrock)
 	{
-		crectangle2 blockRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(blockPosFloatingOn.x(), blockPosFloatingOn.y(), endCrystalBaseSize.x(), endCrystalBaseSize.y()));
+		crectangle2 blockRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(blockPosFloatingOn.x, blockPosFloatingOn.y, endCrystalBaseSize.x, endCrystalBaseSize.y));
 		fillTransformedBrushRectangle(crectangle2(endCrystalBaseTextureRect), blockRect, targetData.worldToRenderTargetTransform, *endCrystalTexture, targetData.renderTarget);
 	}
 }

@@ -92,10 +92,10 @@ bool pistonData::tick(tickableBlockContainer* containerIn, cveci2& position)
 
 					for (const auto& it : pushPositions)
 					{
-						min.x() = math::minimum(min.x(), it.x());
-						min.y() = math::minimum(min.y(), it.y());
-						max.x() = math::maximum(max.x(), it.x());
-						max.y() = math::maximum(max.y(), it.y());
+						min.x = math::minimum(min.x, it.x);
+						min.y = math::minimum(min.y, it.y);
+						max.x = math::maximum(max.x, it.x);
+						max.y = math::maximum(max.y, it.y);
 					}
 				}
 				else
@@ -218,9 +218,9 @@ void pistonData::dropBlocksMoving(tickableBlockContainer* containerIn, cveci2& p
 
 	cveci2& pos00 = summonedPiston->movingBlocks->arrayPos00Offset;
 	cveci2& pos11 = pos00 + summonedPiston->movingBlocks->blockIDArray.size;
-	for (int j = pos00.y(); j < pos11.y(); j++)
+	for (int j = pos00.y; j < pos11.y; j++)
 	{
-		for (int i = pos00.x(); i < pos11.x(); i++)
+		for (int i = pos00.x; i < pos11.x; i++)
 		{
 			cveci2& relativePosition = cveci2(i, j);
 			cveci2& absolutePosition = add + relativePosition;

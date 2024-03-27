@@ -9,7 +9,7 @@ void eyeOfEnder::tick()
 {
 	if (ticksToFloat >= 0x20)
 	{
-		cfp dx = strongholdPosition.x() - position.x();
+		cfp dx = strongholdPosition.x - position.x;
 		cfp distance = abs(dx);
 
 		//nearer than this amount of blocks, the eye goes down
@@ -38,11 +38,11 @@ void eyeOfEnder::tick()
 				//wobble in the air down, up, down
 				if (ticksToFloat % 0x10 >= 0x8)
 				{
-					speed.y() += maxEyeVelocity;
+					speed.y += maxEyeVelocity;
 				}
 				else
 				{
-					speed.y() -= maxEyeVelocity;
+					speed.y -= maxEyeVelocity;
 				}
 			}
 			else

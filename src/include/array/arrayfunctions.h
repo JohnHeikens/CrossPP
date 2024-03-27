@@ -148,9 +148,9 @@ constexpr bool findInCircles(int maxRadius, checkFunction check, veci2& result)
 		}
 		for (auto it = positions.begin(); it != positions.end() && it->first <= distanceXSquared; it = positions.erase(it)) {
 			cveci2& position = it->second;
-			if (position.x() == position.y())
+			if (position.x == position.y)
 			{
-				if (position.x() == 0)
+				if (position.x == 0)
 				{
 					if (check(position)) {
 						result = position;
@@ -160,9 +160,9 @@ constexpr bool findInCircles(int maxRadius, checkFunction check, veci2& result)
 				else {
 					cveci2 checkArray[4] = {
 						position,
-						cveci2(position.x(), -position.y()),
-						cveci2(-position.x(), position.y()),
-						cveci2(-position.x(), -position.y())
+						cveci2(position.x, -position.y),
+						cveci2(-position.x, position.y),
+						cveci2(-position.x, -position.y)
 					};
 					for (cveci2& pos : checkArray)
 					{
@@ -176,13 +176,13 @@ constexpr bool findInCircles(int maxRadius, checkFunction check, veci2& result)
 			else {
 				cveci2 checkArray[8] = {
 					position,
-					cveci2(position.x(), -position.y()),
-					cveci2(-position.x(), position.y()),
-					cveci2(-position.x(), -position.y()),
-					cveci2(position.y(), -position.x()),
-					cveci2(position.y(), -position.x()),
-					cveci2(-position.y(), position.x()),
-					cveci2(-position.y(), -position.x()),
+					cveci2(position.x, -position.y),
+					cveci2(-position.x, position.y),
+					cveci2(-position.x, -position.y),
+					cveci2(position.y, -position.x),
+					cveci2(position.y, -position.x),
+					cveci2(-position.y, position.x),
+					cveci2(-position.y, -position.x),
 				};
 				for (cveci2& pos : checkArray)
 				{

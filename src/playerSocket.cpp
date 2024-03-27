@@ -65,7 +65,7 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	screen->player = player = new human(currentWorld->dimensions[(int)currentWorld->worldSpawnDimension], vec2(), *screen, playerName);
 	crectangle2 &relativeHitbox = player->calculateHitBox();
 
-	player->position = cvec2(currentWorld->worldSpawnPoint.x() + 0.5, currentWorld->worldSpawnPoint.y()) - relativeHitbox.pos0 + cvec2(relativeHitbox.size.x() * -0.5, 0);
+	player->position = cvec2(currentWorld->worldSpawnPoint.x + 0.5, currentWorld->worldSpawnPoint.y) - relativeHitbox.pos0 + cvec2(relativeHitbox.size.x * -0.5, 0);
 	player->newPosition = player->position;
 
 	player->identifier = playerUUID;
@@ -91,12 +91,12 @@ void renderAsync(playerSocket *socket)
 
 
 	// create the rendertexture connected to the active context
-	//newRenderResult.create(socket->screen->rect.size.x(), socket->screen->rect.size.y(), sf::ContextSettings());
+	//newRenderResult.create(socket->screen->rect.size.x, socket->screen->rect.size.y, sf::ContextSettings());
 	//newRenderResult.setActive(true);
 	// TODO: check if it needs clear()
 	texture *& currentRenderTarget = socket->doubleBuffer[socket->thread0DoubleBufferIndex];
 	
-	if(!currentRenderTarget || currentRenderTarget->size != socket->screen->rect.size)
+	if(!currentRenderTarget || currentRenderTarget->size != vect2<fsize_t>(socket->screen->rect.size))
 	{
 		if(currentRenderTarget)
 		{
@@ -186,7 +186,7 @@ void sendRenderResultAsync(playerSocket *socket)
 	// we don't use the normal 'serialize' function so we don't have to use the 'write' boolean
 	// std::stringstream compressedScreenPacket = std::stringstream();
 	// sf::RenderTexture tex = sf::RenderTexture();
-	// tex.create(socket->lastRenderResult->size.x(), socket->lastRenderResult->size.y());
+	// tex.create(socket->lastRenderResult->size.x, socket->lastRenderResult->size.y);
 	// tex.clear();
 	// sf::CircleShape shape(500);
 	// shape.setPosition(sf::Vector2f(300, 300));
@@ -214,7 +214,7 @@ void sendRenderResultAsync(playerSocket *socket)
 	}
 
 	// std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
-	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, currentRenderResult->size.x(), currentRenderResult->size.y(), rgbColorChannelCount, compressedBuf);
+	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedBuf);
 	delete[] colorsWithoutAlpha;
 	// color* ptr = socket->lastRenderResult->baseArray;
 	// std::vector<colorChannel> channels[rgbColorChannelCount]{};

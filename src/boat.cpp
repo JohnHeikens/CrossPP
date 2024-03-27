@@ -21,21 +21,21 @@ boat::boat(dimension* dimensionIn, cvec2& position) : hollowRidableEntity(dimens
 	constexpr rectangle2 rightPaddleHandleTextureRect = crectangle2(164, 88, 36, 4);
 	constexpr rectangle2 leftPaddleHandleTextureRect = crectangle2(164, 48, 36, 4);
 	constexpr rectangle2 boatTextureRect = crectangle2(4, 26, 56, 0x10);
-	cvec2 handleOffset = cvec2(0, boatHitboxSize.y());
+	cvec2 handleOffset = cvec2(0, boatHitboxSize.y);
 
-	cfp& boatScale = boatHitboxSize.x() / (fp)boatTextureRect.w();
+	cfp& boatScale = boatHitboxSize.x / (fp)boatTextureRect.w;
 
-	mainBodyPart = new bodyPart2D(boatTextureRect, nullptr, vec2(position.x(), position.y()), vec2(boatHitboxSize.x(), boatScale * boatTextureRect.h()), vec2(boatHitboxSize.x() * 0.5, 0), 0, 180);
+	mainBodyPart = new bodyPart2D(boatTextureRect, nullptr, vec2(position.x, position.y), vec2(boatHitboxSize.x, boatScale * boatTextureRect.h), vec2(boatHitboxSize.x * 0.5, 0), 0, 180);
 
-	cvec2 paddleHandleSize = cvec2(rightPaddleHandleTextureRect.h() * boatScale, rightPaddleHandleTextureRect.w() * boatScale);
-	cvec2 paddleHandleRotationCentre = cvec2(paddleHandleSize.x() * 0.5, paddleHandleSize.y() - paddleHandleSize.x() * 0.5);
+	cvec2 paddleHandleSize = cvec2(rightPaddleHandleTextureRect.h * boatScale, rightPaddleHandleTextureRect.w * boatScale);
+	cvec2 paddleHandleRotationCentre = cvec2(paddleHandleSize.x * 0.5, paddleHandleSize.y - paddleHandleSize.x * 0.5);
 
 	rightPaddleHandle = new bodyPart2D(rightPaddleHandleTextureRect, mainBodyPart, handleOffset, paddleHandleSize, paddleHandleRotationCentre, 0, 90);
 	leftPaddleHandle = new bodyPart2D(leftPaddleHandleTextureRect, mainBodyPart, handleOffset, paddleHandleSize, paddleHandleRotationCentre, 0, 90);
 
 	cvec2 paddleSize = (cvec2)rightPaddleTextureRect.size * boatScale;
-	cvec2 paddleRotationCentre = cvec2(paddleSize.x() * 0.5, paddleSize.y());
-	cvec2 paddleOffset = cvec2(0, -paddleHandleRotationCentre.y());
+	cvec2 paddleRotationCentre = cvec2(paddleSize.x * 0.5, paddleSize.y);
+	cvec2 paddleOffset = cvec2(0, -paddleHandleRotationCentre.y);
 
 	bodyPart2D* rightPaddle = new bodyPart2D(rightPaddleTextureRect, rightPaddleHandle, paddleOffset, paddleSize, paddleRotationCentre);
 	bodyPart2D* leftPaddle = new bodyPart2D(leftPaddleTextureRect, leftPaddleHandle, paddleOffset, paddleSize, paddleRotationCentre);
@@ -59,9 +59,9 @@ void boat::render(const gameRenderData& targetData) const
 
 	mat3x3 boatTransform = targetData.worldToRenderTargetTransform;
 
-	if (speed.x() < 0)
+	if (speed.x < 0)
 	{
-		boatTransform = mat3x3::cross(boatTransform, mat3x3::mirror(axisID::x, position.x()));
+		boatTransform = mat3x3::cross(boatTransform, mat3x3::mirror(axisID::x, position.x));
 	}
 	//the boat itself
 
@@ -94,12 +94,12 @@ void boat::serializeValue(nbtSerializer& s)
 
 vec2 boat::getRelativeSeatPosition(cint& seatIndex) const
 {
-	bool flipped = speed.x() < 0;
+	bool flipped = speed.x < 0;
 
-	vec2 frontPosition = vec2(boatHitboxSize.x() * 0.25, boatHitboxSize.y() * 0.5);
+	vec2 frontPosition = vec2(boatHitboxSize.x * 0.25, boatHitboxSize.y * 0.5);
 	if (flipped == (seatIndex == 1))
 	{
-		frontPosition.x() = -frontPosition.x();
+		frontPosition.x = -frontPosition.x;
 	}
 	return frontPosition;
 }

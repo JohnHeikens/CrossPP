@@ -25,12 +25,12 @@ void gameTile::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
 	cint pictureBoxWidth = screenShot->backGroundImage ?
-		(int)((rect.h() * screenShot->backGroundImage->size.x()) / screenShot->backGroundImage->size.y()) :
-		rect.h();
+		(int)((rect.h * screenShot->backGroundImage->size.x) / screenShot->backGroundImage->size.y) :
+		rect.h;
 
-	screenShot->layout(crectanglei2(0, 0, pictureBoxWidth, rect.h()));
+	screenShot->layout(crectanglei2(0, 0, pictureBoxWidth, rect.h));
 
-	cint horizontalRoom = rect.w() - pictureBoxWidth;
+	cint horizontalRoom = rect.w - pictureBoxWidth;
 
-	infoLabel->layout(crectanglei2(pictureBoxWidth, 0, horizontalRoom, rect.h()));
+	infoLabel->layout(crectanglei2(pictureBoxWidth, 0, horizontalRoom, rect.h));
 }

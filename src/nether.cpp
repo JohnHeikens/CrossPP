@@ -26,14 +26,14 @@ generationData* nether::generateTerrain(chunk* generateIn)
 	crectanglei2& rect = crectanglei2(generateIn->worldPos, chunkSize);
 	for (cveci2& pos : rect)
 	{
-		cfp thickness = thicknessAt.getValue(pos.y());
+		cfp thickness = thicknessAt.getValue(pos.y);
 		cfp noiseValue = terrainNoise->evaluate(cvec2(pos));
 
 		if (noiseValue < thickness)
 		{
 			setBlockID(pos, blockID::netherrack);
 		}
-		else if (pos.y() < netherLavaLevel && pos.y() >= netherLavaOceanBottomLevel)
+		else if (pos.y < netherLavaLevel && pos.y >= netherLavaOceanBottomLevel)
 		{
 			setBlockID(pos, blockID::lava);
 		}
@@ -85,7 +85,7 @@ void nether::generateStructures(chunk* generateIn)
 	{
 		const blockID currentOre = netherOreList[i];
 		csize_t& count = roundRandom(generateIn->chunkRandom, rarity[i]);
-		cveci2& depositPosition = generateIn->worldPos + veci2(randIndex(generateIn->chunkRandom, (int)chunkSize.x()), randIndex(generateIn->chunkRandom, (int)chunkSize.y()));
+		cveci2& depositPosition = generateIn->worldPos + veci2(randIndex(generateIn->chunkRandom, (int)chunkSize.x), randIndex(generateIn->chunkRandom, (int)chunkSize.y));
 		for (size_t j = 0; j < count; j++)
 		{
 			addOres(depositPosition, currentOre, rand(generateIn->chunkRandom, maxVeinSize[i]), generateIn->chunkRandom, { blockID::netherrack });

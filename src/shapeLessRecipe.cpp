@@ -8,9 +8,9 @@ shapelessRecipe::~shapelessRecipe()
 bool shapelessRecipe::verifyPattern(rectangularSlotContainer* container)
 {
 	bool* found = new bool[requiredItems->size]();
-	for (int j = 0; j < container->rowsAndColumns.y(); j++)
+	for (int j = 0; j < container->rowsAndColumns.y; j++)
 	{
-		for (int k = 0; k < container->rowsAndColumns.x(); k++)
+		for (int k = 0; k < container->rowsAndColumns.x; k++)
 		{
 			itemStack* s = container->getSlot(cveci2(j, k));
 			if (s->count)

@@ -244,8 +244,8 @@ bool tickableBlockContainer::fillNetherPortal(cveci2& position)
 			//found all borders
 			cveci2 minPortalBorder = position - cveci2(portalDistance[0], portalDistance[2]);
 			cveci2 maxPortalBorder = position + cveci2(portalDistance[1], portalDistance[3]);
-			cint portalFrameWidth = maxPortalBorder.x() - minPortalBorder.x() - 2 + 1;
-			cint portalFrameHeight = maxPortalBorder.y() - minPortalBorder.y() - 2 + 1;
+			cint portalFrameWidth = maxPortalBorder.x - minPortalBorder.x - 2 + 1;
+			cint portalFrameHeight = maxPortalBorder.y - minPortalBorder.y - 2 + 1;
 			if (portalFrameWidth < minimumPortalWidth || portalFrameWidth > maximumPortalWidth ||
 				portalFrameHeight < minimumPortalHeight || portalFrameHeight > maximumPortalHeight)
 			{
@@ -253,11 +253,11 @@ bool tickableBlockContainer::fillNetherPortal(cveci2& position)
 				return false;
 			}
 			//check if the borders have obsidian
-			for (int j = minPortalBorder.y(); j <= maxPortalBorder.y(); j++)
+			for (int j = minPortalBorder.y; j <= maxPortalBorder.y; j++)
 			{
-				for (int i = minPortalBorder.x(); i <= maxPortalBorder.x(); i++)
+				for (int i = minPortalBorder.x; i <= maxPortalBorder.x; i++)
 				{
-					const blockID checkFor = (i == minPortalBorder.x() || i == maxPortalBorder.x() || j == minPortalBorder.y() || j == maxPortalBorder.y()) ?
+					const blockID checkFor = (i == minPortalBorder.x || i == maxPortalBorder.x || j == minPortalBorder.y || j == maxPortalBorder.y) ?
 						blockID::obsidian : blockID::air;
 					const blockID id = getBlockID(cveci2(i, j));
 					if (id != checkFor)
@@ -271,7 +271,7 @@ bool tickableBlockContainer::fillNetherPortal(cveci2& position)
 			setBlockRange(minPortalBorder + cveci2(1), maxPortalBorder + cveci2(-1), blockID::portal, chunkLoadLevel::updateLoaded);
 
 			//add portal to list
-			portalPositions.push_back(cveci2((minPortalBorder.x() + maxPortalBorder.x()) / 2, minPortalBorder.y() + 1));
+			portalPositions.push_back(cveci2((minPortalBorder.x + maxPortalBorder.x) / 2, minPortalBorder.y + 1));
 			return true;
 		}
 	}
@@ -706,7 +706,7 @@ void tickableBlockContainer::reCalculateLevels()
 
 	auto lightCompareFunction = [](cveci3& a, cveci3& b)
 		{
-			return a.y() < b.y() || (a.y() == b.y() && a.x() < b.x());
+			return a.y < b.y || (a.y == b.y && a.x < b.x);
 		};
 
 	//sort and remove double elements(sorting is not really necessary, it's just for the 'unique' function
@@ -749,13 +749,13 @@ void tickableBlockContainer::reCalculateLevels()
 
 			cveci3& currentData = *currentIterator;//the current position and the new light level
 
-			const lightLevel oldLight = currentData.z();//the light level spreaded to this place
+			const lightLevel oldLight = currentData.z;//the light level spreaded to this place
 
 			cveci2 currentPosition = cveci2(currentData);
 
 			int glowLevel = 0;
 			//sunlight
-			if ((isLightLevel(currentLevelToCalculate) && ((lightLevelID)((int)currentLevelToCalculate - (int)levelID::light) == lightLevelID::internalSunLight)) && dimensionDataList[rootDimension->identifier]->hasSunLight && currentPosition.y() == sunLightHeight)
+			if ((isLightLevel(currentLevelToCalculate) && ((lightLevelID)((int)currentLevelToCalculate - (int)levelID::light) == lightLevelID::internalSunLight)) && dimensionDataList[rootDimension->identifier]->hasSunLight && currentPosition.y == sunLightHeight)
 			{
 				glowLevel = maxLightLevel;
 			}
@@ -829,7 +829,7 @@ void tickableBlockContainer::reCalculateLevels()
 		//set all glowing block light levels
 		for (cveci3& glowData : glowList)
 		{
-			setArrayValue<lightLevel>(cveci2(glowData), glowData.z(), currentArrayToCalculate, chunkLoadLevel::worldGenerationLoaded);
+			setArrayValue<lightLevel>(cveci2(glowData), glowData.z, currentArrayToCalculate, chunkLoadLevel::worldGenerationLoaded);
 		}
 
 		//14. Return.

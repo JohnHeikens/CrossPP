@@ -28,7 +28,7 @@ void floatingSlot::tick()
 
 void floatingSlot::render(const gameRenderData& targetData) const
 {
-	fp height = (sin(microsectosec(getmicroseconds()) * math::PI) + 1) * (relativeHitbox.h() - itemSize) * 0.5;
+	fp height = (sin(microsectosec(getmicroseconds()) * math::PI) + 1) * (relativeHitbox.h - itemSize) * 0.5;
 	stack.renderSingleItem(targetData.clone(
 		mat3x3::fromRectToRect(
 			crectangle2(replaceIfMissing(itemList[(int)stack.stackItemID]->tex).getClientRect()),

@@ -10,11 +10,11 @@ soundSettingsForm::soundSettingsForm()
 void soundSettingsForm::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	volumeLabel->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, rect.h() / 2, buttonSize.x(), buttonSize.y()));
-	volumeSlider->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, rect.h() / 2 - buttonSize.y(), buttonSize.x(), buttonSize.y()));
-	headScreenDistanceLabel->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, rect.h() / 2 - buttonSize.y() * 2, buttonSize.x(), buttonSize.y()));
-	headScreenDistanceSlider->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, rect.h() / 2 - buttonSize.y() * 3, buttonSize.x(), buttonSize.y()));
-	musicButton->layout(crectanglei2((rect.w() - buttonSize.x()) / 2, rect.h() / 2 - buttonSize.y() * 4, buttonSize.x(), buttonSize.y()));
+	volumeLabel->layout(crectanglei2((rect.w - buttonSize.x) / 2, rect.h / 2, buttonSize.x, buttonSize.y));
+	volumeSlider->layout(crectanglei2((rect.w - buttonSize.x) / 2, rect.h / 2 - buttonSize.y, buttonSize.x, buttonSize.y));
+	headScreenDistanceLabel->layout(crectanglei2((rect.w - buttonSize.x) / 2, rect.h / 2 - buttonSize.y * 2, buttonSize.x, buttonSize.y));
+	headScreenDistanceSlider->layout(crectanglei2((rect.w - buttonSize.x) / 2, rect.h / 2 - buttonSize.y * 3, buttonSize.x, buttonSize.y));
+	musicButton->layout(crectanglei2((rect.w - buttonSize.x) / 2, rect.h / 2 - buttonSize.y * 4, buttonSize.x, buttonSize.y));
 }
 
 void soundSettingsForm::render(cveci2& position, const texture& renderTarget)

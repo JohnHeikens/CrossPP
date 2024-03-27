@@ -50,7 +50,7 @@ struct biomeGenerator :IDestructable
 
 	static void placeFossil(dimension* dimensionIn, cveci2& pos, std::mt19937& randomToUse);
 
-	//pos.x(): the x coordinate
-	//pos.y(): the exact height at which the ground is (30 means stone is at 0 to 29)
+	//pos.x: the x coordinate
+	//pos.y: the exact height at which the ground is (30 means stone is at 0 to 29)
 	virtual void attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std::mt19937& randomToUse) const;
 };

@@ -43,18 +43,18 @@ struct colorBrushSizeT : public brush<color, vect2<fsize_t>>, virtual colorBrush
 	//
 	//	if constexpr (isDebugging)
 	//	{
-	//		if (pos.x() < 0)
+	//		if (pos.x < 0)
 	//		{
 	//			return colorPalette::red;
 	//		}
-	//		else if (pos.y() < 0)
+	//		else if (pos.y < 0)
 	//		{
 	//			return colorPalette::green;
 	//		}
 	//	}
 	//	else 
 	//	{
-	//		assumeInRelease((pos.x() >= 0) && (pos.y() >= 0));
+	//		assumeInRelease((pos.x >= 0) && (pos.y >= 0));
 	//	}
 	//	return getValue(floorVector<fsize_t>(pos));
 	//}

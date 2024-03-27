@@ -4,59 +4,119 @@
 #include "math/graphics/alignment.h"
 #include "random/random.h"
 
-template<typename t, fsize_t axisCount>
+template <typename t, fsize_t axisCount>
 struct rectIteratortn;
 
-//#cannot make an union out of this, because the union would need to vary in size depending on the axisCount parameter
-template<typename t, fsize_t axisCount>
-struct rectangletn
+template <typename t, fsize_t axisCount>
+struct baseRect
 {
-	vectn<t, axisCount> pos0 = vectn<t, axisCount>();
-	vectn<t, axisCount> size = vectn<t, axisCount>();
-
-
-	addMemberName(x, pos0.x())
-		addMemberName(y, pos0.y())
-		addMemberName(w, size.x())
-		addMemberName(h, size.y())
-
-	constexpr rectangletn() = default;
-	constexpr rectangletn(cvectn<t, axisCount>& pos0, cvectn<t, axisCount>& size) : 
-		pos0(pos0), size(size) 
+	union
 	{
-
+		struct
+		{
+			vectn<t, axisCount> pos0;
+			vectn<t, axisCount> size;
+		};
+		struct
+		{
+			t x;
+			t y;
+			t w;
+			t h;
+		};
+	};
+#define rectConstructor(axisCount)                                                                     \
+	constexpr baseRect(vectn<t, axisCount> pos0, vectn<t, axisCount> size) : pos0(pos0), size(size) {} \
+	constexpr ~baseRect()                                                                              \
+	{                                                                                                  \
+		pos0.~vectn<t, axisCount>();                                                                   \
+		size.~vectn<t, axisCount>();                                                                   \
 	}
-	constexpr rectangletn(cvectn<t, axisCount>& size) 
-		: pos0(), size(size) 
+	rectConstructor(axisCount) constexpr baseRect(const t &x, const t &y, const t &w, const t &h)
 	{
-
+		pos0 = vect2<t>(x, y);
+		size = vect2<t>(w, h);
 	}
+};
+template <typename t>
+struct baseRect<t, 0>
+{
+	union
+	{
+		struct
+		{
+			vectn<t, 1> pos0;
+			vectn<t, 1> size;
+		};
+		struct
+		{
+		};
+	};
+	rectConstructor(0)
+	// constexpr baseRect() = default;
+	// constexpr baseRect() : pos0(vectn<t, axisCount>(), size(vectn<t, axisCount>())) {}
+};
+template <typename t>
+struct baseRect<t, 1>
+{
+	union
+	{
+		struct
+		{
+			vectn<t, 1> pos0;
+			vectn<t, 1> size;
+		};
+		struct
+		{
+			t x;
+			t w;
+		};
+	};
+	rectConstructor(1)
+	// constexpr baseRect() = default;
+	// constexpr baseRect() : pos0(vectn<t, axisCount>(), size(vectn<t, axisCount>())) {}
+};
 
-	constexpr rectangletn(const t& x, const t& y, const t& w, const t& h) : 
-		pos0(x, y), 
-		size(w, h) 
-	{}
+// #cannot make an union out of this, because the union would need to vary in size depending on the axisCount parameter
+template <typename t, fsize_t axisCount>
+struct rectangletn : baseRect<t, axisCount>
+{
+	using baseRect<t, axisCount>::pos0;
+	using baseRect<t, axisCount>::size;
 
-	template<typename t2>
-	explicit constexpr rectangletn(const rectangletn<t2, axisCount>& in) : 
-		pos0((vectn<t, axisCount>)in.pos0), size((vectn<t, axisCount>)in.size) {}
+	addMemberName(getX, pos0.getX())
+		addMemberName(getY, pos0.getY())
+			addMemberName(getW, size.getX())
+				addMemberName(getH, size.getY())
+		//
+		using baseRect<t, axisCount>::baseRect;
+	constexpr rectangletn() : baseRect<t, axisCount>(vectn<t, axisCount>(), vectn<t, axisCount>()) {}
+	// constexpr rectangletn(cvectn<t, axisCount> &pos0, cvectn<t, axisCount> &size)
+	//{
+	//	this->pos0 = pos0;
+	//	this->size = size;
+	// }
+	constexpr rectangletn(cvectn<t, axisCount> &size) : baseRect<t, axisCount>(vectn<t, axisCount>(), size) {}
+
+	template <typename t2>
+	explicit constexpr rectangletn(const rectangletn<t2, axisCount> &in) : baseRect<t, axisCount>((vectn<t, axisCount>)in.pos0, (vectn<t, axisCount>)in.size) {}
 
 	constexpr rectIteratortn<t, axisCount> begin() const;
 	constexpr rectIteratortn<t, axisCount> end() const;
 
 	constexpr vectn<t, axisCount> pos10() const
 	{
-		return vec2(x() + size.x(), y());
+		return vec2(pos0.x + size.x, pos0.y);
 	}
 	constexpr vectn<t, axisCount> pos01() const
 	{
-		return vec2(x(), y() + size.y());
+		return vec2(pos0.x, pos0.y + size.y);
 	}
 	constexpr vectn<t, axisCount> pos1() const
 	{
 		return pos0 + size;
 	}
-	constexpr bool contains(const vectn<t, axisCount>& pos) const
+	constexpr bool contains(const vectn<t, axisCount> &pos) const
 	{
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
@@ -69,17 +129,17 @@ struct rectangletn
 		return true;
 	}
 
-	constexpr void expand(const t& border)
+	constexpr void expand(const t &border)
 	{
 		pos0 -= border;
 		size += border * 2;
 	}
 
-	constexpr void expandToContain(const rectangletn& rect)
+	constexpr void expandToContain(const rectangletn &rect)
 	{
-		const vectn<t, axisCount>& oldPos11 = pos1();
-		const vectn<t, axisCount>& rectPos11 = rect.pos1();
-		for (int i = 0; i < 2; i++)
+		const vectn<t, axisCount> &oldPos11 = pos1();
+		const vectn<t, axisCount> &rectPos11 = rect.pos1();
+		for (int i = 0; i < axisCount; i++)
 		{
 			if (rect.pos0[i] < pos0[i])
 			{
@@ -93,13 +153,13 @@ struct rectangletn
 		}
 	}
 
-	//the rectangle will not exceed the borders; else it will return false.
-	constexpr bool cropClientRect(rectangletn& toCrop) const
+	// the rectangle will not exceed the borders; else it will return false.
+	constexpr bool cropClientRect(rectangletn &toCrop) const
 	{
 		vectn<t, axisCount> toCropPos1 = toCrop.pos1();
 		vectn<t, axisCount> borderPos1 = pos1();
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < axisCount; i++)
 		{
 			if (toCrop.pos0[i] < pos0[i])
 			{
@@ -109,9 +169,9 @@ struct rectangletn
 				}
 				toCrop.size[i] += (toCrop.pos0[i] - pos0[i]);
 				toCrop.pos0[i] = pos0[i];
-				//pos1 is not modified
+				// pos1 is not modified
 			}
-			
+
 			if (toCropPos1[i] > borderPos1[i])
 			{
 				if (toCrop.pos0[i] > borderPos1[i])
@@ -129,13 +189,13 @@ struct rectangletn
 		vectn<t, axisCount> toCropPos1 = toCrop.pos1();
 		vectn<t, axisCount> borderPos1 = pos1();
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < axisCount; i++)
 		{
 			if (toCrop.pos0[i] < pos0[i])
 			{
 				toCrop.size[i] += (toCrop.pos0[i] - pos0[i]);
 				toCrop.pos0[i] = pos0[i];
-				//pos1 is not modified
+				// pos1 is not modified
 			}
 
 			if (toCropPos1[i] > borderPos1[i])
@@ -143,30 +203,32 @@ struct rectangletn
 				toCrop.size[i] = borderPos1[i] - toCrop.pos0[i];
 			}
 		}
-		//safety measures are not in place. instead of returning a boolean, we return the result
+		// safety measures are not in place. instead of returning a boolean, we return the result
 		return toCrop;
 	}
 
-	constexpr static t getCollisionArea(rectangletn rect0, const rectangletn& rect1)
+	constexpr static t getCollisionArea(rectangletn rect0, const rectangletn &rect1)
 	{
-		if (rect1.cropClientRect(rect0)) {
+		if (rect1.cropClientRect(rect0))
+		{
 			return rect0.size.volume();
 		}
-		else {
+		else
+		{
 			return 0;
 		}
 	}
 
-	constexpr rectangletn expanded(const t& border) const
+	constexpr rectangletn expanded(const t &border) const
 	{
 		rectangletn r = *this;
 		r.expand(border);
 		return r;
 	}
-	constexpr rectangletn touchingBorder(const rectangletn& borders, const directionID& direction) const
+	constexpr rectangletn touchingBorder(const rectangletn &borders, const directionID &direction) const
 	{
 		rectangletn r = *this;
-		caxisID& axis = getAxis(direction);
+		caxisID &axis = getAxis(direction);
 		if (isPositive(direction))
 		{
 			r.pos0[axis] = borders.pos0[axis] + borders.size[axis];
@@ -177,7 +239,7 @@ struct rectangletn
 		}
 		return r;
 	}
-	constexpr vectn<t, axisCount> rectPos0Centered(const vectn<t, axisCount>& innerRectSize) const
+	constexpr vectn<t, axisCount> rectPos0Centered(const vectn<t, axisCount> &innerRectSize) const
 	{
 		vectn<t, axisCount> result = vectn<t, axisCount>();
 
@@ -187,15 +249,15 @@ struct rectangletn
 		}
 		return result;
 	}
-	constexpr rectangletn<t, axisCount> rectCentered(const vectn<t, axisCount>& innerRectSize) const
+	constexpr rectangletn<t, axisCount> rectCentered(const vectn<t, axisCount> &innerRectSize) const
 	{
 		return rectangletn<t, axisCount>(rectPos0Centered(innerRectSize), innerRectSize);
 	}
-	constexpr rectangletn<t, axisCount> rectCenteredAround(const vectn<t, axisCount>& newCenterPosition) const
+	constexpr rectangletn<t, axisCount> rectCenteredAround(const vectn<t, axisCount> &newCenterPosition) const
 	{
 		return rectangletn<t, axisCount>(newCenterPosition + (size / (t)2), size);
 	}
-	constexpr void moveToCenter(const rectangletn& outerRect)
+	constexpr void moveToCenter(const rectangletn &outerRect)
 	{
 		pos0 = outerRect.rectPos0Centered(size);
 	}
@@ -208,7 +270,7 @@ struct rectangletn
 		return pos0 + cvec2(size) * 0.5;
 	}
 
-	inline static constexpr rectangletn fromOppositeCorners(const vectn<t, axisCount>& corner0, const vectn<t, axisCount>& corner1)
+	inline static constexpr rectangletn fromOppositeCorners(const vectn<t, axisCount> &corner0, const vectn<t, axisCount> &corner1)
 	{
 		vectn<t, axisCount> pos0 = vectn<t, axisCount>();
 		vectn<t, axisCount> pos1 = vectn<t, axisCount>();
@@ -221,39 +283,44 @@ struct rectangletn
 		return rectangletn(pos0, pos1 - pos0);
 	}
 
-	constexpr t getAlignedY(const t rectangleHeight, const verticalAlignment& alignment)
+	constexpr t getAlignedY(const t rectangleHeight, const verticalAlignment &alignment)
 	{
+		using baseRect<t, axisCount>::y;
+		using baseRect<t, axisCount>::h;
 		switch (alignment)
 		{
 		case verticalAlignment::bottom:
-			return y();
+			return y;
 		case verticalAlignment::middle:
-			return y() + (h() + rectangleHeight) / 2;
+			return y + (h + rectangleHeight) / 2;
 		case verticalAlignment::top:
-			return y() + h() - rectangleHeight;
+			return y + h - rectangleHeight;
 		}
 	}
-	constexpr t getAlignedX(const t rectangleWidth, const horizontalAlignment& alignment)
+	constexpr t getAlignedX(const t rectangleWidth, const horizontalAlignment &alignment)
 	{
+		using baseRect<t, axisCount>::x;
+		using baseRect<t, axisCount>::w;
+
 		switch (alignment)
 		{
 		case horizontalAlignment::left:
-			return x();
+			return x;
 		case horizontalAlignment::middle:
-			return x() + (w() + rectangleWidth) / 2;
+			return x + (w + rectangleWidth) / 2;
 		case horizontalAlignment::right:
-			return x() + w() - rectangleWidth;
+			return x + w - rectangleWidth;
 		}
 	}
-	constexpr rectangletn rotatedInRectangle(const rectangletn& outerRect, const directionID& direction) const
+	constexpr rectangletn rotatedInRectangle(const rectangletn &outerRect, const directionID &direction) const
 	{
 		rectangletn rotatedRectangle = *this;
 		cbool positive = isPositive(direction);
-		caxisID& axis = getAxis(direction);
+		caxisID &axis = getAxis(direction);
 
 		if (!positive)
 		{
-			rotatedRectangle.y() = (outerRect.y() + outerRect.h() - rotatedRectangle.h()) - (rotatedRectangle.y() - outerRect.y());
+			rotatedRectangle.y = (outerRect.y + outerRect.h - rotatedRectangle.h) - (rotatedRectangle.y - outerRect.y);
 		}
 
 		if (axis == axisID::x)
@@ -265,86 +332,84 @@ struct rectangletn
 
 	inline static constexpr rectangletn unitSquare() { return rectangletn(0, 0, 1, 1); }
 
-	constexpr bool operator ==(const rectangletn& other) const
+	constexpr bool operator==(const rectangletn &other) const
 	{
 		return (pos0 == other.pos0) && (size == other.size);
 	}
-	constexpr bool operator !=(const rectangletn& other) const
+	constexpr bool operator!=(const rectangletn &other) const
 	{
 		return !operator==(other);
 	}
 
-	template<typename t2>
-	constexpr rectangletn multiplied(const t2& multiplier) const {
+	template <typename t2>
+	constexpr rectangletn multiplied(const t2 &multiplier) const
+	{
 		return rectangletn(pos0 * multiplier, size * multiplier);
 	}
 };
 
 addTemplateTypes(rectangle)
 
-
-//DONT USE THIS TO CONVERT TO PIXEL RECTANGLES; USE CEILRECT
-template<typename outputType = int, typename inputType, fsize_t axisCount>
-inline rectangletn<outputType, axisCount> floorRectangle(crectangletn<inputType, axisCount>& rect)
+	// DONT USE THIS TO CONVERT TO PIXEL RECTANGLES; USE CEILRECT
+	template <typename outputType = int, typename inputType, fsize_t axisCount>
+	inline rectangletn<outputType, axisCount> floorRectangle(crectangletn<inputType, axisCount> &rect)
 {
-	const auto& pos0 = floorVector<outputType>(rect.pos0);
+	const auto &pos0 = floorVector<outputType>(rect.pos0);
 
-	const auto& pos1 = floorVector<outputType>(rect.pos0 + rect.size);
+	const auto &pos1 = floorVector<outputType>(rect.pos0 + rect.size);
 
 	return crectangletn<outputType, axisCount>(pos0, pos1 - pos0);
 }
-template<typename outputType = int, typename inputType, fsize_t axisCount>
-inline rectangletn<outputType, axisCount> ceilRectangle(crectangletn<inputType, axisCount>& rect)
+template <typename outputType = int, typename inputType, fsize_t axisCount>
+inline rectangletn<outputType, axisCount> ceilRectangle(crectangletn<inputType, axisCount> &rect)
 {
-	const auto& pos0 = ceilVector<outputType>(rect.pos0);
+	const auto &pos0 = ceilVector<outputType>(rect.pos0);
 
-	const auto& pos1 = ceilVector<outputType>(rect.pos0 + rect.size);
+	const auto &pos1 = ceilVector<outputType>(rect.pos0 + rect.size);
 
 	return crectangletn<outputType, axisCount>(pos0, pos1 - pos0);
 }
 
-inline vec2 getrandomPosition(std::mt19937& generator, crectangle2& rect, cvec2& innerRectangleSize)
+inline vec2 getrandomPosition(std::mt19937 &generator, crectangle2 &rect, cvec2 &innerRectangleSize)
 {
-	return vec2(rect.x() + randFp(generator, rect.w() - innerRectangleSize.x()), rect.y() + randFp(generator, rect.h() - innerRectangleSize.y()));
+	return vec2(rect.x + randFp(generator, rect.w - innerRectangleSize.x), rect.y + randFp(generator, rect.h - innerRectangleSize.y));
 }
 
-constexpr rectangle2 getAbsoluteRect(crectangle2& outerRect, crectangle2& relativeRect)
+constexpr rectangle2 getAbsoluteRect(crectangle2 &outerRect, crectangle2 &relativeRect)
 {
 	return rectangle2(
-		outerRect.x() + relativeRect.x() * outerRect.w(),
-		outerRect.y() + relativeRect.y() * outerRect.h(),
-		relativeRect.w() * outerRect.w(),
-		relativeRect.h() * outerRect.h());
+		outerRect.x + relativeRect.x * outerRect.w,
+		outerRect.y + relativeRect.y * outerRect.h,
+		relativeRect.w * outerRect.w,
+		relativeRect.h * outerRect.h);
 }
-constexpr vec2 getAbsolutePosition(crectangle2& rect, cvec2& relativePosition)
+constexpr vec2 getAbsolutePosition(crectangle2 &rect, cvec2 &relativePosition)
 {
 	return rect.pos0 + relativePosition * rect.size;
 }
-constexpr vec2 getRelativePosition(crectangle2& rect, cvec2& absolutePosition)
+constexpr vec2 getRelativePosition(crectangle2 &rect, cvec2 &absolutePosition)
 {
 	return (absolutePosition - rect.pos0) / rect.size;
 }
-inline vec2 getrandomPosition(std::mt19937& generator, crectangle2& rect)
+inline vec2 getrandomPosition(std::mt19937 &generator, crectangle2 &rect)
 {
-	return vec2(rect.x() + randFp(generator, rect.w()), rect.y() + randFp(generator, rect.h()));
+	return vec2(rect.x + randFp(generator, rect.w), rect.y + randFp(generator, rect.h));
 }
 
-
-
-//copies a piece out of an old array into a new array
-template<typename t>
-inline t* cut(t* const& arr, crectanglet1<size_t>& range)
+// copies a piece out of an old array into a new array
+template <typename t>
+inline t *cut(t *const &arr, crectanglet1<size_t> &range)
 {
-	t* newArray = new t[range.w()];
-	std::copy(arr + range.x(), arr + range.pos1().x(), newArray);
+	t *newArray = new t[range.w];
+	std::copy(arr + range.x, arr + range.pos1().x, newArray);
 	return newArray;
 }
 
 // An iterator over a vector of vectors.
 
-//https://stackoverflow.com/questions/1784573/iterator-for-2d-vector
+// https://stackoverflow.com/questions/1784573/iterator-for-2d-vector
 
-template<typename t, fsize_t axisCount>
+template <typename t, fsize_t axisCount>
 struct rectIteratortn
 {
 public:
@@ -353,10 +418,10 @@ public:
 
 	constexpr rectIteratortn() = default;
 
-	constexpr rectIteratortn(crectangletn<t, axisCount>& rect, cvectn<t, axisCount>& pos) : rect(rect), pos(pos) {}
+	constexpr rectIteratortn(crectangletn<t, axisCount> &rect, cvectn<t, axisCount> &pos) : rect(rect), pos(pos) {}
 
 	// ++prefix operator
-	constexpr rectIteratortn& operator++()
+	constexpr rectIteratortn &operator++()
 	{
 		for (size_t i = 0; i < axisCount; i++)
 		{
@@ -373,7 +438,7 @@ public:
 		throw "";
 	}
 	// --prefix operator
-	constexpr rectIteratortn& operator--()
+	constexpr rectIteratortn &operator--()
 	{
 		for (size_t i = 0; i < axisCount; i++)
 		{
@@ -405,15 +470,15 @@ public:
 		--(*this);
 		return retval;
 	}
-	constexpr bool operator==(const rectIteratortn& other) const
+	constexpr bool operator==(const rectIteratortn &other) const
 	{
 		return (other.rect == rect) && (other.pos == pos);
 	}
-	constexpr bool operator!=(const rectIteratortn& other) const
+	constexpr bool operator!=(const rectIteratortn &other) const
 	{
 		return !operator==(other);
 	}
-	constexpr const vectn<t, axisCount>& operator*() const
+	constexpr const vectn<t, axisCount> &operator*() const
 	{
 		if constexpr (isDebugging)
 		{
@@ -426,14 +491,13 @@ public:
 	}
 };
 
-
-template<typename t, fsize_t axisCount>
+template <typename t, fsize_t axisCount>
 constexpr rectIteratortn<t, axisCount> rectangletn<t, axisCount>::begin() const
 {
 	return rectIteratortn<t, axisCount>(*this, pos0);
 }
 
-template<typename t, fsize_t axisCount>
+template <typename t, fsize_t axisCount>
 constexpr rectIteratortn<t, axisCount> rectangletn<t, axisCount>::end() const
 {
 	vectn<t, axisCount> endPos = pos0;

@@ -18,7 +18,7 @@ blaze::blaze(dimension* dimensionIn, cvec2& position) :mob(dimensionIn, position
 	mainBodyPart = head;
 	for (size_t i = 0; i < blazeRodCount; i++)
 	{
-		rods[i] = new bodyPart2D(blazeRodTextureRect, head, cvec2(), blazeRodSize, cvec2(blazeRodSize.x() * 0.5, blazeRodSize.y()));
+		rods[i] = new bodyPart2D(blazeRodTextureRect, head, cvec2(), blazeRodSize, cvec2(blazeRodSize.x * 0.5, blazeRodSize.y));
 		head->children.push_back(rods[i]);
 	}
 	head->drawOrderIndex = (blazeRingCount * (blazeRingRodCount / 2));
@@ -26,7 +26,7 @@ blaze::blaze(dimension* dimensionIn, cvec2& position) :mob(dimensionIn, position
 
 void blaze::updateBodyParts() const
 {
-	head->translate = position + cvec2(0, blazeHitbox.size.y() - blazeHeadSize.y() * 0.5);
+	head->translate = position + cvec2(0, blazeHitbox.size.y - blazeHeadSize.y * 0.5);
 	head->changed = true;
 	for (size_t ringIndex = 0; ringIndex < blazeRingCount; ringIndex++)
 	{

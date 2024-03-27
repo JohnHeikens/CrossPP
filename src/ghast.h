@@ -7,7 +7,7 @@ constexpr rectangle2 ghastHitbox = rectangle2(ghastHitboxSize * -0.5, ghastHitbo
 constexpr rectangle2 ghastHeadTextureRect = crectangle2(cvec2(), cvec2(0x10));
 constexpr rectangle2 ghastLegTextureRect = crectangle2(0, 0x10, 0x2, 14);
 
-constexpr fp ghastPixelSize = ghastHitboxSize.x() / ghastHeadTextureRect.size.x();
+constexpr fp ghastPixelSize = ghastHitboxSize.getX() / ghastHeadTextureRect.size.getX();
 constexpr vec2 ghastHeadSize = cvec2(ghastHeadTextureRect.size) * ghastPixelSize;
 constexpr vec2 ghastMaxLegSize = cvec2(ghastLegTextureRect.size) * ghastPixelSize;
 

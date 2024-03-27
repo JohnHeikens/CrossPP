@@ -47,9 +47,9 @@ void mainMenu::layout(crectanglei2& newRect)
 	backgroundPicture->layout(newRect);
 	layoutTableCentered(std::vector<control*>({playOfflineButton, playOnlineButton, accountButton}));
 
-	cfp stringLength = defaultTheme().font->measureStringSize(cvec2(rect.size), gameName).x() / defaultTheme().font->fontSize;
-	gameNameLabel->currentFont->fontSize = rect.w() / (stringLength * 2);
-	rectanglei2 gameNameRect = rectanglei2(rect.w() / 4, rect.h() - (int)(gameNameLabel->currentFont->fontSize * 2), rect.w() / 2, (int)gameNameLabel->currentFont->fontSize);
+	cfp stringLength = defaultTheme().font->measureStringSize(cvec2(rect.size), gameName).x / defaultTheme().font->fontSize;
+	gameNameLabel->currentFont->fontSize = rect.w / (stringLength * 2);
+	rectanglei2 gameNameRect = rectanglei2(rect.w / 4, rect.h - (int)(gameNameLabel->currentFont->fontSize * 2), rect.w / 2, (int)gameNameLabel->currentFont->fontSize);
 	gameNameLabel->layout(gameNameRect);
 }
 

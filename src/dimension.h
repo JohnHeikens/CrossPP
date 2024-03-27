@@ -123,9 +123,9 @@ inline array2d<t> dimension::getArrayValues(crectanglei2& rect, const arrayDataT
 		}
 	}
 	//divide in chunks
-	for (veci2 currentChunkCoordinates = firstChunkCoordinates; currentChunkCoordinates.y() < lastChunkCoordinates.y(); currentChunkCoordinates.y()++)
+	for (veci2 currentChunkCoordinates = firstChunkCoordinates; currentChunkCoordinates.y < lastChunkCoordinates.y; currentChunkCoordinates.y++)
 	{
-		for (currentChunkCoordinates.x() = firstChunkCoordinates.x(); currentChunkCoordinates.x() < lastChunkCoordinates.x(); currentChunkCoordinates.x()++)
+		for (currentChunkCoordinates.x = firstChunkCoordinates.x; currentChunkCoordinates.x < lastChunkCoordinates.x; currentChunkCoordinates.x++)
 		{
 			cveci2 currentChunkWorldPos = currentChunkCoordinates * chunkSize;
 
@@ -140,13 +140,13 @@ inline array2d<t> dimension::getArrayValues(crectanglei2& rect, const arrayDataT
 			cveci2& chunkArraySize = to - from;
 
 			t* chunkYPtr = (t*)getArrayValuePointerUnsafe(from, dataType, minimalLoadLevel);
-			const t* const& chunkYEndPtr = chunkYPtr + chunkArraySize.y() * chunkSize.x();
-			t* arrayYPtr = values.baseArray + ((from.x() - rect.x()) + ((from.y() - rect.y()) * rect.w()));
+			const t* const& chunkYEndPtr = chunkYPtr + chunkArraySize.y * chunkSize.x;
+			t* arrayYPtr = values.baseArray + ((from.x - rect.x) + ((from.y - rect.y) * rect.w));
 			while (chunkYPtr != chunkYEndPtr)
 			{
-				std::copy(chunkYPtr, chunkYPtr + chunkArraySize.x(), arrayYPtr);
-				arrayYPtr += rect.w();
-				chunkYPtr += chunkSize.x();
+				std::copy(chunkYPtr, chunkYPtr + chunkArraySize.x, arrayYPtr);
+				arrayYPtr += rect.w;
+				chunkYPtr += chunkSize.x;
 			}
 		}
 	}

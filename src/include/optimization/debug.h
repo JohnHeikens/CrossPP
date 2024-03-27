@@ -8,9 +8,9 @@
 //	OutputDebugString(s.c_str());
 //}
 
-#ifdef _DEBUG
+#ifdef NDEBUG //release
+constexpr bool isDebugging = false;
+#else
 //constexpr bool isDebugging = false;//for debugging purposes
 constexpr bool isDebugging = true;
-#else
-constexpr bool isDebugging = false;
 #endif // _DEBUG

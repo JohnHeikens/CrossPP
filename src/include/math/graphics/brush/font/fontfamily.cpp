@@ -21,18 +21,18 @@ fontFamily::fontFamily(resolutionTexture* tex, cbool& flipRows)
 {
 	this->tex = tex;
 	texture& topTextureToEdit = *tex->scaledTextures[0];
-	cvect2<size_t>& texLetterSize = topTextureToEdit.size.x() / asciiRowWidth;
+	cvect2<size_t>& texLetterSize = topTextureToEdit.size.x / asciiRowWidth;
 	if (flipRows)
 	{
 		for (size_t yRow0 = 0; yRow0 < asciiColumnHeight / 2; yRow0++)
 		{
 			size_t yRow1 = (asciiColumnHeight - yRow0 - 1);
-			for (size_t aX = 0; aX < topTextureToEdit.size.x(); aX++)
+			for (size_t aX = 0; aX < topTextureToEdit.size.x; aX++)
 			{
-				for (size_t yIndex = 0; yIndex < texLetterSize.y(); yIndex++)
+				for (size_t yIndex = 0; yIndex < texLetterSize.y; yIndex++)
 				{
-					size_t aY0 = yRow0 * texLetterSize.y() + yIndex;
-					size_t aY1 = yRow1 * texLetterSize.y() + yIndex;
+					size_t aY0 = yRow0 * texLetterSize.y + yIndex;
+					size_t aY1 = yRow1 * texLetterSize.y + yIndex;
 					//swap colors
 					std::swap(topTextureToEdit.getValueReferenceUnsafe(cvect2<size_t>(aX, aY0)), topTextureToEdit.getValueReferenceUnsafe(cvect2<size_t>(aX, aY1)));
 				}
@@ -41,7 +41,7 @@ fontFamily::fontFamily(resolutionTexture* tex, cbool& flipRows)
 		tex->recalculateScaledTextures();
 	}
 	
-	int fontScaleMultiplier = (int)(topTextureToEdit.size.x() / asciiRowWidth);
+	int fontScaleMultiplier = (int)(topTextureToEdit.size.x / asciiRowWidth);
 	for (size_t i = 0; i < asciiLetterCount; i++) {
 
 		cveci2& asciiOffset = getAsciiOffset((byte)i);

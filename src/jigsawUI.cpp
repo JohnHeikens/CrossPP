@@ -8,35 +8,35 @@
 void jigsawUI::layout(crectanglei2& rect)
 {
 	form::layout(rect);
-	cint middle = rect.w() / 2;
-	int currentY = rect.h() - buttonSize.y();
-	cint jointTypeLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, jointTypeLabel->text).x() + defaultTheme().borderSize * 2;
-	cint w3 = rect.w() / 3;
-	targetPoolLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	targetPoolTextbox->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	nameLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	nameTextbox->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	targetNameLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	targetNameTextbox->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	turnsIntoLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	turnsIntoTextbox->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	jointTypeLabel->layout(crectanglei2(0, currentY, jointTypeLabelWidth, buttonSize.y()));
-	jointTypeButton->layout(crectanglei2(0 + jointTypeLabelWidth, currentY, jointTypeLabelWidth, buttonSize.y()));
-	currentY -= buttonSize.y();
-	levelsSlider->layout(crectanglei2(0, currentY, w3, buttonSize.y()));
-	keepJigsawsButton->layout(crectanglei2(w3, currentY, w3, buttonSize.y()));
-	generateButton->layout(crectanglei2(w3 + w3, currentY, rect.w() - w3 - w3, buttonSize.y()));
-	currentY -= buttonSize.y();
-	doneButton->layout(crectanglei2(0, currentY, middle, buttonSize.y()));
-	cancelButton->layout(crectanglei2(0 + middle, currentY, rect.w() - middle, buttonSize.y()));
+	cint middle = rect.w / 2;
+	int currentY = rect.h - buttonSize.y;
+	cint jointTypeLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, jointTypeLabel->text).x + defaultTheme().borderSize * 2;
+	cint w3 = rect.w / 3;
+	targetPoolLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	targetPoolTextbox->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	nameLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	nameTextbox->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	targetNameLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	targetNameTextbox->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	turnsIntoLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	turnsIntoTextbox->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	jointTypeLabel->layout(crectanglei2(0, currentY, jointTypeLabelWidth, buttonSize.y));
+	jointTypeButton->layout(crectanglei2(0 + jointTypeLabelWidth, currentY, jointTypeLabelWidth, buttonSize.y));
+	currentY -= buttonSize.y;
+	levelsSlider->layout(crectanglei2(0, currentY, w3, buttonSize.y));
+	keepJigsawsButton->layout(crectanglei2(w3, currentY, w3, buttonSize.y));
+	generateButton->layout(crectanglei2(w3 + w3, currentY, rect.w - w3 - w3, buttonSize.y));
+	currentY -= buttonSize.y;
+	doneButton->layout(crectanglei2(0, currentY, middle, buttonSize.y));
+	cancelButton->layout(crectanglei2(0 + middle, currentY, rect.w - middle, buttonSize.y));
 }
 void jigsawUI::render(cveci2& position, const texture& renderTarget)
 {

@@ -1,7 +1,7 @@
 
 
 # Use c++ 23
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 23) #20 for MSVC, 23 for latest code
 
 

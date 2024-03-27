@@ -11,7 +11,7 @@ void pollen::render(const gameRenderData& targetData) const
 void pollen::tick()
 {
 	entity::tick();
-	if (axisCollided.x() || axisCollided.y())
+	if (axisCollided.x || axisCollided.y)
 	{
 		cveci2& spreadPosition = floorVector(position + cvec2(0, -0.2));
 

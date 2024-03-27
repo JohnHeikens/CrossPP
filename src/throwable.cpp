@@ -24,7 +24,7 @@ void throwable::tick()
 		}
 	}
 
-	if (axisCollided.x() || axisCollided.y())
+	if (axisCollided.x || axisCollided.y)
 	{
 		onCollision(collidables);
 	}

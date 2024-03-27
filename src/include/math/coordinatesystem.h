@@ -12,12 +12,12 @@ struct coordinateSystem
 
 	inline vec3 getForwardDirection() const
 	{
-		return vec2::getrotatedvector(cameraAngles.x());
+		return vec2::getrotatedvector(cameraAngles.x);
 	}
 
 	inline vec3 getRightDirection() const
 	{
-		return vec2::getrotatedvector(cameraAngles.x() + math::PI2 * 0.25);
+		return vec2::getrotatedvector(cameraAngles.x + math::PI2 * 0.25);
 	}
 
 	constexpr vec3 getUpDirection() const
@@ -27,7 +27,7 @@ struct coordinateSystem
 
 	inline vec3 getRotatedForwardDirection() const
 	{
-		return vec3::getrotatedvector(cameraAngles.x(), cameraAngles.y());
+		return vec3::getrotatedvector(cameraAngles.x, cameraAngles.y);
 	}
 
 	inline vec3 getRotatedRightDirection() const

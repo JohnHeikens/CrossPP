@@ -27,7 +27,7 @@ void humanSlotContainerUI::clickedOnItem(cmb& button, itemStack& stackHolding, u
 			{
 				return;
 			}
-			else if ((getArmorType(stackHolding.stackItemID) - bootsArmorType) != selectedSlot.y())
+			else if ((getArmorType(stackHolding.stackItemID) - bootsArmorType) != selectedSlot.y)
 			{
 				return;
 			}
@@ -38,7 +38,7 @@ void humanSlotContainerUI::clickedOnItem(cmb& button, itemStack& stackHolding, u
 		}
 		else
 		{
-			itemStack& stack = selectedSlotContainer->linkedContainer->slots[selectedSlot.y()];
+			itemStack& stack = selectedSlotContainer->linkedContainer->slots[selectedSlot.y];
 			if (stack.count && stack.getEnchantmentLevel(enchantmentID::curseOfBinding))
 			{
 				return;

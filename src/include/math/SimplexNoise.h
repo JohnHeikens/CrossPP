@@ -1,7 +1,7 @@
 #pragma once
 /**
 
- * @file    SimplexNoise.h()
+ * @file    SimplexNoise.h
 
  * @brief   A Perlin Simplex Noise C++ Implementation (1D, 2D, 3D).
 
@@ -161,7 +161,7 @@ public:
 
 	//  fp grad = gradients1D[h];    // NOTE : Test of Gradient look-up table instead of the above
 
-		return (grad * position.x());              // Multiply the gradient with the distance
+		return (grad * position.x);              // Multiply the gradient with the distance
 
 	}
 
@@ -250,13 +250,13 @@ public:
 
 	// Corners coordinates (nearest integer values):
 
-		const int32_t& i0 = math::floor(position.x());
+		const int32_t& i0 = math::floor(position.x);
 
 		const int32_t& i1 = i0 + 1;
 
 		// Distances to corners (between 0 and 1):
 
-		cfp& x0 = position.x() - i0;
+		cfp& x0 = position.x - i0;
 
 		cfp& x1 = x0 - 1.0f;
 
@@ -301,11 +301,11 @@ public:
 
 		// Skew the input space to determine which simplex cell we're in
 
-		cfp s = (position.x() + position.y()) * F2;  // Hairy factor for 2D
+		cfp s = (position.x + position.y) * F2;  // Hairy factor for 2D
 
-		cfp xs = position.x() + s;
+		cfp xs = position.x + s;
 
-		cfp ys = position.y() + s;
+		cfp ys = position.y + s;
 
 		const int32_t i = math::floor(xs);
 
@@ -319,9 +319,9 @@ public:
 
 		cfp Y0 = j - t;
 
-		cfp x0 = position.x() - X0;  // The x,y distances from the cell origin
+		cfp x0 = position.x - X0;  // The x,y distances from the cell origin
 
-		cfp y0 = position.y() - Y0;
+		cfp y0 = position.y - Y0;
 
 		// For the 2D case, the simplex shape is an equilateral triangle.
 
@@ -432,11 +432,11 @@ public:
 
 		cfp s = (position.sum()) * F3; // Very nice and simple skew factor for 3D
 
-		cint i = math::floor(position.x() + s);
+		cint i = math::floor(position.x + s);
 
-		cint j = math::floor(position.y() + s);
+		cint j = math::floor(position.y + s);
 
-		cint k = math::floor(position.z() + s);
+		cint k = math::floor(position.z + s);
 
 		cfp t = (i + j + k) * G3;
 
@@ -446,11 +446,11 @@ public:
 
 		cfp Z0 = k - t;
 
-		cfp x0 = position.x() - X0; // The x,y,z distances from the cell origin
+		cfp x0 = position.x - X0; // The x,y,z distances from the cell origin
 
-		cfp y0 = position.y() - Y0;
+		cfp y0 = position.y - Y0;
 
-		cfp z0 = position.z() - Z0;
+		cfp z0 = position.z - Z0;
 
 		// For the 3D case, the simplex shape is a slightly irregular tetrahedron.
 

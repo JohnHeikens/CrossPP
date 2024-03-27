@@ -29,7 +29,7 @@ void enderDragonCirclingAI::chooseTargetPoint()
 	end* currentEnd = (end*)currentWorld->dimensions[(int)dimensionID::end];
 	//choose the farthest pillar
 
-	csize_t& targetIndex = connectedEntity->position.x() < 0 ? 1 : 0;
+	csize_t& targetIndex = connectedEntity->position.x < 0 ? 1 : 0;
 
 	targetPoint = cvec2(targetIndex ? obsidianPillarDistance : -obsidianPillarDistance,
 		(currentEnd->obsidianPillarLevel[targetIndex] + currentEnd->obsidianPillarHeight[targetIndex] + 2));

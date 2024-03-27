@@ -31,7 +31,7 @@ struct saturator final :public colorBrush
 		const color original = baseBrush.getValue(pos);
 		const colorf& rgbOriginal(original);
 		const colorf& hsv = rgb2hsv(rgbOriginal);
-		const colorf& saturated = colorf(hsv.h(), math::minimum(hsv.s() + addsaturation, (fp)1.0), math::minimum(hsv.v() + addvalue, (fp)1.0));
+		const colorf& saturated = colorf(hsv.h, math::minimum(hsv.s() + addsaturation, (fp)1.0), math::minimum(hsv.v() + addvalue, (fp)1.0));
 		const colorf& rgbSaturated = hsv2rgb(saturated);
 		return color(rgbSaturated);
 	}
@@ -94,11 +94,11 @@ struct repeatingBrush final : public brush<resultingType, inputType>
 	inline resultingType getValue(const inputType& pos) const
 	{
 		if constexpr (std::is_same_v<inputType, vec2>) {
-			const inputType& remainderPos = vec2(math::mod(pos.x(), repeatSize.x()), math::mod(pos.y(), repeatSize.y()));
+			const inputType& remainderPos = vec2(math::mod(pos.x, repeatSize.x), math::mod(pos.y, repeatSize.y));
 			return brushToRepeat.getValue(remainderPos);
 		}
 		else {
-			const inputType& remainderPos = inputType(pos.x() % repeatSize.x(), pos.y() % repeatSize.y());
+			const inputType& remainderPos = inputType(pos.x % repeatSize.x, pos.y % repeatSize.y);
 			return brushToRepeat.getValue(remainderPos);
 		}
 	}
@@ -115,11 +115,11 @@ struct repeatingBrush final : public brush<resultingType, inputType>
 //	inline color getValue(const inputType& pos) const
 //	{
 //		if constexpr (std::is_same_v<inputType, vec2>) {
-//			const inputType& remainderPos = vec2(math::mod(pos.x(), repeatSize.x()), math::mod(pos.y(), repeatSize.y()));
+//			const inputType& remainderPos = vec2(math::mod(pos.x, repeatSize.x), math::mod(pos.y, repeatSize.y));
 //			return brushToRepeat.getValue(remainderPos);
 //		}
 //		else {
-//			const inputType& remainderPos = inputType(pos.x() % repeatSize.x(), pos.y() % repeatSize.y());
+//			const inputType& remainderPos = inputType(pos.x % repeatSize.x, pos.y % repeatSize.y);
 //			return brushToRepeat.getValue(remainderPos);
 //		}
 //	}
@@ -171,15 +171,15 @@ struct bilinearInterpolator final :colorBrush
 		//first interpolate x, then y
 		cvect2<fsize_t> pos00 = floorVector<fsize_t>(pos);
 		cvect2<fsize_t> pos11 = cvect2<fsize_t>(
-			math::minimum((fsize_t)(pos00.x() + 1), baseTexture.size.x() - 1),
-			math::minimum((fsize_t)(pos00.y() + 1), baseTexture.size.y() - 1)
+			math::minimum((fsize_t)(pos00.x + 1), baseTexture.size.x - 1),
+			math::minimum((fsize_t)(pos00.y + 1), baseTexture.size.y - 1)
 		);
 
 		const colorf colorsToInterpolate[]
 		{
 			baseTexture.getValueUnsafe(pos00),
-			baseTexture.getValueUnsafe(cvect2<fsize_t>(pos11.x(), pos00.y())),
-			baseTexture.getValueUnsafe(cvect2<fsize_t>(pos00.x(), pos11.y())),
+			baseTexture.getValueUnsafe(cvect2<fsize_t>(pos11.x, pos00.y)),
+			baseTexture.getValueUnsafe(cvect2<fsize_t>(pos00.x, pos11.y)),
 			baseTexture.getValueUnsafe(pos11)
 		};
 
@@ -214,12 +214,12 @@ inline void fillTransformedBrushRectangle(crectangle2& brushRect, cmat3x3& trans
 	//+0.5, * transform, -0.5
 
 	//vec2 testSize = vec2(1, 0);
-	//if (result.x() < 0) {
+	//if (result.x < 0) {
 	//	roundUp[0] = true;
 	//}
 	//vec2 testSizeY = vec2(1, 0);
 	//vec2 result = transform.multSizeMatrix(testSize);
-	//if (result.x() < 0) {
+	//if (result.x < 0) {
 	//	roundUp[0] = true;
 	//}
 

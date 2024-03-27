@@ -23,7 +23,7 @@ bool stareDownAI::shouldExecute()
 			fp tMin, tMax;//dummy
 			//check if a ray cast from the eye of the mob collides with the head of the enderman
 			if (collidedistance2d(mobHeadPos, mobHeadPos + directionNormal * proximity,
-				crectangle2(endermanHeadPos, cvec2()).expanded(endermanHeadTextureRect.size.x() * endermanPixelSize * 0.5), tMin, tMax)
+				crectangle2(endermanHeadPos, cvec2()).expanded(endermanHeadTextureRect.size.x * endermanPixelSize * 0.5), tMin, tMax)
 				)
 			{
 				if (targetNear(m)) {

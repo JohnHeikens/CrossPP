@@ -74,15 +74,15 @@ void chunk::generateStructures()
 	{
 		if (dimensionIn->identifier == dimensionID::overworld)
 		{
-			cint& height = ((overworldGenerationData*)terrainData)->heights[halfChunkSize.x()];
+			cint& height = ((overworldGenerationData*)terrainData)->heights[halfChunkSize.x];
 
-			cbool& hasTopPosition = (height >= worldPos.y()) && (height < (worldPos.y() + (int)chunkSize.y()));
+			cbool& hasTopPosition = (height >= worldPos.y) && (height < (worldPos.y + (int)chunkSize.y));
 
-			cveci2& topPosition = cveci2(worldPos.x() + (int)halfChunkSize.x(), height);
+			cveci2& topPosition = cveci2(worldPos.x + (int)halfChunkSize.x, height);
 
-			cbool& hasUnderGround = height >= (worldPos.y() + (int)chunkSize.y());
+			cbool& hasUnderGround = height >= (worldPos.y + (int)chunkSize.y);
 
-			cveci2& randomChunkPosition = cveci2(worldPos.x() + randIndex(currentRandom, (int)chunkSize.x()), worldPos.y() + randIndex(currentRandom, (int)chunkSize.y()));
+			cveci2& randomChunkPosition = cveci2(worldPos.x + randIndex(currentRandom, (int)chunkSize.x), worldPos.y + randIndex(currentRandom, (int)chunkSize.y));
 
 			switch (id)
 			{
@@ -96,7 +96,7 @@ void chunk::generateStructures()
 			break;
 			case structureID::hot_air_balloon:
 			{
-				if (worldPos.y() > 0)
+				if (worldPos.y > 0)
 				{
 					biomeGenerator::placeNamedStructure(dimensionIn, randomChunkPosition, L"hot_air_balloon/base", chunkRandom);
 				}
@@ -104,7 +104,7 @@ void chunk::generateStructures()
 			break;
 			case structureID::floating_ship:
 			{
-				if (worldPos.y() > 0)
+				if (worldPos.y > 0)
 				{
 					biomeGenerator::placeNamedStructure(dimensionIn, randomChunkPosition, L"floating_ship/floating_ship", chunkRandom);
 				}
@@ -362,7 +362,7 @@ chunk::chunk(dimension* dimensionIn, cveci2& chunkCoordinates) :dimensionIn(dime
 	const biomeID biomeIn = dimensionIn->getBiome(cvec2(worldPos + cveci2(chunkSize / 2)));
 	if (dimensionIn->identifier == dimensionID::overworld)
 	{
-		if (chunkCoordinates.y() < 0)
+		if (chunkCoordinates.y < 0)
 		{
 
 			//add structures
@@ -383,7 +383,7 @@ chunk::chunk(dimension* dimensionIn, cveci2& chunkCoordinates) :dimensionIn(dime
 			{
 				generatedStructures.push_back(structureID::fossil);
 			}
-			if (biomeIn == biomeID::ocean && worldPos.y() > -100)
+			if (biomeIn == biomeID::ocean && worldPos.y > -100)
 			{
 				if (randChance(chunkRandom, 0x20))
 				{
@@ -395,7 +395,7 @@ chunk::chunk(dimension* dimensionIn, cveci2& chunkCoordinates) :dimensionIn(dime
 				}
 			}
 		}
-		else if (worldPos.y() < 10) {
+		else if (worldPos.y < 10) {
 			//above ground
 			//biome dependent structures
 			if ((biomeIn == biomeID::desert) && (randChance(chunkRandom, 0x20)))
@@ -415,7 +415,7 @@ chunk::chunk(dimension* dimensionIn, cveci2& chunkCoordinates) :dimensionIn(dime
 				generatedStructures.push_back(structureID::village);
 			}
 		}
-		else if (worldPos.y() > 50)
+		else if (worldPos.y > 50)
 		{
 			if (randChance(chunkRandom, 0x10))
 				generatedStructures.push_back(structureID::hot_air_balloon);
@@ -469,7 +469,7 @@ void chunk::changeEntityList()
 
 ull getChunkSeed(cveci2& chunkCoordinates)
 {
-	return perfectlyHashToDoubleSizedType((int32_t)perfectlyHashToDoubleSizedType(chunkCoordinates.x(), chunkCoordinates.y()), (int32_t)currentWorld->seed);
+	return perfectlyHashToDoubleSizedType((int32_t)perfectlyHashToDoubleSizedType(chunkCoordinates.x, chunkCoordinates.y), (int32_t)currentWorld->seed);
 }
 void chunk::spawnMobs()
 {
@@ -498,7 +498,7 @@ void chunk::spawnMobs()
 		}
 
 		//choose a random position in the chunk
-		veci2 blockSpawningIn = worldPos + veci2(rand(currentRandom, (int)chunkSize.x() - 1), rand(currentRandom, (int)chunkSize.y() - 1));
+		veci2 blockSpawningIn = worldPos + veci2(rand(currentRandom, (int)chunkSize.x - 1), rand(currentRandom, (int)chunkSize.y - 1));
 		cfp& distance = currentServer->distanceToNearestPlayer(dimensionIn, cvec2(blockSpawningIn));
 		if (distance < minimalSpawnDistance || distance > maximumSpawnDistance)
 		{
@@ -554,7 +554,7 @@ void chunk::randomTick()
 	{
 		for (int i = 0; i < currentWorld->randomTickSpeed; i++)
 		{
-			cveci2& pos = worldPos + cveci2(randIndex(currentRandom, (int)chunkSize.x()), randIndex(currentRandom, (int)chunkSize.y()));
+			cveci2& pos = worldPos + cveci2(randIndex(currentRandom, (int)chunkSize.x), randIndex(currentRandom, (int)chunkSize.y));
 			blockData* data = dimensionIn->getBlockData(pos);
 			const blockID& id = dimensionIn->getBlockID(pos);
 			if (data)
@@ -567,9 +567,9 @@ void chunk::randomTick()
 
 chunk::~chunk()
 {
-	if (blockDataArray.size.x())
+	if (blockDataArray.size.x)
 	{
-		for (size_t index = 0; index < chunkSize.x() * chunkSize.y(); index++)
+		for (size_t index = 0; index < chunkSize.x * chunkSize.y; index++)
 		{
 			if (blockDataArray.baseArray[index])
 			{
@@ -649,9 +649,9 @@ void chunk::addLightUpdates()
 	//flood fill with light and block updates
 	const blockID* blockPtr = blockIDArray.baseArray;
 
-	for (size_t j = 0; j < chunkSize.y(); j++)
+	for (size_t j = 0; j < chunkSize.y; j++)
 	{
-		for (size_t i = 0; i < chunkSize.x(); i++, blockPtr++)
+		for (size_t i = 0; i < chunkSize.x; i++, blockPtr++)
 		{
 			cveci2 worldPosition = this->worldPos + cveci2((int)i, (int)j);
 			const blockID& currentID = *blockPtr;
@@ -660,12 +660,12 @@ void chunk::addLightUpdates()
 				//dimensionIn->addBlockUpdatePosition(cveci2(i + worldX, j));
 			}
 			bool shouldAdd = false;
-			if (dimensionDataList[dimensionIn->identifier]->hasSunLight && ((j + worldPos.y()) == sunLightHeight))
+			if (dimensionDataList[dimensionIn->identifier]->hasSunLight && ((j + worldPos.y) == sunLightHeight))
 			{
 				shouldAdd = true;
 				goto addToList;
 			}
-			if ((i == 0) || (i == (chunkSize.x() - 1)) || (j == 0) || (j == (chunkSize.y() - 1)))
+			if ((i == 0) || (i == (chunkSize.x - 1)) || (j == 0) || (j == (chunkSize.y - 1)))
 			{
 				for (int arrayLevelTypeIndex = 0; arrayLevelTypeIndex < (int)levelID::count; arrayLevelTypeIndex++)
 				{
@@ -696,7 +696,7 @@ void chunk::addLightUpdates()
 
 bool chunk::serialize(cbool& write)
 {
-	const std::wstring chunksFolder = savesFolder + currentWorld->name + std::wstring(L"\\") + dimensionDataList[dimensionIn->identifier]->name + std::wstring(L"\\") + saveFolderChunks + std::to_wstring(chunkCoordinates.x()) + std::wstring(L"\\");
+	const std::wstring chunksFolder = savesFolder + currentWorld->name + std::wstring(L"\\") + dimensionDataList[dimensionIn->identifier]->name + std::wstring(L"\\") + saveFolderChunks + std::to_wstring(chunkCoordinates.x) + std::wstring(L"\\");
 	if (write)
 	{
 		createFoldersIfNotExists(chunksFolder);
@@ -705,7 +705,7 @@ bool chunk::serialize(cbool& write)
 	{
 		loadLevel = math::maximum(loadLevel, chunkLoadLevel::worldGenerationLoaded);
 	}
-	std::wstring chunkPath = chunksFolder + std::to_wstring(chunkCoordinates.y()) + nbtFileExtension;
+	std::wstring chunkPath = chunksFolder + std::to_wstring(chunkCoordinates.y) + nbtFileExtension;
 
 	return nbtSerializable::serialize(L"chunk", chunkPath, write);
 }

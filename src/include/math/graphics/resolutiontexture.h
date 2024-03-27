@@ -31,7 +31,7 @@ struct resolutionTexture : public colorBrush
 	//	//TODO: binary trick
 	//	for (size_t i = 0; ; i++)
 	//	{
-	//		if ((scaledTextures[i]->size.x() >= renderSize.x()) || (i == (scaledTextures.size - 1)))
+	//		if ((scaledTextures[i]->size.x >= renderSize.x) || (i == (scaledTextures.size - 1)))
 	//		{
 	//			return *scaledTextures[i];
 	//		}
@@ -44,7 +44,7 @@ struct resolutionTexture : public colorBrush
 	{
 		for (texture* tex : scaledTextures)
 		{
-			if (tex->size.x() < renderSizeX)
+			if (tex->size.x < renderSizeX)
 			{
 				return *tex;
 			}
@@ -54,7 +54,7 @@ struct resolutionTexture : public colorBrush
 
 	inline fp getTransformedTextureWidth(cmat3x3& transformForDefaultSize) const
 	{
-		return transformForDefaultSize.multSizeMatrix(cvec2(defaultSize.x(), 0)).length();
+		return transformForDefaultSize.multSizeMatrix(cvec2(defaultSize.x, 0)).length();
 	}
 
 	//transformBrush<texture> getAntiAliasedBrush(cmat3x3& transform) const;
@@ -65,13 +65,13 @@ struct resolutionTexture : public colorBrush
 
 	inline fp getMultiplier(cfp& renderSizeX) const
 	{
-		return getMipmapTexture(renderSizeX).size.x() / defaultSize.x();
+		return getMipmapTexture(renderSizeX).size.x / defaultSize.x;
 	}
 
 	//scale modifier goes up if the loaded texture is bigger
 	inline fp getScaleModifier() const
 	{
-		return scaledTextures[0]->size.x() / defaultSize.x();
+		return scaledTextures[0]->size.x / defaultSize.x;
 	}
 
 	inline color getValue(cvec2& pos) const

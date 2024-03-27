@@ -31,19 +31,19 @@ typedef struct {
 
 bool leftlessthanright(const mp4Vector& left, const mp4Vector& right) const
 {
-    if (x < right.x())
+    if (x < right.x)
         return true;
-    else if (x > right.x())
+    else if (x > right.x)
         return false;
 
-    if (y < right.y())
+    if (y < right.y)
         return true;
-    else if (y > right.y())
+    else if (y > right.y)
         return false;
 
-    if (z < right.z())
+    if (z < right.z)
         return true;
-    else if (z > right.z())
+    else if (z > right.z)
         return false;
 
     return false;
@@ -65,9 +65,9 @@ inline vec3 VertexInterp(fp isolevel, vec3 p1, vec3 p2, fp valp1, fp valp2)
     if (abs(valp1 - valp2) < 0.00001)
         return(p1);
     mu = (isolevel - valp1) / (valp2 - valp1);
-    p.x() = p1.x() + mu * (p2.x() - p1.x());
-    p.y() = p1.y() + mu * (p2.y() - p1.y());
-    p.z() = p1.z() + mu * (p2.z() - p1.z());
+    p.x = p1.x + mu * (p2.x - p1.x);
+    p.y = p1.y + mu * (p2.y - p1.y);
+    p.z = p1.z + mu * (p2.z - p1.z);
 
     return(p);
 }

@@ -44,8 +44,8 @@ constexpr int wingSidePixelHeight = 1;
 constexpr rectangle2 enderDragonInnerWingTopTextureRect = crectangle2(0, 112, 56 - wingSidePixelHeight / 2, 56);
 constexpr rectangle2 enderDragonOuterWingTopTextureRect = crectangle2(0, 56, 56 - wingSidePixelHeight / 2, 56);
 
-constexpr rectangle2 enderDragonInnerWingSideTextureRect = crectangle2(enderDragonInnerWingTopTextureRect.size.x() / 2, 112, wingSidePixelHeight / 2, 56);
-constexpr rectangle2 enderDragonOuterWingSideTextureRect = crectangle2(enderDragonOuterWingTopTextureRect.size.x() / 2, 56, wingSidePixelHeight / 2, 56);
+constexpr rectangle2 enderDragonInnerWingSideTextureRect = crectangle2(enderDragonInnerWingTopTextureRect.size.getX() / 2, 112, wingSidePixelHeight / 2, 56);
+constexpr rectangle2 enderDragonOuterWingSideTextureRect = crectangle2(enderDragonOuterWingTopTextureRect.size.getX() / 2, 56, wingSidePixelHeight / 2, 56);
 
 constexpr int enderDragonNeckSpineCount = 5;
 constexpr int enderDragonBodySpinePlateCount = 3;
@@ -61,22 +61,22 @@ constexpr fp enderDragonBackFootAngle = 45 * math::degreesToRadians;
 
 constexpr vec2 enderDragonHitboxSize = vec2(0x10, 0x8);
 
-constexpr rectangle2 enderDragonHitbox = crectangle2(-enderDragonHitboxSize.x() * 0.5, -enderDragonHitboxSize.y() * 0.5, enderDragonHitboxSize.x(), enderDragonHitboxSize.y());
+constexpr rectangle2 enderDragonHitbox = crectangle2(-enderDragonHitboxSize.getX() * 0.5, -enderDragonHitboxSize.getY() * 0.5, enderDragonHitboxSize.getX(), enderDragonHitboxSize.getY());
 
-constexpr fp enderDragonPixelSize = enderDragonHitboxSize.x() / (enderDragonSpineTextureRect.size.x() * (enderDragonNeckSpineCount + enderDragonTailSpineCount) + enderDragonBodyTextureRect.size.x() + enderDragonHeadTextureRect.size.x() + enderDragonLowerJawTextureRect.size.x());
+constexpr fp enderDragonPixelSize = enderDragonHitboxSize.getX() / (enderDragonSpineTextureRect.size.getX() * (enderDragonNeckSpineCount + enderDragonTailSpineCount) + enderDragonBodyTextureRect.size.getX() + enderDragonHeadTextureRect.size.getX() + enderDragonLowerJawTextureRect.size.getX());
 
 cvec2 enderDragonspineSize = cvec2(enderDragonSpineTextureRect.size) * enderDragonPixelSize;
 
 constexpr fp wingSideHeight = wingSidePixelHeight * enderDragonPixelSize;
 
-cvec2 enderDragonInnerWingSideSize = cvec2(enderDragonInnerWingSideTextureRect.size.x(), wingSidePixelHeight) * enderDragonPixelSize;
-cvec2 enderDragonOuterWingSideSize = cvec2(enderDragonOuterWingSideTextureRect.size.x(), wingSidePixelHeight) * enderDragonPixelSize;
+cvec2 enderDragonInnerWingSideSize = cvec2(enderDragonInnerWingSideTextureRect.size.x, wingSidePixelHeight) * enderDragonPixelSize;
+cvec2 enderDragonOuterWingSideSize = cvec2(enderDragonOuterWingSideTextureRect.size.x, wingSidePixelHeight) * enderDragonPixelSize;
 
 cvec2 enderDragonInnerWingTopSize = cvec2(enderDragonInnerWingTopTextureRect.size) * enderDragonPixelSize;
 cvec2 enderDragonOuterWingTopSize = cvec2(enderDragonOuterWingTopTextureRect.size) * enderDragonPixelSize;
 
 cvec2 enderDragonBodySize = cvec2(enderDragonBodyTextureRect.size) * enderDragonPixelSize;
-cfp frontAttachmentOffset = enderDragonBodySize.y() / 3;
+cfp frontAttachmentOffset = enderDragonBodySize.y / 3;
 
 constexpr fp dragonDyingBeamTransparencyDistance = 0x20;
 constexpr fp dragonDyingBeamPurpleDistance = dragonDyingBeamTransparencyDistance / 0x4;
@@ -89,8 +89,8 @@ constexpr fp enderDragonDyingAscendSpeed = 2;//ascend 2 blocks per second
 constexpr int enderDragonDeathAnimationDuration = 200;
 constexpr fp endCrystalHealRange = 0x20;
 constexpr rectangle2 endCrystalBeamTextureRect = crectangle2(0, 0, 0x10, 0x100);
-constexpr fp endCrystalBeamPixelSize = endCrystalHealRange / (fp)endCrystalBeamTextureRect.size.y();
-constexpr fp endCrystalBeamWidth = endCrystalBeamTextureRect.size.x() * endCrystalBeamPixelSize;
+constexpr fp endCrystalBeamPixelSize = endCrystalHealRange / (fp)endCrystalBeamTextureRect.size.getY();
+constexpr fp endCrystalBeamWidth = endCrystalBeamTextureRect.size.getX() * endCrystalBeamPixelSize;
 extern resolutionTexture* endCrystalBeamTexture;
 extern std::shared_ptr<soundCollection> enderDragonWingsSound;
 extern const std::wstring structureFolder;
@@ -99,7 +99,7 @@ extern const std::wstring structureFolder;
 constexpr fp gooseLength = 1;
 constexpr fp gooseWeight = 4.53592;
 
-constexpr fp gooseToDragonMultiplier = enderDragonHitboxSize.x() / gooseLength;
+constexpr fp gooseToDragonMultiplier = enderDragonHitboxSize.getX() / gooseLength;
 
 constexpr fp enderDragonWeight = gooseWeight * (math::squared(gooseToDragonMultiplier) * gooseToDragonMultiplier);
 constexpr fp enderDragonVolume = enderDragonWeight * 0.008;

@@ -89,7 +89,7 @@ void client::render(cveci2& position, const texture& renderTarget)
 		std::vector<byte> decompressedScreen;
 		vectn<fsize_t, 2> size;
 		uint32_t channelCount;
-		fpng::fpng_decode_memory((const char*)&(*compressedScreen.begin()), (uint32_t)compressedScreen.size(), decompressedScreen, size.x(), size.y(), channelCount, bgraColorChannelCount);
+		fpng::fpng_decode_memory((const char*)&(*compressedScreen.begin()), (uint32_t)compressedScreen.size(), decompressedScreen, size.x, size.y, channelCount, bgraColorChannelCount);
 		if (size == renderTarget.size) {
 			std::copy(decompressedScreen.begin(), decompressedScreen.end(), (byte*)renderTarget.baseArray);
 		}

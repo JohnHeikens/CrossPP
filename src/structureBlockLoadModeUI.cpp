@@ -11,34 +11,34 @@
 void structureBlockLoadModeUI::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	cint showBoundingBoxWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, showBoundingBoxLabel->text).x() + defaultTheme().borderSize * 2;
-	cint includeEntitiesLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x() + defaultTheme().borderSize * 2;
-	cint smallRightButtonSize = buttonSize.y() * 4;
-	cint smallRightButtonX = rect.w() - smallRightButtonSize;
-	cint modeButtonSize = rect.w() - smallRightButtonSize;
+	cint showBoundingBoxWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, showBoundingBoxLabel->text).x + defaultTheme().borderSize * 2;
+	cint includeEntitiesLabelWidth = (int)defaultTheme().font->measureStringSize(measureStringMaximumSize, includeEntitiesLabel->text).x + defaultTheme().borderSize * 2;
+	cint smallRightButtonSize = buttonSize.y * 4;
+	cint smallRightButtonX = rect.w - smallRightButtonSize;
+	cint modeButtonSize = rect.w - smallRightButtonSize;
 
-	cint w3 = rect.w() / 3;
-	int currentY = rect.h() - buttonSize.y();
+	cint w3 = rect.w / 3;
+	int currentY = rect.h - buttonSize.y;
 
-	relativePositionLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	showBoundingBoxLabel->layout(crectanglei2(0 + rect.w() - showBoundingBoxWidth, currentY, showBoundingBoxWidth, buttonSize.y()));
-	currentY -= buttonSize.y();
-	relativeXTextbox->layout(crectanglei2(0, currentY, rect.w() / 3, buttonSize.y()));
-	relativeYTextbox->layout(crectanglei2(0 + rect.w() / 3, currentY, rect.w() / 3, buttonSize.y()));
-	showBoundingBoxButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
-	currentY -= buttonSize.y();
-	integrityAndSeedLabel->layout(crectanglei2(0, currentY, rect.w(), buttonSize.y()));
-	currentY -= buttonSize.y();
-	integritySlider->layout(crectanglei2(0, currentY, rect.w() / 2, buttonSize.y()));
-	seedTextbox->layout(crectanglei2(rect.w() / 2, currentY, w3, buttonSize.y()));
-	currentY -= buttonSize.y() * 2;
-	includeEntitiesLabel->layout(crectanglei2(rect.w() - includeEntitiesLabelWidth, currentY, includeEntitiesLabelWidth, buttonSize.y()));
-	currentY -= buttonSize.y();
-	includeEntitiesButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
-	currentY -= buttonSize.y();
-	mirrorYButton->layout(crectanglei2(0, currentY, smallRightButtonSize, buttonSize.y()));
-	rotationSlider->layout(crectanglei2(smallRightButtonSize, currentY, smallRightButtonX - smallRightButtonSize, buttonSize.y()));
-	loadButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y()));
+	relativePositionLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	showBoundingBoxLabel->layout(crectanglei2(0 + rect.w - showBoundingBoxWidth, currentY, showBoundingBoxWidth, buttonSize.y));
+	currentY -= buttonSize.y;
+	relativeXTextbox->layout(crectanglei2(0, currentY, rect.w / 3, buttonSize.y));
+	relativeYTextbox->layout(crectanglei2(0 + rect.w / 3, currentY, rect.w / 3, buttonSize.y));
+	showBoundingBoxButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y));
+	currentY -= buttonSize.y;
+	integrityAndSeedLabel->layout(crectanglei2(0, currentY, rect.w, buttonSize.y));
+	currentY -= buttonSize.y;
+	integritySlider->layout(crectanglei2(0, currentY, rect.w / 2, buttonSize.y));
+	seedTextbox->layout(crectanglei2(rect.w / 2, currentY, w3, buttonSize.y));
+	currentY -= buttonSize.y * 2;
+	includeEntitiesLabel->layout(crectanglei2(rect.w - includeEntitiesLabelWidth, currentY, includeEntitiesLabelWidth, buttonSize.y));
+	currentY -= buttonSize.y;
+	includeEntitiesButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y));
+	currentY -= buttonSize.y;
+	mirrorYButton->layout(crectanglei2(0, currentY, smallRightButtonSize, buttonSize.y));
+	rotationSlider->layout(crectanglei2(smallRightButtonSize, currentY, smallRightButtonX - smallRightButtonSize, buttonSize.y));
+	loadButton->layout(crectanglei2(smallRightButtonX, currentY, smallRightButtonSize, buttonSize.y));
 }
 
 void structureBlockLoadModeUI::mouseDown(cveci2& position, cmb& button)
@@ -61,10 +61,10 @@ void structureBlockLoadModeUI::mouseDown(cveci2& position, cmb& button)
 				featureToUse = structureFeature(false);
 			}
 
-			structureBlockOptions->temporaryStructureBlockData->structureSize.x() = (int)s->blockIDArray.size.x();
-			structureBlockOptions->temporaryStructureBlockData->structureSize.y() = (int)s->blockIDArray.size.y();
-			structureBlockOptions->saveUI->sizeXTextbox->text = std::to_wstring(s->blockIDArray.size.x());
-			structureBlockOptions->saveUI->sizeYTextbox->text = std::to_wstring(s->blockIDArray.size.y());
+			structureBlockOptions->temporaryStructureBlockData->structureSize.x = (int)s->blockIDArray.size.x;
+			structureBlockOptions->temporaryStructureBlockData->structureSize.y = (int)s->blockIDArray.size.y;
+			structureBlockOptions->saveUI->sizeXTextbox->text = std::to_wstring(s->blockIDArray.size.x);
+			structureBlockOptions->saveUI->sizeYTextbox->text = std::to_wstring(s->blockIDArray.size.y);
 
 			featureToUse.placeStructurePart(s, currentHuman->selectedContainerContainer,
 				currentHuman->selectedContainerPosition + structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition,
@@ -88,8 +88,8 @@ void structureBlockLoadModeUI::render(cveci2& position, const texture& renderTar
 	structureBlockOptions->temporaryStructureBlockData->structureSeed = std::hash<std::wstring>()(seedTextbox->text);
 	includeEntitiesButton->text = structureBlockOptions->temporaryStructureBlockData->includeEntities ? std::wstring(L"On") : std::wstring(L"Off");
 	veci2 newRelativePosition = veci2();
-	if (convertToInt(relativeXTextbox->text, newRelativePosition.x()) &&
-		convertToInt(relativeYTextbox->text, newRelativePosition.y()))
+	if (convertToInt(relativeXTextbox->text, newRelativePosition.x) &&
+		convertToInt(relativeYTextbox->text, newRelativePosition.y))
 	{
 		structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition = newRelativePosition;
 	}
@@ -149,7 +149,7 @@ void structureBlockLoadModeUI::serializeWithTemporaryData(cbool& write)
 	{
 		rotationSlider->setValue(structureBlockOptions->temporaryStructureBlockData->structureRotation);
 		seedTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->structureSeed);
-		relativeXTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.x());
-		relativeYTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.y());
+		relativeXTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.x);
+		relativeYTextbox->text = std::to_wstring(structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition.y);
 	}
 }

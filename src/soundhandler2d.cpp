@@ -3,9 +3,9 @@ int playingSoundCount = 0;
 
 void soundHandler2d::update(cvec2& earPosition, cfp& hearingRange, cfp& playerHeadOffset, cfp& maxVolume)
 {
-	cvec3 earPosition3d = cvec3(earPosition.x(), earPosition.y(), playerHeadOffset);
+	cvec3 earPosition3d = cvec3(earPosition.x, earPosition.y, playerHeadOffset);
 	cfp hearingRange3d = cvec2(hearingRange, playerHeadOffset).length();
-	sf::Listener::setPosition((float)earPosition3d.x(), (float)earPosition3d.y(), (float)earPosition3d.z());
+	sf::Listener::setPosition((float)earPosition3d.x, (float)earPosition3d.y, (float)earPosition3d.z);
 	sf::Listener::setDirection(0.0f, 0.0f, -1.0f);//-z is at the back of the screen
 	sf::Listener::setUpVector(0.0f, 1.0f, 0.0f);
 	sf::Listener::setGlobalVolume((float)maxVolume * 100.0f);

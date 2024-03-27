@@ -23,7 +23,7 @@ void creditsForm::render(cveci2& position, const texture& renderTarget)
 	////begin in the bottom left corner, so the text comes up
 	//vec2 offset = textRect.pos0;
 	////4 seconds each line, spaced out to 8 seconds each line
-	//offset.y() += microsectosec(getmicroseconds() - timeStartedReading) * creditsFont.fontSize * 0.25;
+	//offset.y += microsectosec(getmicroseconds() - timeStartedReading) * creditsFont.fontSize * 0.25;
 	//
 	//color currentTextColor = colorPalette::white;
 	//const auto& shadowBrush = colorMultiplier<resolutionTexture, solidColorBrush>(*creditsFont.family.tex, brushes::black);
@@ -38,7 +38,7 @@ void creditsForm::render(cveci2& position, const texture& renderTarget)
 	//	letter currentLetter = creditsText[i];
 	//	const auto& currentTextBrush = colorMultiplier<texture, solidColorBrush>(*creditsFont.family->tex, brushes::white);
 	//
-	//	if (currentLetter == L'§')
+	//	if (currentLetter == L'ï¿½')
 	//	{
 	//		if (obfuscated)
 	//		{
@@ -87,7 +87,7 @@ void creditsForm::render(cveci2& position, const texture& renderTarget)
 	//		}
 	//		else
 	//		{
-	//			handleError(std::wstring(L"invalid sign behind \"§\""));
+	//			handleError(std::wstring(L"invalid sign behind \"ï¿½\""));
 	//		}
 	//		i++;
 	//	}

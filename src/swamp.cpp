@@ -19,8 +19,8 @@ swamp::swamp() :overWorldBiomeGenerator(biomeID::swamp)
 void swamp::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std::mt19937& randomToUse) const
 {
 	//block caves, so they do not appear weird without block updates
-	generateTopping(dimensionIn, pos, { blockID::stone, blockID::air }, pos.y() < seaLevel - 0x10 ? blockID::gravel : blockID::dirt, randomToUse);
-	if (pos.y() >= seaLevel)
+	generateTopping(dimensionIn, pos, { blockID::stone, blockID::air }, pos.y < seaLevel - 0x10 ? blockID::gravel : blockID::dirt, randomToUse);
+	if (pos.y >= seaLevel)
 	{
 		if (shouldPlaceSugarCane(pos, randomToUse))
 		{
@@ -35,11 +35,11 @@ void swamp::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std::
 	else
 	{
 		//fill with water
-		dimensionIn->replaceBlockRange(pos, cveci2(pos.x(), seaLevel - 1), blockID::water, { blockID::air });
+		dimensionIn->replaceBlockRange(pos, cveci2(pos.x, seaLevel - 1), blockID::water, { blockID::air });
 
 		if (randChance(randomToUse, 0x18))
 		{
-			dimensionIn->addOres(cveci2(pos.x(), pos.y() - 1), blockID::clay, rand(randomToUse, 2, 0x10), randomToUse, { blockID::stone, blockID::dirt });
+			dimensionIn->addOres(cveci2(pos.x, pos.y - 1), blockID::clay, rand(randomToUse, 2, 0x10), randomToUse, { blockID::stone, blockID::dirt });
 		}
 	}
 }

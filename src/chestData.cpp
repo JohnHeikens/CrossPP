@@ -42,7 +42,7 @@ void chestData::generateChestLoot()
 			std::mt19937 randomToUse = getRandomFromSeed(lootTableSeed ? (ull)lootTableSeed : rand<ull>(currentRandom));
 			const std::vector<itemStack> chestLoot = it->second->roll(dropData(), randomToUse);
 			std::vector<int> chestPositions = std::vector<int>();
-			cint slotCount = slots->rowsAndColumns.x() * slots->rowsAndColumns.y();
+			cint slotCount = slots->rowsAndColumns.x * slots->rowsAndColumns.y;
 			for (int i = 0; i < slotCount; i++)
 			{
 				chestPositions.push_back(i);

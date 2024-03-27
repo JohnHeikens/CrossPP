@@ -26,7 +26,7 @@ inline void renderBrewingStand(cmat3x3& normalRectToScreenTransform, cbool hasBo
 	{
 		crectangle2& brewingStandTopTextureClientRect = brewingStandTopTexture->getClientRect();
 		cint bottleIndexToDraw = bottleIndexesToDraw[i];
-		rectangle2 brushRect = rectangle2(hasBottle[bottleIndexToDraw] ? 0 : (brewingStandTopTextureClientRect.w() * 0.5), 0, brewingStandTopTextureClientRect.w() * 0.5, brewingStandTopTextureClientRect.h());
+		rectangle2 brushRect = rectangle2(hasBottle[bottleIndexToDraw] ? 0 : (brewingStandTopTextureClientRect.w * 0.5), 0, brewingStandTopTextureClientRect.w * 0.5, brewingStandTopTextureClientRect.h);
 
 		mat3x3 transform = mat3x3::cross(normalRectToScreenTransform, mat3x3::fromRectToRect(brushRect, crectangle2(((i == 1) ? 0.5 : 0), 0, 0.5, 1)));
 
@@ -34,7 +34,7 @@ inline void renderBrewingStand(cmat3x3& normalRectToScreenTransform, cbool hasBo
 
 		if (hasBottle[bottleIndexToDraw] == (i == 1))
 		{
-			cfp mirrorX = brewingStandTopTextureClientRect.w() * (hasBottle[bottleIndexToDraw] ? 0.25 : 0.75);
+			cfp mirrorX = brewingStandTopTextureClientRect.w * (hasBottle[bottleIndexToDraw] ? 0.25 : 0.75);
 			transform = mat3x3::cross(transform, mat3x3::mirror(axisID::x, mirrorX));
 		}
 		fillTransparentRectangle(brushRect, transform, *brewingStandTopTexture, renderTarget);

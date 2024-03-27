@@ -17,7 +17,7 @@ void iceSpikes::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, s
 {
 	if (dimensionIn->getBlockID(pos + cveci2(0, -1)) == blockID::stone)
 	{
-		dimensionIn->replaceBlockRange(cveci2(pos.x(), pos.y() - 5), pos + cveci2(0, -3), blockID::dirt, { blockID::stone });
+		dimensionIn->replaceBlockRange(cveci2(pos.x, pos.y - 5), pos + cveci2(0, -3), blockID::dirt, { blockID::stone });
 		dimensionIn->replaceBlockRange(pos + cveci2(0, -2), pos + cveci2(0, -1), blockID::snow_block, { blockID::stone });
 		if (randChance(randomToUse, 0x10))
 		{

@@ -171,7 +171,7 @@ void itemStack::render(crectangle2& rect, const gameRenderData& targetData) cons
 			std::wstring s = std::to_wstring(count);
 			cveci2 size = cveci2((int)(s.size() * defaultTheme().font->fontSize), (int)defaultTheme().font->fontSize);
 			cvec2 topRight = rect.pos1();
-			currentMinecraftFont->DrawString(s, rectangle2(topRight.x() - size.x(), rect.pos0.y(), size.x(), size.y()), targetData.renderTarget);
+			currentMinecraftFont->DrawString(s, rectangle2(topRight.x - size.x, rect.pos0.y, size.x, size.y), targetData.renderTarget);
 		}
 
 		if (hasDurability(stackItemID))
@@ -206,7 +206,7 @@ void itemStack::renderSingleItem(const gameRenderData& targetData) const
 		if (enchantments.size() || (stackItemID == itemID::enchanted_golden_apple))
 		{
 			const auto& repeater = repeatingBrush<resolutionTexture>(*enchantedItemTexture);
-			const auto& transformer = transformBrush<repeatingBrush<resolutionTexture>>(mat3x3::translate(cvec2(0, (currentWorld->ticksSinceStart / ((fp)ticksPerRealLifeSecond * 5)) * enchantedItemTexture->defaultSize.y())), repeater);
+			const auto& transformer = transformBrush<repeatingBrush<resolutionTexture>>(mat3x3::translate(cvec2(0, (currentWorld->ticksSinceStart / ((fp)ticksPerRealLifeSecond * 5)) * enchantedItemTexture->defaultSize.y)), repeater);
 			//keep this apart, so the reference is not destroyed
 			const auto& transparencyBrush = solidColorBrush(color((colorChannel)(color::maxValue * 0.4), 0));
 			const auto& transparencyMask = alphaMask<solidColorBrush, decltype(transformer)>(transparencyBrush, transformer);
@@ -296,11 +296,11 @@ void itemStack::drawToolTips(cveci2& position, const texture& renderTarget) cons
 
 	cvec2 maximumSize = cvec2(0x200, 0x300);
 	cvec2 rectangleSize = defaultTheme().font->measureStringSize(maximumSize, stringToDraw);
-	crectangle2 stringRect = crectangle2(position.x(), position.y() - rectangleSize.y(), rectangleSize.x(), rectangleSize.y());
+	crectangle2 stringRect = crectangle2(position.x, position.y - rectangleSize.y, rectangleSize.x, rectangleSize.y);
 	renderTarget.fillRectangle(stringRect.expanded(defaultTheme().borderSize), brushes::black);
 	const minecraftFont nameFont = minecraftFont();
 	nameFont.DrawString(nameText, stringRect, renderTarget);
-	crectangle2 enchantmentsStringrect = crectangle2(stringRect.x(), stringRect.y(), stringRect.w(), stringRect.h() - defaultTheme().font->fontSize);
+	crectangle2 enchantmentsStringrect = crectangle2(stringRect.x, stringRect.y, stringRect.w, stringRect.h - defaultTheme().font->fontSize);
 	defaultTheme().font->DrawString(enchantmentsString, enchantmentsStringrect, renderTarget);
 }
 

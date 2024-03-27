@@ -12,30 +12,30 @@ constexpr rectangle2 chickenWattlesTextureRect = crectangle2(18, 24, 2, 2);
 constexpr vec2 chickenHitboxSize = cvec2(0.6, 0.8);
 
 constexpr vec2 chickenHeadTextureOffset = cvec2(0x2, 0x4);
-constexpr fp chickenTextureScale = chickenHitboxSize.y() / (fp)(chickenLowerLegTextureRect.size.x() + chickenUpperLegTextureRect.size.y() + chickenBodyTextureRect.size.x() - chickenHeadTextureOffset.y() + chickenHeadTextureRect.size.y());
+constexpr fp chickenTextureScale = chickenHitboxSize.getY() / (fp)(chickenLowerLegTextureRect.size.getX() + chickenUpperLegTextureRect.size.getY() + chickenBodyTextureRect.size.getX() - chickenHeadTextureOffset.getY() + chickenHeadTextureRect.size.getY());
 
 constexpr vec2 chickenHeadOffset = cvec2(chickenHeadTextureOffset) * chickenTextureScale;
 
 constexpr vec2 chickenBodySize = cvec2(chickenBodyTextureRect.size).switchAxes() * chickenTextureScale;
-constexpr vec2 chickenBodyRotationCentre = cvec2(chickenBodySize.x() * 0.5, 0);
+constexpr vec2 chickenBodyRotationCentre = cvec2(chickenBodySize.getX() * 0.5, 0);
 
 constexpr vec2 chickenUpperLegSize = cvec2(chickenUpperLegTextureRect.size) * chickenTextureScale;
-constexpr vec2 chickenUpperLegRotationCentre = cvec2(chickenUpperLegSize.x() * 0.5, chickenUpperLegSize.y());
+constexpr vec2 chickenUpperLegRotationCentre = cvec2(chickenUpperLegSize.getX() * 0.5, chickenUpperLegSize.getY());
 
 constexpr vec2 chickenLowerLegSize = cvec2(chickenLowerLegTextureRect.size).switchAxes() * chickenTextureScale;
-constexpr vec2 chickenLowerLegRotationCentre = cvec2(chickenUpperLegSize.x(), chickenLowerLegSize.y());
+constexpr vec2 chickenLowerLegRotationCentre = cvec2(chickenUpperLegSize.getX(), chickenLowerLegSize.getY());
 
 constexpr vec2 chickenHeadSize = cvec2(chickenHeadTextureRect.size) * chickenTextureScale;
 constexpr vec2 chickenHeadRotationCentre = chickenHeadOffset;
 
 constexpr vec2 chickenWingSize = cvec2(chickenWingTextureRect.size) * chickenTextureScale;
-constexpr vec2 chickenWingRotationCentre = cvec2(chickenWingSize.x() * 0.5, chickenWingSize.y());
+constexpr vec2 chickenWingRotationCentre = cvec2(chickenWingSize.getX() * 0.5, chickenWingSize.getY());
 
 constexpr vec2 chickenBeakSize = cvec2(chickenBeakTextureRect.size) * chickenTextureScale;
-constexpr vec2 chickenBeakRotationCentre = cvec2(0, chickenBeakSize.y() * 0.5);
+constexpr vec2 chickenBeakRotationCentre = cvec2(0, chickenBeakSize.getY() * 0.5);
 
 constexpr vec2 chickenWattlesSize = cvec2(chickenWattlesTextureRect.size) * chickenTextureScale;
-constexpr vec2 chickenWattlesRotationCentre = cvec2(0, chickenWattlesSize.y());
+constexpr vec2 chickenWattlesRotationCentre = cvec2(0, chickenWattlesSize.getY());
 
 
 struct chicken : public passiveMob

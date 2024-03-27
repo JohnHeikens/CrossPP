@@ -10,7 +10,7 @@ texture::texture(const std::wstring& path, cbool& flip) : texture(cveci2(), null
 	int channelCount;
 	veci2 intSize;
 
-	colorb* byteArray = (colorb*)stbi_load(WStringToString( path).c_str(), &intSize.x(), &intSize.y(), &channelCount, bgraColorChannelCount);
+	colorb* byteArray = (colorb*)stbi_load(WStringToString( path).c_str(), &intSize.x, &intSize.y, &channelCount, bgraColorChannelCount);
 	size = (vect2<size_t>)intSize;
 	if (byteArray)
 	{
@@ -50,21 +50,21 @@ void texture::Flip() const
 	color* swap0 = baseArray;
 	//swap until the mid point, because else it would be swapped back
 	//integer division, because the mid row does not have to be swapped
-	color* swap0EndPtr = swap0 + (size.x() / 2) * size.y();
-	color* swap1 = swap0 + (size.y() - 1) * size.x();
+	color* swap0EndPtr = swap0 + (size.x / 2) * size.y;
+	color* swap1 = swap0 + (size.y - 1) * size.x;
 	while (swap0 < swap0EndPtr)
 	{
 		color* swap0X = swap0;
 		color* swap1X = swap1;
-		color* swap0XEndPtr = swap0X + size.x();
+		color* swap0XEndPtr = swap0X + size.x;
 		while (swap0X < swap0XEndPtr)
 		{
 			std::swap(*swap0X, *swap1X);
 			swap0X++;
 			swap1X++;
 		}
-		swap0 += size.x();
-		swap1 -= size.x();
+		swap0 += size.x;
+		swap1 -= size.x;
 	}
 }
 
@@ -86,11 +86,11 @@ bool texture::Save(std::wstring path) const
 	bool success = false;
 	if (extension == std::wstring(L"png"))
 	{
-		success = stbi_write_png(WStringToString(path).c_str(), (int)size.x(), (int)size.y(), bgraColorChannelCount, byteArray, 0);
+		success = stbi_write_png(WStringToString(path).c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray, 0);
 	}
 	else if (extension == std::wstring(L"bmp"))
 	{
-		success = stbi_write_bmp(WStringToString(path).c_str(), (int)size.x(), (int)size.y(), bgraColorChannelCount, byteArray);
+		success = stbi_write_bmp(WStringToString(path).c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray);
 	}
 	if constexpr (!color::isByteColor)
 	{
@@ -127,6 +127,6 @@ veci2 getImageSize(const std::wstring& path)
 {
 	veci2 size;
 	int comp;
-	stbi_info(WStringToString(path).c_str(), &size.x(), &size.y(), &comp);
+	stbi_info(WStringToString(path).c_str(), &size.x, &size.y, &comp);
 	return size;
 }

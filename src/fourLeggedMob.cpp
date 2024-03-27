@@ -5,7 +5,7 @@ fourLeggedMob::fourLeggedMob(dimension* dimensionIn, cvec2& position, const enti
 }
 void fourLeggedMob::updateBodyParts() const
 {
-	mainBodyPart->translate = vec2(position.x(), position.y() + frontRightLeg->size.y());
+	mainBodyPart->translate = vec2(position.x, position.y + frontRightLeg->size.y);
 	//update leg positions
 	cfp rightLegangle = ((mobData*)entityDataList[(int)entityType])->legSwingSynchronizer.getSwingAngle(totalLegDistance);
 	frontRightLeg->angle = rightLegangle;

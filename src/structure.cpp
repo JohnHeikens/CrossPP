@@ -30,12 +30,12 @@ mat3x3i structure::getBlocksToWorldTransform(cveci2& pos00, cbool& flipX) const
 	mat3x3i structureToWorldTransform = mat3x3i::translate(pos00);
 	if (flipX)
 	{
-		//+ blocks->size.x() - 1
-		structureToWorldTransform = mat3x3i::cross(structureToWorldTransform, mat3x3i::translate(cveci2((int)blockIDArray.size.x() - 1, 0)));
-		//-structurepos.x()
+		//+ blocks->size.x - 1
+		structureToWorldTransform = mat3x3i::cross(structureToWorldTransform, mat3x3i::translate(cveci2((int)blockIDArray.size.x - 1, 0)));
+		//-structurepos.x
 		structureToWorldTransform = mat3x3i::cross(structureToWorldTransform, mat3x3i::scale(cveci3(-1, 1, 1)));
 	}
-	//return pos00 + (flipX ? cveci2(blocks->size.x() - structurePos.x() - 1, structurePos.y()) : structurePos);
+	//return pos00 + (flipX ? cveci2(blocks->size.x - structurePos.x - 1, structurePos.y) : structurePos);
 	return structureToWorldTransform;
 }
 
@@ -44,12 +44,12 @@ mat3x3 structure::getEntitiesToWorldTransform(cveci2& pos00, cbool& flipX) const
 	mat3x3 entitiesToWorldTransform = mat3x3::translate(cvec2(pos00));
 	if (flipX)
 	{
-		//+ blocks->size.x() - 1
-		entitiesToWorldTransform = mat3x3::cross(entitiesToWorldTransform, mat3x3::translate(cvec2((fp)blockIDArray.size.x(), 0)));
-		//-structurepos.x()
+		//+ blocks->size.x - 1
+		entitiesToWorldTransform = mat3x3::cross(entitiesToWorldTransform, mat3x3::translate(cvec2((fp)blockIDArray.size.x, 0)));
+		//-structurepos.x
 		entitiesToWorldTransform = mat3x3::cross(entitiesToWorldTransform, mat3x3::scale(cvec3(-1, 1, 1)));
 	}
-	//return pos00 + (flipX ? cveci2(blocks->size.x() - structurePos.x() - 1, structurePos.y()) : structurePos);
+	//return pos00 + (flipX ? cveci2(blocks->size.x - structurePos.x - 1, structurePos.y) : structurePos);
 	return entitiesToWorldTransform;
 }
 
@@ -103,9 +103,9 @@ bool structure::serialize(const std::wstring& path, cbool& write)
 		if (write)
 		{
 			//count blockdata
-			for (vect2<fsize_t> relativePosition = vect2<fsize_t>(); relativePosition.y() < blockIDArray.size.y(); relativePosition.y()++)
+			for (vect2<fsize_t> relativePosition = vect2<fsize_t>(); relativePosition.y < blockIDArray.size.y; relativePosition.y++)
 			{
-				for (relativePosition.x() = 0; relativePosition.x() < blockIDArray.size.x(); relativePosition.x()++)
+				for (relativePosition.x = 0; relativePosition.x < blockIDArray.size.x; relativePosition.x++)
 				{
 					blockData* data = blockDataArray.getValueUnsafe(relativePosition);
 					if (data)
@@ -196,9 +196,9 @@ void structure::createStructure(dimension& dimensionIn, crectanglei2& rect, cboo
 	blockIDArray = array2d<blockID>(rect.size, false);
 	blockDataArray = array2d<blockData*>(rect.size, false);
 	cveci2 pos11 = rect.pos1();
-	for (veci2 pos = veci2(); pos.y() <= rect.size.y(); pos.y()++)
+	for (veci2 pos = veci2(); pos.y <= rect.size.y; pos.y++)
 	{
-		for (pos.x() = 0; pos.x() <= rect.size.x(); pos.x()++)
+		for (pos.x = 0; pos.x <= rect.size.x; pos.x++)
 		{
 			const blockID& blockToClone = dimensionIn.getBlockID(pos + rect.pos0, chunkLoadLevel::updateLoaded);
 			blockIDArray.setValue(pos, blockToClone);
@@ -257,7 +257,7 @@ void* structure::getArrayValuePointerUnsafe(cveci2& position, const arrayDataTyp
 {
 	if (blockIDArray.inBounds(position))
 	{
-		csize_t& index = position.x() + (position.y() * blockIDArray.size.x());
+		csize_t& index = position.x + (position.y * blockIDArray.size.x);
 		switch (dataType)
 		{
 		case arrayDataType::blockIDType:

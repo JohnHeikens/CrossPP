@@ -392,12 +392,12 @@ reRollSpawnPoint:
 
 	cint spawnSeekRadius = 0x10;
 
-	currentWorld->worldSpawnPoint.x() = rand(worldRandom,
-		(int)(spawnBiomeLocation.x() > 0x10 ? spawnBiomeLocation.x() : spawnBiomeLocation.x() - 0x10),
-		(int)(spawnBiomeLocation.x() < -0x10 ? spawnBiomeLocation.x() : spawnBiomeLocation.x() + 0x10));
+	currentWorld->worldSpawnPoint.x = rand(worldRandom,
+		(int)(spawnBiomeLocation.x > 0x10 ? spawnBiomeLocation.x : spawnBiomeLocation.x - 0x10),
+		(int)(spawnBiomeLocation.x < -0x10 ? spawnBiomeLocation.x : spawnBiomeLocation.x + 0x10));
 
 	//top to bottom
-	for (currentWorld->worldSpawnPoint.y() = (int)chunkSize.y() - 1; currentWorld->worldSpawnPoint.y() >= 0; currentWorld->worldSpawnPoint.y()--)
+	for (currentWorld->worldSpawnPoint.y = (int)chunkSize.y - 1; currentWorld->worldSpawnPoint.y >= 0; currentWorld->worldSpawnPoint.y--)
 	{
 		blockID b = currentWorld->dimensions[(int)currentWorld->worldSpawnDimension]->getBlockID(currentWorld->worldSpawnPoint, chunkLoadLevel::updateLoaded);
 		if (blockList[(int)b]->blockCollisionType == collisionTypeID::willCollide)
@@ -412,7 +412,7 @@ reRollSpawnPoint:
 			}
 		}
 	}
-	currentWorld->worldSpawnPoint.y()++;//to spawn on top of the block
+	currentWorld->worldSpawnPoint.y++;//to spawn on top of the block
 	//to spawn in the middle of the block
 	currentWorld->finish();
 }

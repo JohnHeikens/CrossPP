@@ -259,7 +259,7 @@ namespace math
 
 	// https://www.gamedev.net/forums/topic/704525-3-quick-ways-to-calculate-the-square-root-in-c/
 	// returns 1 / sqrt(number) * number
-	inline constexpr float fastSqrt(const float &number) noexcept
+	inline constexpr20 float fastSqrt(const float &number) noexcept
 	{
 		return number * fastInverseSqrt(number);
 	}

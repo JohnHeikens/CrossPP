@@ -12,7 +12,7 @@ void arrowAttackAI::updateTask()
 		cvec2 connectedEntityHeadPosition = connectedHumanoid->getHeadPosition();
 		cvec2 targetHeadPosition = targetMob->getHeadPosition();
 		//can detect a player from this far away
-		connectedHumanoid->lookingAt = cvec2(targetHeadPosition.x(), targetHeadPosition.y() + 0.2 * abs(targetHeadPosition.x() - connectedEntityHeadPosition.x()));
+		connectedHumanoid->lookingAt = cvec2(targetHeadPosition.x, targetHeadPosition.y + 0.2 * abs(targetHeadPosition.x - connectedEntityHeadPosition.x));
 		connectedHumanoid->bowAnimationTime++;
 		if (connectedHumanoid->bowAnimationTime >= ticksPerRealLifeSecond)
 		{

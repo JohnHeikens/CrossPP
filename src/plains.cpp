@@ -33,10 +33,10 @@ void plains::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std:
 		generateTopping(dimensionIn, pos, { blockID::stone }, blockID::dirt);
 
 		constexpr fp farmLandTreshold = 0.8;
-		if (farmlandNoise->evaluate(vec1(pos.x())) > farmLandTreshold)
+		if (farmlandNoise->evaluate(vec1(pos.x)) > farmLandTreshold)
 		{
 			cbool& onBiomeBorder = dimensionIn->getBiome(pos + cveci2(0, -1)) != identifier || dimensionIn->getBiome(pos + cveci2(0, 1)) != identifier;
-			cbool& onFarmlandBorder = farmlandNoise->evaluate(vec1(pos.x() - 1)) <= farmLandTreshold || farmlandNoise->evaluate(vec1(pos.x() + 1)) <= farmLandTreshold;
+			cbool& onFarmlandBorder = farmlandNoise->evaluate(vec1(pos.x - 1)) <= farmLandTreshold || farmlandNoise->evaluate(vec1(pos.x + 1)) <= farmLandTreshold;
 			if (onBiomeBorder || onFarmlandBorder && randChance(randomToUse, 2))
 			{
 				dimensionIn->setBlockID(pos + cveci2(0, -1), blockID::grass_block);

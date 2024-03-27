@@ -17,7 +17,7 @@ struct enchantmentData :public INamable
 
 		for (size_t i = 0; i < powerRanges.size; i++)
 		{
-			powerRanges[i] = rectanglei1(veci1(powerRangesList[i].x()), veci1(powerRangesList[i].y()));
+			powerRanges[i] = rectanglei1(veci1(powerRangesList[i].x), veci1(powerRangesList[i].y));
 		}
 	}
 };

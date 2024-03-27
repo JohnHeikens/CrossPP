@@ -37,7 +37,7 @@ bool fluidData::tick(tickableBlockContainer* containerIn, cveci2& position)
 		cveci2 absoluteCheckPosition = position + relativeCheckPositions[i];
 		//flow
 		//check bottom
-		if (containerIn->canAddUpdates(absoluteCheckPosition) && (relativeCheckPositions[i].y() == -1 || oldFluidLevel >= minFlowHeight))
+		if (containerIn->canAddUpdates(absoluteCheckPosition) && (relativeCheckPositions[i].y == -1 || oldFluidLevel >= minFlowHeight))
 		{
 			const blockID blockToFlowTo = containerIn->getBlockID(absoluteCheckPosition);
 
@@ -74,7 +74,7 @@ bool fluidData::tick(tickableBlockContainer* containerIn, cveci2& position)
 				else
 				{
 					//lava flows into water
-					if (relativeCheckPositions[i].y() < 0)
+					if (relativeCheckPositions[i].y < 0)
 					{
 						containerIn->setBlockID(absoluteCheckPosition, blockID::stone, chunkLoadLevel::updateLoaded);
 					}
@@ -101,9 +101,9 @@ bool fluidData::tick(tickableBlockContainer* containerIn, cveci2& position)
 			{
 				const fluidLevel otherFluidLevel = data ? data->currentFluidLevel : 0;
 				//sideways check
-				if (relativeCheckPositions[i].y() == 0 ? currentFluidLevel > otherFluidLevel : otherFluidLevel < maxFluidLevel)
+				if (relativeCheckPositions[i].y == 0 ? currentFluidLevel > otherFluidLevel : otherFluidLevel < maxFluidLevel)
 				{
-					const fluidLevel maximalTransferAmount = math::minimum(currentFluidLevel, math::minimum(relativeCheckPositions[i].y() == 0 ? (fluidLevel)((oldFluidLevel - otherFluidLevel) / 2) : oldFluidLevel, maxTransferAmount[i]));
+					const fluidLevel maximalTransferAmount = math::minimum(currentFluidLevel, math::minimum(relativeCheckPositions[i].y == 0 ? (fluidLevel)((oldFluidLevel - otherFluidLevel) / 2) : oldFluidLevel, maxTransferAmount[i]));
 
 					if (maximalTransferAmount)
 					{
