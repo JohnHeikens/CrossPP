@@ -74,9 +74,9 @@ jobs:
       - name: add mingw bin directory to path
         if: matrix.os == 'windows-latest'
         #needs: install-msys2
-        run:
-          Add-Content $env:GITHUB_PATH "C:\msys64\mingw64\bin"
-          Ninja --version
+        run: Add-Content $env:GITHUB_PATH "C:\msys64\mingw64\bin"
+      
+      - run: Ninja --version
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
