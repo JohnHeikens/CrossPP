@@ -24,9 +24,8 @@ jigsawPool* jigsawPool::fromFile(const std::wstring path)
 
 		const jsonContainer& content = readJson(stringToWString(readalltext(path)));
 		const jsonContainer& elementContainer = content.children[content.getChildIndex(std::wstring(L"elements"))];
-		for (int i = 0; i < elementContainer.children.size(); i++)
+		for (const jsonContainer& element : elementContainer.children)
 		{
-			const jsonContainer& element = elementContainer.children[i];
 			const jsonContainer& elementChild = element.children[element.getChildIndex(std::wstring(L"element"))];
 			fp weight;
 			if (convertToDouble(element.children[element.getChildIndex(std::wstring(L"weight"))].children[0].value, weight))
@@ -78,9 +77,9 @@ void jigsawPool::addTargetStructure(const std::wstring& seekFolder, const std::w
 
 			//add each weight to weights
 			cfp weightMultiplier = 1.0 / getSum<fp>(pool->structureWeights);
-			for (int i = 0; i < pool->structureWeights.size(); i++)
+			for (const double& weight : pool->structureWeights)
 			{
-				structureWeights.push_back(pool->structureWeights[i] * weightMultiplier);
+				structureWeights.push_back(weight * weightMultiplier);
 			}
 		}
 	}

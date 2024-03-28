@@ -46,11 +46,11 @@ void pressurePlateData::serializeValue(nbtSerializer& s)
 		{
 			if (s.write)
 			{
-				for (int i = 0; i < entitiesStandingOn.size(); i++)
+				for (uuid& entityStandingOn : entitiesStandingOn)
 				{
 					if (s.push<nbtDataTag::tagCompound>())
 					{
-						s.serializeValue(std::wstring(L"uuid"), entitiesStandingOn[i]);
+						s.serializeValue(std::wstring(L"uuid"), entityStandingOn);
 						s.pop();
 					}
 				}

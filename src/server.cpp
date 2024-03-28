@@ -38,7 +38,7 @@ void server::execute()
 		renderClients();
 		currentBenchmark->addBenchmarkPoint(cpuUsageID::networking);
 
-		for (int i = 0; i < clients.size();) {
+		for (size_t i = 0; i < clients.size();) {
 			if (clients[i]->shouldDisconnect) {
 				kick(clients[i]);
 			}

@@ -402,7 +402,7 @@ void tickableBlockContainer::createExplosion(cvec2& position, cfp& explosionPowe
 	const std::vector<entity*> nearEntities = findNearEntities(position, maximumBlastRadius);
 
 	fastArray<rectangle2> hitboxes = fastArray<rectangle2>((fsize_t)nearEntities.size());
-	for (int i = 0; i < nearEntities.size(); i++)
+	for (size_t i = 0; i < nearEntities.size(); i++)
 	{
 		hitboxes[i] = nearEntities[i]->calculateHitBox();
 	}

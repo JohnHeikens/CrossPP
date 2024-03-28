@@ -121,9 +121,9 @@ void nbtCompound::serialize(cbool& write, std::wstring& s)
 			const std::wstring skip = std::wstring(L"\"\"[]{}");
 			wstringContainer container = split_string(s, std::wstring(L","), skip);
 			children.clear();
-			for (int i = 0; i < container.size(); i++)
+			for (const std::wstring& stringPart : container)
 			{
-				const std::wstring trimmedString = trim_copy(container[i]);
+				const std::wstring& trimmedString = trim_copy(stringPart);
 				if (trimmedString.size())
 				{
 					csize_t colonIndex = find(trimmedString, 0, std::wstring(L":"), skip);

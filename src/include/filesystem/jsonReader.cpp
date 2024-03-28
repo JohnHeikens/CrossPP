@@ -68,7 +68,7 @@ jsonContainer readJson(std::wstring content)
 
 int jsonContainer::getChildIndex(const std::wstring& value) const
 {
-	for (int i = 0; i < children.size(); i++)
+	for (size_t i = 0; i < children.size(); i++)
 	{
 		if (children[i].value == value)
 		{

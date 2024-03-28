@@ -13,7 +13,7 @@ constexpr fp noiseOutputChance[3][noiseSampleSize]
 
 layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vector<fp>& octaveWeights, fp noiseScale, crectangle1& outputRange) :layerNoiseSimplex(randomToUse, octaveWeights, outputRange)
 {
-	for (int i = 0; i < octaveWeights.size(); i++)
+	for (size_t i = 0; i < octaveWeights.size(); i++)
 	{
 		octaveFrequencies[i] = cvec3(1.0 / noiseScale);
 		noiseScale *= 0.5;
@@ -23,7 +23,7 @@ layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vecto
 
 layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vector<fp>& octaveWeights, const std::vector<fp>& noiseScales, crectangle1& outputRange) : layerNoiseSimplex(randomToUse, octaveWeights, outputRange)
 {
-	for (int i = 0; i < octaveWeights.size(); i++)
+	for (size_t i = 0; i < octaveWeights.size(); i++)
 	{
 		this->octaveFrequencies[i] = cvec3(1.0 / noiseScales[i]);
 	}
@@ -31,7 +31,7 @@ layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vecto
 
 layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vector<fp>& octaveWeights, const std::vector<vec3>& noiseScales, crectangle1& outputRange) : layerNoiseSimplex(randomToUse, octaveWeights, outputRange)
 {
-	for (int i = 0; i < octaveWeights.size(); i++)
+	for (size_t i = 0; i < octaveWeights.size(); i++)
 	{
 		this->octaveFrequencies[i] = 1.0 / noiseScales[i];
 	}

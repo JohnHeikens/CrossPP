@@ -36,11 +36,11 @@ void taskList::serializeValue(nbtSerializer& s)
 	if (s.push<nbtDataTag::tagCompound>(std::wstring(L"tasks")))
 	{
 		//won't mess up that much when tasks are shuffeled
-		for (int i = 0; i < tasks.size(); i++)
+		for (taskAI* const& task : tasks)
 		{
-			if (s.push<nbtDataTag::tagCompound>(getClassName(*tasks[i])))
+			if (s.push<nbtDataTag::tagCompound>(getClassName(*task)))
 			{
-				tasks[i]->serializeValue(s);
+				task->serializeValue(s);
 				s.pop();
 			}
 		}

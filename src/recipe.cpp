@@ -22,9 +22,8 @@ void readRecipe(const jsonContainer& recipeDescription)
 		const jsonContainer& keysContainer = recipeDescription.children[recipeDescription.getChildIndex(std::wstring(L"key"))];
 		fastList<IItemComparable*>* keyList = new fastList<IItemComparable*>();
 		//read key list
-		for (int i = 0; i < keysContainer.children.size(); i++)
+		for (const jsonContainer& keyContainer : keysContainer.children)
 		{
-			const jsonContainer& keyContainer = keysContainer.children[i];
 			if (keyContainer.children.size() > 1)
 			{
 				tag* t = new tag(std::wstring(L""));//name does not matter

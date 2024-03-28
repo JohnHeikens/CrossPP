@@ -5,11 +5,11 @@
 #include "math/collisions.h"
 bool ridableEntity::addPassenger(mob* m)
 {
-	for (int i = 0; i < seats.size(); i++)
+	for (uuid& seat : seats)
 	{
-		if (!seats[i])
+		if (!seat)
 		{
-			seats[i] = m->identifier;
+			seat = m->identifier;
 			m->UUIDRidingOn = identifier;
 			return true;
 		}
@@ -24,11 +24,11 @@ void ridableEntity::serializeValue(nbtSerializer& s)
 	{
 		if (s.write)
 		{
-			for (int i = 0; i < seats.size(); i++)
+			for (uuid& seat : seats)
 			{
 				if (s.push<nbtDataTag::tagCompound>())
 				{
-					s.serializeValue(std::wstring(L"uuid"), seats[i]);
+					s.serializeValue(std::wstring(L"uuid"), seat);
 					s.pop();
 				}
 			}
@@ -36,7 +36,7 @@ void ridableEntity::serializeValue(nbtSerializer& s)
 		else
 		{
 			std::vector<nbtData*> data = s.getChildren();
-			for (int i = 0; (i < seats.size()) && (i < data.size()); i++)
+			for (size_t i = 0; (i < seats.size()) && (i < data.size()); i++)
 			{
 				if (s.push(data[i]))
 				{
@@ -58,17 +58,17 @@ void ridableEntity::addCollidingEntities()
 	crectangle2 currentHitbox = calculateHitBox();
 	const std::vector<entity*> possiblyCollidingEntities = dimensionIn->findNearEntities(currentHitbox.expanded(mobSizeMargin));
 
-	for (int i = 0; i < possiblyCollidingEntities.size(); i++)
+	for (entity* const& possiblyCollidingEntity : possiblyCollidingEntities)
 	{
-		if (isMob(possiblyCollidingEntities[i]->entityType))
+		if (isMob(possiblyCollidingEntity->entityType))
 		{
-			crectangle2 hitbox = possiblyCollidingEntities[i]->calculateHitBox();
+			crectangle2 hitbox = possiblyCollidingEntity->calculateHitBox();
 			//entity must fit inside
 			if (hitbox.size.x < currentHitbox.size.x)
 			{
 				if (collides2d(hitbox, currentHitbox))
 				{
-					if (!addPassenger((mob*)possiblyCollidingEntities[i]))
+					if (!addPassenger((mob*)possiblyCollidingEntity))
 					{
 						//minecart full
 						return;

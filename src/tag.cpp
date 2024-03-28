@@ -10,9 +10,9 @@ tag* readTag(const std::wstring& tagName, const std::wstring& tagDirectory)
 
 	const jsonContainer& content = readJson(stringToWString(readalltext(tagDirectory + tagName + jsonFileExtension)));
 	const std::vector<jsonContainer> taggedItemsContainer = content.children[1].children;
-	for (int i = 0; i < taggedItemsContainer.size(); i++)
+	for (const jsonContainer& taggedItem : taggedItemsContainer)
 	{
-		std::wstring taggedItemName = taggedItemsContainer[i].value;
+		std::wstring taggedItemName = taggedItem.value;
 		if (taggedItemName[0] == L'#')
 		{
 			//this tag tagged a tag

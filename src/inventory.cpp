@@ -90,12 +90,11 @@ uiSlotContainer* inventory::getSlotContainer(cveci2& mousePositionPixels, veci2&
 {
 	//check which inventory slot is hovered above
 	//convert to 'hotbar slot space'
-	for (int i = 0; i < containers.size(); i++)
+	for (uiSlotContainer* const& container : containers)
 	{
-		uiSlotContainer* selectedSlotContainer = containers[i];
-		if (selectedSlotContainer->linkedContainer->getSlot(mousePositionPixels, selectedSlotContainer->containerPixelPosition, inventorySpacing, inventoryItemDisplaySize, slotPosition))
+		if (container->linkedContainer->getSlot(mousePositionPixels, container->containerPixelPosition, inventorySpacing, inventoryItemDisplaySize, slotPosition))
 		{
-			return selectedSlotContainer;//no other slotcontainer will have items at the same place
+			return container;//no other slotcontainer will have items at the same place
 		}
 	}
 	return nullptr;

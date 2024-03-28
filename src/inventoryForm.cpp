@@ -71,8 +71,7 @@ void inventoryForm::render(cveci2& position, const texture& renderTarget)
 	fillTransparentRectangle((crectangle2)inventoryToDisplay->uiTexturePartToDraw, this->rect, *inventoryToDisplay->uiTexture, renderTarget);
 
 	const gameRenderData& targetData = ((gameControl*)parent)->getRenderData(renderTarget);
-	for (int i = 0; i < inventoryToDisplay->containers.size(); i++) {
-		uiSlotContainer* c = inventoryToDisplay->containers[i];
+	for (const uiSlotContainer* const& c : inventoryToDisplay->containers) {
 		c->linkedContainer->render(targetData, position + (vec2)c->containerPixelPosition * scaleMultiplier, inventorySpacing * scaleMultiplier, inventoryItemDisplaySize * scaleMultiplier);
 	}
 	inventoryToDisplay->drawExtraData(mat3x3::fromRectToRect(crectangle2(cvec2(0), cvec2(inventoryToDisplay->uiTexturePartToDraw.size)), crectangle2(rect)), renderTarget);

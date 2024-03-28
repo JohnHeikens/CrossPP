@@ -279,12 +279,13 @@ void world::tick()
 		{
 			chunksSavedThisTick++;
 
-			for (int i = 0; i < c->dimensionIn->loadedChunksMap.size(); i++)
+			for (size_t i = 0; i < c->dimensionIn->loadedChunksMap.size(); i++)
 			{
 				const auto& it = c->dimensionIn->loadedChunksMap[i];
 				if (it.second == c)
 				{
 					c->dimensionIn->loadedChunksMap.erase(c->dimensionIn->loadedChunksMap.begin() + i);
+					break;
 				}
 			}
 

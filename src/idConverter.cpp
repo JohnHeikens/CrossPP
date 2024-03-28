@@ -76,14 +76,14 @@ idConverter* getConverter(cint& oldVersion)
 	{
 		return nullptr;
 	}
-	for (int i = 0; i < converterList.size(); i++)
+	for (idConverter* const& converter : converterList)
 	{
-		if (converterList[i]->oldVersion == oldVersion)
+		if (converter->oldVersion == oldVersion)
 		{
-			return converterList[i];
+			return converter;
 		}
 	}
-	idConverter* converter = new idConverter(oldVersion, currentFileVersionID);
+	idConverter* const& converter = new idConverter(oldVersion, currentFileVersionID);
 	converterList.push_back(converter);
 	return converter;
 }

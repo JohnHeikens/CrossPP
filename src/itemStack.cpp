@@ -14,9 +14,9 @@
 itemStack::itemStack(const itemStack& other)
 {
 	enchantments = std::vector<enchantment*>();
-	for (int i = 0; i < other.enchantments.size(); i++)
+	for (enchantment* const& otherEnchantment :other.enchantments)
 	{
-		enchantments.push_back((enchantment*)new enchantment(other.enchantments[i]->clone<enchantment>()));
+		enchantments.push_back((enchantment*)new enchantment(otherEnchantment->clone<enchantment>()));
 	}
 
 	data = other.count ? createItemTag(other.stackItemID) : nullptr;
@@ -73,7 +73,7 @@ bool itemStack::compare(const itemStack& other) const
 	{
 		return false;
 	}
-	for (int i = 0; i < other.enchantments.size(); i++)
+	for (size_t i = 0; i < other.enchantments.size(); i++)
 	{
 		if (!other.enchantments[i]->compare(*enchantments[i]))
 		{
@@ -241,9 +241,9 @@ void itemStack::renderSingleItem(const gameRenderData& targetData) const
 				potionData* toPotionData = (potionData*)data;
 				//average out
 				colorf totalColor = colorf();
-				for (int i = 0; i < toPotionData->effectsToAdd.size(); i++)
+				for (const statusEffect& effectToAdd : toPotionData->effectsToAdd)
 				{
-					totalColor += colorf(statusEffectDataList[(int)toPotionData->effectsToAdd[i].identifier]->particleColor);
+					totalColor += colorf(statusEffectDataList[(int)effectToAdd.identifier]->particleColor);
 				}
 				totalColor /= toPotionData->effectsToAdd.size();
 				potionColor = color(totalColor);
@@ -279,9 +279,9 @@ void itemStack::drawToolTips(cveci2& position, const texture& renderTarget) cons
 	const std::wstring& nameText = replace(itemList[stackItemID]->name, std::wstring(L"_"), std::wstring(L" "));
 	std::wstring stringToDraw = nameText;
 	std::wstring enchantmentsString = std::wstring(L"");
-	for (int i = 0; i < enchantments.size(); i++)
+	for (size_t i = 0; i < enchantments.size(); i++)
 	{
-		if (i > 0)
+		if (i)
 		{
 			enchantmentsString += std::wstring(L"\n");
 		}
@@ -337,7 +337,7 @@ void itemStack::serializeValue(nbtSerializer& s)
 			{
 				std::vector<nbtData*> serializedEnchantmentData = s.getChildren();
 				enchantments = std::vector < enchantment*>(serializedEnchantmentData.size());
-				for (int i = 0; i < enchantments.size(); i++)
+				for (size_t i = 0; i < enchantments.size(); i++)
 				{
 					if (s.push(serializedEnchantmentData[i]))
 					{

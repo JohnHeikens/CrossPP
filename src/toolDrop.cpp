@@ -7,9 +7,9 @@ bool toolDrop::checkCondition(const dropData& data, std::mt19937& randomToUse) c
 	{
 		return false;
 	}
-	for (int i = 0; i < requiredEnchantments.size(); i++)
+	for (const enchantment& requiredEnchantment : requiredEnchantments)
 	{
-		if (data.toolUsed->getEnchantmentLevel(requiredEnchantments[i].identifier) < requiredEnchantments[i].power)
+		if (data.toolUsed->getEnchantmentLevel(requiredEnchantment.identifier) < requiredEnchantment.power)
 		{
 			return false;
 		}

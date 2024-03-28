@@ -273,9 +273,9 @@ resolutionTexture* loadTexture(std::wstring path, cveci2& defaultSize, cbool& ad
 std::vector<std::wstring> getResourceLocations(const std::wstring& relativePath)
 {
 	std::vector<std::wstring> foundLocations = std::vector<std::wstring>();
-	for (int i = 0; i < resourcePackPaths.size(); i++)
+	for (const std::wstring& resourcePackPath : resourcePackPaths)
 	{
-		const std::wstring currentPath = resourcePackPaths[i] + relativePath;
+		const std::wstring currentPath = resourcePackPath + relativePath;
 		if (std::filesystem::exists(currentPath))
 		{
 			foundLocations.push_back(currentPath);
@@ -1084,7 +1084,7 @@ void loadResourcePacks() {
 		std::wstring(L"red_sandstone"),
 		});
 
-	for (int i = 0; i < wallBlockNames.size(); i++)
+	for (size_t i = 0; i < wallBlockNames.size(); i++)
 	{
 		blockList[identifier] = new block((blockID)identifier, 6, 6, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + wallBlockNames[i] + std::wstring(L".png")), wallNames[i], stepStone, stepStone, stepStone, digStone, digStone, lightFiltering, withPickaxe, woodHarvestTier, collisionTypeID::willCollideTop); identifier++;
 	}
@@ -1168,7 +1168,7 @@ void loadResourcePacks() {
 
 		blockList[identifier] = new block((blockID)identifier, 2, 2, standardBlockWeightPerCubicMeter, tex, woodTypeDataList[i]->name + std::wstring(L"_stairs"), stepWood, stepWood, stepWood, digWood, digWood, lightFiltering, withAxe, noHarvestTier, collisionTypeID::willCollideTop, i < normalTreeTypeCount ? 5 : 0, i < normalTreeTypeCount ? 5 : 0, i < normalTreeTypeCount); identifier++;
 	}
-	for (int i = 0; i < stairTextureNames.size(); i++)
+	for (size_t i = 0; i < stairTextureNames.size(); i++)
 	{
 		resolutionTexture* blockTexture = loadTextureFromResourcePack(blockTextureFolder + stairTextureNames[i] + std::wstring(L".png"));
 
@@ -1254,7 +1254,7 @@ void loadResourcePacks() {
 
 		blockList[identifier] = new block((blockID)identifier, 2, 2, standardBlockWeightPerCubicMeter, tex, woodTypeDataList[i]->name + std::wstring(L"_slab"), stepWood, stepWood, stepWood, digWood, digWood, lightFiltering, withAxe, noHarvestTier, collisionTypeID::willCollideTop, i < normalTreeTypeCount ? 5 : 0, i < normalTreeTypeCount ? 5 : 0, i < normalTreeTypeCount); identifier++;
 	}
-	for (int i = 0; i < slabBlockNames.size(); i++)
+	for (size_t i = 0; i < slabBlockNames.size(); i++)
 	{
 		resolutionTexture* tex = loadTextureFromResourcePack(blockTextureFolder + slabBlockNames[i] + std::wstring(L".png"));
 
@@ -1371,7 +1371,7 @@ void loadResourcePacks() {
 	resolutionTexture* furnaceTopImage = loadTextureFromResourcePack(blockTextureFolder + std::wstring(L"furnace_top.png"));
 
 	const wstringContainer& dispenserNames = { std::wstring(L"dispenser"), std::wstring(L"dropper") };
-	for (int i = 0; i < dispenserNames.size(); i++)
+	for (size_t i = 0; i < dispenserNames.size(); i++)
 	{
 		resolutionTexture* frontHorizontalImage = loadTextureFromResourcePack(blockTextureFolder + dispenserNames[i] + std::wstring(L"_front.png"));
 		resolutionTexture* frontVerticalImage = loadTextureFromResourcePack(blockTextureFolder + dispenserNames[i] + std::wstring(L"_front_vertical.png"));
@@ -1815,7 +1815,7 @@ void loadResourcePacks() {
 		std::wstring(L"sand"),
 		std::wstring(L"red_sand")
 	};
-	for (int i = 0; i < sandTypeNames.size(); i++)
+	for (size_t i = 0; i < sandTypeNames.size(); i++)
 	{
 		blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder + sandTypeNames[i] + std::wstring(L".png")), sandTypeNames[i], stepSand, stepSand, stepSand, digSand, digSand, sunlightPermeable, withShovel, noHarvestTier); identifier++;
 	}
@@ -2500,7 +2500,7 @@ void loadResourcePacks() {
 		}
 	}
 
-	for (int i = 0; i < tagList.size; i++)
+	for (size_t i = 0; i < tagList.size; i++)
 	{
 		//count comparables
 		if (tagList[i]->taggedComparables->size == 0)

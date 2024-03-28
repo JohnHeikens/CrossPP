@@ -158,16 +158,16 @@ bool structure::serialize(const std::wstring& path, cbool& write)
 		{
 			const auto& serializedEntityList = s.getChildren();
 			entities = fastList<entity*>();
-			for (int i = 0; i < serializedEntityList.size(); i++)
+			for (const nbtData* const& serializedEntity : serializedEntityList)
 			{
-				if (s.push(serializedEntityList[i]))
+				if (s.push(serializedEntity))
 				{
 					entityID entityType;
 					if (idConverter::serializeID(s, std::wstring(L"entity id"), entityType, s.converter ? &s.converter->entityIDConverter : nullptr))
 					{
 						vec2 position;
 						s.serializeValue(std::wstring(L"position"), position);
-						entity* e = createEntity(entityType, nullptr, position);
+						entity* const& e = createEntity(entityType, nullptr, position);
 						e->serializeValue(s);
 						entities.push_back(e);
 					}

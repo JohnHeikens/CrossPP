@@ -70,12 +70,12 @@ void throwable::serializeValue(nbtSerializer& s)
 
 void throwable::addImpactDamage(const std::vector<entity*>& collidingEntities, cfp& damage)
 {
-	for (int i = 0; i < collidingEntities.size(); i++)
+	for (entity* const& collidingEntity : collidingEntities)
 	{
-		if (collidingEntities[i] != this)
+		if (collidingEntity != this)
 		{
-			collidingEntities[i]->addDamageSource(damage, std::make_shared<damageSource>(projectileDamage));
-			speed = collidingEntities[i]->handleCollision(speed, getWeight());
+			collidingEntity->addDamageSource(damage, std::make_shared<damageSource>(projectileDamage));
+			speed = collidingEntity->handleCollision(speed, getWeight());
 		}
 	}
 }
