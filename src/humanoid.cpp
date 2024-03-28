@@ -651,11 +651,10 @@ void humanoid::tick()
 
 								//add experience
 								int experience = rand(currentRandom, b->experienceWhenBroken.minimum, b->experienceWhenBroken.maximum);
-								std::vector<int> amounts = divideExperience(experience);
-								for (int i = 0; i < amounts.size(); i++)
+								for (int amount : divideExperience(experience))
 								{
 									experienceOrb* orb = (experienceOrb*)summonEntity(entityID::experience_orb, selectedBlockContainer, getrandomPosition(currentRandom, rectangle2(selectedBlockPosition, vec2(1)), vec2(experienceSize)) - relativeExperienceHitbox.pos0);
-									orb->value = amounts[i];
+									orb->value = amount;
 									orb->speed = vec2::getrotatedvector(randFp(currentRandom, math::PI2)) * randFp(maxFloatingSlotSpeed);
 								}
 							}

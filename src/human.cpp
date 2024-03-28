@@ -631,9 +631,9 @@ void human::pickUpFloatingSlots()
 	crectangle2 experienceOrbAttractionBox = hitbox.expanded(7.0f);//attract experience from 7 blocks away
 
 	std::vector<entity*> entityList = dimensionIn->findNearEntities(experienceOrbAttractionBox);
-	for (int i = 0; i < entityList.size(); i++)
+	for (entity* const& currentEntity : entityList)
 	{
-		entity* currentEntity = entityList[i];
+		//entity* currentEntity = entityList[i];
 		if (currentEntity->entityType == entityID::item)
 		{
 			floatingSlot* slot = (floatingSlot*)currentEntity;

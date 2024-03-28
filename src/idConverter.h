@@ -77,7 +77,7 @@ struct idConverter
 		{
 			const std::vector<nbtData*> serializedIDList = s.getChildren();
 			std::vector<idType> conversionList = std::vector<idType>(serializedIDList.size());
-			for (int i = 0; i < serializedIDList.size(); i++)
+			for (size_t i = 0; i < serializedIDList.size(); i++)
 			{
 				std::wstring name;
 				s.serializeValue(serializedIDList[i], name);
