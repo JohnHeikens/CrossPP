@@ -104,7 +104,7 @@ jobs:
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         run: >
           ninja --version
-          cmake .. -G ninja -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          cmake .. -G C:\msys64\mingw64\bin\ninja.exe -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         #run: >
         #  cmake -B ${{ steps.strings.outputs.build-output-dir }}
         #  -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
