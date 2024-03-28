@@ -126,27 +126,28 @@ void human::tick()
 
 	mainBodyPart->flipX = lookingAt.x < position.x;
 
-	if (sleeping)
-	{
-		if (!canSleep() || !isBed(dimensionIn->getBlockID(position)))
-		{
-			sleeping = false;
-		}
-	}
-
-
-
-	if (screen.pressedKey((vk)keyID::exit))
+	const bool& pressedExit = screen.pressedKey((vk)keyID::exit);
+	if (pressedExit)
 	{
 		if (UUIDRidingOn)
 		{
 			exitRodeEntity();
 		}
-		if (sleeping)
+	}
+
+	if (sleeping)
+	{
+		if (!canSleep() || !isBed(dimensionIn->getBlockID(position)) || pressedExit)
 		{
 			sleeping = false;
+			//spawn next to the bed
+			newPosition.y -= bedHitboxHeight;
 		}
 	}
+
+
+
+
 
 	itemHolding = hotbarSlots->getSlot(cveci2(rightHandSlotIndex, 0));
 
