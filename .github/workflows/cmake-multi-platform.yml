@@ -54,6 +54,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: msys2/setup-msys2@v2
         with:
+          path-type: inherit
           msystem: MINGW64
           update: true
           #changed to clang for better debugging
