@@ -3,18 +3,18 @@
 #include <network/compressedPacket.h>
 #include <utility>
 #include "optimization/optimization.h"
-struct tcpSerializer {
+struct tcpSerializer : streamBaseInterface {
 	sf::TcpSocket* socket = nullptr;
 	compressedPacket* receivingPacket = new compressedPacket();
 	compressedPacket* sendingPacket = new compressedPacket();
 	const char* receivingPacketPos = nullptr;
 	const char* receivingPacketEndPos = nullptr;
-	inline bool write(const char* const& value, const size_t& size)
+	inline bool write(const char* const& value, const size_t& size) override
 	{
 		sendingPacket->append(value, size);
 		return true;
 	}
-	inline bool read(char* const& value, const size_t& size)
+	inline bool read(char* const& value, const size_t& size) override
 	{
 		const auto newDataPos = receivingPacketPos + size;
 		assumeInRelease(newDataPos <= receivingPacketEndPos);

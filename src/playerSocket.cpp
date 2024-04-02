@@ -21,19 +21,20 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include "application/thread/setThreadName.h"
+#include "filesystem/serializer.h"
 playerSocket::playerSocket(sf::TcpSocket *socket)
 {
 	screen = new gameControl(*this);
 	this->s.socket = socket;
 	write = false;
 
-	//doubleBuffer[0].setActive(false);
-	//doubleBuffer[1].setActive(false);
+	// doubleBuffer[0].setActive(false);
+	// doubleBuffer[1].setActive(false);
 
-	//contexts[0].setActive(false);
-	//contexts[1].setActive(false);
+	// contexts[0].setActive(false);
+	// contexts[1].setActive(false);
 
-	//contexts[0] = std::move(sf::Context());
+	// contexts[0] = std::move(sf::Context());
 
 	ull num;
 	// receive authentication packet.
@@ -55,15 +56,21 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	}
 	authenticated = true;
 
-	rectanglei2 screenRect = rectanglei2();
-	serialize(screenRect.size);
-	screen->layout(screenRect);
+	nbtCompound authPacket = nbtCompound(L"auth");
+	streamSerializer streamS = streamSerializer(s, false, std::endian::big);
+	authPacket.serialize(streamS);
+	nbtSerializer inNBTSerializer = nbtSerializer(authPacket, false);
 
 	uuid playerUUID;
-	serialize(playerUUID);
+	inNBTSerializer.serializeValue(L"uuid", playerUUID);
 	std::wstring playerName;
-	serializeWStringAsString(playerName);
+	inNBTSerializer.serializeValue(L"name", playerName);
 	screen->player = player = new human(currentWorld->dimensions[(int)currentWorld->worldSpawnDimension], vec2(), *screen, playerName);
+
+	rectanglei2 screenRect = rectanglei2();
+	inNBTSerializer.serializeValue(L"screenSize", screenRect.size);
+	screen->layout(screenRect);
+
 	crectangle2 &relativeHitbox = player->calculateHitBox();
 
 	player->position = cvec2(currentWorld->worldSpawnPoint.x + 0.5, currentWorld->worldSpawnPoint.y) - relativeHitbox.pos0 + cvec2(relativeHitbox.size.x * -0.5, 0);
@@ -87,20 +94,19 @@ void renderAsync(playerSocket *socket)
 {
 	setCurrentThreadName(L"renderer for " + socket->player->name);
 	// we need to instantiate a context for openGL rendering. we don't need to do anything with it.
-	//texture &currentContext = socket->contexts[socket->thread0DoubleBufferIndex];
-	//currentContext.setActive(true);
-	//sf::RenderTexture &newRenderResult = socket->doubleBuffer[socket->thread0DoubleBufferIndex];
-
+	// texture &currentContext = socket->contexts[socket->thread0DoubleBufferIndex];
+	// currentContext.setActive(true);
+	// sf::RenderTexture &newRenderResult = socket->doubleBuffer[socket->thread0DoubleBufferIndex];
 
 	// create the rendertexture connected to the active context
-	//newRenderResult.create(socket->screen->rect.size.x, socket->screen->rect.size.y, sf::ContextSettings());
-	//newRenderResult.setActive(true);
+	// newRenderResult.create(socket->screen->rect.size.x, socket->screen->rect.size.y, sf::ContextSettings());
+	// newRenderResult.setActive(true);
 	// TODO: check if it needs clear()
-	texture *& currentRenderTarget = socket->doubleBuffer[socket->thread0DoubleBufferIndex];
-	
-	if(!currentRenderTarget || currentRenderTarget->size != vect2<fsize_t>(socket->screen->rect.size))
+	texture *&currentRenderTarget = socket->doubleBuffer[socket->thread0DoubleBufferIndex];
+
+	if (!currentRenderTarget || currentRenderTarget->size != vect2<fsize_t>(socket->screen->rect.size))
 	{
-		if(currentRenderTarget)
+		if (currentRenderTarget)
 		{
 			delete currentRenderTarget;
 		}
@@ -108,11 +114,11 @@ void renderAsync(playerSocket *socket)
 	}
 	// we don't have to set the new render texture to active because its context is active already
 	// newRenderResult.setActive(true);
-	//newRenderResult.clear();
+	// newRenderResult.clear();
 	socket->screen->render(cveci2(), *currentRenderTarget);
-	//newRenderResult.setActive(false);
-	//currentContext.setActive(false);
-	//delete dummyTex;
+	// newRenderResult.setActive(false);
+	// currentContext.setActive(false);
+	// delete dummyTex;
 	socket->screen->player->updateBodyParts(); // update body parts so the correct ear position can be obtained
 
 	if (socket->sendRenderResultThread)
@@ -127,22 +133,32 @@ void renderAsync(playerSocket *socket)
 
 	// don't serialize this part async, as it doesn't take much time and might cause corruption when for example sounds are added mid-sending
 	// send sounds
+	// pointers because we pass this to another thread
+	nbtCompound *compound = new nbtCompound(L"packetOut");
+	nbtSerializer *outSerializer = new nbtSerializer(*compound, true);
 
 	vec2 earPosition = socket->screen->player->getHeadPosition();
-	constexpr bool b = std::is_base_of_v<arraynd<color, 2>, texture>;
-	socket->serialize(earPosition);
+	outSerializer->serializeValue(L"earPosition", earPosition);
 
-	size_t soundCount = socket->screen->dataToSend.size();
-	socket->serialize(soundCount);
-	for (auto &data : socket->screen->dataToSend)
+	if (outSerializer->push<nbtDataTag::tagList>(L"sounds"))
 	{
-		data.serialize(*socket);
+		for (auto &data : socket->screen->dataToSend)
+		{
+			if (outSerializer->push())
+			{
+				data.serialize(*outSerializer);
+				outSerializer->pop();
+			}
+		}
+		outSerializer->pop();
 	}
+
 	socket->screen->dataToSend.clear();
 
-	//newRenderResult.setActive(false);
+	// newRenderResult.setActive(false);
 	socket->thread0DoubleBufferIndex = 1 - socket->thread0DoubleBufferIndex;
-	socket->sendRenderResultThread = new std::thread(sendRenderResultAsync, socket);
+	// deletion of compound and outSerializer happen in the sendRenderResultAsync function
+	socket->sendRenderResultThread = new std::thread(sendRenderResultAsync, socket, compound, outSerializer);
 
 	sf::SocketSelector selector;
 	selector.add(*socket->s.socket);
@@ -161,14 +177,23 @@ void renderAsync(playerSocket *socket)
 			// selector should continue looking if the socket is still ready
 			socket->write = false;
 
+			nbtCompound inCompound = nbtCompound(std::wstring(L"packetIn"));
+
+			streamSerializer streamS = streamSerializer(socket->s, false, std::endian::big);
+			inCompound.serialize(streamS);
+
+			nbtSerializer currentNBTSerializer = nbtSerializer(inCompound, false);
+
 			// read input while sending
-			socket->screen->mostRecentInput.serialize(*socket);
+			socket->screen->mostRecentInput.serialize(currentNBTSerializer);
+
 			vect2<fsize_t> newScreenSize;
-			socket->serialize(newScreenSize);
+			currentNBTSerializer.serializeValue(L"screenSize", newScreenSize);
 			if (veci2(newScreenSize) != socket->screen->rect.size)
 			{
 				socket->screen->layout(crectanglei2(veci2(), veci2(newScreenSize)));
 			}
+
 			// socket->s.socket->setBlocking(true);
 			socket->screen->addClientInput(socket->screen->mostRecentInput);
 			socket->screen->processInput();
@@ -177,12 +202,12 @@ void renderAsync(playerSocket *socket)
 	}
 }
 
-void sendRenderResultAsync(playerSocket *socket)
+void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSerializer *s)
 {
 	setCurrentThreadName(L"screen sender for " + socket->player->name);
 	byte thread1DoubleBufferIndex = 1 - socket->thread0DoubleBufferIndex;
-	//sf::Context &currentContext = socket->contexts[thread1DoubleBufferIndex];
-	texture* &currentRenderResult = socket->doubleBuffer[thread1DoubleBufferIndex];
+	// sf::Context &currentContext = socket->contexts[thread1DoubleBufferIndex];
+	texture *&currentRenderResult = socket->doubleBuffer[thread1DoubleBufferIndex];
 	// serialize screen and finally, send the packet
 
 	// TODO: serialize the screen in 'sendrenderresultasync'. this is hard because s->write = false
@@ -196,28 +221,28 @@ void sendRenderResultAsync(playerSocket *socket)
 	// tex.draw(shape);
 
 	// currentContext.setActive(true);
-	//currentRenderResult.setActive(true); // this automatically activates the context of the render result
+	// currentRenderResult.setActive(true); // this automatically activates the context of the render result
 	// currentRenderResult->clear();
-	//currentRenderResult.display();
-	//sf::Image i = currentRenderResult.getTexture().copyToImage();
-	//currentRenderResult.setActive(false);
+	// currentRenderResult.display();
+	// sf::Image i = currentRenderResult.getTexture().copyToImage();
+	// currentRenderResult.setActive(false);
 	// currentContext.setActive(false);
 
-	//uint pixelCount = i.getSize().x * i.getSize().y;
+	// uint pixelCount = i.getSize().x * i.getSize().y;
 
-	std::vector<byte> compressedBuf;
+	std::vector<byte> compressedScreen;
 	typedef colortn<byte, 3> color3;
 	color3 *colorsWithoutAlpha = new color3[currentRenderResult->size.volume()];
 	const color3 c = color3();
 	color3 *ptr = colorsWithoutAlpha;
-	//color *imagePtr = (color *)i.getPixelsPtr();
-	for (const color& c : *currentRenderResult)
+	// color *imagePtr = (color *)i.getPixelsPtr();
+	for (const color &c : *currentRenderResult)
 	{
 		*ptr++ = color3(c);
 	}
 
 	// std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
-	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedBuf);
+	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedScreen);
 	delete[] colorsWithoutAlpha;
 	// color* ptr = socket->lastRenderResult->baseArray;
 	// std::vector<colorChannel> channels[rgbColorChannelCount]{};
@@ -241,15 +266,24 @@ void sendRenderResultAsync(playerSocket *socket)
 
 	// socket->s.write((char*)(color::channelType*)socket->lastRenderResult->baseArray, socket->screen->rect.size.volume() * bgraColorChannelCount * sizeof(color::channelType));
 
-	size_t s = compressedBuf.size(); // TODO: video streaming
-	// TODO: fix endian
-	socket->s.write((const char *)&s, sizeof(size_t));
-	socket->s.write((const char *)&(*compressedBuf.begin()), compressedBuf.size());
+	s->serializeList(L"compressedScreen", compressedScreen);
+	// this way we can set the 'write' value to true
+	streamSerializer streamS = streamSerializer(socket->s, true, std::endian::big);
+	compound->serialize(streamS);
+
+	delete compound;
+	delete s;
+
+	// size_t s = compressedScreen.size(); // TODO: video streaming
+	//// TODO: fix endian
+	// socket->s.write((const char *)&s, sizeof(size_t));
+	// socket->s.write((const char *)&(*compressedScreen.begin()), compressedScreen.size());
 	if (socket->sendPacketThread)
 	{
 		socket->sendPacketThread->join();
 		delete socket->sendPacketThread;
 	}
+
 	// socket->sendPacketThread = new std::thread(sendPacketAsync, socket);
 	socket->sendPacketThread = new std::thread([socket]()
 											   { socket->s.sendPacket(); });

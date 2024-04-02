@@ -1,10 +1,11 @@
 #include "soundPacket.h"
+#include <string>
 
-bool soundPacket::serialize(const socketContainer& s)
+bool soundPacket::serialize(nbtSerializer& s)
 {
-	s.serialize(position);
-	s.serialize(soundCollectionID);
-	s.serialize(soundIndex);
-	s.serialize(volume);
-	return s.serialize(pitch);
+	s.serializeValue(L"position", position);
+	s.serializeValue(L"sound id", soundCollectionID);
+	s.serializeValue(L"sound index", soundIndex);
+	s.serializeValue(L"volume", volume);
+	return s.serializeValue(L"pitch", pitch);
 }

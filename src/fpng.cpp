@@ -486,7 +486,7 @@ namespace fpng
 		return fpng_adler32_scalar((const uint8_t*)pData, size, adler);
 	}
 
-	// Ensure we've been configured for endianness correctly.
+	// Ensure we've been configured for std::endian correctly.
 	static inline bool endian_check()
 	{
 		uint32_t endian_check = 0;

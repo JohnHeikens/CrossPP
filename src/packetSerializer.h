@@ -1,5 +1,5 @@
 //#include <filesystem/file/tcpSerializer.h> //for later
-//constexpr endianness defaultEndianness = endianness::littleEndian;
+//constexpr std::endian defaultstd::endian = std::endian::little;
 //#pragma once
 //struct packetSerializer :serializer<tcpSerializer> {
 //	tcpSerializer s = tcpSerializer();

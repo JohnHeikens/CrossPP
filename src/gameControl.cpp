@@ -182,6 +182,7 @@ void gameControl::render(cveci2& position, const texture& renderTarget)
 
 void gameControl::processInput()
 {
+	//this function will get called on other times than the tick() function. 
 	form::hover(mousePositionPixels);
 	//process buttons
 	control* highestChild = getHighestChild(mousePositionPixels);
@@ -191,14 +192,15 @@ void gameControl::processInput()
 		if (highestChild == focusedChild)
 		{
 			for (sf::Mouse::Button button = (sf::Mouse::Button)0; button < sf::Mouse::Button::ButtonCount; button = (mb)((byte)button + 1)) {
-				if (clicked[button]) {
+				if (mostRecentInput.clicked[button]) {
 					form::mouseDown(mousePositionPixels, button);
 				}
-				if (clickReleased[button]) {
+				if (mostRecentInput.clickReleased[button]) {
 					form::mouseUp(mousePositionPixels, button);
 				}
 			}
 		}
+		//clickedFocused can be modified safely, because every time the clientInput gets modified, processInput() is called right after
 		fillAllElements(clickedFocused, false);
 	}
 	else
@@ -209,7 +211,7 @@ void gameControl::processInput()
 		if (player->hotbarSlots->getSlot(mousePositionPixels, cveci2(hotbarDrawRect.pos0 + (hotbarSpacing - hotbarItemDisplaySize) / 2 * hudScale), (int)(hotbarSpacing * hudScale), (int)(hotbarItemDisplaySize * hudScale), pos))
 		{
 			player->rightHandSlotIndex = pos.x;
-			fillAllElements(clicked, false);
+			fillAllElements(mostRecentInput.clicked, false);
 		}
 		std::copy(clicked, clicked + mb::ButtonCount, clickedFocused);
 	}

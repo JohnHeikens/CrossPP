@@ -55,7 +55,7 @@ project(${ProjectId})
 
 # Enable additional warnings and debug mode
 # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
-set (CMAKE_CXX_FLAGS "-g -W -pedantic")
+set (CMAKE_CXX_FLAGS "-g -W -Wno-stringop-overread -pedantic")
 
 # add .cpp-files
 

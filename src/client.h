@@ -10,6 +10,7 @@ struct client : control, socketContainer {
 
 	clientInput currentInput;
 	playerData data;
+	sf::SocketSelector selector = sf::SocketSelector();
 
 	virtual void render(cveci2& position, const texture& renderTarget) override;
 	client();
@@ -25,5 +26,7 @@ struct client : control, socketContainer {
 
 
 	bool connectToServer(const serverData& server);
+	void sendPacket(const texture &renderTarget);
+	void processIncomingPackets(const texture &renderTarget);
 };
 extern client* currentClient;

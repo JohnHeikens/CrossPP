@@ -16,7 +16,7 @@
 #include "GlobalFunctions.h"
 #include "nbtData.h"
 #include "nbtDataTag.h"
-bool nbtCompound::serialize(const streamSerializer& s)
+bool nbtCompound::serialize(const streamSerializer &s)
 {
 	switch (dataTag)
 	{
@@ -29,7 +29,7 @@ bool nbtCompound::serialize(const streamSerializer& s)
 		}
 		s.serialize(childTag);
 
-		//DONT CHANGE TO SIZE_T
+		// DONT CHANGE TO SIZE_T
 		int childCount;
 		if (s.write)
 		{
@@ -42,7 +42,7 @@ bool nbtCompound::serialize(const streamSerializer& s)
 			children.resize((size_t)childCount);
 		}
 
-		for (nbtData*& child : children)
+		for (nbtData *&child : children)
 		{
 			if (!s.write)
 			{
@@ -56,7 +56,7 @@ bool nbtCompound::serialize(const streamSerializer& s)
 	{
 		if (s.write)
 		{
-			for (nbtData*& child : children)
+			for (nbtData *&child : children)
 			{
 				s.serialize(child->dataTag);
 				serializeChild(s, child, child->dataTag);
@@ -76,7 +76,7 @@ bool nbtCompound::serialize(const streamSerializer& s)
 				}
 				else
 				{
-					nbtData* childData;
+					nbtData *childData;
 					serializeChild(s, childData, currentTag);
 					children.push_back(childData);
 				}
@@ -91,7 +91,7 @@ bool nbtCompound::serialize(const streamSerializer& s)
 	}
 	return true;
 }
-void nbtCompound::serialize(cbool& write, std::wstring& s)
+void nbtCompound::serialize(cbool &write, std::wstring &s)
 {
 	if (write)
 	{
@@ -121,16 +121,16 @@ void nbtCompound::serialize(cbool& write, std::wstring& s)
 			const std::wstring skip = std::wstring(L"\"\"[]{}");
 			wstringContainer container = split_string(s, std::wstring(L","), skip);
 			children.clear();
-			for (const std::wstring& stringPart : container)
+			for (const std::wstring &stringPart : container)
 			{
-				const std::wstring& trimmedString = trim_copy(stringPart);
+				const std::wstring &trimmedString = trim_copy(stringPart);
 				if (trimmedString.size())
 				{
 					csize_t colonIndex = find(trimmedString, 0, std::wstring(L":"), skip);
 					const std::wstring name = colonIndex == std::wstring::npos ? std::wstring(L"") : trim_copy(trimmedString.substr(0, colonIndex));
 					std::wstring value = trim_copy(trimmedString.substr(colonIndex + 1));
-					const nbtDataTag& tag = getTag(value);
-					nbtData* compound = createNBTData(name, tag);
+					const nbtDataTag &tag = getTag(value);
+					nbtData *compound = createNBTData(name, tag);
 					compound->serialize(write, value);
 					children.push_back(compound);
 				}
@@ -138,15 +138,15 @@ void nbtCompound::serialize(cbool& write, std::wstring& s)
 		}
 	}
 }
-nbtDataTag nbtCompound::getTag(const std::wstring& value)
+nbtDataTag nbtCompound::getTag(const std::wstring &value)
 {
 	if (value.size())
 	{
-		csize_t& endIndex = value.size() - 1;
+		csize_t &endIndex = value.size() - 1;
 
 		cbool hasInt8Type = value[endIndex] == L'b' ||
-			((value.length() >= 4) && ((value.substr(value.length() - 4) == std::wstring(L"true")) ||
-				((value.length() >= 5) && value.substr(value.length() - 5) == std::wstring(L"false"))));
+							((value.length() >= 4) && ((value.substr(value.length() - 4) == std::wstring(L"true")) ||
+													   ((value.length() >= 5) && value.substr(value.length() - 5) == std::wstring(L"false"))));
 		cbool hasInt64Type = value[endIndex] == L'l';
 		if (value[0] == L'{')
 		{
@@ -209,18 +209,18 @@ nbtCompound nbtCompound::fromString(std::wstring stringifiedNBT)
 	compound.serialize(false, modifyableString);
 	return compound;
 }
-bool nbtCompound::compare(const nbtData& other) const
+bool nbtCompound::compare(const nbtData &other) const
 {
-	const nbtCompound& compareCompound = (const nbtCompound&)other;
+	const nbtCompound &compareCompound = (const nbtCompound &)other;
 
 	if (compareCompound.children.size() != children.size())
 	{
 		return false;
 	}
 
-	for (nbtData* child : children)
+	for (nbtData *child : children)
 	{
-		for (nbtData* compareChild : compareCompound.children)
+		for (nbtData *compareChild : compareCompound.children)
 		{
 			if ((compareChild->name == child->name) && (compareChild->dataTag == child->dataTag))
 			{
@@ -240,29 +240,29 @@ bool nbtCompound::compare(const nbtData& other) const
 
 	return true;
 }
-bool nbtCompound::serialize(nbtCompound*& compound, cbool& write, const stdFileSystem::path& path)
+bool nbtCompound::serialize(nbtCompound *&compound, cbool &write, const stdFileSystem::path &path)
 {
-	//this file should be compressed
+	// this file should be compressed
 	////https://zlib.net/
 
 	if (write)
 	{
 		std::stringstream uncompressedStream = std::stringstream(getOpenMode(write));
 
-		streamSerializer s = streamSerializer(uncompressedStream, write, endianness::bigEndian);
+		auto iFace = createStreamInterface(uncompressedStream);
+		streamSerializer s = streamSerializer(iFace, write, std::endian::big);
 
 		serialize(compound, s);
 
-		const std::string& uncompressedResult = uncompressedStream.str();
+		const std::string &uncompressedResult = uncompressedStream.str();
 
-		const std::string& compressedResult = gzip::compress(uncompressedResult.c_str(), uncompressedResult.size());
+		const std::string &compressedResult = gzip::compress(uncompressedResult.c_str(), uncompressedResult.size());
 
 		writealltext(path, compressedResult);
-
 	}
 	else
 	{
-		//check if compressed
+		// check if compressed
 
 		bool compressed;
 
@@ -270,11 +270,12 @@ bool nbtCompound::serialize(nbtCompound*& compound, cbool& write, const stdFileS
 		stream.open(path, getOpenMode(write));
 		if (stream.good())
 		{
-			streamSerializer s = streamSerializer(stream, write, endianness::bigEndian);
+			auto iFace = createStreamInterface(stream);
+			streamSerializer s = streamSerializer(iFace, write, std::endian::big);
 
-			constexpr int8_t magicNumbers[2] = { 0x1f, (int8_t)0x8b };
+			constexpr int8_t magicNumbers[2] = {0x1f, (int8_t)0x8b};
 
-			int8_t checkNumbers[2]{ magicNumbers[0], magicNumbers[1] };
+			int8_t checkNumbers[2]{magicNumbers[0], magicNumbers[1]};
 
 			s.serialize(checkNumbers[0]);
 			s.serialize(checkNumbers[1]);
@@ -288,33 +289,33 @@ bool nbtCompound::serialize(nbtCompound*& compound, cbool& write, const stdFileS
 			return false;
 		}
 
-		const std::string& compressedData = readalltext(path);
-		const std::string& uncompressedData = compressed ? gzip::decompress(compressedData.c_str(), compressedData.size()) : compressedData;
+		const std::string &compressedData = readalltext(path);
+		const std::string &uncompressedData = compressed ? gzip::decompress(compressedData.c_str(), compressedData.size()) : compressedData;
 
+		// std::string uncompressedData2 = replace(uncompressedData, std::string(1, '\0'), std::string("<<WATCH OUT>>"));
 
-		//std::string uncompressedData2 = replace(uncompressedData, std::string(1, '\0'), std::string("<<WATCH OUT>>"));
-
-		//output(stringToWString(uncompressedData2));
+		// output(stringToWString(uncompressedData2));
 
 		std::stringstream uncompressedStream = std::stringstream(uncompressedData, getOpenMode(write));
 
-		streamSerializer s = streamSerializer(uncompressedStream, write, endianness::bigEndian);
+		auto iFace = createStreamInterface(uncompressedStream);
 
-		//std::string back = std::string(16000, '#');
+		streamSerializer s = streamSerializer(iFace, write, std::endian::big);
 
+		// std::string back = std::string(16000, '#');
 
-		//s.serialize(&back[0], back.length());
+		// s.serialize(&back[0], back.length());
 
-		//back = replace(back, std::string(1, '\0'), std::string("<<WATCH OUT>>"));
+		// back = replace(back, std::string(1, '\0'), std::string("<<WATCH OUT>>"));
 
-		//output(stringToWString(back) + L"\n\n");
+		// output(stringToWString(back) + L"\n\n");
 
 		serialize(compound, s);
 	}
 
 	return true;
 }
-bool nbtCompound::serialize(nbtCompound*& compound, streamSerializer& s)
+bool nbtCompound::serialize(nbtCompound *&compound, streamSerializer &s)
 {
 	nbtDataTag dataTag;
 	if (s.write)
@@ -327,10 +328,10 @@ bool nbtCompound::serialize(nbtCompound*& compound, streamSerializer& s)
 	}
 
 	s.serialize(dataTag);
-	serializeChild(s, (nbtData*&)compound, dataTag);
+	serializeChild(s, (nbtData *&)compound, dataTag);
 	return true;
 }
-void nbtCompound::serializeChild(const streamSerializer& s, nbtData*& child, const nbtDataTag& childTag)
+void nbtCompound::serializeChild(const streamSerializer &s, nbtData *&child, const nbtDataTag &childTag)
 {
 	if (s.write)
 	{
@@ -339,7 +340,8 @@ void nbtCompound::serializeChild(const streamSerializer& s, nbtData*& child, con
 	else
 	{
 		std::wstring childName;
-		if (childName == std::wstring(L"inventor\x1 slots")) {
+		if (childName == std::wstring(L"inventor\x1 slots"))
+		{
 			throw "found";
 		}
 		s.serializeWStringAsString<int16_t>(childName);
@@ -348,9 +350,9 @@ void nbtCompound::serializeChild(const streamSerializer& s, nbtData*& child, con
 	child->serialize(s);
 }
 
-nbtData* nbtCompound::createNBTData(const std::wstring& name, const nbtDataTag& dataTag)
+nbtData *nbtCompound::createNBTData(const std::wstring &name, const nbtDataTag &dataTag)
 {
-	nbtData* resultingData = nullptr;
+	nbtData *resultingData = nullptr;
 	switch (dataTag)
 	{
 	case nbtDataTag::tagCompound:
@@ -420,9 +422,8 @@ nbtData* nbtCompound::createNBTData(const std::wstring& name, const nbtDataTag& 
 
 nbtCompound::~nbtCompound()
 {
-	for (nbtData* child : children)
+	for (nbtData *child : children)
 	{
 		delete child;
 	}
 }
-

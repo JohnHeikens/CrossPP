@@ -18,7 +18,7 @@ idConverter::idConverter(cint& oldVersion, cint& newVersion)
 	cbool& write = false;
 	if (nbtCompound::serialize(compound, write, fileVersionsFolder + std::to_wstring(oldVersion) + nbtFileExtension))
 	{
-		nbtSerializer s = nbtSerializer(compound, write, false);
+		nbtSerializer s = nbtSerializer(*compound, write, false);
 		itemIDConverter = readIDList<itemData, itemID>(s, itemList, std::wstring(L"item id"));
 		entityIDConverter = readIDList<entityData, entityID>(s, entityDataList, std::wstring(L"entity id"));
 		biomeIDConverter = readIDList<biomeData, biomeID>(s, biomeDataList, std::wstring(L"biome id"));
@@ -55,7 +55,7 @@ void idConverter::writeIDsToFile()
 	{
 		nbtCompound* compound = new nbtCompound(std::wstring(L"idconverter"));
 		cbool& write = true;
-		nbtSerializer s = nbtSerializer(compound, write);
+		nbtSerializer s = nbtSerializer(*compound, write);
 		//output file stream
 		writeIDList(s, itemList, std::wstring(L"item id"));
 		writeIDList(s, entityDataList, std::wstring(L"entity id"));
@@ -65,6 +65,7 @@ void idConverter::writeIDsToFile()
 		writeIDList(s, gameModeDataList, std::wstring(L"game mode id"));
 		writeIDList(s, fireworkShapeDataList, std::wstring(L"firework shape id"));
 
+		//we use a pointer because technically it could modify the pointer
 		nbtCompound::serialize(compound, write, path);
 
 		delete compound;

@@ -141,7 +141,7 @@ std::wstring getAvailableWorldName(std::wstring worldName)
 		{
 			std::wstring allowedChars = std::wstring(L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-() ");
 			std::wstring allowedCharsAfterStart = std::wstring(L"01234556789");
-			if ((allowedChars.find(worldName[i]) != -1) || (i && (allowedCharsAfterStart.find(worldName[i]) != -1)))
+			if ((allowedChars.find(worldName[i]) != std::wstring::npos) || (i && (allowedCharsAfterStart.find(worldName[i]) != std::wstring::npos)))
 			{
 				newName.push_back(worldName[i]);
 				addedUnderScore = false;

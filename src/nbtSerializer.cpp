@@ -6,9 +6,9 @@
 #include "nbtData.h"
 #include "nbtDataTag.h"
 #include "idConverter.h"
-nbtCompound* nbtSerializer::getCurrentChildCompound() const
+nbtCompound& nbtSerializer::getCurrentChildCompound() const
 {
-	return recursiveChildCompounds.size() ? recursiveChildCompounds[recursiveChildCompounds.size() - 1] : compound;
+	return recursiveChildCompounds.size() ? *recursiveChildCompounds[recursiveChildCompounds.size() - 1] : compound;
 }
 
 bool nbtSerializer::push(const nbtData* child)
@@ -32,14 +32,14 @@ void nbtSerializer::pop()
 
 const std::vector<nbtData*>& nbtSerializer::getChildren() const
 {
-	return getCurrentChildCompound()->children;
+	return getCurrentChildCompound().children;
 }
 
 bool nbtSerializer::isArrayTag(const nbtDataTag& dataTag)
 {
 	return dataTag == nbtDataTag::tagSignedInt8Array || dataTag == nbtDataTag::tagSignedInt32Array || dataTag == nbtDataTag::tagSignedInt64Array;
 }
-nbtSerializer::nbtSerializer(nbtCompound* compound, cbool& write, cbool& convert) :iSerializer(write), compound(compound), converter(converter)
+nbtSerializer::nbtSerializer(nbtCompound& compound, cbool& write, cbool& convert) :iSerializer(write), compound(compound), converter(converter)
 {
 	if (convert)
 	{

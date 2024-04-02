@@ -2,6 +2,7 @@
 #include <sfml/Window.hpp>
 #include "keyID.h"
 #include "keyHistoryEvent.h"
+struct nbtSerializer;
 struct socketContainer;
 struct clientInput {
 	veci2 mousePositionPixels = veci2();
@@ -20,7 +21,7 @@ struct clientInput {
 	std::vector<vk> keysUp = std::vector<vk>();
 	std::vector<vk> keysHolding = std::vector<vk>();
 
-	bool serialize(const socketContainer& s);
+	bool serialize(nbtSerializer& s);
 	void addClientInput(const clientInput& newInput);
 	bool holdingDownKey(cvk& key) const;
 	bool pressedKey(cvk& key) const;

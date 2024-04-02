@@ -5,7 +5,7 @@ bool blockStateCondition::checkCondition(const dropData& data, std::mt19937& ran
 	if (data.harvestedBlockData)
 	{
 		nbtCompound checkCompound = nbtCompound(std::wstring(L"checkCompound"));
-		nbtSerializer s = nbtSerializer(&checkCompound, true, false);
+		nbtSerializer s = nbtSerializer(checkCompound, true, false);
 		data.harvestedBlockData->serializeValue(s);
 		s.write = false;
 

@@ -139,7 +139,7 @@ bool dimension::serialize(cbool& write)
 			return false;
 		}
 	}
-	nbtSerializer s = nbtSerializer(compound, write);
+	nbtSerializer s = nbtSerializer(*compound, write);
 	serializeValue(s);
 	if (write)
 	{

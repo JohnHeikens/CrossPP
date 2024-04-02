@@ -26,5 +26,5 @@ struct playerSocket : socketContainer {
 	std::thread* sendPacketThread = nullptr;
 };
 void renderAsync(playerSocket* socket);
-void sendRenderResultAsync(playerSocket* socket);
+void sendRenderResultAsync(playerSocket* socket, nbtCompound* compound, nbtSerializer* s);
 //void sendPacketAsync(playerSocket* socket);

@@ -5,12 +5,13 @@
 #include "biomeGenerator.h"
 #include "chat.h"
 struct chunk;
-struct world :IDestructable
+struct world :IDestructable, nbtSerializable
 {
 	world();
 	void initialize();
 	void finish();
 	void tick();
+	//save or load function. this will modify the world!
 	bool serialize(cbool& write);
 
 	std::vector<biomeGenerator*> biomeList = std::vector<biomeGenerator*>();

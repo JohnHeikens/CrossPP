@@ -7,28 +7,63 @@
 #include "math/vectn.h"
 #include "math/uuid.h"
 
-typedef std::basic_iostream<char> defaultStreamType;
+template <typename t>
+struct membuf : std::basic_streambuf<t>
+{
+	inline membuf(t *const &begin, t *const &end)
+	{
+		this->setg(begin, begin, end);
+	}
+};
+
+struct streamBaseInterface
+{
+	virtual bool write(const char *const &value, const size_t &size) = 0;
+	virtual bool read(char *const &value, const size_t &size) = 0;
+};
+
+// trick to convert template into dynamic template
+template <typename streamType>
+struct streamInterface final : streamBaseInterface
+{
+	streamInterface(streamType &stream) : stream(stream) {}
+	streamType &stream;
+	inline virtual bool write(const char *const &value, const size_t &size) final
+	{
+		return (bool)stream.write(value, size);
+	}
+	inline virtual bool read(char *const &value, const size_t &size) final
+	{
+		return (bool)stream.read(value, size);
+	}
+};
+template <typename streamType>
+static streamInterface<streamType> createStreamInterface(streamType &stream)
+{
+	return streamInterface<streamType>(stream);
+}
+
+typedef streamBaseInterface defaultStreamType;
 
 template <typename streamType = defaultStreamType>
-struct serializer :iSerializer
+struct serializer : iSerializer
 {
-	//the endianness of the file the serializer is interacting with
-	const endianness fileEndianness;
+	// the std::endian of the file the serializer is interacting with
+	const std::endian fileEndianness;
 
-	streamType& stream;
-	serializer(streamType& stream, cbool& write, const endianness& fileEndianness = currentEndianness) :
-		iSerializer(write), stream(stream), fileEndianness(fileEndianness) {}
+	streamType &stream;
+	serializer(streamType &stream, cbool &write, const std::endian &fileEndianness = std::endian::native) : iSerializer(write), stream(stream), fileEndianness(fileEndianness) {}
 
-	template<typename valueType, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
-	inline bool serialize(valueType& value) const
+	template <typename valueType, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
+	inline bool serialize(valueType &value) const
 	{
 		if (write)
 		{
-			if (fileEndianness != currentEndianness)
+			if (fileEndianness != std::endian::native && sizeof(valueType) > 1)
 			{
-				valueType correctEndian = value;//do not modify the value which is passed by reference
+				valueType correctEndian = value; // do not modify the value which is passed by reference
 
-				convertEndian(correctEndian);
+				invertEndian(correctEndian);
 
 				return (bool)stream.write(castout(&correctEndian), sizeof(valueType));
 			}
@@ -41,9 +76,9 @@ struct serializer :iSerializer
 		{
 			if (stream.read(castin(&value), sizeof(valueType)))
 			{
-				if (fileEndianness != currentEndianness)
+				if (fileEndianness != std::endian::native && sizeof(valueType) > 1)
 				{
-					convertEndian(value);
+					invertEndian(value);
 				}
 				return true;
 			}
@@ -51,21 +86,23 @@ struct serializer :iSerializer
 		return false;
 	}
 
-	template<typename valueType>
-	inline bool serialize(valueType* valuesPointer, const size_t& arraySize) const
+	template <typename valueType>
+	inline bool serialize(valueType *valuesPointer, const size_t &arraySize) const
 	{
-		if constexpr (is_endian_convertable_v<valueType>) {
+		if constexpr (is_endian_convertable_v<valueType>)
+		{
 
 			if (write)
 			{
-				if (fileEndianness != currentEndianness && sizeof(valueType) > 1)
+				if (fileEndianness != std::endian::native && sizeof(valueType) > 1)
 				{
-					const valueType* const endPtr = valuesPointer + arraySize;
-					for (; valuesPointer < endPtr; )
+					const valueType *const endPtr = valuesPointer + arraySize;
+					for (; valuesPointer < endPtr;)
 					{
 						valueType correctEndian = *valuesPointer++;
-						convertEndian(correctEndian);
-						if (!stream.write(castout(&correctEndian), sizeof(valueType))) {
+						invertEndian(correctEndian);
+						if (!stream.write(castout(&correctEndian), sizeof(valueType)))
+						{
 							return false;
 						}
 					}
@@ -78,15 +115,16 @@ struct serializer :iSerializer
 			}
 			else
 			{
-				if (fileEndianness != currentEndianness && sizeof(valueType) > 1)
+				if (fileEndianness != std::endian::native && sizeof(valueType) > 1)
 				{
-					const valueType* const endPtr = valuesPointer + arraySize;
-					for (; valuesPointer < endPtr; )
+					const valueType *const endPtr = valuesPointer + arraySize;
+					for (; valuesPointer < endPtr;)
 					{
-						if (!stream.read(castin(valuesPointer), sizeof(valueType))) {
+						if (!stream.read(castin(valuesPointer), sizeof(valueType)))
+						{
 							return false;
 						}
-						convertEndian(*valuesPointer++);
+						invertEndian(*valuesPointer++);
 					}
 					return true;
 				}
@@ -96,10 +134,11 @@ struct serializer :iSerializer
 				}
 			}
 		}
-		else {
-			const valueType* const endPtr = valuesPointer + arraySize;
+		else
+		{
+			const valueType *const endPtr = valuesPointer + arraySize;
 
-			for (; valuesPointer < endPtr; )
+			for (; valuesPointer < endPtr;)
 			{
 				serialize(*valuesPointer++);
 			}
@@ -107,45 +146,47 @@ struct serializer :iSerializer
 		}
 	}
 
-	template<typename valueType, size_t arraySize, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
-	inline bool serialize(valueType(&values)[arraySize]) const
+	template <typename valueType, size_t arraySize, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
+	inline bool serialize(valueType (&values)[arraySize]) const
 	{
 		return serialize(&values[0], arraySize);
 	}
-	inline bool serialize(uuid& id) const
+	inline bool serialize(uuid &id) const
 	{
 		return serialize(id.idInts);
 	}
-	template<typename valueType>
-	inline bool serialize(std::vector<valueType>& values) const
+	template <typename valueType>
+	inline bool serialize(std::vector<valueType> &values) const
 	{
 		size_t size = write ? values.size() : 0;
-		if (!serialize(size)) {
+		if (!serialize(size))
+		{
 			return false;
 		}
-		if (!write) {
+		if (!write)
+		{
 			values.resize(size);
 		}
 		return size ? serialize(&values[0], values.size()) : false;
-		//return true;
+		// return true;
 	}
 
-	template<typename valueType, fsize_t axisCount, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
-	inline bool serialize(vectn<valueType, axisCount>& value) const
+	template <typename valueType, fsize_t axisCount, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>
+	inline bool serialize(vectn<valueType, axisCount> &value) const
 	{
 		return serialize(value.axis, axisCount);
-		//for (fsize_t i = 0; i < axisCount; i++)
+		// for (fsize_t i = 0; i < axisCount; i++)
 		//{
 		//	if (!serialize(value.axis[i]))
 		//	{
 		//		return false;
 		//	}
-		//}
-		//return true;
+		// }
+		// return true;
 	}
 
-	template<typename sizeType = int>
-	inline void serializeString(std::string& str) const
+	template <typename sizeType = int>
+	inline void serializeString(std::string &str) const
 	{
 		sizeType size;
 		if (write)
@@ -161,7 +202,7 @@ struct serializer :iSerializer
 		serialize(&str[0], str.length());
 	}
 
-	inline void serializeStringUntilZero(std::string& str) const
+	inline void serializeStringUntilZero(std::string &str) const
 	{
 		int8_t stringEnd = 0;
 		if (write)
@@ -189,8 +230,8 @@ struct serializer :iSerializer
 		}
 	}
 
-	template<typename sizeType = int>
-	inline void serializeWStringAsString(std::wstring& str) const
+	template <typename sizeType = int>
+	inline void serializeWStringAsString(std::wstring &str) const
 	{
 		std::string utf8String;
 		if (write)

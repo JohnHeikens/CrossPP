@@ -46,7 +46,6 @@
 
 bool world::serialize(cbool& write)
 {
-	//test
 
 	const std::wstring path = savesFolder + currentWorld->name + std::wstring(L"\\");
 	if (!stdFileSystem::is_directory(path) || !stdFileSystem::exists(path))
@@ -73,7 +72,7 @@ bool world::serialize(cbool& write)
 			return false;
 		}
 	}
-	nbtSerializer s = nbtSerializer(compound, write);
+	nbtSerializer s = nbtSerializer(*compound, write);
 
 	//seed
 	if (write)

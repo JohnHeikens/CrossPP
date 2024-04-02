@@ -71,7 +71,7 @@ bool structure::serialize(const std::wstring& path, cbool& write)
 			return false;
 		}
 	}
-	nbtSerializer s = nbtSerializer(compound, write);
+	nbtSerializer s = nbtSerializer(*compound, write);
 	//output file stream
 	if (write)
 	{

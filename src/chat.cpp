@@ -526,7 +526,7 @@ void chat::say(human& sender, std::wstring line)
 							else if (getWord(lines, 1) == std::wstring(L"merge"))
 							{
 								nbtCompound compound = nbtCompound::fromString(getWord(lines, wordOffset));
-								nbtSerializer s = nbtSerializer(&compound, false, false);
+								nbtSerializer s = nbtSerializer(compound, false, false);
 								selectedSerializable->serializeValue(s);
 							}
 							else
