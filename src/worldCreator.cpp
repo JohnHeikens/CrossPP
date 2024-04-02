@@ -158,13 +158,13 @@ std::wstring getAvailableWorldName(std::wstring worldName)
 		worldName = newName;
 	}
 
-	if (stdFileSystem::exists(savesFolder + worldName))
+	if (stdFileSystem::exists(savesFolder / worldName))
 	{
 		int index = 1;
 		while (true)
 		{
 			const std::wstring& currentWorldName = worldName + std::wstring(L"(") + std::to_wstring(index) + std::wstring(L")");
-			if (stdFileSystem::exists(savesFolder + currentWorldName))
+			if (stdFileSystem::exists(savesFolder / currentWorldName))
 			{
 				index++;
 			}

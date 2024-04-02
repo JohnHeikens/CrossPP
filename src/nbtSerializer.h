@@ -325,8 +325,7 @@ struct nbtSerializer : iSerializer
 		nbtData *currentChild = getOrCreateNBTData<t *>(memberName);
 		if (currentChild)
 		{
-			serializeVariableArray(currentChild, value, count);
-			return true;
+			return serializeVariableArray(currentChild, value, count);
 		}
 		else
 		{
@@ -339,8 +338,7 @@ struct nbtSerializer : iSerializer
 		nbtData *currentChild = getOrCreateNBTData<t>(memberName);
 		if (currentChild)
 		{
-			serializeValue(currentChild, value);
-			return true;
+			return serializeValue(currentChild, value);
 		}
 		else
 		{
@@ -372,8 +370,7 @@ struct nbtSerializer : iSerializer
 				}
 				int count = value.size();
 				signedT *ptr = (signedT *)&value[0]; // ptr will not get modified because it's not null
-				serializeVariableArray(currentChild, ptr, count);
-				return true;
+				return serializeVariableArray(currentChild, ptr, count);
 			}
 		}
 		else

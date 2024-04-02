@@ -53,14 +53,14 @@ mat3x3 structure::getEntitiesToWorldTransform(cveci2& pos00, cbool& flipX) const
 	return entitiesToWorldTransform;
 }
 
-bool structure::serialize(const std::wstring& path, cbool& write)
+bool structure::serialize(const stdPath& path, cbool& write)
 {
 	nbtCompound* compound = nullptr;
 	int version = 0;
 
 	if (write)
 	{
-		createFoldersIfNotExists(stdFileSystem::path(path).parent_path().wstring());
+		createFoldersIfNotExists(stdPath(path).parent_path().wstring());
 		version = currentFileVersionID;
 		compound = new nbtCompound(std::wstring(L"structure"));
 	}
@@ -274,7 +274,7 @@ bool structure::inBounds(cveci2& position) const
 }
 structure* getStructureByName(std::wstring name)
 {
-	const stdFileSystem::path pathToSearch(name);
+	const stdPath pathToSearch(name);
 
 	const auto i = std::find_if(structureList.begin(), structureList.end(), [pathToSearch](const auto& a) {
 		return a->pathWithoutExtension.compare(pathToSearch) == 0;
@@ -289,13 +289,12 @@ std::vector<structure*> getStructuresByName(const std::wstring& seekFolder, cons
 	{
 		structure* s = structureList[i];
 
-		stdFileSystem::path currentFolder = s->pathWithoutExtension;
+		stdPath currentFolder = s->pathWithoutExtension;
 		currentFolder.remove_filename();
-		currentFolder += std::wstring(L"\\");
 
 		if (currentFolder.compare(seekFolder) == 0)
 		{
-			std::wstring currentFileName = stdFileSystem::path(s->pathWithoutExtension).filename();
+			std::wstring currentFileName = stdPath(s->pathWithoutExtension).filename();
 			if (name == currentFileName)
 			{
 				foundStructures.push_back(s);

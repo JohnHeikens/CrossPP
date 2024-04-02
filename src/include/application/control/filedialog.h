@@ -1,6 +1,6 @@
 #pragma once
 #include "GlobalFunctions.h"
-//#include <Windows.h>
+//#include "windowsIncluder.h"
 
 enum filedialogmode { open, save };
 

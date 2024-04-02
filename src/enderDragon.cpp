@@ -297,7 +297,7 @@ void enderDragon::onDeath()
 				currentEnd->dragonAlive = false;
 
 				//add end portal and egg
-				const structure* endExitPortalStructure = getStructureByName(structureFolder + std::wstring(L"the_end/exit_portal"));
+				const structure* endExitPortalStructure = getStructureByName(structureFolder / std::wstring(L"the_end/exit_portal"));
 				cveci2 dragonEggPosition = currentEnd->exitPortalLevel + cveci2(0, (int)endExitPortalStructure->blockIDArray.size.y);
 				dimensionIn->setBlockID(dragonEggPosition, blockID::dragon_egg);
 

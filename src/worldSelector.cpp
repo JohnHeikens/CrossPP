@@ -47,5 +47,5 @@ void worldSelector::deleteGame(const control* const c)
 {
 	//delete folder
 	const std::wstring worldToRemoveName = ((saveFileControl*)c)->gameName;
-	std::filesystem::remove_all(savesFolder + worldToRemoveName );
+	std::filesystem::remove_all(savesFolder / worldToRemoveName );
 }

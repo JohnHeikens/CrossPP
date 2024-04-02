@@ -2,6 +2,7 @@
 #include "IItemComparable.h"
 #include "interface/idestructable.h"
 #include "array/fastlist.h"
+#include "filesystem/filemanager.h"
 //represents a list of items that hold this tag
 struct tag :IItemComparable, IDestructable
 {
@@ -14,6 +15,6 @@ struct tag :IItemComparable, IDestructable
 	virtual ~tag() override;
 };
 
-tag* readTag(const std::wstring& tagName, const std::wstring& tagDirectory);
+tag* readTag(const std::wstring& tagName, const stdPath& tagDirectory);
 size_t getTagListIndexByName(std::wstring name);
 extern fastList<tag*> tagList;

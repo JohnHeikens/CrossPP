@@ -5,7 +5,7 @@
 #include "dimension.h"
 brewingStandSlotContainer::brewingStandSlotContainer()
 {
-	uiTexture = loadTextureFromResourcePack(containerTextureFolder + std::wstring(L"brewing_stand.png"));
+	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"brewing_stand.png"));
 	containers.push_back(blazePowderSlot = new uiSlotContainer(cveci2(17, 133), nullptr));
 	containers.push_back(ingredientSlot = new uiSlotContainer(cveci2(79, 133), nullptr));
 	containers.push_back(potionSlots[0] = new uiSlotContainer(cveci2(56, 99), nullptr));

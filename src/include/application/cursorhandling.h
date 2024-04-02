@@ -1,5 +1,5 @@
 #pragma once
-//#include <windows.h>
+//#include "windowsIncluder.h"
 //inline bool cursorVisible()
 //{
 //	CURSORINFO ci = {};

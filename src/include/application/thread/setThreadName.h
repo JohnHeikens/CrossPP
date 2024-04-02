@@ -1,6 +1,6 @@
 #include "GlobalFunctions.h"
 #if onWindows
-#include <Windows.h>
+#include "windowsIncluder.h"
 #elif onLinux
 #include <sys/prctl.h>
 #include "include/array/wstring.h"

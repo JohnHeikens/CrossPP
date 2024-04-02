@@ -16,7 +16,7 @@ idConverter::idConverter(cint& oldVersion, cint& newVersion)
 	this->newVersion = newVersion;
 	nbtCompound* compound;
 	cbool& write = false;
-	if (nbtCompound::serialize(compound, write, fileVersionsFolder + std::to_wstring(oldVersion) + nbtFileExtension))
+	if (nbtCompound::serialize(compound, write, fileVersionsFolder / (std::to_wstring(oldVersion) + nbtFileExtension)))
 	{
 		nbtSerializer s = nbtSerializer(*compound, write, false);
 		itemIDConverter = readIDList<itemData, itemID>(s, itemList, std::wstring(L"item id"));
@@ -32,7 +32,7 @@ idConverter::idConverter(cint& oldVersion, cint& newVersion)
 
 void idConverter::writeIDsToFile()
 {
-	const std::wstring path = fileVersionsFolder + std::to_wstring(currentFileVersionID) + nbtFileExtension;
+	const std::wstring path = fileVersionsFolder / (std::to_wstring(currentFileVersionID) + nbtFileExtension);
 	//get last converter
 	if (stdFileSystem::exists(path))
 	{

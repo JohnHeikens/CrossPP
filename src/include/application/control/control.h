@@ -13,7 +13,7 @@ typedef eventHandler<controlEventArgs> controlEventHandler;
 struct mouseEventArgs : controlEventArgs 
 {
 	veci2 position = veci2();
-	mouseEventArgs(control& sencder, cveci2& position) : controlEventArgs(sender), position(position) 
+	mouseEventArgs(control& sender, cveci2& position) : controlEventArgs(sender), position(position) 
 	{
 
 	}

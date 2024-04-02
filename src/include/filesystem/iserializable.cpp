@@ -11,7 +11,7 @@ void ISerializable::clone(ISerializable &cloneTo)
 	buf.seekp(0);		  // reset position
 	cloneTo.serialize(s); // read from string stream
 }
-bool ISerializable::serialize(const std::wstring &path, cbool &write, const std::endian &fileEndianness)
+bool ISerializable::serialize(const stdPath &path, cbool &write, const std::endian &fileEndianness)
 {
 	std::shared_ptr<char[]> buffer;
 	std::fstream stream = getAcceleratedFstream(path, write, buffer, 0x1000);

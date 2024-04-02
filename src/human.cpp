@@ -504,12 +504,12 @@ void human::serializeValue(nbtSerializer& s)
 
 bool human::serialize(cbool& write)
 {
-	const std::wstring& playersFolder = savesFolder + currentWorld->name + std::wstring(L"\\players\\");
+	const stdPath& playersFolder = savesFolder / currentWorld->name / L"players";
 	if (write)
 	{
 		createFoldersIfNotExists(playersFolder);
 	}
-	const std::wstring& path = playersFolder + (std::wstring)identifier;
+	const stdPath& path = playersFolder / (std::wstring)identifier;
 	//to point out which 'serialize' function to use. this might cause errors. is mob::serialize calling human::serializeValue?
 	return mob::serialize(L"player", path, write);
 }

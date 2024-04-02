@@ -188,6 +188,8 @@ type/value mismatch: f.e. use std::remove_const_t instead of std::remove_const::
 
 error with std::chrono::system_clock::now: use steady_clock everywhere 
 
+vs code intellisense lagging: another extension is causing it. disable all extensions and see what extension causes it
+
 TODO:
 
 maybe add vcpkg-configuration.json for version consistency (see https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)

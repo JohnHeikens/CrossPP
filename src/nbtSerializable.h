@@ -1,5 +1,6 @@
 #pragma once
 #include "nbtSerializer.h"
+#include "filesystem/filemanager.h"
 struct nbtSerializable
 {
 	//ONLY CALL THIS FUNCTION IF YOU ARE SURE THERE ARE NOT TWO OF THOSE IN YOUR COMPOUND!
@@ -7,7 +8,7 @@ struct nbtSerializable
 	void serialize(nbtSerializer& s, const std::wstring& name = std::wstring(L""));
 	void clone(nbtSerializable& cloneTo);
 	bool compare(nbtSerializable& other);
-	bool serialize(const std::wstring& name, const std::wstring& path, cbool& write);
+	bool serialize(const std::wstring& name, const stdPath& path, cbool& write);
 	std::wstring toString();
 
 	template<typename t>

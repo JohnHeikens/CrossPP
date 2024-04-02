@@ -55,7 +55,8 @@ project(${ProjectId})
 
 # Enable additional warnings and debug mode
 # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
-set (CMAKE_CXX_FLAGS "-g -W -Wno-stringop-overread -pedantic")
+# -pedantic removed; it complains about anonymous structs
+set (CMAKE_CXX_FLAGS "-g -W -Wno-stringop-overread")
 
 # add .cpp-files
 
@@ -120,7 +121,9 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 #add_compile_options(-lefence)
 #target_compile_options(${PROJECT_NAME} PRIVATE /Zi)
 
-target_precompile_headers(${PROJECT_NAME} PUBLIC src/stdafx.h src/stdafxdynamic.h)
+# src/stdafxdynamic.h is not smart to include. it turns out that all precompiled header files are included in "cmake_pch.h"
+#so when you change something in any of the files included by stdafxdynamic.h everything has to recompile
+target_precompile_headers(${PROJECT_NAME} PUBLIC src/stdafx.h)
 
 #set(SFML_DIR "build\\_deps\\sfml-src")
 set(SFML_DIR "build\\_deps\\sfml-build")

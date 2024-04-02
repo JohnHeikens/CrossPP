@@ -16,11 +16,11 @@ void reloadJigsawPools()
 		}
 	}
 }
-jigsawPool* jigsawPool::fromFile(const std::wstring path)
+jigsawPool* jigsawPool::fromFile(const stdPath& path)
 {
 	if (stdFileSystem::exists(path))
 	{
-		jigsawPool* pool = new jigsawPool(stdFileSystem::path(path).replace_extension().wstring());
+		jigsawPool* pool = new jigsawPool(stdPath(path).replace_extension().wstring());
 
 		const jsonContainer& content = readJson(stringToWString(readalltext(path)));
 		const jsonContainer& elementContainer = content.children[content.getChildIndex(std::wstring(L"elements"))];
@@ -31,8 +31,8 @@ jigsawPool* jigsawPool::fromFile(const std::wstring path)
 			if (convertToDouble(element.children[element.getChildIndex(std::wstring(L"weight"))].children[0].value, weight))
 			{
 				const std::wstring& relativeStructurePath = elementChild.children[elementChild.getChildIndex(std::wstring(L"location"))].children[0].value;
-
-				pool->addTargetStructure(stdFileSystem::path(path).remove_filename().wstring() + std::wstring(L"\\"), relativeStructurePath, weight);
+				//create a copy and remove the filename of the copy
+				pool->addTargetStructure(stdPath(path).remove_filename(), relativeStructurePath, weight);
 			}
 			else
 			{
@@ -52,7 +52,7 @@ jigsawPool::jigsawPool(const std::wstring& name) :INamable(name)
 {
 }
 
-void jigsawPool::addTargetStructure(const std::wstring& seekFolder, const std::wstring& structureName, cfp& weight)
+void jigsawPool::addTargetStructure(const stdPath& seekFolder, const std::wstring& structureName, cfp& weight)
 {
 	std::vector<structure*> targetStructures = getStructuresByName(seekFolder, structureName);
 	if (targetStructures.size())
@@ -66,10 +66,10 @@ void jigsawPool::addTargetStructure(const std::wstring& seekFolder, const std::w
 	}
 	else
 	{
-		const jigsawPool* pool = getJigsawPoolByName(seekFolder + structureName);
+		const jigsawPool* pool = getJigsawPoolByName(seekFolder / structureName);
 		if (!pool)
 		{
-			pool = jigsawPool::fromFile(seekFolder + structureName + jsonFileExtension);
+			pool = jigsawPool::fromFile(seekFolder / (structureName + jsonFileExtension));
 		}
 		if (pool)
 		{
@@ -99,10 +99,10 @@ structure* jigsawPool::getRandomStructure(std::mt19937& randomToUse)
 }
 jigsawPool* getJigsawPoolByName(std::wstring name)
 {
-	const stdFileSystem::path pathToSearch(name);
+	const stdPath pathToSearch(name);
 	auto it = std::find_if(jigsawPoolList.begin(), jigsawPoolList.end(),
 		[pathToSearch](const auto& a) {
-			return stdFileSystem::path(a->name).compare(pathToSearch) == 0;
+			return stdPath(a->name).compare(pathToSearch) == 0;
 		});
 
 	return it == jigsawPoolList.end() ? nullptr : (*it);

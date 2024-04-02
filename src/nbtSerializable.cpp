@@ -37,7 +37,7 @@ bool nbtSerializable::compare(nbtSerializable& other)
 
 	return compareCompound.compare(otherCompound);
 }
-bool nbtSerializable::serialize(const std::wstring& name, const std::wstring& path, cbool& write)
+bool nbtSerializable::serialize(const std::wstring& name, const stdPath& path, cbool& write)
 {
 	nbtCompound* compound = nullptr;
 	if (write)

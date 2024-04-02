@@ -11,7 +11,7 @@ constexpr std::ios_base::openmode getOpenMode(cbool& write)
 }
 
 //don't use or delete buffer, it will destroy itself once it goes out of scope
-inline std::fstream getAcceleratedFstream(const std::wstring& path, cbool& write, std::shared_ptr<char[]>& buffer, cint& bufferSize)
+inline std::fstream getAcceleratedFstream(const stdPath& path, cbool& write, std::shared_ptr<char[]>& buffer, cint& bufferSize)
 {
 	std::fstream stream;
 	stream.open(path.c_str(), getOpenMode(write));

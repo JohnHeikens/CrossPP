@@ -6,8 +6,9 @@
 //#ifdef _HAS_CXX17 //warning! this is not a safe macro
 //c++ 17:
 #include <filesystem>
-//#include <Windows.h>
+//#include "windowsIncluder.h"
 namespace stdFileSystem = std::filesystem;
+using stdPath = stdFileSystem::path;
 
 typedef int fileOpenMode;
 
@@ -61,7 +62,7 @@ inline std::wstring findFileRecursive(const std::wstring& fileNameWithExtionsion
 	for (const auto& fileIterator : stdFileSystem::recursive_directory_iterator(folderIn))
 	{
 		const std::wstring currentFileNameWithExtension = fileIterator.path().filename().wstring();
-		if (stdFileSystem::path(currentFileNameWithExtension).compare(stdFileSystem::path(fileNameWithExtionsion)) == 0)
+		if (stdPath(currentFileNameWithExtension).compare(stdPath(fileNameWithExtionsion)) == 0)
 		{
 			return fileIterator.path().wstring();
 		}
@@ -70,7 +71,7 @@ inline std::wstring findFileRecursive(const std::wstring& fileNameWithExtionsion
 }
 
 //only creates last directory
-inline void createFolderIfNotExists(const std::wstring& path)
+inline void createFolderIfNotExists(const stdPath& path)
 {
 	if (!stdFileSystem::is_directory(path) || !stdFileSystem::exists(path))
 	{
@@ -79,7 +80,7 @@ inline void createFolderIfNotExists(const std::wstring& path)
 }
 
 //creates the whole path to this directory
-inline void createFoldersIfNotExists(const std::wstring& path)
+inline void createFoldersIfNotExists(const stdPath& path)
 {
 	if (!stdFileSystem::is_directory(path) || !stdFileSystem::exists(path))
 	{

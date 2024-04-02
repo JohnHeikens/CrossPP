@@ -3,6 +3,7 @@
 #include "mob.h"
 #include "dragonPhase.h"
 #include "soundCollection.h"
+#include "folderList.h"
 
 //ender dragon
 constexpr rectangle2 enderDragonBodyTextureRect = crectangle2(0x58, 0xA8, 0x40, 0x18);
@@ -93,7 +94,6 @@ constexpr fp endCrystalBeamPixelSize = endCrystalHealRange / (fp)endCrystalBeamT
 constexpr fp endCrystalBeamWidth = endCrystalBeamTextureRect.size.getX() * endCrystalBeamPixelSize;
 extern resolutionTexture* endCrystalBeamTexture;
 extern std::shared_ptr<soundCollection> enderDragonWingsSound;
-extern const std::wstring structureFolder;
 
 //https://sueburke.site/2020/02/06/how-much-does-a-dragon-weigh/#:~:text=A%20dragon%2030%20feet%20long,wingspan%20would%20weigh%20100%20pounds.
 constexpr fp gooseLength = 1;

@@ -4,11 +4,11 @@
 #include "itemData.h"
 fastList<tag*> tagList = fastList<tag*>();
 
-tag* readTag(const std::wstring& tagName, const std::wstring& tagDirectory)
+tag* readTag(const std::wstring& tagName, const stdPath& tagDirectory)
 {
 	tag* t = new tag(tagName);
 
-	const jsonContainer& content = readJson(stringToWString(readalltext(tagDirectory + tagName + jsonFileExtension)));
+	const jsonContainer& content = readJson(stringToWString(readalltext(tagDirectory / (tagName + jsonFileExtension))));
 	const std::vector<jsonContainer> taggedItemsContainer = content.children[1].children;
 	for (const jsonContainer& taggedItem : taggedItemsContainer)
 	{

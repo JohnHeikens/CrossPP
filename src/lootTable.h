@@ -18,7 +18,7 @@ struct lootTable : IDestructable
 	static void dropLoot(const std::vector<itemStack>& rolledStacks, tickableBlockContainer* containerIn, cvec2& position, cfp& maxSpeed);
 };
 
-std::shared_ptr <lootTable> readLootTable(const std::wstring& path);
+std::shared_ptr <lootTable> readLootTable(const stdPath& path);
 lootTable* readDrop(const jsonContainer& container);
 
 extern std::map<std::wstring, std::shared_ptr <lootTable>> chestLootTables;

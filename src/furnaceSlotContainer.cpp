@@ -8,7 +8,7 @@
 #include "dimension.h"
 furnaceSlotContainer::furnaceSlotContainer()
 {
-	uiTexture = loadTextureFromResourcePack(containerTextureFolder + std::wstring(L"furnace.png"));
+	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"furnace.png"));
 	containers.push_back(furnaceInputSlot = new uiSlotContainer(cveci2(56, 133), nullptr));
 	containers.push_back(furnaceOutputSlot = new uiSlotContainer(cveci2(116, 116), nullptr));
 	containers.push_back(furnaceFuelSlot = new uiSlotContainer(cveci2(56, 97), nullptr));

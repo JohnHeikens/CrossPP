@@ -465,11 +465,11 @@ void tickableBlockContainer::createExplosion(cvec2& position, cfp& explosionPowe
 				if (currentRayStep > 0)
 				{
 					cfp maximalRayDistance = currentRayStep * explosionRayStepSize;
-					for (int entityIndex = 0; entityIndex < nearEntities.size(); entityIndex++)
+					for (size_t entityIndex = 0; entityIndex < nearEntities.size(); entityIndex++)
 					{
-						entity* e = nearEntities[entityIndex];
+						const entity* const& e = nearEntities[entityIndex];
 						fp tmin, tmax;
-						crectangle2 hitBox = e->calculateHitBox(e->position);
+						crectangle2& hitBox = e->calculateHitBox(e->position);
 						//check for intersection
 						if (collidedistance2dDirection(position, explosionRayNormal, hitboxes[entityIndex], tmin, tmax))
 						{
@@ -497,7 +497,7 @@ void tickableBlockContainer::createExplosion(cvec2& position, cfp& explosionPowe
 	cfp damageMultiplier = 7 * explosionPower;//multiply by number to get roughly the same damage as minecraft
 
 	//damage entities based on exposure
-	for (int entityIndex = 0; entityIndex < nearEntities.size(); entityIndex++)
+	for (size_t entityIndex = 0; entityIndex < nearEntities.size(); entityIndex++)
 	{
 		//to make sure there are no NAN's
 		exposureDivisionArray[entityIndex] = math::maximum(exposureDivisionArray[entityIndex], 1);

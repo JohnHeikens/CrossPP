@@ -85,8 +85,8 @@ void structureBlockSaveModeUI::mouseDown(cveci2& position, cmb& button)
 	control* highestChild = getHighestChild(position);
 	if (highestChild == saveButton)
 	{
-		const std::wstring& path = structureBlockOptions->temporaryStructureBlockData->structureName;
-		const std::wstring& absolutePath = structureFolder + path;
+		const stdPath& path = structureBlockOptions->temporaryStructureBlockData->structureName;
+		const std::wstring& absolutePath = structureFolder / path;
 		structure* s = new structure(absolutePath);
 		cveci2 pos0 = currentHuman->selectedContainerPosition + structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition;
 		s->createStructure(*currentHuman->dimensionIn, crectanglei2(pos0, structureBlockOptions->temporaryStructureBlockData->structureSize), structureBlockOptions->temporaryStructureBlockData->includeEntities);

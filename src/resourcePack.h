@@ -4,21 +4,22 @@
 #include <memory>
 #include "itemID.h"
 #include "soundCollection.h"
+#include "filesystem/filemanager.h"
 
-resolutionTexture* loadTextureFromResourcePack(const std::wstring& relativePath, cbool& addToTextureList = true);
-resolutionTexture* loadTexture(std::wstring path, cveci2& defaultSize = cveci2(blockTextureSize), cbool& addToTextureList = true);
-resolutionTexture* loadChestTexture(const std::wstring& path);
+resolutionTexture* loadTextureFromResourcePack(const stdPath& relativePath, cbool& addToTextureList = true);
+resolutionTexture* loadTexture(stdPath path, cveci2& defaultSize = cveci2(blockTextureSize), cbool& addToTextureList = true);
+resolutionTexture* loadChestTexture(const stdPath& path);
 void loadResourcePacks();
-std::vector<std::wstring> getResourceLocations(const std::wstring& relativePath);
+std::vector<stdPath> getResourceLocations(const stdPath& relativePath);
 
 std::vector<resolutionTexture*> loadGrowthStageTextures(const std::wstring& blockName, std::vector<int> growthStageIndexes);
-resolutionTexture* loadRotatedTexture(const std::wstring& path, cvec2& defaultSize, cint& angle);
-resolutionTexture* loadRailsTexture(const std::wstring& path);
+resolutionTexture* loadRotatedTexture(const stdPath& path, cvec2& defaultSize, cint& angle);
+resolutionTexture* loadRailsTexture(const stdPath& path);
 
 std::shared_ptr<soundCollection> getEquipSound(const itemID& identifier);
 void unloadResourcePacks();
 
-extern std::vector<std::wstring> resourcePackPaths;
+extern std::vector<stdPath> resourcePackPaths;
 extern std::wstring creditsText;
 extern std::vector<resolutionTexture*> loadedTextures;
 

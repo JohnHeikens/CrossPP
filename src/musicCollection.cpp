@@ -2,12 +2,12 @@
 #include "math/random/random.h"
 #include "entity.h"
 #include "tickableBlockContainer.h"
-void musicCollection::addAudioFile(const std::wstring& path)
+void musicCollection::addAudioFile(const stdPath& path)
 {
 	audioPaths.push_back(path);
 }
 
-musicCollection::musicCollection(const std::wstring& path)
+musicCollection::musicCollection(const stdPath& path)
 {
 	addAudioFileName(path);
 }

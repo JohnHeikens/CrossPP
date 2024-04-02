@@ -1,6 +1,7 @@
 #include "soundhandler.h"
 #include "math/timemath.h"
 #include "math/vectn.h"
+#include "filesystem/filemanager.h"
 #pragma once
 
 extern int playingSoundCount;
@@ -84,7 +85,7 @@ struct music2d : audio2dt<sf::Music>
 {
 	std::wstring path = std::wstring(L"");
 
-	inline music2d(const std::wstring& path, cvec2& pos, cfp& volume, cfp& pitch, cbool& isSpatial) :
+	inline music2d(const stdPath& path, cvec2& pos, cfp& volume, cfp& pitch, cbool& isSpatial) :
 		path(path), audio2dt(pos, volume, pitch, isSpatial)
 	{
 	}

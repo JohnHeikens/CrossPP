@@ -139,7 +139,7 @@ struct rectangletn : baseRect<t, axisCount>
 	{
 		const vectn<t, axisCount> &oldPos11 = pos1();
 		const vectn<t, axisCount> &rectPos11 = rect.pos1();
-		for (int i = 0; i < axisCount; i++)
+		for (fsize_t i = 0; i < axisCount; i++)
 		{
 			if (rect.pos0[i] < pos0[i])
 			{
@@ -159,7 +159,7 @@ struct rectangletn : baseRect<t, axisCount>
 		vectn<t, axisCount> toCropPos1 = toCrop.pos1();
 		vectn<t, axisCount> borderPos1 = pos1();
 
-		for (int i = 0; i < axisCount; i++)
+		for (fsize_t i = 0; i < axisCount; i++)
 		{
 			if (toCrop.pos0[i] < pos0[i])
 			{
@@ -189,7 +189,7 @@ struct rectangletn : baseRect<t, axisCount>
 		vectn<t, axisCount> toCropPos1 = toCrop.pos1();
 		vectn<t, axisCount> borderPos1 = pos1();
 
-		for (int i = 0; i < axisCount; i++)
+		for (fsize_t i = 0; i < axisCount; i++)
 		{
 			if (toCrop.pos0[i] < pos0[i])
 			{

@@ -8,7 +8,7 @@ public:
 	texture(cvect2<fsize_t> &size, cbool &initializeToDefault = true) : array2d<color>(size, initializeToDefault) {}
 	texture(cvect2<fsize_t> &size, color *const &baseArray) : array2d<color>(size, baseArray) {}
 
-	texture(const std::wstring &path, cbool &flip);
+	texture(const stdPath& path, cbool &flip);
 	// the colors wont be deleted when the texture is deleted.
 	void switchChannels(colorb *byteArray, cint &channelIndex1, cint &channelIndex2) const;
 	void Flip() const;
@@ -83,4 +83,4 @@ public:
 	}
 };
 
-veci2 getImageSize(const std::wstring &path);
+veci2 getImageSize(const stdPath& path);

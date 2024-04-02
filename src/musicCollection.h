@@ -1,12 +1,13 @@
 #pragma once
 #include "audioCollection.h"
 #include "soundhandler2d.h"
+#include "filesystem/filemanager.h"
 struct tickableBlockContainer;
 struct musicCollection : audioCollection
 {
 	std::vector<std::wstring> audioPaths = std::vector<std::wstring>();
-	void addAudioFile(const std::wstring& path) override;
-	musicCollection(const std::wstring& path);
+	void addAudioFile(const stdPath& path) override;
+	musicCollection(const stdPath& path);
 	musicCollection() {}
 	std::shared_ptr<music2d> playRandomAudio(cfp& volume = 1, cfp& pitch = 1);
 	std::shared_ptr<music2d> playAudio(csize_t& index, cfp& volume = 1, cfp& pitch = 1);

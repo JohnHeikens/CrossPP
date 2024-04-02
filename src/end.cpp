@@ -64,7 +64,7 @@ void end::generateStructures(chunk* generateIn)
 
 
 		//place portal bedrock
-		structure* endExitPortalStructure = getStructureByName(structureFolder + std::wstring(L"the_end/exit_portal"));
+		structure* endExitPortalStructure = getStructureByName(structureFolder / std::wstring(L"the_end/exit_portal"));
 		structureFeature().placeStructurePart(endExitPortalStructure, this, cveci2(0, exitPortalLevel) + cveci2(-(int)((endExitPortalStructure->blockIDArray.size.x - 1) / 2), 0), false);
 
 		summonEntity(entityID::ender_dragon, this, cvec2(0, exitPortalLevel + 0x20));

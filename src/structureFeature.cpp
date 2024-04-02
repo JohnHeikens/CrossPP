@@ -111,9 +111,9 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 						worldDirection = flipDirection(worldDirection);
 					}
 
-					stdFileSystem::path pathWithoutExtension = firstStructure->pathWithoutExtension;
-					pathWithoutExtension = pathWithoutExtension.remove_filename();
-					pathWithoutExtension += std::wstring(L"\\") + currentJigsawData->targetPoolName;
+					stdPath pathWithoutExtension = firstStructure->pathWithoutExtension;
+					pathWithoutExtension.remove_filename();
+					pathWithoutExtension /= currentJigsawData->targetPoolName;
 					jigsawPool* targetPool = getJigsawPoolByName(pathWithoutExtension);
 
 					std::vector<structure*> checkStructures;

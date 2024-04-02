@@ -1,5 +1,5 @@
 #pragma once
-//#include <windows.h>
+//#include "windowsIncluder.h"
 template <typename t>
 inline bool convertTo(const std::wstring& s, t& value)
 {

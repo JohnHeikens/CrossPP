@@ -49,13 +49,13 @@ void client::render(cveci2 &position, const texture &renderTarget)
 			c.a() = color::maxValue;
 		}
 
-		renderTarget.Save(screenshotsFolder + timeToString(L"%Y-%m-%d_%H.%M.%S") + L".png");
+		renderTarget.Save(screenshotsFolder / (timeToString(L"%Y-%m-%d_%H.%M.%S") + L".png"));
 		lastScreenshotTime = getMiliseconds();
 	}
 	// 0.5 seconds flash
 	if (getMiliseconds() - lastScreenshotTime < 500)
 	{
-		// renderTarget.Save(screenshotsFolder + timeToString(L"%Y-%m-%d_%H.%M.%S") + L".bmp");//for testing
+		// renderTarget.Save(screenshotsFolder / timeToString(L"%Y-%m-%d_%H.%M.%S") + L".bmp");//for testing
 		renderTarget.fill(colorPalette::white); // flash effect
 	}
 }
@@ -187,6 +187,9 @@ void client::processIncomingPackets(const texture &renderTarget)
 		inCompound = new nbtCompound(std::wstring(L"packetIn"));
 		if (s.receivePacket() != sf::TcpSocket::Status::Done)
 		{
+			//disconnect, in case of any error
+			s.socket->disconnect();
+			selector.remove(*s.socket);
 			parent->switchVisibleChild(currentMainMenu);
 			if (currentServer)
 			{

@@ -1,71 +1,73 @@
 #pragma once
 #include <string>
-#include <filesystem>
+#include "filesystem/filemanager.h"
+#include "constants.h"
+
 //folders
-const std::wstring dataFolder = std::wstring(L"data\\");
+const stdPath dataFolder = stdPath(L"data");
 
-const std::wstring miscellaneousDataFolder = dataFolder + std::wstring(L"miscellaneous\\");
-const std::wstring miscellaneousTexturesFolder = miscellaneousDataFolder + std::wstring(L"textures\\");
-const std::wstring miscellaneousMusicFolder = miscellaneousDataFolder + std::wstring(L"music\\");
-const std::wstring miscellaneousNetherMusicFolder = miscellaneousMusicFolder + std::wstring(L"nether\\");
-const std::wstring fileVersionsFolder = miscellaneousDataFolder + std::wstring(L"fileversions\\");
-const std::wstring playerDataFolder = dataFolder + std::wstring(L"player\\");
-const std::wstring skinFolder = playerDataFolder + std::wstring(L"skins\\");
-const std::wstring screenshotsFolder = playerDataFolder + std::wstring(L"screenshots\\");
+const stdPath miscellaneousDataFolder = dataFolder / L"miscellaneous";
+const stdPath miscellaneousTexturesFolder = miscellaneousDataFolder / L"textures";
+const stdPath miscellaneousMusicFolder = miscellaneousDataFolder / L"music";
+const stdPath miscellaneousNetherMusicFolder = miscellaneousMusicFolder / L"nether";
+const stdPath fileVersionsFolder = miscellaneousDataFolder / L"fileversions";
+const stdPath playerDataFolder = dataFolder / L"player";
+const stdPath skinFolder = playerDataFolder / L"skins";
+const stdPath screenshotsFolder = playerDataFolder / L"screenshots";
 
-const std::wstring resourcePackFolder = dataFolder + std::wstring(L"resourcepacks\\");
+const stdPath resourcePackFolder = dataFolder / L"resourcepacks";
 
-const std::wstring assetsFolder = std::wstring(L"assets\\minecraft\\");
-const std::wstring optifineFolder = assetsFolder + std::wstring(L"optifine\\");
-const std::wstring particleDataFolder = assetsFolder + std::wstring(L"particles\\");
-const std::wstring generalTextureFolder = assetsFolder + std::wstring(L"textures\\");
-const std::wstring particleTexturesFolder = generalTextureFolder + std::wstring(L"particle\\");
-const std::wstring guiTextureFolder = generalTextureFolder + std::wstring(L"gui\\");
-const std::wstring blockTextureFolder = generalTextureFolder + std::wstring(L"block\\");
-const std::wstring environmentTextureFolder = generalTextureFolder + std::wstring(L"environment\\");
-const std::wstring containerTextureFolder = generalTextureFolder + std::wstring(L"gui\\container\\");
-const std::wstring entityTextureFolder = generalTextureFolder + std::wstring(L"entity\\");
-const std::wstring itemTextureFolder = generalTextureFolder + std::wstring(L"item\\");
-const std::wstring armorTextureFolder = generalTextureFolder + std::wstring(L"models\\armor\\");
-const std::wstring miscellaneousTextureFolder = generalTextureFolder + std::wstring(L"misc\\");
-const std::wstring lightMapFolder = optifineFolder + std::wstring(L"lightmap\\");
-const std::wstring particleTextureFolder = generalTextureFolder + std::wstring(L"particle\\");
+const stdPath assetsFolder = stdPath(L"assets") / L"minecraft";
+const stdPath optifineFolder = assetsFolder / L"optifine";
+const stdPath particleDataFolder = assetsFolder / L"particles";
+const stdPath generalTextureFolder = assetsFolder / L"textures";
+const stdPath particleTexturesFolder = generalTextureFolder / L"particle";
+const stdPath guiTextureFolder = generalTextureFolder / L"gui";
+const stdPath blockTextureFolder = generalTextureFolder / L"block";
+const stdPath environmentTextureFolder = generalTextureFolder / L"environment";
+const stdPath containerTextureFolder = generalTextureFolder / L"gui" / "container";
+const stdPath entityTextureFolder = generalTextureFolder / L"entity";
+const stdPath itemTextureFolder = generalTextureFolder / L"item";
+const stdPath armorTextureFolder = generalTextureFolder / L"models" / L"armor";
+const stdPath miscellaneousTextureFolder = generalTextureFolder / L"misc";
+const stdPath lightMapFolder = optifineFolder / L"lightmap";
+const stdPath particleTextureFolder = generalTextureFolder / L"particle";
 
-const std::wstring generalSoundFolder = dataFolder + std::wstring(L"sounds\\1.16\\minecraft\\sounds\\");
-const std::wstring blockSoundFolder = generalSoundFolder + std::wstring(L"block\\");
-const std::wstring tileSoundFolder = generalSoundFolder + std::wstring(L"tile\\");
-const std::wstring itemSoundFolder = generalSoundFolder + std::wstring(L"item\\");
-const std::wstring entitySoundFolder = generalSoundFolder + std::wstring(L"entity\\");
-const std::wstring mobSoundFolder = generalSoundFolder + std::wstring(L"mob\\");
-const std::wstring miscellaneousSoundFolder = generalSoundFolder + std::wstring(L"random\\");
-const std::wstring generalMusicFolder = generalSoundFolder + std::wstring(L"music\\");
-const std::wstring gameMusicFolder = generalMusicFolder + std::wstring(L"game\\");
-const std::wstring menuMusicFolder = generalMusicFolder + std::wstring(L"menu\\");
-const std::wstring waterMusicFolder = gameMusicFolder + std::wstring(L"water\\");
-const std::wstring creativeModeMusicFolder = gameMusicFolder + std::wstring(L"creative\\");
-const std::wstring netherMusicFolder = gameMusicFolder + std::wstring(L"nether\\");
-const std::wstring endMusicFolder = gameMusicFolder + std::wstring(L"end\\");
-const std::wstring recordsMusicFolder = generalSoundFolder + std::wstring(L"records\\");
-const std::wstring noteSoundFolder = generalSoundFolder + std::wstring(L"note\\");
-const std::wstring extraSoundFolder = dataFolder + std::wstring(L"sounds\\extra\\");
+const stdPath generalSoundFolder = dataFolder / L"sounds" / L"1.16" / L"minecraft" / L"sounds";
+const stdPath blockSoundFolder = generalSoundFolder / L"block";
+const stdPath tileSoundFolder = generalSoundFolder / L"tile";
+const stdPath itemSoundFolder = generalSoundFolder / L"item";
+const stdPath entitySoundFolder = generalSoundFolder / L"entity";
+const stdPath mobSoundFolder = generalSoundFolder / L"mob";
+const stdPath miscellaneousSoundFolder = generalSoundFolder / L"random";
+const stdPath generalMusicFolder = generalSoundFolder / L"music";
+const stdPath gameMusicFolder = generalMusicFolder / L"game";
+const stdPath menuMusicFolder = generalMusicFolder / L"menu";
+const stdPath waterMusicFolder = gameMusicFolder / L"water";
+const stdPath creativeModeMusicFolder = gameMusicFolder / L"creative";
+const stdPath netherMusicFolder = gameMusicFolder / L"nether";
+const stdPath endMusicFolder = gameMusicFolder / L"end";
+const stdPath recordsMusicFolder = generalSoundFolder / L"records";
+const stdPath noteSoundFolder = generalSoundFolder / L"note";
+const stdPath extraSoundFolder = dataFolder / L"sounds" / L"extra";
 
-const std::wstring savesFolder = dataFolder + std::wstring(L"saves\\");
-const std::wstring serversFolder = dataFolder + std::wstring(L"servers\\");
-const std::wstring saveFolderDimensions = std::wstring(L"dimensions\\");
-const std::wstring saveFolderChunks = std::wstring(L"chunks\\");
-const std::wstring saveFolderScreenShot = std::wstring(L"screenshot.png");
-const std::wstring saveFolderWorldData = std::wstring(L"world data");
+const stdPath savesFolder = dataFolder / L"saves";
+const stdPath serversFolder = dataFolder / L"servers";
+const stdPath saveFolderDimensions = stdPath(L"dimensions");
+const stdPath saveFolderChunks = stdPath(L"chunks");
+const stdPath saveFolderScreenShot = stdPath(L"screenshot.png");
+const stdPath saveFolderWorldData = stdPath(L"world data" + nbtFileExtension);
 
-const std::wstring minecraftVersionFolder = dataFolder + std::wstring(L"version\\1.16.2\\");
-const std::wstring minecraftDataFolder = minecraftVersionFolder + std::wstring(L"data\\minecraft\\");
-const std::wstring minecraftAssetsFolder = minecraftVersionFolder + std::wstring(L"assets\\minecraft\\");
-const std::wstring mainTagFolder = minecraftDataFolder + std::wstring(L"tags\\");
-const std::wstring recipeFolder = minecraftDataFolder + std::wstring(L"recipes\\");
-const std::wstring dataPacksFolder = dataFolder + std::wstring(L"data packs\\");
-const std::wstring lootTablesFolder = minecraftDataFolder + std::wstring(L"loot_tables\\");
-const std::wstring blockLootTablesFolder = lootTablesFolder + std::wstring(L"blocks\\");
-const std::wstring chestLootTablesFolder = lootTablesFolder + std::wstring(L"chests\\");
-const std::wstring entityLootTablesFolder = lootTablesFolder + std::wstring(L"entities\\");
-const std::wstring structureFolder = dataFolder + std::wstring(L"structures\\");
-const std::wstring textFolder = minecraftAssetsFolder + std::wstring(L"texts\\");
-extern std::filesystem::path workingDirectory;
+const stdPath minecraftVersionFolder = dataFolder / L"version" / L"1.16.2";
+const stdPath minecraftDataFolder = minecraftVersionFolder / L"data" / L"minecraft";
+const stdPath minecraftAssetsFolder = minecraftVersionFolder / L"assets" / L"minecraft";
+const stdPath mainTagFolder = minecraftDataFolder / L"tags";
+const stdPath recipeFolder = minecraftDataFolder / L"recipes";
+const stdPath dataPacksFolder = dataFolder / L"data packs";
+const stdPath lootTablesFolder = minecraftDataFolder / L"loot_tables";
+const stdPath blockLootTablesFolder = lootTablesFolder / L"blocks";
+const stdPath chestLootTablesFolder = lootTablesFolder / L"chests";
+const stdPath entityLootTablesFolder = lootTablesFolder / L"entities";
+const stdPath structureFolder = dataFolder / L"structures";
+const stdPath textFolder = minecraftAssetsFolder / L"texts";
+extern stdPath workingDirectory;

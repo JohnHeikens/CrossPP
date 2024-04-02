@@ -47,7 +47,7 @@
 bool world::serialize(cbool& write)
 {
 
-	const std::wstring path = savesFolder + currentWorld->name + std::wstring(L"\\");
+	const stdPath path = savesFolder / currentWorld->name;
 	if (!stdFileSystem::is_directory(path) || !stdFileSystem::exists(path))
 	{
 		if (write)
@@ -60,7 +60,7 @@ bool world::serialize(cbool& write)
 		}
 	}
 	nbtCompound* compound = nullptr;
-	const std::wstring worldDataPath = path + saveFolderWorldData + nbtFileExtension;
+	const std::wstring worldDataPath = path / saveFolderWorldData;
 	if (write)
 	{
 		compound = new nbtCompound(name);
@@ -107,7 +107,7 @@ bool world::serialize(cbool& write)
 			//case IDYES:
 			//{
 			//	const std::wstring& backupFolderName = getAvailableWorldName(currentWorld->name + std::wstring(L" - Backup"));
-			//	stdFileSystem::copy(path, savesFolder + backupFolderName, stdFileSystem::copy_options::recursive);
+			//	stdFileSystem::copy(path, savesFolder / backupFolderName, stdFileSystem::copy_options::recursive);
 			//}
 			//break;
 			//case IDNO:

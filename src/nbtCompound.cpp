@@ -240,7 +240,7 @@ bool nbtCompound::compare(const nbtData &other) const
 
 	return true;
 }
-bool nbtCompound::serialize(nbtCompound *&compound, cbool &write, const stdFileSystem::path &path)
+bool nbtCompound::serialize(nbtCompound *&compound, cbool &write, const stdPath &path)
 {
 	// this file should be compressed
 	////https://zlib.net/

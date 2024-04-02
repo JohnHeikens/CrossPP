@@ -18,7 +18,7 @@ constexpr veci2 enchantmentBottomOptionPos = cveci2(60, 95);
 
 enchantingTableSlotContainer::enchantingTableSlotContainer()
 {
-	uiTexture = loadTextureFromResourcePack(containerTextureFolder + std::wstring(L"enchanting_table.png"));
+	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"enchanting_table.png"));
 	containers.push_back(enchantmentSlot = new uiSlotContainer(cveci2(15, 103), new rectangularSlotContainer(cveci2(1))));
 	containers.push_back(lapisSlot = new uiSlotContainer(cveci2(35, 103), new rectangularSlotContainer(cveci2(1))));
 	//hotbar and inventory will be linked up

@@ -2,13 +2,14 @@
 #include "interface/inamable.h"
 #include <vector>
 #include "structure.h"
+#include "filesystem/filemanager.h"
 struct jigsawPool :INamable
 {
 	std::vector<structure*> targetedStructures;
 	std::vector<fp> structureWeights;
-	static jigsawPool* fromFile(const std::wstring path);
+	static jigsawPool* fromFile(const stdPath& path);
 	jigsawPool(const std::wstring& name);
-	void addTargetStructure(const std::wstring& seekFolder, const std::wstring& structureName, cfp& weight);
+	void addTargetStructure(const stdPath& seekFolder, const std::wstring& structureName, cfp& weight);
 	structure* getRandomStructure(std::mt19937& randomToUse);
 };
 

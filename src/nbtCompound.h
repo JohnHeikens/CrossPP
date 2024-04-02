@@ -12,7 +12,7 @@ struct nbtCompound :nbtData
 	std::vector<nbtData*> children;
 	virtual bool serialize(const streamSerializer& s) override;
 	//bool serialize(streamSerializer& s);
-	static bool serialize(nbtCompound*& compound, cbool& write, const stdFileSystem::path& path);
+	static bool serialize(nbtCompound*& compound, cbool& write, const stdPath& path);
 	static bool serialize(nbtCompound*& compound, streamSerializer& s);
 	static void serializeChild(const streamSerializer& s, nbtData*& child, const nbtDataTag& childTag);
 	static nbtData* createNBTData(const std::wstring& name, const nbtDataTag& tag);

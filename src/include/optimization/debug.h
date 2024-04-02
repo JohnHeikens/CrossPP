@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-//#include <Windows.h>
+//#include "windowsIncluder.h"
 
 //writes to output window
 //inline void output(std::wstring s)

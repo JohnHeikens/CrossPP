@@ -7,7 +7,7 @@
 #include "dimension.h"
 smithingTableSlotContainer::smithingTableSlotContainer()
 {
-	uiTexture = loadTextureFromResourcePack(containerTextureFolder + std::wstring(L"smithing.png"));
+	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"smithing.png"));
 	containers.push_back(smithingInputSlot = new uiSlotContainer(cveci2(27, 103), new rectangularSlotContainer(cveci2(1))));
 	containers.push_back(netheriteIngotSlot = new uiSlotContainer(cveci2(76, 103), new rectangularSlotContainer(cveci2(1))));
 	containers.push_back(craftingOutputSlot = new uiSlotContainer(cveci2(134, 103), new rectangularSlotContainer(cveci2(1))));

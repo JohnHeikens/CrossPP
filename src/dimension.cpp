@@ -115,15 +115,15 @@ veci2 dimension::searchPortal(cveci2& positionNear)
 
 bool dimension::serialize(cbool& write)
 {
-	const std::wstring worldFolder = savesFolder + currentWorld->name + std::wstring(L"\\");
-	const std::wstring dimensionFolder = worldFolder + dimensionDataList[identifier]->name + std::wstring(L"\\");
+	const stdPath& worldFolder = savesFolder / currentWorld->name;
+	const stdPath& dimensionFolder = worldFolder / dimensionDataList[identifier]->name;
 	if (write)
 	{
 		createFolderIfNotExists(worldFolder);
 		createFolderIfNotExists(dimensionFolder);
 	}
 
-	const std::wstring path = dimensionFolder + std::wstring(L"dimensionData") + nbtFileExtension;
+	const stdPath& path = dimensionFolder / (std::wstring(L"dimensionData") + nbtFileExtension);
 
 	int version;
 	nbtCompound* compound = nullptr;

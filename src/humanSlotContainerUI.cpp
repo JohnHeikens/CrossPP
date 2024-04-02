@@ -6,7 +6,7 @@
 #include "dimension.h"
 humanSlotContainerUI::humanSlotContainerUI() : craftingGridSlotContainer(new uiSlotContainer(cveci2(98, 113), new rectangularSlotContainer(cveci2(2))))
 {
-	uiTexture = loadTextureFromResourcePack(containerTextureFolder + std::wstring(L"inventory.png"));
+	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"inventory.png"));
 	containers.push_back(hotbarSlots = new uiSlotContainer(cveci2(0x8, 0x8)));
 	containers.push_back(inventorySlots = new uiSlotContainer(cveci2(0x8, 30)));
 	containers.push_back(armorSlots = new uiSlotContainer(cveci2(0x8, 87)));

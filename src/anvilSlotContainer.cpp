@@ -25,7 +25,7 @@
 
 anvilSlotContainer::anvilSlotContainer()
 {
-	uiTexture = loadTextureFromResourcePack(containerTextureFolder + std::wstring(L"anvil.png"));
+	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"anvil.png"));
 
 	craftingInputContainers.push_back(new uiSlotContainer(cveci2(27, 103), new rectangularSlotContainer(cveci2(1))));
 	craftingInputContainers.push_back(new uiSlotContainer(cveci2(76, 103), new rectangularSlotContainer(cveci2(1))));

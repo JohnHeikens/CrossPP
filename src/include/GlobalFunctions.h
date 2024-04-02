@@ -12,6 +12,9 @@
 #define onWindows true
 #elif defined(__linux__)
 #define onLinux true
+#elif defined(__APPLE__)
+#define onMac true
+
 #endif
 
 #if __cplusplus >= 202002L

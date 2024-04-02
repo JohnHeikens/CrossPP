@@ -4,7 +4,7 @@
 
 
 //COPIES THE POINTER, NOT THE COLORS
-texture::texture(const std::wstring& path, cbool& flip) : texture(cveci2(), nullptr)
+texture::texture(const stdPath& path, cbool& flip) : texture(cveci2(), nullptr)
 {
 	stbi_set_flip_vertically_on_load(flip);
 	int channelCount;
@@ -123,7 +123,7 @@ void texture::Fade(cfp& weight, const color& fadeto) const
 	}
 }
 
-veci2 getImageSize(const std::wstring& path)
+veci2 getImageSize(const stdPath& path)
 {
 	veci2 size;
 	int comp;

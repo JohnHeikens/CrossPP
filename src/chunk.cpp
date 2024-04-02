@@ -696,7 +696,7 @@ void chunk::addLightUpdates()
 
 bool chunk::serialize(cbool& write)
 {
-	const std::wstring chunksFolder = savesFolder + currentWorld->name + std::wstring(L"\\") + dimensionDataList[dimensionIn->identifier]->name + std::wstring(L"\\") + saveFolderChunks + std::to_wstring(chunkCoordinates.x) + std::wstring(L"\\");
+	const stdPath chunksFolder = savesFolder / currentWorld->name / dimensionDataList[dimensionIn->identifier]->name / saveFolderChunks / std::to_wstring(chunkCoordinates.x);
 	if (write)
 	{
 		createFoldersIfNotExists(chunksFolder);
@@ -705,7 +705,7 @@ bool chunk::serialize(cbool& write)
 	{
 		loadLevel = math::maximum(loadLevel, chunkLoadLevel::worldGenerationLoaded);
 	}
-	std::wstring chunkPath = chunksFolder + std::to_wstring(chunkCoordinates.y) + nbtFileExtension;
+	const stdPath& chunkPath = chunksFolder / (std::to_wstring(chunkCoordinates.y) + nbtFileExtension);
 
 	return nbtSerializable::serialize(L"chunk", chunkPath, write);
 }

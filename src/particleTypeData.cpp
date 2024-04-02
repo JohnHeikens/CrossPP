@@ -6,14 +6,14 @@
 
 particleTypeData::particleTypeData(const std::wstring& name) : INamable(name), textures(std::vector<resolutionTexture*>())
 {
-	const auto locations = getResourceLocations(particleDataFolder + name + L".json");
+	const auto locations = getResourceLocations(particleDataFolder / (name + L".json"));
 	if (locations.size()) {
-		const std::wstring& path = locations[locations.size() - 1];
+		const stdPath& path = locations[locations.size() - 1];
 		jsonContainer container = readJson(stringToWString(readalltext(path)));
 		if (container.children.size()) {
 			//textures = std::vector<resolutionTexture*>(container.children[0].children.size());
 			for (const auto& c : container.children[0].children) {
-				textures.push_back(loadTextureFromResourcePack(particleTextureFolder + removeNameSpace(c.value) + L".png"));
+				textures.push_back(loadTextureFromResourcePack(particleTextureFolder / (removeNameSpace(c.value) + L".png")));
 			}
 		}
 	}

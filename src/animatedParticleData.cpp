@@ -6,7 +6,7 @@ animatedParticleData::animatedParticleData(const std::wstring& name) :INamable(n
 	size_t i = 0;
 	while (true)
 	{
-		const std::wstring& path = particleTextureFolder + name + std::to_wstring(i);
+		const stdPath& path = particleTextureFolder / (name + std::to_wstring(i));
 		if (getResourceLocations(path).size())
 		{
 			animatedTextures.push_back(loadTextureFromResourcePack(path));

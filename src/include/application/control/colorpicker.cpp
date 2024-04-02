@@ -28,7 +28,7 @@ void colorPicker::layout(crectanglei2& newRect)
 	int channelSliderHeight = newRect.h / 4;
 
 
-	for (int channel = 0; channel < bgraColorChannelCount; channel++)
+	for (int channel = 0; channel < (int)bgraColorChannelCount; channel++)
 	{
 		channelSliders[channel]->layout(crectanglei2(channelSliderX, newRect.y + newRect.h - channelSliderHeight * (channel + 1), channelTextboxX - channelSliderX, channelSliderHeight));
 		channelBoxes[channel]->layout(crectanglei2(channelTextboxX, newRect.y + newRect.h - channelSliderHeight * (channel + 1), (newRect.x + newRect.w) - channelTextboxX, channelSliderHeight));

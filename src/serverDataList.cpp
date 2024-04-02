@@ -10,6 +10,6 @@ void serverDataList::serializeValue(nbtSerializer& s)
 bool serverDataList::serialize(cbool& write)
 {
 	createFoldersIfNotExists(serversFolder);
-	std::wstring serverListPath = serversFolder + L"serverlist" + nbtFileExtension;
+	stdPath serverListPath = serversFolder / std::wstring(L"serverlist" + nbtFileExtension);
 	return nbtSerializable::serialize(L"server list", serverListPath, write);
 }
