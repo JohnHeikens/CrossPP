@@ -49,9 +49,9 @@ jobs:
         #     compiler.cxx: clang++
         exclude:
           - sys: { os: ubuntu-latest, shell: bash }
-            compiler: { cc: clang, cxx: clang++ }
+            compiler: { cc: cl, cxx: cl }
           - sys: { os: macos-latest, shell: bash }
-            compiler: { cc: clang, cxx: clang++ }
+            compiler: { cc: cl, cxx: cl }
     defaults:
       run:
         shell: ${{ matrix.sys.shell }}
