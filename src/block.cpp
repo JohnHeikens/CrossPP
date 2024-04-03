@@ -63,7 +63,7 @@
 #include "rectangularSlotContainer.h"
 #include "dimension.h"
 
-block::block(blockID identifier, fp hardness, fp blastResistance, cfp& weightPerCubicMeter, resolutionTexture* tex, std::wstring name, std::shared_ptr<soundCollection> fallSound, std::shared_ptr<soundCollection> stepSound, std::shared_ptr<soundCollection> hitSound, std::shared_ptr<soundCollection> breakSound, std::shared_ptr<soundCollection> placeSound, cint(&filterStrength)[(size_t)levelID::count], harvestType bestTool, harvestTier itemTier, collisionTypeID collisiontype, cint& fireEncouragement, cint& flammability, cbool& canCatchFireFromLava, cbool& canReplaceBlock, cint(&emittanceLevel)[(size_t)levelID::count], const experienceDrop& experienceWhenBroken, std::shared_ptr<soundCollection> ambientSound) :
+block::block(blockID identifier, fp hardness, fp blastResistance, cfp& weightPerCubicMeter, resolutionTexture* tex, std::wstring name, std::shared_ptr<soundCollection> fallSound, std::shared_ptr<soundCollection> stepSound, std::shared_ptr<soundCollection> hitSound, std::shared_ptr<soundCollection> breakSound, std::shared_ptr<soundCollection> placeSound, cint(&filterStrength)[(size_t)levelID::count], harvestTypeID bestTool, harvestTierID itemTier, collisionTypeID collisiontype, cint& fireEncouragement, cint& flammability, cbool& canCatchFireFromLava, cbool& canReplaceBlock, cint(&emittanceLevel)[(size_t)levelID::count], const experienceDrop& experienceWhenBroken, std::shared_ptr<soundCollection> ambientSound) :
 	hardness(hardness), blastResistance(blastResistance), tex(tex), name(name), bestTool(bestTool), itemTier(itemTier),
 	fallSound(fallSound),
 	stepSound(stepSound),

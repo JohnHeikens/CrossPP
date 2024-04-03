@@ -892,7 +892,7 @@ void loadResourcePacks()
 	}
 
 	std::wstring oreBlockNames[oreBlockTypeCount]{std::wstring(L"coal"), std::wstring(L"iron"), std::wstring(L"emerald"), std::wstring(L"lapis"), std::wstring(L"redstone"), std::wstring(L"gold"), std::wstring(L"diamond"), std::wstring(L"nether_quartz"), std::wstring(L"nether_gold")};
-	constexpr harvestTier oreBlockTiers[oreBlockTypeCount]{woodHarvestTier, stoneHarvestTier, ironHarvestTier, stoneHarvestTier, ironHarvestTier, ironHarvestTier, ironHarvestTier, woodHarvestTier, woodHarvestTier};
+	constexpr harvestTierID oreBlockTiers[oreBlockTypeCount]{woodHarvestTier, stoneHarvestTier, ironHarvestTier, stoneHarvestTier, ironHarvestTier, ironHarvestTier, ironHarvestTier, woodHarvestTier, woodHarvestTier};
 
 	constexpr bool smeltable[oreBlockTypeCount]{
 		false,
@@ -2513,7 +2513,7 @@ void loadResourcePacks()
 			cfp attackDamage = toolTypeIndex == (withHoe - 1) ? 1 : toolTypeIndex == (withAxe - 1) ? axeAttackDamageList[toolTierIndex]
 																								   : baseAttackDamageList[toolTypeIndex] + tierAttackDamageList[toolTierIndex];
 			std::wstring toolName = toolTierName + toolTypeName;
-			itemList[identifier] = new itemData((itemID)identifier, toolName, loadTextureFromResourcePack(itemTextureFolder / (toolName + std::wstring(L".png"))), toolTierIndex == (int)woodHarvestTier ? 200 : 50, (harvestTier)(toolTierIndex + 1), harvestType(toolTypeIndex + 1), attackDamage, attackSpeed, 1, true, noArmorTier, noArmorType, std::vector<enchantmentID>(toolTypeEnchantments[toolTypeIndex]), toolEnchantability[toolTierIndex]);
+			itemList[identifier] = new itemData((itemID)identifier, toolName, loadTextureFromResourcePack(itemTextureFolder / (toolName + std::wstring(L".png"))), toolTierIndex == (int)woodHarvestTier ? 200 : 50, (harvestTierID)(toolTierIndex + 1), harvestTypeID(toolTypeIndex + 1), attackDamage, attackSpeed, 1, true, noArmorTier, noArmorType, std::vector<enchantmentID>(toolTypeEnchantments[toolTypeIndex]), toolEnchantability[toolTierIndex]);
 			identifier++;
 		}
 	}

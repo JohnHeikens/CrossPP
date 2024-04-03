@@ -732,7 +732,7 @@ void human::onItemRightClick(itemStack& stackIn)
 	blockID selectedBlock = selectedBlockContainer->getBlockID(selectedBlockPosition);
 	entity* selectedEntity = getSelectedEntity();
 
-	if (itemList[(int)stackIn.stackItemID]->harvestType == harvestType::withHoe)
+	if (itemList[(int)stackIn.stackItemID]->harvestType == harvestTypeID::withHoe)
 	{
 		std::vector<blockID> hoeArray = { blockID::dirt,blockID::grass_block };
 		if (std::find(hoeArray.begin(), hoeArray.end(), selectedBlock) != hoeArray.end())
@@ -745,7 +745,7 @@ void human::onItemRightClick(itemStack& stackIn)
 			return;
 		}
 	}
-	else if (itemList[(int)stackIn.stackItemID]->harvestType == harvestType::withAxe)
+	else if (itemList[(int)stackIn.stackItemID]->harvestType == harvestTypeID::withAxe)
 	{
 		//check if the selected block is a log
 		if (isTreeType(selectedBlock) && getTreeItemType(selectedBlock) == treeItemTypeID::log)

@@ -1,5 +1,5 @@
 #pragma once
-enum harvestType :int
+enum harvestTypeID :int
 {
 	withHand,
 	withSwordOrShears,

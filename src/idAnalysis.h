@@ -160,10 +160,10 @@ constexpr armorTierID getMaterialArmorTier(const itemID& identifier) noexcept;
 constexpr armorTypeID getArmorType(const itemID& identifier) noexcept;
 constexpr armorTierID getArmorTier(const itemID& identifier) noexcept;
 
-constexpr harvestTier getMaterialToolTier(const itemID& identifier) noexcept;
+constexpr harvestTierID getMaterialToolTier(const itemID& identifier) noexcept;
 constexpr toolTypeID getMaterialToolType(const itemID& identifier) noexcept;
 
-constexpr itemID getMaterialTool(const toolTypeID& type, const harvestTier& tier) noexcept;
+constexpr itemID getMaterialTool(const toolTypeID& type, const harvestTierID& tier) noexcept;
 
 constexpr bool isMaterialTool(const itemID& identifier) noexcept;
 constexpr bool hasDurability(const itemID& identifier) noexcept;
@@ -384,7 +384,7 @@ constexpr blockID getTreeBlock(const woodTypeID& typeID, const treeItemTypeID& i
 {
 	return (blockID)((int)blockID::wood_block + ((int)typeID * (int)treeItemTypeID::count) + (int)itemTypeID);
 }
-constexpr itemID getMaterialTool(const toolTypeID& type, const harvestTier& tier) noexcept
+constexpr itemID getMaterialTool(const toolTypeID& type, const harvestTierID& tier) noexcept
 {
 	return (itemID)((int)itemID::material_tool + (((int)tier - 1) * (int)toolTypeID::count) + (int)type);
 }
@@ -505,9 +505,9 @@ constexpr armorTierID getArmorTier(const itemID& identifier) noexcept
 		return noArmorTier;
 	}
 }
-constexpr harvestTier getMaterialToolTier(const itemID& identifier) noexcept
+constexpr harvestTierID getMaterialToolTier(const itemID& identifier) noexcept
 {
-	return (harvestTier)(woodHarvestTier + ((int)identifier - (int)itemID::material_tool) / (int)toolTypeID::count);
+	return (harvestTierID)(woodHarvestTier + ((int)identifier - (int)itemID::material_tool) / (int)toolTypeID::count);
 }
 constexpr toolTypeID getMaterialToolType(const itemID& identifier) noexcept
 {
@@ -886,20 +886,20 @@ constexpr bool isRepairItem(const itemID& itemToRepair, const itemID& repairWith
 		}
 		else if (isMaterialTool(itemToRepair))
 		{
-			const harvestTier& tier = getMaterialToolTier(itemToRepair);
+			const harvestTierID& tier = getMaterialToolTier(itemToRepair);
 			switch (tier)
 			{
-			case harvestTier::woodHarvestTier:
+			case harvestTierID::woodHarvestTier:
 				return isTreeType((blockID)repairWith) && getTreeItemType((blockID)repairWith) == treeItemTypeID::planks;
-			case harvestTier::goldHarvestTier:
+			case harvestTierID::goldHarvestTier:
 				return repairWith == itemID::gold_ingot;
-			case harvestTier::stoneHarvestTier:
+			case harvestTierID::stoneHarvestTier:
 				return (repairWith == (itemID)blockID::cobblestone) || (repairWith == (itemID)blockID::blackstone);
-			case harvestTier::ironHarvestTier:
+			case harvestTierID::ironHarvestTier:
 				return repairWith == itemID::iron_ingot;
-			case harvestTier::diamondHarvestTier:
+			case harvestTierID::diamondHarvestTier:
 				return repairWith == itemID::diamond;
-			case harvestTier::netheriteHarvestTier:
+			case harvestTierID::netheriteHarvestTier:
 				return repairWith == itemID::netherite_ingot;
 			}
 		}

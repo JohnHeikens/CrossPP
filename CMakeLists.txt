@@ -21,9 +21,14 @@ cmake_minimum_required(VERSION 3.5)
 #set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
 IF (WIN32)
-    #mingw:
-    set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)
-    set(CMAKE_CXX_COMPILER C:/msys64/mingw64/bin/g++.exe)
+    IF(EXISTS c:)
+        set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)
+        set(CMAKE_CXX_COMPILER C:/msys64/mingw64/bin/g++.exe)
+    ELSE
+        set(CMAKE_C_COMPILER D:/msys64/mingw64/bin/gcc.exe)
+        set(CMAKE_CXX_COMPILER D:/msys64/mingw64/bin/g++.exe)
+    ENDIF()
+
     #to change to clang:
     #set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/clang.exe)
     #set(CMAKE_CXX_COMPILER C:/msys64/mingw64/bin/clang++.exe)

@@ -33,7 +33,7 @@ struct block :IDestructable
 		std::shared_ptr<soundCollection> stepSound,
 		std::shared_ptr<soundCollection> hitSound,
 		std::shared_ptr<soundCollection> breakSound,
-		std::shared_ptr<soundCollection> placeSound, cint(&filterStrength)[(size_t)levelID::count], harvestType bestTool = withHand, harvestTier itemTier = noHarvestTier, collisionTypeID collisiontype = collisionTypeID::willCollide,
+		std::shared_ptr<soundCollection> placeSound, cint(&filterStrength)[(size_t)levelID::count], harvestTypeID bestTool = withHand, harvestTierID itemTier = noHarvestTier, collisionTypeID collisiontype = collisionTypeID::willCollide,
 		cint& fireEncouragement = 0, cint& flammability = 0, cbool& canCatchFireFromLava = false,
 		cbool& canReplaceBlock = false, cint(&emittanceLevel)[(size_t)levelID::count] = noEmittance, const experienceDrop& experienceWhenBroken = experienceDrop(), std::shared_ptr<soundCollection> ambientSound = nullptr);
 	std::wstring name = std::wstring(L"");
@@ -50,8 +50,8 @@ struct block :IDestructable
 	collisionTypeID blockCollisionType;
 	int emittanceLevel[(size_t)levelID::count]{};
 	int filterStrength[(size_t)levelID::count]{};
-	harvestTier itemTier = noHarvestTier;
-	harvestType bestTool = withHand;
+	harvestTierID itemTier = noHarvestTier;
+	harvestTypeID bestTool = withHand;
 
 	bool canReplaceBlock = false;//wether you can place another block inside this block to replace it
 

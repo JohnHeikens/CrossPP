@@ -14,7 +14,7 @@ zombifiedPiglin::zombifiedPiglin(dimension* dimensionIn, cvec2& position) :human
 		});
 
 	initializeBodyParts(zombieHeadTextureRect, zombieBodyTextureRect, zombieLeftLegTextureRect, zombieRightLegTextureRect, zombieLeftArmTextureRect, zombieRightArmTextureRect, zombiePixelSize);
-	itemHolding = new itemStack(getMaterialTool(toolTypeID::sword, harvestTier::goldHarvestTier), 1);
+	itemHolding = new itemStack(getMaterialTool(toolTypeID::sword, harvestTierID::goldHarvestTier), 1);
 }
 
 void zombifiedPiglin::render(const gameRenderData& targetData) const

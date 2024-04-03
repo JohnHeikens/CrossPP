@@ -1,5 +1,5 @@
 #pragma once
-enum harvestTier : int
+enum harvestTierID : int
 {
 	noHarvestTier,
 	woodHarvestTier,
