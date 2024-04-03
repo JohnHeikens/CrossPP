@@ -30,15 +30,24 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            defaults:
+              run:
+                shell: msys2 {0}
           - os: ubuntu-latest
             needs: setup-ubuntu
 
             c_compiler: gcc
             cpp_compiler: g++
+            defaults:
+              run:
+                shell: bash
           - os: ubuntu-latest
             needs: setup-ubuntu
             c_compiler: clang
             cpp_compiler: clang++
+            defaults:
+              run:
+                shell: bash
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -46,7 +55,6 @@ jobs:
             c_compiler: clang
           - os: ubuntu-latest
             c_compiler: cl
-
     steps:
       - uses: actions/checkout@v4
 
@@ -66,6 +74,10 @@ jobs:
           install: >-
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-ninja
+
+        
+        
+        
 
       #- name: install-ninja
       #  if: matrix.os == 'windows-latest'
