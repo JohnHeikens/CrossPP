@@ -21,7 +21,7 @@ cmake_minimum_required(VERSION 3.5)
 #set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
 IF (WIN32)
-    IF(EXISTS C:/)
+    IF(EXISTS C:/msys64/mingw64/bin/gcc.exe)
         set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)
         set(CMAKE_CXX_COMPILER C:/msys64/mingw64/bin/g++.exe)
     ELSE()
