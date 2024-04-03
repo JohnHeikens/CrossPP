@@ -48,7 +48,7 @@ jobs:
             compiler.cc: clang
             compiler.cxx: clang++
         exclude:
-          - sys.os: windows-latest
+          - sys: { os: windows-latest, shell: 'msys2 {0}' }
             compiler.cc: gcc
           - sys.os: windows-latest
             compiler.cc: clang
