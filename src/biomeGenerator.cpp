@@ -13,47 +13,47 @@
 #include "netherFortressFeature.h"
 #include "tickableBlockContainer.h"
 #include "dimension.h"
-biomeGenerator::biomeGenerator(const biomeID& identifier)
+biomeGenerator::biomeGenerator(const biomeID &identifier)
 {
 	this->identifier = identifier;
 }
-void biomeGenerator::setLeave(blockContainer* containerIn, cveci2& position, const blockID& leavesToUse)
+void biomeGenerator::setLeave(blockContainer *containerIn, cveci2 &position, const blockID &leavesToUse)
 {
 	setLeaves(containerIn, position, position, leavesToUse);
 }
-void biomeGenerator::setLeaves(blockContainer* containerIn, cveci2& pos00, cveci2& pos11, const blockID& leavesToUse)
+void biomeGenerator::setLeaves(blockContainer *containerIn, cveci2 &pos00, cveci2 &pos11, const blockID &leavesToUse)
 {
-	containerIn->replaceBlockRange(pos00, pos11, leavesToUse, { blockID::air, blockID::grass,blockID::tall_grass,blockID::snow });
+	containerIn->replaceBlockRange(pos00, pos11, leavesToUse, {blockID::air, blockID::grass, blockID::tall_grass, blockID::snow});
 }
-void biomeGenerator::placeRandomlyGrownCrop(blockContainer* containerIn, cveci2& position, const blockID& cropID, std::mt19937& randomToUse)
+void biomeGenerator::placeRandomlyGrownCrop(blockContainer *containerIn, cveci2 &position, const blockID &cropID, std::mt19937 &randomToUse)
 {
-	//for fluid pools
+	// for fluid pools
 	if (containerIn->getBlockID(position) == blockID::air)
 	{
-		cint& growthStageCount = ((cropBlock*)blockList[cropID])->growthStageCount;
-		blockData* data = createBlockData(cropID);
-		dynamic_cast<cropData*>(data)->age = randIndex(randomToUse, growthStageCount);
+		cint &growthStageCount = ((cropBlock *)blockList[cropID])->growthStageCount;
+		blockData *data = createBlockData(cropID);
+		dynamic_cast<cropData *>(data)->age = randIndex(randomToUse, growthStageCount);
 		containerIn->setBlockWithData(position, cropID, data);
 	}
 	containerIn->setBlockID(cveci2(position) + cveci2(0, -1), blockID::farmland);
 }
-void biomeGenerator::placeRandomlyGrownStemPlant(blockContainer* containerIn, cveci2& position, const blockID& stemPlantID, std::mt19937& randomToUse)
+void biomeGenerator::placeRandomlyGrownStemPlant(blockContainer *containerIn, cveci2 &position, const blockID &stemPlantID, std::mt19937 &randomToUse)
 {
 	cint stemplantType = (int)stemPlantID - (int)blockID::melon;
 
-	const blockID& stemID = (blockID)((int)blockID::melon_stem + stemplantType);
+	const blockID &stemID = (blockID)((int)blockID::melon_stem + stemplantType);
 
-	cbool& hasFruit = randChance(randomToUse, 2);
-	stemPlantData* data = dynamic_cast<stemPlantData*>(createBlockData(stemID));
+	cbool &hasFruit = randChance(randomToUse, 2);
+	stemPlantData *data = dynamic_cast<stemPlantData *>(createBlockData(stemID));
 	data->age = hasFruit ? stemPlantGrowthStageCount[stemplantType] - 1 : randIndex(randomToUse, stemPlantGrowthStageCount[stemplantType]);
 
 	containerIn->setBlockWithData(position, stemID, data);
 
-	//grow a block on the stem
+	// grow a block on the stem
 	std::vector<veci2> possibilities = std::vector<veci2>();
 	for (fsize_t i = 0; i < directionCount1D; i++)
 	{
-		cveci2& absoluteCheckPosition = position + directionVectors2D[i];
+		cveci2 &absoluteCheckPosition = position + directionVectors2D[i];
 		if (containerIn->getBlockID(absoluteCheckPosition) == blockID::air)
 		{
 			possibilities.push_back(absoluteCheckPosition);
@@ -61,14 +61,14 @@ void biomeGenerator::placeRandomlyGrownStemPlant(blockContainer* containerIn, cv
 	}
 	if (possibilities.size())
 	{
-		//grow a block on one of the positions
+		// grow a block on one of the positions
 		containerIn->setBlockID(possibilities[randIndex(currentRandom, (int)possibilities.size())], stemPlantID, chunkLoadLevel::updateLoaded);
 	}
 }
-void biomeGenerator::setLeaveSphere(blockContainer* containerIn, cveci2& pos00, cveci2& pos11, cfp& topRadius, const blockID& leavesToUse)
+void biomeGenerator::setLeaveSphere(blockContainer *containerIn, cveci2 &pos00, cveci2 &pos11, cfp &topRadius, const blockID &leavesToUse)
 {
 	cfp middle = (pos11.x + pos00.x) * 0.5;
-	//add + 0.5 to make the spheres more beautiful
+	// add + 0.5 to make the spheres more beautiful
 	cvec2 maxDistance = cvec2((pos11.x - middle), pos11.y - pos00.y) + 0.5;
 	cfp yInfluence = maxDistance.x - topRadius;
 	cfp distanceMultiplier = (0.5 * math::PI) / maxDistance.y;
@@ -77,20 +77,20 @@ void biomeGenerator::setLeaveSphere(blockContainer* containerIn, cveci2& pos00, 
 		cfp distance = y - pos00.y;
 		cfp radius = topRadius + cos(distance * distanceMultiplier) * yInfluence;
 
-		//floor and ceil, because in the setleaves function <= is used
+		// floor and ceil, because in the setleaves function <= is used
 		cint minX = (int)floor(middle - radius);
 		cint maxX = (int)ceil(middle + radius);
 		setLeaves(containerIn, cveci2(minX, y), cveci2(maxX, y), leavesToUse);
 	}
 }
-bool biomeGenerator::placeTree(tickableBlockContainer* containerIn, cveci2& pos, const woodTypeID& type, cbool& generating, std::mt19937& randomToUse)
+bool biomeGenerator::placeTree(tickableBlockContainer *containerIn, cveci2 &pos, const woodTypeID &type, cbool &generating, std::mt19937 &randomToUse)
 {
-	//first: check light level
+	// first: check light level
 	if (!generating && ((int)type < normalTreeTypeCount) && containerIn->getVisibleLightLevel(pos) < glowInTheDarkLightLevel)
 	{
 		return false;
 	}
-	if (!containerIn->blockRangeContainsOnly(pos, pos, { blockID::air, (blockID)((int)blockID::wood_sapling + (int)type), blockID::grass, blockID::tall_grass, blockID::dead_bush }))
+	if (!containerIn->blockRangeContainsOnly(pos, pos, {blockID::air, (blockID)((int)blockID::wood_sapling + (int)type), blockID::grass, blockID::tall_grass, blockID::dead_bush}))
 	{
 		return false;
 	}
@@ -98,56 +98,54 @@ bool biomeGenerator::placeTree(tickableBlockContainer* containerIn, cveci2& pos,
 	return placeTreeStructure(containerIn, pos, type, generating, randomToUse);
 }
 
-
-bool biomeGenerator::placeTreeStructure(tickableBlockContainer* containerIn, cveci2& pos, const woodTypeID& type, cbool& generating, std::mt19937& randomToUse)
+bool biomeGenerator::placeTreeStructure(tickableBlockContainer *containerIn, cveci2 &pos, const woodTypeID &type, cbool &generating, std::mt19937 &randomToUse)
 {
 	return placeTreeStructure(containerIn, pos, woodTypeDataList[type]->name, generating, randomToUse);
 }
 
-bool biomeGenerator::placeTreeStructure(tickableBlockContainer* containerIn, cveci2& pos, const std::wstring& treeName, cbool& generating, std::mt19937& randomToUse)
+bool biomeGenerator::placeTreeStructure(tickableBlockContainer *containerIn, cveci2 &pos, const std::wstring &treeName, cbool &generating, std::mt19937 &randomToUse)
 {
-	jigsawPool* treePool = getJigsawPoolByName(structureFolder / L"tree" / treeName / std::wstring(L"random"));
-	structure* treeStructure = treePool->getRandomStructure(randomToUse);
-	cveci2& treeBottom = treeFeature().getStructureBottom(treeStructure);
+	jigsawPool *treePool = getJigsawPoolByPath(structureFolder / L"tree" / treeName / L"random");
+	structure *treeStructure = treePool->getRandomStructure(randomToUse);
+	cveci2 &treeBottom = treeFeature().getStructureBottom(treeStructure);
 
-	cbool& flipX = randChance(randomToUse, 2);
+	cbool &flipX = randChance(randomToUse, 2);
 
 	treeFeature().placeStructure(treeStructure, containerIn, pos - cveci2(flipX ? ((int)treeStructure->blockIDArray.size.x - 1) - treeBottom.x : treeBottom.x, treeBottom.y), randomToUse, flipX, 0, false);
 	return true;
 }
 
-bool biomeGenerator::placeIceSpike(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+bool biomeGenerator::placeIceSpike(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	jigsawPool* treePool = getJigsawPoolByName(structureFolder / L"ice_spike" / "random");
-	structure* treeStructure = treePool->getRandomStructure(randomToUse);
-	cveci2& treeBottom = structureFeature().getStructureBottom(treeStructure);
+	jigsawPool *treePool = getJigsawPoolByPath(structureFolder / L"ice_spike" / "random");
+	structure *treeStructure = treePool->getRandomStructure(randomToUse);
+	cveci2 &treeBottom = structureFeature().getStructureBottom(treeStructure);
 
-	cbool& flipX = randChance(randomToUse, 2);
+	cbool &flipX = randChance(randomToUse, 2);
 
 	structureFeature().placeStructure(treeStructure, containerIn, pos - cveci2(flipX ? ((int)treeStructure->blockIDArray.size.x - 1) - treeBottom.x : treeBottom.x, treeBottom.y), randomToUse, flipX, 0, false);
 	return true;
 }
 
-bool biomeGenerator::placeHugeMushroom(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+bool biomeGenerator::placeHugeMushroom(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	const mushroomColorID& mushroomColor = (mushroomColorID)rand(randomToUse, (int)mushroomColorID::count - 1);
+	const mushroomColorID &mushroomColor = (mushroomColorID)rand(randomToUse, (int)mushroomColorID::count - 1);
 	return placeHugeMushroom(containerIn, pos, mushroomColor, randomToUse);
-
 }
 
-bool biomeGenerator::placeHugeMushroom(tickableBlockContainer* containerIn, cveci2& pos, const mushroomColorID& mushroomColor, std::mt19937& randomToUse)
+bool biomeGenerator::placeHugeMushroom(tickableBlockContainer *containerIn, cveci2 &pos, const mushroomColorID &mushroomColor, std::mt19937 &randomToUse)
 {
-	jigsawPool* mushroomPool = getJigsawPoolByName(structureFolder / L"mushroom" / mushroomColorDataList[mushroomColor]->name / std::wstring(L"/random"));
-	structure* mushroomStructure = mushroomPool->getRandomStructure(randomToUse);
-	cveci2& mushroomBottom = mushroomFeature().getStructureBottom(mushroomStructure);
+	jigsawPool *mushroomPool = getJigsawPoolByPath(structureFolder / L"mushroom" / mushroomColorDataList[mushroomColor]->name / L"random");
+	structure *mushroomStructure = mushroomPool->getRandomStructure(randomToUse);
+	cveci2 &mushroomBottom = mushroomFeature().getStructureBottom(mushroomStructure);
 
-	cbool& flipX = randChance(randomToUse, 2);
+	cbool &flipX = randChance(randomToUse, 2);
 
 	mushroomFeature().placeStructure(mushroomStructure, containerIn, pos - cveci2(flipX ? ((int)mushroomStructure->blockIDArray.size.x - 1) - mushroomBottom.x : mushroomBottom.x, mushroomBottom.y), randomToUse, flipX, 0, false);
 	return true;
 }
 
-bool biomeGenerator::placeChorusTree(blockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+bool biomeGenerator::placeChorusTree(blockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	if (containerIn->getBlockID(pos + cveci2(0, -1)) != blockID::end_stone)
 	{
@@ -156,7 +154,7 @@ bool biomeGenerator::placeChorusTree(blockContainer* containerIn, cveci2& pos, s
 	else
 	{
 		int topY = pos.y + rand(currentRandom, 0x8, 0x18);
-		std::vector<int> xCoords = std::vector<int>({ pos.x });
+		std::vector<int> xCoords = std::vector<int>({pos.x});
 		for (int y = pos.y; y <= topY; y++)
 		{
 			std::vector<int> nextXCoords = std::vector<int>();
@@ -171,13 +169,13 @@ bool biomeGenerator::placeChorusTree(blockContainer* containerIn, cveci2& pos, s
 				{
 					containerIn->setBlockID(cveci2(x, y), blockID::chorus_plant);
 
-					//split left
+					// split left
 					if (index == 0 || (xCoords[index - 1] + 3 < x))
 					{
 						containerIn->setBlockID(cveci2(x - 1, y), blockID::chorus_plant);
 						nextXCoords.push_back(x - 1);
 					}
-					//split right
+					// split right
 					if (index == xCoords.size() - 1 || xCoords[index + 1] - 3 > x)
 					{
 						containerIn->setBlockID(cveci2(x + 1, y), blockID::chorus_plant);
@@ -195,29 +193,29 @@ bool biomeGenerator::placeChorusTree(blockContainer* containerIn, cveci2& pos, s
 		return true;
 	}
 }
-void biomeGenerator::generateTopping(blockContainer* containerIn, cveci2& pos, const std::vector<blockID>& blocksToReplace, const blockID& block, std::mt19937& randomToUse)
+void biomeGenerator::generateTopping(blockContainer *containerIn, cveci2 &pos, const std::vector<blockID> &blocksToReplace, const blockID &block, std::mt19937 &randomToUse)
 {
 	generateTopping(containerIn, pos, blocksToReplace, block, rand(randomToUse, 3, 5));
 }
 
-void biomeGenerator::generateTopping(blockContainer* containerIn, cveci2& pos, const std::vector<blockID>& blocksToReplace, const blockID& block, cint& dripDepth)
+void biomeGenerator::generateTopping(blockContainer *containerIn, cveci2 &pos, const std::vector<blockID> &blocksToReplace, const blockID &block, cint &dripDepth)
 {
 	containerIn->replaceBlockRange(cveci2(pos.x, pos.y - dripDepth), pos + cveci2(0, -1), block, blocksToReplace);
 }
 
-void biomeGenerator::generateCeilingTopping(blockContainer* containerIn, cveci2& pos, const std::vector<blockID>& blocksToReplace, const blockID& block, cint& dripDepth)
+void biomeGenerator::generateCeilingTopping(blockContainer *containerIn, cveci2 &pos, const std::vector<blockID> &blocksToReplace, const blockID &block, cint &dripDepth)
 {
 	containerIn->replaceBlockRange(cveci2(pos.x, pos.y), pos + cveci2(0, dripDepth - 1), block, blocksToReplace);
 }
 
-bool biomeGenerator::placeCactus(blockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+bool biomeGenerator::placeCactus(blockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	int height = rand(randomToUse, 2, 3);
 	if (containerIn->getBlockID(pos + cveci2(0, -1)) != blockID::sand)
 	{
 		return false;
 	}
-	if (!containerIn->blockRangeContainsOnly(cveci2(pos.x - 1, pos.y), cveci2(pos.x + 1, pos.y + height - 1), { blockID::air }))
+	if (!containerIn->blockRangeContainsOnly(cveci2(pos.x - 1, pos.y), cveci2(pos.x + 1, pos.y + height - 1), {blockID::air}))
 	{
 		return false;
 	}
@@ -225,15 +223,15 @@ bool biomeGenerator::placeCactus(blockContainer* containerIn, cveci2& pos, std::
 	return true;
 }
 
-bool biomeGenerator::placeSugarCane(blockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+bool biomeGenerator::placeSugarCane(blockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	int height = rand(randomToUse, 1, 4);
-	const blockID& blockBelow = containerIn->getBlockID(pos + cveci2(0, -1));
+	const blockID &blockBelow = containerIn->getBlockID(pos + cveci2(0, -1));
 	if (!is_in(blockBelow, blockID::sand, blockID::dirt, blockID::grass_block))
 	{
 		return false;
 	}
-	if (!containerIn->blockRangeContainsOnly(pos, cveci2(pos.x, pos.y + height - 1), { blockID::air }))
+	if (!containerIn->blockRangeContainsOnly(pos, cveci2(pos.x, pos.y + height - 1), {blockID::air}))
 	{
 		return false;
 	}
@@ -241,123 +239,118 @@ bool biomeGenerator::placeSugarCane(blockContainer* containerIn, cveci2& pos, st
 	return true;
 }
 
-void biomeGenerator::generateGrassTopping(blockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::generateGrassTopping(blockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	generateGrassTopping(containerIn, pos, randomToUse, blockID::grass_block);
 }
 
-void biomeGenerator::generateGrassTopping(blockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse, const blockID& grassType)
+void biomeGenerator::generateGrassTopping(blockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse, const blockID &grassType)
 {
-	const blockID& shortVersion = (blockID)(((int)grassType - (int)blockID::grass_block) + (int)blockID::grass);
-	const blockID& tallVersion = (blockID)(((int)grassType - (int)blockID::grass_block) + (int)blockID::tall_grass);
+	const blockID &shortVersion = (blockID)(((int)grassType - (int)blockID::grass_block) + (int)blockID::grass);
+	const blockID &tallVersion = (blockID)(((int)grassType - (int)blockID::grass_block) + (int)blockID::tall_grass);
 
-	generateTopping(containerIn, cveci2(pos.x, pos.y - 1), { blockID::stone }, blockID::dirt, 3);
-	containerIn->replaceBlock(cveci2(pos.x, pos.y - 1), grassType, { blockID::stone, blockID::dirt });
+	generateTopping(containerIn, cveci2(pos.x, pos.y - 1), {blockID::stone}, blockID::dirt, 3);
+	containerIn->replaceBlock(cveci2(pos.x, pos.y - 1), grassType, {blockID::stone, blockID::dirt});
 
 	if ((grassType == blockID::grass_block) || (grassType == blockID::podzol))
 	{
-		if (randChance(randomToUse, 0x8) && containerIn->blockRangeContainsOnly(pos, cveci2(pos.x, pos.y + 1), { blockID::air }))
+		if (randChance(randomToUse, 0x8) && containerIn->blockRangeContainsOnly(pos, cveci2(pos.x, pos.y + 1), {blockID::air}))
 		{
-			containerIn->replaceBlock(pos, tallVersion, { blockID::air });
+			containerIn->replaceBlock(pos, tallVersion, {blockID::air});
 		}
 		else if (randChance(randomToUse, 0x2))
 		{
-			containerIn->replaceBlock(pos, shortVersion, { blockID::air });
+			containerIn->replaceBlock(pos, shortVersion, {blockID::air});
 		}
 		else if (randChance(randomToUse, 0x10) && (grassType == blockID::grass_block))
 		{
-			static const std::vector<blockID> flowersToChooseFrom = { blockID::dandelion, blockID::poppy };
-			const blockID& flowerToUse = flowersToChooseFrom[randIndex(randomToUse, (int)flowersToChooseFrom.size())];
-			containerIn->replaceBlock(pos, flowerToUse, { blockID::air });
+			static const std::vector<blockID> flowersToChooseFrom = {blockID::dandelion, blockID::poppy};
+			const blockID &flowerToUse = flowersToChooseFrom[randIndex(randomToUse, (int)flowersToChooseFrom.size())];
+			containerIn->replaceBlock(pos, flowerToUse, {blockID::air});
 		}
 	}
 }
 
-void biomeGenerator::placeDesertPyramid(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeDesertPyramid(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	//middle bottom
+	// middle bottom
 	cveci2 pos00 = pos + cveci2(-10, -13);
-	structure* desertPyramidStructure = getStructureByName(structureFolder / std::wstring(L"desert_pyramid/desert_pyramid"));
+	structure *desertPyramidStructure = getStructureByName(structureFolder / std::wstring(L"desert_pyramid/desert_pyramid"));
 	structureFeature().placeStructure(desertPyramidStructure, containerIn, pos00, randomToUse, 0, false);
 }
 
-void biomeGenerator::placeJungleTemple(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeJungleTemple(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	//middle bottom
-	structure* junglePyramidStructure = getStructureByName(structureFolder / std::wstring(L"jungle_pyramid/jungle_pyramid"));
+	// middle bottom
+	structure *junglePyramidStructure = getStructureByName(structureFolder / std::wstring(L"jungle_pyramid/jungle_pyramid"));
 	structureFeature().placeStructure(junglePyramidStructure, containerIn, structureFeature().getStructureBottom(junglePyramidStructure), randomToUse, 0, false);
 }
 
-void biomeGenerator::placeShipWreck(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeShipWreck(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	cveci2 pos00 = pos + cveci2(-14, 0);
-	decayedStructureFeature(&randomToUse, 0.95, 0.03).placeStructure(getStructureByName(structureFolder / std::wstring(L"shipwreck/with_mast")), containerIn, pos00, randomToUse, 0, false);
+	decayedStructureFeature(&randomToUse, 0.95, 0.03).placeStructure(getStructureByName(structureFolder / L"shipwreck" / L"with_mast"), containerIn, pos00, randomToUse, 0, false);
 }
 
-void biomeGenerator::placeOceanRuins(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeOceanRuins(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	jigsawPool* oceanRuinsPool = getJigsawPoolByName(structureFolder / std::wstring(L"underwater_ruin/underwater_ruin"));
-	structure* ruinStructure = oceanRuinsPool->getRandomStructure(randomToUse);
+	jigsawPool *oceanRuinsPool = getJigsawPoolByPath(structureFolder / L"underwater_ruin" / L"underwater_ruin");
+	structure *ruinStructure = oceanRuinsPool->getRandomStructure(randomToUse);
 	cveci2 pos00 = pos + cveci2((int)ruinStructure->blockIDArray.size.x / -2, 0);
 	decayedStructureFeature(&randomToUse, 0.95, 0.05).placeStructure(ruinStructure, containerIn, pos00, randomToUse, 0, false);
 }
 
-void biomeGenerator::placeMineShaft(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeMineShaft(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	structure* railAreaStructure = getStructureByName(structureFolder / std::wstring(L"mineshaft/rail_area"));
+	structure *railAreaStructure = getStructureByName(structureFolder / L"mineshaft" / "rail_area");
 	cveci2 pos00 = pos + cveci2((int)railAreaStructure->blockIDArray.size.x / -2, 0);
 	decayedStructureFeature(&randomToUse, 0.95, 0.02).placeStructure(railAreaStructure, containerIn, pos00, randomToUse, 0x10, false);
 }
 
-void biomeGenerator::placeNamedStructure(tickableBlockContainer* containerIn, cveci2& pos, const std::wstring& structureName, std::mt19937& randomToUse)
+void biomeGenerator::placeNamedStructure(tickableBlockContainer *containerIn, cveci2 &pos, const std::wstring &structureName, std::mt19937 &randomToUse)
 {
-	structure* structureToPlace = getStructureByName(structureFolder / structureName);
+	structure *structureToPlace = getStructureByName(structureFolder / structureName);
 	cveci2 pos00 = pos + cveci2((int)structureToPlace->blockIDArray.size.x / -2, 0);
 	structureFeature().placeStructure(structureToPlace, containerIn, pos00, randomToUse, 0x10, false);
 }
 
-void biomeGenerator::placeNetherFortress(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeNetherFortress(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	//start with a corridor balcony
-	cint corridorBalconyLevel = 3;//the amount of levels before the floor
-	structure* corridorBalconyStructure = getStructureByName(structureFolder / std::wstring(L"nether_fortress/corridor_balcony"));
+	// start with a corridor balcony
+	cint corridorBalconyLevel = 3; // the amount of levels before the floor
+	structure *corridorBalconyStructure = getStructureByName(structureFolder / L"nether_fortress" / "corridor_balcony");
 	netherFortressFeature().placeStructure(corridorBalconyStructure, containerIn, pos + cveci2(-(int)corridorBalconyStructure->blockIDArray.size.x / 2, -(int)corridorBalconyLevel), randomToUse, 0x10);
 }
 
-void biomeGenerator::placeStronghold(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeStronghold(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	//middle
+	// middle
 	cveci2 pos00 = pos + cveci2(-8, -4);
-	decayedStructureFeature(&randomToUse, 0.95, 0.02).placeStructure(getStructureByName(structureFolder / std::wstring(L"stronghold/portal_room")), containerIn, pos00, randomToUse, 0x8, false);
+	decayedStructureFeature(&randomToUse, 0.95, 0.02).placeStructure(getStructureByName(structureFolder / L"stronghold" / L"portal_room"), containerIn, pos00, randomToUse, 0x8, false);
 }
 
-void biomeGenerator::placeDungeon(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeDungeon(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	//middle
+	// middle
 	cveci2 pos00 = pos + cveci2(-8, 0);
-	decayedStructureFeature(&randomToUse, 0.95, 0.05).placeStructure(getStructureByName(structureFolder / std::wstring(L"dungeon/dungeon")), containerIn, pos00, randomToUse, 1, false);
+	decayedStructureFeature(&randomToUse, 0.95, 0.05).placeStructure(getStructureByName(structureFolder / L"dungeon" / L"dungeon"), containerIn, pos00, randomToUse, 1, false);
 }
 
-void biomeGenerator::placeRuinedPortal(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeRuinedPortal(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-
-
-
-
-
 }
 
-void biomeGenerator::placeEndCity(tickableBlockContainer* containerIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeEndCity(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	structure* endCityBaseFloor = getStructureByName(structureFolder / std::wstring(L"end_city/base_floor"));
+	structure *endCityBaseFloor = getStructureByName(structureFolder / std::wstring(L"end_city/base_floor"));
 	cveci2 pos00 = pos + cveci2((int)endCityBaseFloor->blockIDArray.size.x / -2, 0);
 	structureFeature().placeStructure(endCityBaseFloor, containerIn, pos00, randomToUse, 0x100, false);
 }
 
-void biomeGenerator::placeFossil(dimension* dimensionIn, cveci2& pos, std::mt19937& randomToUse)
+void biomeGenerator::placeFossil(dimension *dimensionIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	jigsawPool* fossilPool = getJigsawPoolByName(structureFolder / std::wstring(L"fossil/fossil"));
-	structure* fossilStructure = fossilPool->getRandomStructure(randomToUse);
+	jigsawPool *fossilPool = getJigsawPoolByPath(structureFolder / L"fossil" / L"fossil");
+	structure *fossilStructure = fossilPool->getRandomStructure(randomToUse);
 	cveci2 pos00 = pos + cveci2((int)fossilStructure->blockIDArray.size.x / -2, 0);
 
 	if (dimensionIn->identifier == dimensionID::overworld)
@@ -369,7 +362,6 @@ void biomeGenerator::placeFossil(dimension* dimensionIn, cveci2& pos, std::mt199
 		structureFeature().placeStructure(fossilStructure, dimensionIn, pos00, randomToUse, 1, false);
 	}
 }
-void biomeGenerator::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std::mt19937& randomToUse) const
+void biomeGenerator::attemptgenerateStructures(dimension *dimensionIn, cveci2 &pos, std::mt19937 &randomToUse) const
 {
-
 }

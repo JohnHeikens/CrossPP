@@ -500,6 +500,8 @@ void human::serializeValue(nbtSerializer& s)
 	s.serializeValue(std::wstring(L"right hand slot index"), rightHandSlotIndex);
 	s.serializeValue(std::wstring(L"gamemode"), (int&)currentGameMode);
 	s.serializeValue(std::wstring(L"has seen credits"), seenCredits);
+	s.serializeValue(std::wstring(L"spectator speed"), spectatorSpeed);
+	s.serializeValue(std::wstring(L"visible range"), visibleRangeXWalk);
 }
 
 bool human::serialize(cbool& write)

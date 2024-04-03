@@ -72,18 +72,11 @@ microseconds lastTickTimeMicroseconds;
 seconds lastTickTime;
 seconds lastRenderTime;
 
-microseconds currentFrameStartMicroSeconds;//the time point at which the game started drawing this frame; use for smooth 60fps animations
-seconds currentFrameStartSeconds;
-
-
-
-void gameControl::render(cveci2& position, const texture& renderTarget)
+void gameControl::render(cveci2 &position, const texture &renderTarget)
 {
 	updateMusic();
 
-
-
-	//update transform and stuff
+	// update transform and stuff
 
 	if (startCredits)
 	{
@@ -93,13 +86,19 @@ void gameControl::render(cveci2& position, const texture& renderTarget)
 		replaceMusic(creditsMusic);
 		focusChild(currentCredits);
 	}
-	else {
-		cfp& maximum = math::maximum(visibleRangeXWalk, requiredVisibleRangeXSprint);
+	else
+	{
+		//measure the time point at which the game started drawing this frame; use for smooth 60fps animations
+		microseconds newFrameTime = getmicroseconds();
+		const microseconds& currentFrameStartMicroSeconds = newFrameTime;
+		const seconds& newFrameStartSeconds = microsectosec(currentFrameStartMicroSeconds);
+		lastRenderTime = newFrameStartSeconds - currentFrameStartSeconds;
+		currentFrameStartSeconds = newFrameStartSeconds;
 
-		visibleRange.x = math::lerp(visibleRange.x, player->wantsToSprint ?
-			maximum
-			: visibleRangeXWalk,
-			1 - pow(1 - visibleRangeTransitionSpeedPerSecond, lastRenderTime));
+		cfp &maximum = math::maximum(player->visibleRangeXWalk, requiredVisibleRangeXSprint);
+
+		visibleRange.x = math::lerp(visibleRange.x, player->wantsToSprint ? maximum : player->visibleRangeXWalk,
+									1 - pow(1 - visibleRangeTransitionSpeedPerSecond, lastRenderTime));
 		renderGame(crectanglei2(position, rect.size), renderTarget, settings::renderHUD);
 	}
 
@@ -111,30 +110,29 @@ void gameControl::render(cveci2& position, const texture& renderTarget)
 
 		if (player->entityType == entityID::human)
 		{
-			human* currentHuman = (human*)player;
-			cint& selectedBlockID = (int)currentHuman->selectedBlockContainer->getBlockID(currentHuman->selectedBlockPosition);
+			human *currentHuman = (human *)player;
+			cint &selectedBlockID = (int)currentHuman->selectedBlockContainer->getBlockID(currentHuman->selectedBlockPosition);
 			text += std::wstring(L"selected block:\t") + blockList[selectedBlockID]->name + L"(" + std::to_wstring(selectedBlockID) + std::wstring(L")\n");
-			blockData* selectedBlockData = currentHuman->selectedBlockContainer->getBlockData(currentHuman->selectedBlockPosition);
+			blockData *selectedBlockData = currentHuman->selectedBlockContainer->getBlockData(currentHuman->selectedBlockPosition);
 			if (selectedBlockData)
 			{
 				text += std::wstring(L"selected block data:\t") + selectedBlockData->toString() + L"\n";
 			}
 			text += std::wstring(L"selected light level:\tinternal sunlight:") + std::to_wstring(currentHuman->selectedBlockContainer->getInternalSunLightLevel(currentHuman->selectedBlockPosition)) +
-				std::wstring(L"\tblock light:") + std::to_wstring(currentHuman->selectedBlockContainer->getBlockLightLevel(currentHuman->selectedBlockPosition)) +
-				std::wstring(L"\tpower level:") + std::to_wstring(currentHuman->selectedBlockContainer->getPowerLevel(currentHuman->selectedBlockPosition)) + std::wstring(L"\n");
+					std::wstring(L"\tblock light:") + std::to_wstring(currentHuman->selectedBlockContainer->getBlockLightLevel(currentHuman->selectedBlockPosition)) +
+					std::wstring(L"\tpower level:") + std::to_wstring(currentHuman->selectedBlockContainer->getPowerLevel(currentHuman->selectedBlockPosition)) + std::wstring(L"\n");
 		}
-
 
 		if (player->dimensionIn->identifier == dimensionID::overworld)
 		{
-			overWorld* currentOverWorld = (overWorld*)player->dimensionIn;
+			overWorld *currentOverWorld = (overWorld *)player->dimensionIn;
 			text += std::wstring(L"noise values:\televation:") + std::to_wstring(currentOverWorld->biomeElevationNoise->evaluate(vec1(player->position.x))) +
-				std::wstring(L"\ttemperature:") + std::to_wstring(currentOverWorld->biomeTemperatureNoise->evaluate(vec1(player->position.x))) +
-				std::wstring(L"\thumidity:\t") + std::to_wstring(currentOverWorld->biomeHumidityNoise->evaluate(vec1(player->position.x))) +
-				std::wstring(L"\tcloudiness:\t") + std::to_wstring(currentOverWorld->cloudThicknessNoise->evaluate(vec1(currentWorld->currentTime))) + std::wstring(L"\n");
+					std::wstring(L"\ttemperature:") + std::to_wstring(currentOverWorld->biomeTemperatureNoise->evaluate(vec1(player->position.x))) +
+					std::wstring(L"\thumidity:\t") + std::to_wstring(currentOverWorld->biomeHumidityNoise->evaluate(vec1(player->position.x))) +
+					std::wstring(L"\tcloudiness:\t") + std::to_wstring(currentOverWorld->cloudThicknessNoise->evaluate(vec1(currentWorld->currentTime))) + std::wstring(L"\n");
 		}
 
-		cvec2& windSpeed = player->dimensionIn->getWindSpeed(player->position);
+		cvec2 &windSpeed = player->dimensionIn->getWindSpeed(player->position);
 
 		text += std::wstring(L"wind speed:\tx") + std::to_wstring(windSpeed.x) + std::wstring(L"\ty") + std::to_wstring(windSpeed.y) + std::wstring(L"\n");
 
@@ -151,18 +149,16 @@ void gameControl::render(cveci2& position, const texture& renderTarget)
 		text += std::wstring(L"\n");
 		text += std::wstring(L"sound count:\t") + std::to_wstring(playingSoundCount) + std::wstring(L"\n");
 		text += std::wstring(L"fps:\t") + std::to_wstring(1.0 / microsectosec(currentBenchmark->measureTotalBenchmarkTime())) +
-			std::wstring(L"\nmicroseconds used:\ntotal: ") + std::to_wstring(currentBenchmark->measureTotalBenchmarkTime()) +
-			std::wstring(L"\nrendering: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::drawing)) +
-			std::wstring(L"\nblock updates: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::blockUpdates)) +
-			std::wstring(L"\nlight updates: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::lightUpdates)) +
-			std::wstring(L"\nentities: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::entities)) +
-			std::wstring(L"\nphysics: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::physics)) +
-			std::wstring(L"\nchunk loading: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::chunkLoading)) +
-			std::wstring(L"\nnetworking: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::networking)) +
-			std::wstring(L"\nmiscellaneous: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::miscellaneous)) + std::wstring(L"\n");
+				std::wstring(L"\nmicroseconds used:\ntotal: ") + std::to_wstring(currentBenchmark->measureTotalBenchmarkTime()) +
+				std::wstring(L"\nrendering: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::drawing)) +
+				std::wstring(L"\nblock updates: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::blockUpdates)) +
+				std::wstring(L"\nlight updates: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::lightUpdates)) +
+				std::wstring(L"\nentities: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::entities)) +
+				std::wstring(L"\nphysics: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::physics)) +
+				std::wstring(L"\nchunk loading: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::chunkLoading)) +
+				std::wstring(L"\nnetworking: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::networking)) +
+				std::wstring(L"\nmiscellaneous: ") + std::to_wstring(currentBenchmark->measureBenchmarkTime(cpuUsageID::miscellaneous)) + std::wstring(L"\n");
 		text += std::wstring(L"\n");
-
-
 
 		renderText(position, renderTarget);
 	}
@@ -175,32 +171,36 @@ void gameControl::render(cveci2& position, const texture& renderTarget)
 
 	currentWorld->currentChat.render(renderTarget, *this);
 	renderChildren(position, renderTarget);
-	if (focusedChild) {
+	if (focusedChild)
+	{
 		fillTransparentRectangle(crosshairTextureRect, crectangle2(cvec2(mousePositionPixels), cvec2()).expanded((fp)crosshairTextureRect.size.x * settings::videoSettings::guiScale), *iconsTexture, renderTarget);
 	}
 }
 
 void gameControl::processInput()
 {
-	//this function will get called on other times than the tick() function. 
+	// this function will get called on other times than the tick() function.
 	form::hover(mousePositionPixels);
-	//process buttons
-	control* highestChild = getHighestChild(mousePositionPixels);
-	//prevent from focusing another child
+	// process buttons
+	control *highestChild = getHighestChild(mousePositionPixels);
+	// prevent from focusing another child
 	if (focusedChild)
 	{
 		if (highestChild == focusedChild)
 		{
-			for (sf::Mouse::Button button = (sf::Mouse::Button)0; button < sf::Mouse::Button::ButtonCount; button = (mb)((byte)button + 1)) {
-				if (mostRecentInput.clicked[button]) {
+			for (sf::Mouse::Button button = (sf::Mouse::Button)0; button < sf::Mouse::Button::ButtonCount; button = (mb)((byte)button + 1))
+			{
+				if (mostRecentInput.clicked[button])
+				{
 					form::mouseDown(mousePositionPixels, button);
 				}
-				if (mostRecentInput.clickReleased[button]) {
+				if (mostRecentInput.clickReleased[button])
+				{
 					form::mouseUp(mousePositionPixels, button);
 				}
 			}
 		}
-		//clickedFocused can be modified safely, because every time the clientInput gets modified, processInput() is called right after
+		// clickedFocused can be modified safely, because every time the clientInput gets modified, processInput() is called right after
 		fillAllElements(clickedFocused, false);
 	}
 	else
@@ -216,9 +216,11 @@ void gameControl::processInput()
 		std::copy(clicked, clicked + mb::ButtonCount, clickedFocused);
 	}
 
-	//process keys
-	for (const keyHistoryEvent& e : mostRecentInput.keyDownHistory) {
-		if (e.down) {
+	// process keys
+	for (const keyHistoryEvent &e : mostRecentInput.keyDownHistory)
+	{
+		if (e.down)
+		{
 			if (e.key == (vk)keyID::inventory)
 			{
 				if (inventoryUI->visible)
@@ -242,17 +244,17 @@ void gameControl::processInput()
 
 				if (e.key == (vk)keyID::text)
 				{
-					//avoid typing the text keybind
+					// avoid typing the text keybind
 					return;
 				}
 			}
 			if (e.key == vk::Enter && focusedChild == commandLineTextbox)
 			{
-				//execute the commandline
+				// execute the commandline
 				std::wstring line = commandLineTextbox->text;
 				currentWorld->currentChat.say(*player, line);
 
-				focusChild(nullptr);//back to the game
+				focusChild(nullptr); // back to the game
 				commandLineTextbox->visible = false;
 				commandLineTextbox->text = std::wstring(L"");
 				commandLineTextbox->cursorIndex = 0;
@@ -285,35 +287,32 @@ void gameControl::processInput()
 					settings::renderHUD = !settings::renderHUD;
 				}
 			}
-			else {
+			else
+			{
 				form::keyDown(e.key);
 			}
 		}
-		else {
+		else
+		{
 			form::keyUp(e.key);
 		}
 	}
-	for (const auto c : mostRecentInput.textEntered) {
+	for (const auto c : mostRecentInput.textEntered)
+	{
 		form::enterText(c);
 	}
 }
 
-void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cbool& renderHUD)
+void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cbool &renderHUD)
 {
-	//start drawing
-	microseconds newFrameTime = getmicroseconds();
-	lastRenderTime = microsectosec(newFrameTime - currentFrameStartMicroSeconds);
-	currentFrameStartMicroSeconds = newFrameTime;
-	currentFrameStartSeconds = microsectosec(currentFrameStartMicroSeconds);
+	// start drawing
 
-	cfp& secondsBetweenTickAndRender = currentFrameStartSeconds - lastTickTime;
-
-
-	//draw the chunk
-	//the amount of pixels each block occupies on the screen
-	cfp& pixelsPerBlock = rect.size.x / (visibleRange.x * 2);
+	cfp &secondsBetweenTickAndRender = currentFrameStartSeconds - lastTickTime;
+	// draw the chunk
+	// the amount of pixels each block occupies on the screen
+	cfp &pixelsPerBlock = rect.size.x / (visibleRange.x * 2);
 	visibleRange.y = (fp)rect.size.y / rect.size.x * visibleRange.x;
-	cfp& hudScale = (settings::videoSettings::guiScale * rect.size.x) / ((StandardInventoryColumnCount * 2) * hotbarSpacing);
+	cfp &hudScale = (settings::videoSettings::guiScale * rect.size.x) / ((StandardInventoryColumnCount * 2) * hotbarSpacing);
 
 	vec2 headPosition;
 
@@ -326,11 +325,11 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 
 	cmat3x3 mouseLookingTransform = getWorldToScreenTransform(headPosition, pixelsPerBlock);
 
-	//update the mouse position according to the transform
-	//mousePositionPixels = newMousePositionPixels;
-	//convert to position in world
+	// update the mouse position according to the transform
+	// mousePositionPixels = newMousePositionPixels;
+	// convert to position in world
 
-	//if (currentGame->focusedChild == nullptr)
+	// if (currentGame->focusedChild == nullptr)
 	//{
 	cmat3x3 inverseMouseLookingTransform = mouseLookingTransform.inverse();
 	cameraPosition = inverseMouseLookingTransform.multPointMatrix(cvec2(unFocusedMousePosition));
@@ -342,20 +341,20 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	player->lookingAt = currentMousePositionWorld;
 	//}
 
-	//already update the selectedblockpos so it is drawn correctly
+	// already update the selectedblockpos so it is drawn correctly
 	player->updateSelection();
-	dimension* dimensionIn = player->dimensionIn;
+	dimension *dimensionIn = player->dimensionIn;
 
-	const gameRenderData& targetData = getRenderData(renderTarget, math::minimum(secondsBetweenTickAndRender, secondsPerTick));
+	const gameRenderData &targetData = getRenderData(renderTarget, math::minimum(secondsBetweenTickAndRender, secondsPerTick));
 
-	crectangle2& worldRect = targetData.renderTargetToWorldTransform.multRectMatrix(crectangle2(targetData.renderTarget.getClientRect()));
+	crectangle2 &worldRect = targetData.renderTargetToWorldTransform.multRectMatrix(crectangle2(targetData.renderTarget.getClientRect()));
 
-	//render blocks and lightlevels
+	// render blocks and lightlevels
 
 	veci2 pos00 = floorVector(worldRect.pos0);
 	veci2 pos11 = floorVector(worldRect.pos1());
 
-	pos11 = pos11 + 1;//add 1 to also draw the last block
+	pos11 = pos11 + 1; // add 1 to also draw the last block
 	rectanglei2 blocksToBeDrawn = rectanglei2(pos00, pos11 - pos00);
 
 	pos00 = blocksToBeDrawn.pos0;
@@ -366,26 +365,25 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	constexpr int averageDiametre = 1 + averageDistance2;
 
 	crectanglei2 surroundingArrayRect = crectanglei2(blocksToBeDrawn.pos0 - averageDistance, blocksToBeDrawn.size + averageDistance * 2);
-	csize_t& surroundingArraySize = surroundingArrayRect.w * surroundingArrayRect.h;
+	csize_t &surroundingArraySize = surroundingArrayRect.w * surroundingArrayRect.h;
 
 	array2d<lightLevel> surroundingLightLevels[(size_t)lightLevelID::count];
 
 	for (int lightDataTypeIndex = 0; lightDataTypeIndex < (int)lightLevelID::count; lightDataTypeIndex++)
 	{
-		const arrayDataType& dataType = (arrayDataType)((int)arrayDataType::levelType + (int)levelID::light + (int)lightDataTypeIndex);
+		const arrayDataType &dataType = (arrayDataType)((int)arrayDataType::levelType + (int)levelID::light + (int)lightDataTypeIndex);
 		surroundingLightLevels[lightDataTypeIndex] = player->dimensionIn->getArrayValues<lightLevel>(surroundingArrayRect, dataType, chunkLoadLevel::worldGenerationLoaded);
 	}
 
-	const array2d<blockID>& surroundingBlocks = player->dimensionIn->getArrayValues<blockID>(surroundingArrayRect, arrayDataType::blockIDType, chunkLoadLevel::worldGenerationLoaded);
+	const array2d<blockID> &surroundingBlocks = player->dimensionIn->getArrayValues<blockID>(surroundingArrayRect, arrayDataType::blockIDType, chunkLoadLevel::worldGenerationLoaded);
 
-	const array2d<bool>& isBlack = array2d<bool>(surroundingArrayRect.size);
-	const array2d<bool>& isWhite = array2d<bool>(surroundingArrayRect.size);
-	const array2d<squareInterpolator>& interpolators = array2d<squareInterpolator>(surroundingArrayRect.size);
-	const vect2<fastArray<bool>>& rendered =
+	const array2d<bool> &isBlack = array2d<bool>(surroundingArrayRect.size);
+	const array2d<bool> &isWhite = array2d<bool>(surroundingArrayRect.size);
+	const array2d<squareInterpolator> &interpolators = array2d<squareInterpolator>(surroundingArrayRect.size);
+	const vect2<fastArray<bool>> &rendered =
 		vect2<fastArray<bool>>(
 			fastArray<bool>(blocksToBeDrawn.size.x),
-			fastArray<bool>(blocksToBeDrawn.size.y)
-		);
+			fastArray<bool>(blocksToBeDrawn.size.y));
 
 	for (size_t axis = 0; axis < 2; axis++)
 	{
@@ -395,15 +393,15 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 			blockRect.pos0[axis] = (fp)i + pos00[axis];
 			blockRect.size[axis] = 1;
 
-			crectanglei2& screenRect = ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect));
+			crectanglei2 &screenRect = ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect));
 
 			rendered[axis][i] = screenRect.size[axis];
 		}
 	}
 
-	for (cveci2& renderPosition : blocksToBeDrawn)
+	for (cveci2 &renderPosition : blocksToBeDrawn)
 	{
-		cveci2& relativePosition = renderPosition - pos00;
+		cveci2 &relativePosition = renderPosition - pos00;
 		if (rendered[axisID::y][relativePosition.y])
 		{
 			if (rendered[axisID::x][relativePosition.x])
@@ -424,7 +422,7 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 						for (int averageX = 0; averageX < averageDiametre; averageX++)
 						{
 							cveci2 absoluteArrayPosition = cveci2(relativePosition.x + averageX, relativePosition.y + averageY);
-							block* const& blockToCheck = blockList[(int)surroundingBlocks.getValue(absoluteArrayPosition)];
+							block *const &blockToCheck = blockList[(int)surroundingBlocks.getValue(absoluteArrayPosition)];
 
 							for (size_t i = 0; i < 2; i++)
 							{
@@ -445,13 +443,13 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 					}
 					else
 					{
-						colorf* cornerColorPtr = interpolators.getValueReferenceUnsafe(cveci2(relativePosition)).cornerColors;
-						//for each corner
+						colorf *cornerColorPtr = interpolators.getValueReferenceUnsafe(cveci2(relativePosition)).cornerColors;
+						// for each corner
 						for (int cornerY = relativePosition.y; cornerY < relativePosition.y + 2; cornerY++)
 						{
 							for (int cornerX = relativePosition.x; cornerX < relativePosition.x + 2; cornerX++, cornerColorPtr++)
 							{
-								//for each light level around 'corner'
+								// for each light level around 'corner'
 								lightLevel maxLightLevel[(size_t)lightLevelID::count]{};
 								for (int cornerCornerY = cornerY; cornerCornerY < cornerY + averageDistance2; cornerCornerY++)
 								{
@@ -477,68 +475,67 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 					}
 				}
 
-
 				if (!isBlack.getValueUnsafe(relativePosition))
 				{
-					//render sky
-					crectangle2& blockRect = crectangle2(renderPosition, cveci2(1));
-					crectangle2& screenRect = targetData.worldToRenderTargetTransform.multRectMatrix(blockRect);
+					// render sky
+					crectangle2 &blockRect = crectangle2(renderPosition, cveci2(1));
+					crectangle2 &screenRect = targetData.worldToRenderTargetTransform.multRectMatrix(blockRect);
 					dimensionIn->renderSky(blockRect, screenRect, targetData);
 				}
 			}
 		}
 	}
-	//render entities
-	std::vector<entity*> nearEntities = dimensionIn->findNearEntities(cameraPosition, visibleRange.length() + mobSizeMargin);
-	for (entity* e : nearEntities)
+	// render entities
+	std::vector<entity *> nearEntities = dimensionIn->findNearEntities(cameraPosition, visibleRange.length() + mobSizeMargin);
+	for (entity *e : nearEntities)
 	{
 		if (collides2d(worldRect, e->calculateHitBox()))
 		{
-			//move the entity a little, to match speed
-			cvec2& movement = e->getRenderOffset(targetData);
+			// move the entity a little, to match speed
+			cvec2 &movement = e->getRenderOffset(targetData);
 			gameRenderData entityRenderData = gameRenderData(mat3x3::cross(targetData.worldToRenderTargetTransform, mat3x3::translate(movement)), targetData.renderTarget, targetData.screen, targetData.secondsOffset);
 			e->render(entityRenderData);
 		}
 	}
 
-	//draw blocks
-	for (cveci2& renderPosition : blocksToBeDrawn)
+	// draw blocks
+	for (cveci2 &renderPosition : blocksToBeDrawn)
 	{
-		cveci2& relativePosition = renderPosition - pos00;
+		cveci2 &relativePosition = renderPosition - pos00;
 		if (rendered[axisID::y][relativePosition.y])
 		{
 			if (rendered[axisID::x][relativePosition.x])
 			{
-				//fill block texture
-				const blockID& identifier = surroundingBlocks.getValue(relativePosition + averageDistance);
-				block* b = blockList[(int)identifier];
+				// fill block texture
+				const blockID &identifier = surroundingBlocks.getValue(relativePosition + averageDistance);
+				block *b = blockList[(int)identifier];
 
-				crectangle2& blockScreenRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(renderPosition, cveci2(1)));
+				crectangle2 &blockScreenRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(renderPosition, cveci2(1)));
 
 				if (!isBlack.getValueUnsafe(relativePosition))
 				{
-					//render block
+					// render block
 					b->render(targetData, dimensionIn->getBlockData(renderPosition), dimensionIn, renderPosition);
 				}
 			}
 		}
 	}
-	for (cveci2& renderPosition : blocksToBeDrawn)
+	for (cveci2 &renderPosition : blocksToBeDrawn)
 	{
-		cveci2& relativePosition = renderPosition - pos00;
+		cveci2 &relativePosition = renderPosition - pos00;
 		if (rendered[axisID::y][relativePosition.y])
 		{
 			if (rendered[axisID::x][relativePosition.x])
 			{
-				//fill block texture
-				const blockID& identifier = surroundingBlocks.getValue(relativePosition + averageDistance);
-				block* b = blockList[(int)identifier];
+				// fill block texture
+				const blockID &identifier = surroundingBlocks.getValue(relativePosition + averageDistance);
+				block *b = blockList[(int)identifier];
 
-				crectangle2& blockScreenRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(renderPosition, cveci2(1)));
+				crectangle2 &blockScreenRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(renderPosition, cveci2(1)));
 
 				if (!isBlack.getValueUnsafe(relativePosition))
 				{
-					//render block
+					// render block
 					b->render(targetData, dimensionIn->getBlockData(renderPosition), dimensionIn, renderPosition);
 				}
 			}
@@ -547,40 +544,40 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	rectangle2 blockScreenRect;
 	if (player->entityType == entityID::human)
 	{
-		human* currentHuman = (human*)player;
-		veci2 selectionPosToDraw = currentHuman->selectedBlockPosition;//break block pos
+		human *currentHuman = (human *)player;
+		veci2 selectionPosToDraw = currentHuman->selectedBlockPosition; // break block pos
 		if (blockList[(int)currentHuman->selectedBlockContainer->getBlockID(selectionPosToDraw)]->canReplaceBlock)
 		{
-			selectionPosToDraw = currentHuman->adjacentBlockPosition;//cant break blocks, so show the position where to place blocks
+			selectionPosToDraw = currentHuman->adjacentBlockPosition; // cant break blocks, so show the position where to place blocks
 		}
 
 		blockScreenRect = mat3x3::cross(targetData.worldToRenderTargetTransform, currentHuman->selectedBlockContainer->containerToRootTransform).multRectMatrix(crectangle2(cvec2(selectionPosToDraw) + (currentHuman->selectedBlockContainer->speedInRoot * targetData.secondsOffset), cvec2(1)));
 
 		if (currentHuman->selectedBlockDamage)
 		{
-			//draw dig texture
-			//the dig texture also has to have shade
-			cfp& destroyStage = currentHuman->selectedBlockDamage / (blockList[(int)currentHuman->selectedBlockContainer->getBlockID(currentHuman->selectedBlockPosition)]->hardness * 10);//0 to 1
-			//a value from 0 to 8, 10 options (-1 = not started digging, 9 = broken)
+			// draw dig texture
+			// the dig texture also has to have shade
+			cfp &destroyStage = currentHuman->selectedBlockDamage / (blockList[(int)currentHuman->selectedBlockContainer->getBlockID(currentHuman->selectedBlockPosition)]->hardness * 10); // 0 to 1
+			// a value from 0 to 8, 10 options (-1 = not started digging, 9 = broken)
 			size_t textureIndex = (size_t)math::ceil<fp, int>(destroyStage * (destroyStageTextures.size() + 1)) - 1;
 			if (textureIndex >= destroyStageTextures.size())
 			{
 				textureIndex = destroyStageTextures.size() - 1;
 			}
-			resolutionTexture* currentDestroyStageTexture = destroyStageTextures[textureIndex];
+			resolutionTexture *currentDestroyStageTexture = destroyStageTextures[textureIndex];
 			fillTransparentTexture(blockScreenRect, *currentDestroyStageTexture, targetData.renderTarget);
 		}
 	}
 
-	//draw shadows
-	for (cveci2& renderPosition : blocksToBeDrawn)
+	// draw shadows
+	for (cveci2 &renderPosition : blocksToBeDrawn)
 	{
-		cveci2& relativePosition = renderPosition - pos00;
+		cveci2 &relativePosition = renderPosition - pos00;
 		if (rendered[axisID::y][relativePosition.y])
 		{
 			if (rendered[axisID::x][relativePosition.x])
 			{
-				crectangle2& blockScreenRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(cvec2(renderPosition), cvec2(1)));
+				crectangle2 &blockScreenRect = targetData.worldToRenderTargetTransform.multRectMatrix(crectangle2(cvec2(renderPosition), cvec2(1)));
 
 				if (isBlack.getValueUnsafe(relativePosition))
 				{
@@ -590,24 +587,24 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 				{
 					if ((!isWhite.getValueUnsafe(relativePosition)) && settings::videoSettings::showShadows)
 					{
-						//we can't optimize this away, as the shadows are drawn over the entities
-						//darken
-						const auto& interpolator = interpolators.getValueReferenceUnsafe(cveci2(relativePosition));
+						// we can't optimize this away, as the shadows are drawn over the entities
+						// darken
+						const auto &interpolator = interpolators.getValueReferenceUnsafe(cveci2(relativePosition));
 
-						//https://stackoverflow.com/questions/20287095/checking-if-all-elements-of-a-vector-are-equal-in-c
+						// https://stackoverflow.com/questions/20287095/checking-if-all-elements-of-a-vector-are-equal-in-c
 
 						if (std::equal(interpolator.cornerColors + 1, interpolator.cornerColors + 4, interpolator.cornerColors))
 						{
-							//all equal
-							const auto& solid = solidColorBrush(interpolator.cornerColors[0]);
-							const auto& multipier = colorMultiplier<texture, solidColorBrush>(targetData.renderTarget, solid);
+							// all equal
+							const auto &solid = solidColorBrush(interpolator.cornerColors[0]);
+							const auto &multipier = colorMultiplier<texture, solidColorBrush>(targetData.renderTarget, solid);
 
 							targetData.renderTarget.fillRectangle(ceilRectangle(blockScreenRect), multipier);
 						}
 						else
 						{
-							const auto& transform = transformBrush<squareInterpolator>(mat3x3::fromRectToRect(blockScreenRect, crectangle2(cvec2(0), cvec2(1))), interpolator);
-							const auto& multipier = colorMultiplier<texture, decltype(transform)>(targetData.renderTarget, transform);
+							const auto &transform = transformBrush<squareInterpolator>(mat3x3::fromRectToRect(blockScreenRect, crectangle2(cvec2(0), cvec2(1))), interpolator);
+							const auto &multipier = colorMultiplier<texture, decltype(transform)>(targetData.renderTarget, transform);
 
 							targetData.renderTarget.fillRectangle(ceilRectangle(blockScreenRect), multipier);
 						}
@@ -619,62 +616,60 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 
 	if (settings::renderHitboxes)
 	{
-		const collisionDataCollection& data = player->dimensionIn->getRecursiveHitboxCollisionData(crectangle2(blocksToBeDrawn), cvec2());
+		const collisionDataCollection &data = player->dimensionIn->getRecursiveHitboxCollisionData(crectangle2(blocksToBeDrawn), cvec2());
 		data.render(targetData);
 
-		//render hitboxes
-		for (entity* e : nearEntities)
+		// render hitboxes
+		for (entity *e : nearEntities)
 		{
 			e->renderHitboxes(targetData);
 		}
 	}
 
-	if (renderHUD && ((player->entityType != entityID::human) || (((human*)player)->currentGameMode != gameModeID::spectator)))
+	if (renderHUD && ((player->entityType != entityID::human) || (((human *)player)->currentGameMode != gameModeID::spectator)))
 	{
 		constexpr int barOffset = 0x2;
 
-		cfp& scaledBarOffset = barOffset * hudScale;
+		cfp &scaledBarOffset = barOffset * hudScale;
 		fp currentYrowOffset = scaledBarOffset;
 
 		fp attackIndicatorOffset = currentYrowOffset;
 
-		crectangle2& hotbarDrawRect = rectangle2((targetData.renderTarget.size.x - (hotbarTextureRect.size.x * hudScale)) / 2, currentYrowOffset, hotbarTextureRect.size.x * hudScale, hotbarTextureRect.h * hudScale);
+		crectangle2 &hotbarDrawRect = rectangle2((targetData.renderTarget.size.x - (hotbarTextureRect.size.x * hudScale)) / 2, currentYrowOffset, hotbarTextureRect.size.x * hudScale, hotbarTextureRect.h * hudScale);
 
 		if (isMob(player->entityType))
 		{
-			mob* currentMob = (mob*)player;
+			mob *currentMob = (mob *)player;
 
-			//draw crosshair
+			// draw crosshair
 
-
-			crectangle2& unreachableCrosshairDrawRect = crectangle2(targetData.worldToRenderTargetTransform.multPointMatrix(currentMousePositionWorld), cvec2()).expanded(crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
+			crectangle2 &unreachableCrosshairDrawRect = crectangle2(targetData.worldToRenderTargetTransform.multPointMatrix(currentMousePositionWorld), cvec2()).expanded(crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
 
 			auto mult = colorMultiplier<resolutionTexture, solidColorBrush>(*iconsTexture, brushes::red);
 
 			fillTransparentRectangle(crectangle2(crosshairTextureRect), unreachableCrosshairDrawRect, mult, targetData.renderTarget);
 
-			cvec2& exactIntersection = currentMob->selectedUUID ? currentMob->exactEntityIntersection : currentMob->exactBlockIntersection;
+			cvec2 &exactIntersection = currentMob->selectedUUID ? currentMob->exactEntityIntersection : currentMob->exactBlockIntersection;
 
-			crectangle2& crosshairDrawRect = crectangle2(targetData.worldToRenderTargetTransform.multPointMatrix(exactIntersection), cvec2()).expanded(crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
+			crectangle2 &crosshairDrawRect = crectangle2(targetData.worldToRenderTargetTransform.multPointMatrix(exactIntersection), cvec2()).expanded(crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
 
 			fillTransparentRectangle(crectangle2(crosshairTextureRect), crosshairDrawRect, *iconsTexture, targetData.renderTarget);
 
 			if (isHumanoid(player->entityType))
 			{
-				human* currentHumanoid = (human*)player;
-
+				human *currentHumanoid = (human *)player;
 
 				if (player->entityType == entityID::human)
 				{
-					human* currentHuman = (human*)player;
+					human *currentHuman = (human *)player;
 
-					//draw hotbar
+					// draw hotbar
 					fillTransparentRectangle(crectangle2(hotbarTextureRect), hotbarDrawRect, *widgetsTexture, targetData.renderTarget);
 
 					rectanglei2 selectorPixelRect = ceilRectangle(blockScreenRect);
 					targetData.renderTarget.fillRectangleBorders(selectorPixelRect, 1, solidColorBrush(colorPalette::black));
 
-					//draw selector
+					// draw selector
 					crectangle2 selectorDrawRect = crectangle2(hotbarDrawRect.pos0 + vec2(currentHuman->rightHandSlotIndex * hotbarSpacing * hudScale, 0), vec2(hotbarSpacing * hudScale));
 					fillTransparentRectangle((crectangle2)selectorTextureRect, selectorDrawRect, *widgetsTexture, targetData.renderTarget);
 
@@ -686,26 +681,26 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 
 					if (currentHuman->experience)
 					{
-						//draw experience
+						// draw experience
 						constexpr rectangle2 expBarbackGroundTextureRect = crectangle2(0, 167, 182, 5);
 
-						cvec2& expBarSize = expBarbackGroundTextureRect.size * hudScale;
-						crectangle2& expBarBackGroundDrawRect = crectangle2((rect.size.x - expBarSize.x) / 2, currentYrowOffset, expBarSize.x, expBarSize.y);
+						cvec2 &expBarSize = expBarbackGroundTextureRect.size * hudScale;
+						crectangle2 &expBarBackGroundDrawRect = crectangle2((rect.size.x - expBarSize.x) / 2, currentYrowOffset, expBarSize.x, expBarSize.y);
 						fillTransparentRectangle((crectangle2)expBarbackGroundTextureRect, expBarBackGroundDrawRect, *iconsTexture, targetData.renderTarget);
 
-						cfp& power = getExperienceLevel(currentHuman->experience);
-						cint& currentLevel = math::floor(power);
-						cfp& progressToNextLevel = power - currentLevel;
-						crectangle2& expBarforeGroundTextureRect = crectangle2(0, 162, 182 * progressToNextLevel, 5);
-						crectangle2& expBarforeGroundDrawRect = crectangle2(expBarBackGroundDrawRect.x, expBarBackGroundDrawRect.y, expBarBackGroundDrawRect.w * progressToNextLevel, expBarBackGroundDrawRect.h);
+						cfp &power = getExperienceLevel(currentHuman->experience);
+						cint &currentLevel = math::floor(power);
+						cfp &progressToNextLevel = power - currentLevel;
+						crectangle2 &expBarforeGroundTextureRect = crectangle2(0, 162, 182 * progressToNextLevel, 5);
+						crectangle2 &expBarforeGroundDrawRect = crectangle2(expBarBackGroundDrawRect.x, expBarBackGroundDrawRect.y, expBarBackGroundDrawRect.w * progressToNextLevel, expBarBackGroundDrawRect.h);
 						fillTransparentRectangle((crectangle2)expBarforeGroundTextureRect, expBarforeGroundDrawRect, *iconsTexture, targetData.renderTarget);
 
 						if (currentLevel)
 						{
 							const minecraftFont f = minecraftFont(iconSize * hudScale);
-							//std::wstring() to make it concatenate the string and not do other stuff
+							// std::wstring() to make it concatenate the string and not do other stuff
 							std::wstring str = std::wstring() + colorCodeChar + L"a" + std::to_wstring(currentLevel);
-							cvec2& size = f.fontSize * vec2(1, (fp)str.length());
+							cvec2 &size = f.fontSize * vec2(1, (fp)str.length());
 							f.DrawString(str, crectangle2((rect.w - size.x) * 0.5, currentYrowOffset + expBarSize.y - scaledBarOffset, size.x, size.y), targetData.renderTarget);
 							attackIndicatorOffset += iconSize * hudScale + scaledBarOffset;
 						}
@@ -715,11 +710,11 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 				}
 			}
 
-			cbool& canTakeDamage = (player->entityType != entityID::human) || (gameModeDataList[((human*)player)->currentGameMode]->canTakeDamage);
+			cbool &canTakeDamage = (player->entityType != entityID::human) || (gameModeDataList[((human *)player)->currentGameMode]->canTakeDamage);
 
 			if (canTakeDamage)
 			{
-				std::vector<fp> healthAmounts = std::vector<fp>({ math::maximum(player->health, (fp)1.0) * 0.5 });
+				std::vector<fp> healthAmounts = std::vector<fp>({math::maximum(player->health, (fp)1.0) * 0.5});
 				if (player->absorptionHealth > 0)
 				{
 					healthAmounts.push_back(math::maximum(player->absorptionHealth, (fp)1.0) * 0.5);
@@ -733,28 +728,28 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 				constexpr rectangle2 fullAbsorptionHeartTextureRect = crectangle2(160, 247, 9, 9);
 				constexpr rectangle2 halfAbsorptionHeartTextureRect = crectangle2(169, 247, 9, 9);
 
-				//draw hearts
-				//draw background
+				// draw hearts
+				// draw background
 				crectangle2 firstHeartDrawRect = crectangle2(hotbarDrawRect.x, currentYrowOffset, iconSize * hudScale, iconSize * hudScale);
-				renderIcons({ math::maximum(player->getMaxHealth() * 0.5, getSum<fp>(healthAmounts)) }, { crectangle2(52, 238, 8, 8) }, { crectangle2(52, 238, 8, 8) }, firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
-				//minimal half a heart to display
-				renderIcons(healthAmounts, { fullHeartTextureRect, fullAbsorptionHeartTextureRect }, { halfHeartTextureRect, halfAbsorptionHeartTextureRect }, firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
+				renderIcons({math::maximum(player->getMaxHealth() * 0.5, getSum<fp>(healthAmounts))}, {crectangle2(52, 238, 8, 8)}, {crectangle2(52, 238, 8, 8)}, firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
+				// minimal half a heart to display
+				renderIcons(healthAmounts, {fullHeartTextureRect, fullAbsorptionHeartTextureRect}, {halfHeartTextureRect, halfAbsorptionHeartTextureRect}, firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
 
 				if (player->entityType == entityID::human)
 				{
-					human* currentHuman = (human*)player;
+					human *currentHuman = (human *)player;
 					crectangle2 firstDrumstickDrawRect = crectangle2(hotbarDrawRect.x + hotbarDrawRect.w - iconSize * hudScale, currentYrowOffset, iconSize * hudScale, iconSize * hudScale);
-					renderIcons({ maxhumanfoodlevel * 0.5 }, { crectangle2(16, 220, 8, 8) }, { crectangle2(16, 220, 8, 8) }, firstDrumstickDrawRect, -firstDrumstickDrawRect.w, targetData.renderTarget);
-					renderIcons({ currentHuman->foodlevel * 0.5 }, { crectangle2(52, 220, 8, 8) }, { crectangle2(61, 220, 8, 8) }, firstDrumstickDrawRect, -firstDrumstickDrawRect.w, targetData.renderTarget);
+					renderIcons({maxhumanfoodlevel * 0.5}, {crectangle2(16, 220, 8, 8)}, {crectangle2(16, 220, 8, 8)}, firstDrumstickDrawRect, -firstDrumstickDrawRect.w, targetData.renderTarget);
+					renderIcons({currentHuman->foodlevel * 0.5}, {crectangle2(52, 220, 8, 8)}, {crectangle2(61, 220, 8, 8)}, firstDrumstickDrawRect, -firstDrumstickDrawRect.w, targetData.renderTarget);
 				}
 				currentYrowOffset += iconSize * hudScale + scaledBarOffset;
 			}
-			//draw attack cooldown indicator
+			// draw attack cooldown indicator
 			cfp totalCoolDownTime = currentMob->getTotalCoolDownTime();
 
 			if (currentMob->ticksSinceToolUsed < totalCoolDownTime)
 			{
-				cfp progress = currentMob->ticksSinceToolUsed / totalCoolDownTime;//0 to 1
+				cfp progress = currentMob->ticksSinceToolUsed / totalCoolDownTime; // 0 to 1
 
 				constexpr rectangle2 fullCoolDownPixelRect = crectangle2(68, 154, 0x10, 0x8);
 				cvec2 scaledCoolDownIndicatorSize = cvec2(fullCoolDownPixelRect.size * hudScale);
@@ -784,10 +779,10 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 				if (defenceValue > 0)
 				{
 					crectangle2 firstChestplateDrawRect = crectangle2(hotbarDrawRect.x, currentYrowOffset, iconSize * hudScale, iconSize * hudScale);
-					renderIcons({ maxArmor * 0.5 }, { crectangle2(16, 238, 8, 8) }, { crectangle2(16, 238, 8, 8) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
-					renderIcons({ defenceValue * 0.5 }, { crectangle2(34, 238, 8, 8) }, { crectangle2(25, 238, 8, 8) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
-					//renderIcons({ maxArmor * 0.5 }, { crectangle2(33, 477, 16, 16) }, { crectangle2(33, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
-					//renderIcons({ defenceValue * 0.5 }, { crectangle2(69, 477, 16, 16) }, { crectangle2(51, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
+					renderIcons({maxArmor * 0.5}, {crectangle2(16, 238, 8, 8)}, {crectangle2(16, 238, 8, 8)}, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
+					renderIcons({defenceValue * 0.5}, {crectangle2(34, 238, 8, 8)}, {crectangle2(25, 238, 8, 8)}, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
+					// renderIcons({ maxArmor * 0.5 }, { crectangle2(33, 477, 16, 16) }, { crectangle2(33, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
+					// renderIcons({ defenceValue * 0.5 }, { crectangle2(69, 477, 16, 16) }, { crectangle2(51, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
 				}
 			}
 		}
@@ -795,29 +790,31 @@ void gameControl::renderGame(crectanglei2& rect, const texture& renderTarget, cb
 	int bossBarIndex = 0;
 	cvec2 barTextureSize = cvec2(182, 5);
 	constexpr int maxBossBarCount = 7;
-	//render boss bars
-	for (entity* e : nearEntities)
+	// render boss bars
+	for (entity *e : nearEntities)
 	{
 		if (isBossMob(e->entityType))
 		{
 			crectangle2 bossBarBackGroundTextureRect = crectangle2(0, 0x100 - (((bossBarIndex * 2) + 1) * barTextureSize.y), barTextureSize.x, barTextureSize.y);
 			crectangle2 bossBarBackGroundScreenRect = crectangle2(rect.x + ((rect.w - barTextureSize.x * hudScale) / 2), rect.y + rect.h - (barTextureSize.y * (bossBarIndex + 1) * hudScale), barTextureSize.x * hudScale, barTextureSize.y * hudScale);
 			fillTransparentRectangle(bossBarBackGroundTextureRect, bossBarBackGroundScreenRect, *barsTexture, targetData.renderTarget);
-			if (e->health > 0) {
+			if (e->health > 0)
+			{
 				cfp barPart = e->health / (entityDataList[(int)e->entityType])->maxHealth;
 				crectangle2 bossBarForeGroundTextureRect = crectangle2(0, 0x100 - (((bossBarIndex * 2) + 2) * barTextureSize.y), barTextureSize.x * barPart, barTextureSize.y);
 				crectangle2 bossBarForeGroundScreenRect = crectangle2(bossBarBackGroundScreenRect.x, bossBarBackGroundScreenRect.y, bossBarBackGroundScreenRect.w * barPart, bossBarBackGroundScreenRect.h);
 				fillTransparentRectangle(bossBarForeGroundTextureRect, bossBarForeGroundScreenRect, *barsTexture, targetData.renderTarget);
 			}
 
-			if (++bossBarIndex >= maxBossBarCount) {
+			if (++bossBarIndex >= maxBossBarCount)
+			{
 				break;
 			}
 		}
 	}
 }
 
-void gameControl::layout(crectanglei2& newRect)
+void gameControl::layout(crectanglei2 &newRect)
 {
 	form::layout(newRect);
 	options->layout(newRect);
@@ -853,19 +850,18 @@ void gameControl::lostFocus()
 	}
 }
 
-gameRenderData gameControl::getRenderData(const texture& renderTarget, cfp& secondsOffset)
+gameRenderData gameControl::getRenderData(const texture &renderTarget, cfp &secondsOffset)
 {
-	return gameRenderData(worldToRenderTargetTransform,renderTarget, *this, secondsOffset);
+	return gameRenderData(worldToRenderTargetTransform, renderTarget, *this, secondsOffset);
 }
 
-mat3x3 gameControl::getWorldToScreenTransform(cvec2& middleWorldPosition, cfp& pixelsPerBlock)
+mat3x3 gameControl::getWorldToScreenTransform(cvec2 &middleWorldPosition, cfp &pixelsPerBlock)
 {
 	return mat3x3::cross(
 		mat3x3::scale(vec2(pixelsPerBlock)),
-		mat3x3::translate(vec2(-middleWorldPosition + visibleRange))
-	);
+		mat3x3::translate(vec2(-middleWorldPosition + visibleRange)));
 }
-void renderIcons(const std::vector<fp>& values, const std::vector<rectangle2>& iconFullTextureRects, const std::vector<rectangle2>& iconHalfTextureRects, crectangle2& firstIconRect, cfp& xOffset, const texture& renderTarget)
+void renderIcons(const std::vector<fp> &values, const std::vector<rectangle2> &iconFullTextureRects, const std::vector<rectangle2> &iconHalfTextureRects, crectangle2 &firstIconRect, cfp &xOffset, const texture &renderTarget)
 {
 	if (values.size())
 	{
@@ -876,7 +872,7 @@ void renderIcons(const std::vector<fp>& values, const std::vector<rectangle2>& i
 
 		fp nextValue = values[0];
 
-		for (; ;)
+		for (;;)
 		{
 			if (heartIndex)
 			{
@@ -908,11 +904,11 @@ void renderIcons(const std::vector<fp>& values, const std::vector<rectangle2>& i
 			if (splitIcon)
 			{
 
-				//draw left half icon
+				// draw left half icon
 				fillTransparentRectangle((rectangle2)iconHalfTextureRects[iconTypeIndex], rectangle2(position, firstIconRect.size), *iconsTexture, renderTarget);
 			}
 
-			heartIndex++;//so the last half heart is drawn correctly too
+			heartIndex++; // so the last half heart is drawn correctly too
 			while (nextValue < heartIndex)
 			{
 				iconTypeIndex++;
@@ -927,14 +923,13 @@ void renderIcons(const std::vector<fp>& values, const std::vector<rectangle2>& i
 			}
 			if (splitIcon)
 			{
-				//draw right half icon
+				// draw right half icon
 				crectangle2 unMirroredDrawRect = rectangle2(position, firstIconRect.size);
 				crectangle2 unMirroredBrushRect = (rectangle2)iconHalfTextureRects[iconTypeIndex];
 				mat3x3 transform =
 					mat3x3::cross(
 						mat3x3::mirror(axisID::x, unMirroredDrawRect.x + unMirroredDrawRect.w * 0.5),
-						mat3x3::fromRectToRect(unMirroredBrushRect, unMirroredDrawRect)
-					);
+						mat3x3::fromRectToRect(unMirroredBrushRect, unMirroredDrawRect));
 
 				fillTransparentRectangle(unMirroredBrushRect, transform, *iconsTexture, renderTarget);
 			}
@@ -945,8 +940,8 @@ void renderIcons(const std::vector<fp>& values, const std::vector<rectangle2>& i
 		}
 	}
 }
-gameControl::gameControl(playerSocket& socket) : form(),
-socket(socket)
+gameControl::gameControl(playerSocket &socket) : form(),
+												 socket(socket)
 {
 	options->visible = false;
 	videoOptions->visible = false;
@@ -957,19 +952,16 @@ socket(socket)
 	jigsawOptions->visible = false;
 	currentCredits->visible = false;
 
-
-	addChildren({
-		options,
-		videoOptions,
-		soundOptions,
-		inventoryUI,
-		commandLineTextbox,
-		structureBlockOptions,
-		jigsawOptions,
-		currentCredits
-		});
+	addChildren({options,
+				 videoOptions,
+				 soundOptions,
+				 inventoryUI,
+				 commandLineTextbox,
+				 structureBlockOptions,
+				 jigsawOptions,
+				 currentCredits});
 }
-void renderOptionsBackGround(crectanglei2& rect, const texture& renderTarget)
+void renderOptionsBackGround(crectanglei2 &rect, const texture &renderTarget)
 {
 	if (settings::videoSettings::currentGraphicsMode == graphicsMode::fast)
 	{
@@ -979,9 +971,9 @@ void renderOptionsBackGround(crectanglei2& rect, const texture& renderTarget)
 	{
 		cvec2 halfSize = cvec2(rect.size) * 0.5;
 		constexpr fp guiDirtTextureSize = 0x80;
-		const auto& currentTransformBrush = transformBrush<resolutionTexture>(mat3x3::fromRectToRect(crectangle2(0, 0, guiDirtTextureSize, guiDirtTextureSize), blockTextureRect), *dirtTexture);
-		const auto& currentRepeatingBrush = repeatingBrush<transformBrush<resolutionTexture>>(currentTransformBrush, cvec2(guiDirtTextureSize));
-		const auto& brush = vignetteBrush<repeatingBrush<transformBrush<resolutionTexture>>>(cvec2(rect.pos0) + halfSize, 1, halfSize.length(), currentRepeatingBrush);
+		const auto &currentTransformBrush = transformBrush<resolutionTexture>(mat3x3::fromRectToRect(crectangle2(0, 0, guiDirtTextureSize, guiDirtTextureSize), blockTextureRect), *dirtTexture);
+		const auto &currentRepeatingBrush = repeatingBrush<transformBrush<resolutionTexture>>(currentTransformBrush, cvec2(guiDirtTextureSize));
+		const auto &brush = vignetteBrush<repeatingBrush<transformBrush<resolutionTexture>>>(cvec2(rect.pos0) + halfSize, 1, halfSize.length(), currentRepeatingBrush);
 		renderTarget.fillRectangle(rect, brush);
 	}
 }

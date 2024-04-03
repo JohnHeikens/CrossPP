@@ -15,6 +15,7 @@
 #include "structure.h"
 #include "experienceOrb.h"
 #include "folderList.h"
+#include "world.h"
 
 //convert seconds to relative arm angle
 const swingSynchronizer enderDragonInnerWingSynchronizer = swingSynchronizer(2, -10 * math::degreesToRadians, 40 * math::degreesToRadians);
@@ -345,8 +346,8 @@ void enderDragon::updateBodyParts() const
 
 	//0 = start, 1 = end
 
-	cfp innerWingAngle = enderDragonInnerWingSynchronizer.getSwingAngle(currentFrameStartSeconds);
-	cfp outerWingAngle = enderDragonOuterWingSynchronizer.getSwingAngle(currentFrameStartSeconds);
+	cfp innerWingAngle = enderDragonInnerWingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart / (fp)ticksPerRealLifeSecond);
+	cfp outerWingAngle = enderDragonOuterWingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart / (fp)ticksPerRealLifeSecond);
 
 	cfp innerWingTopSize = sin(innerWingAngle) * (enderDragonInnerWingTopSize.y);
 	fp outerWingTopSize = sin(outerWingAngle) * (enderDragonOuterWingTopSize.y);

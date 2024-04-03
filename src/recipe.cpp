@@ -27,11 +27,9 @@ void readRecipe(const jsonContainer& recipeDescription)
 			if (keyContainer.children.size() > 1)
 			{
 				tag* t = new tag(std::wstring(L""));//name does not matter
-				for (int j = 0; j < keyContainer.children.size(); j++)
+				for (const jsonContainer& child : keyContainer.children)
 				{
-					std::wstring itemName = keyContainer.children[j].children[0].children[0].value;
-					IItemComparable* comparable = getItemComparableByName(itemName);
-					if (comparable)
+					if (IItemComparable* comparable = getItemComparableByName(child.children[0].children[0].value))
 					{
 						t->taggedComparables->push_back(comparable);
 					}
@@ -40,9 +38,6 @@ void readRecipe(const jsonContainer& recipeDescription)
 				if (t->taggedComparables->size)
 				{
 					keyList->push_back(t);
-					tag* convertedTag = (tag*)t;
-					IDestructable* convertedDestructable = (IDestructable*)t;
-					IDestructable* convertedDestructable2 = reinterpret_cast<IDestructable*> (t);
 				}
 				else
 				{
@@ -57,8 +52,7 @@ void readRecipe(const jsonContainer& recipeDescription)
 			}
 			else
 			{
-				std::wstring itemName = keyContainer.children[0].children[0].value;
-				IItemComparable* comparable = getItemComparableByName(itemName);
+				IItemComparable* comparable = getItemComparableByName(keyContainer.children[0].children[0].value);
 				if (comparable == nullptr)
 				{
 

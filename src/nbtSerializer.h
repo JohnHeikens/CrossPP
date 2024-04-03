@@ -131,39 +131,38 @@ struct nbtSerializer : iSerializer
 
 	// can't be static, because it's checking the write member
 	template <nbtType t>
-	inline bool serializeValue(nbtData *data, t &value) const
+	inline bool serializeValue(nbtData& data, t &value) const
 	{
 		static_assert(std::is_same<t, std::wstring>::value || std::is_arithmetic<t>::value, "can't convert to this type");
 
 		if (write)
 		{
-			((nbtValue<t> *)data)->data = value;
+			((nbtValue<t>&)data).data = value;
 		}
 		else
 		{
-			const nbtDataTag &tag = data->dataTag;
-			switch (tag)
+			switch (data.dataTag)
 			{
 			case nbtDataTag::tagUTF8String:
-				value = convertAnyType<std::wstring, t>(((nbtValue<std::wstring> *)data)->data);
+				value = convertAnyType<std::wstring, t>(((nbtValue<std::wstring>&)data).data);
 				break;
 			case nbtDataTag::tagSignedInt8:
-				value = convertAnyType<int8_t, t>(((nbtValue<int8_t> *)data)->data);
+				value = convertAnyType<int8_t, t>(((nbtValue<int8_t>&)data).data);
 				break;
 			case nbtDataTag::tagSignedInt16:
-				value = convertAnyType<int16_t, t>(((nbtValue<int16_t> *)data)->data);
+				value = convertAnyType<int16_t, t>(((nbtValue<int16_t>&)data).data);
 				break;
 			case nbtDataTag::tagSignedInt32:
-				value = convertAnyType<int32_t, t>(((nbtValue<int32_t> *)data)->data);
+				value = convertAnyType<int32_t, t>(((nbtValue<int32_t>&)data).data);
 				break;
 			case nbtDataTag::tagSignedInt64:
-				value = convertAnyType<int64_t, t>(((nbtValue<int64_t> *)data)->data);
+				value = convertAnyType<int64_t, t>(((nbtValue<int64_t>&)data).data);
 				break;
 			case nbtDataTag::tagFP32:
-				value = convertAnyType<float, t>(((nbtValue<float> *)data)->data);
+				value = convertAnyType<float, t>(((nbtValue<float>&)data).data);
 				break;
 			case nbtDataTag::tagFP64:
-				value = convertAnyType<double, t>(((nbtValue<double> *)data)->data);
+				value = convertAnyType<double, t>(((nbtValue<double>&)data).data);
 				break;
 			default:
 				return false;
@@ -173,13 +172,13 @@ struct nbtSerializer : iSerializer
 	}
 
 	template <nbtListElemType t>
-	inline bool serializeVariableArray(nbtData *data, t *&value, int &count) const
+	inline bool serializeVariableArray(nbtData& data, t *&value, int &count) const
 	{
 		if (write)
 		{
-			((nbtDataArray<t> *)data)->data = new t[count];
-			((nbtDataArray<t> *)data)->arraySize = count;
-			std::copy(value, value + count, ((nbtDataArray<t> *)data)->data);
+			((nbtDataArray<t>&)data).data = new t[count];
+			((nbtDataArray<t>&)data).arraySize = count;
+			std::copy(value, value + count, ((nbtDataArray<t>&)data).data);
 		}
 		else
 		{
@@ -188,27 +187,26 @@ struct nbtSerializer : iSerializer
 				value = new t[count];
 			}
 			// TODO: instead of just copying, it should be possible to convert from int8_t to int16_t for example
-			const nbtDataTag tag = data->dataTag;
-			switch (tag)
+			switch (data.dataTag)
 			{
 			case nbtDataTag::tagSignedInt8Array:
 			{
-				int8_t *&ptr = ((nbtDataArray<int8_t> *)data)->data;
-				count = (int)((nbtDataArray<int8_t> *)data)->arraySize;
+				int8_t *&ptr = ((nbtDataArray<int8_t>&)data).data;
+				count = (int)((nbtDataArray<int8_t>&)data).arraySize;
 				std::copy(ptr, ptr + count, (int8_t *)value);
 			}
 			break;
 			case nbtDataTag::tagSignedInt32Array:
 			{
-				int32_t *&ptr = ((nbtDataArray<int32_t> *)data)->data;
-				count = (int)((nbtDataArray<int32_t> *)data)->arraySize;
+				int32_t *&ptr = ((nbtDataArray<int32_t>&)data).data;
+				count = (int)((nbtDataArray<int32_t>&)data).arraySize;
 				std::copy(ptr, ptr + count, (int32_t *)value);
 			}
 			break;
 			case nbtDataTag::tagSignedInt64Array:
 			{
-				int64_t *&ptr = ((nbtDataArray<int64_t> *)data)->data;
-				count = (int)((nbtDataArray<int64_t> *)data)->arraySize;
+				int64_t *&ptr = ((nbtDataArray<int64_t>&)data).data;
+				count = (int)((nbtDataArray<int64_t>&)data).arraySize;
 				std::copy(ptr, ptr + count, (int64_t *)value);
 			}
 			break;
@@ -224,6 +222,7 @@ struct nbtSerializer : iSerializer
 	{
 		return serializeVariableArray<t>(data, value, count);
 	}
+	//may return nullptr!
 	template <nbtDataTag valueDataTag>
 	inline nbtData *getOrCreateNBTData(const std::wstring &memberName)
 	{
@@ -322,10 +321,9 @@ struct nbtSerializer : iSerializer
 	template <nbtType t>
 	inline bool serializeVariableArray(const std::wstring &memberName, t *&value, int &count)
 	{
-		nbtData *currentChild = getOrCreateNBTData<t *>(memberName);
-		if (currentChild)
+		if (nbtData *currentChild = getOrCreateNBTData<t *>(memberName))
 		{
-			return serializeVariableArray(currentChild, value, count);
+			return serializeVariableArray(*currentChild, value, count);
 		}
 		else
 		{
@@ -335,10 +333,9 @@ struct nbtSerializer : iSerializer
 	template <nbtType t>
 	inline bool serializeValue(const std::wstring &memberName, t &value)
 	{
-		nbtData *currentChild = getOrCreateNBTData<t>(memberName);
-		if (currentChild)
+		if (nbtData *currentChild = getOrCreateNBTData<t>(memberName))
 		{
-			return serializeValue(currentChild, value);
+			return serializeValue(*currentChild, value);
 		}
 		else
 		{
@@ -361,8 +358,7 @@ struct nbtSerializer : iSerializer
 		constexpr auto dataTag = getListDataTag<signedT *>();
 		if constexpr (getListDataTag<signedT *>() != nbtDataTag::tagEnd)
 		{
-			nbtData *currentChild = getOrCreateNBTData<signedT *>(memberName);
-			if (currentChild)
+			if (nbtData *currentChild = getOrCreateNBTData<signedT *>(memberName))
 			{
 				if (!write)
 				{
@@ -370,7 +366,7 @@ struct nbtSerializer : iSerializer
 				}
 				int count = value.size();
 				signedT *ptr = (signedT *)&value[0]; // ptr will not get modified because it's not null
-				return serializeVariableArray(currentChild, ptr, count);
+				return serializeVariableArray(*currentChild, ptr, count);
 			}
 		}
 		else

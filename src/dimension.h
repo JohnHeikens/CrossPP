@@ -54,9 +54,9 @@ struct dimension : nbtSerializable, tickableBlockContainer
 	bool serialize(cbool& write);
 	void tick();
 
-	virtual generationData* generateTerrain(chunk* generateIn) = 0;
+	virtual generationData* generateTerrain(chunk& generateIn) = 0;
 	virtual void serializeValue(nbtSerializer& s) override;
-	virtual void generateStructures(chunk* generateIn);
+	virtual void generateStructures(chunk& generateIn);
 	virtual biomeID getBiome(cvec2& position) const = 0;
 	virtual void renderSky(crectangle2& blockRect, crectangle2 & drawRect, const gameRenderData& targetData) const = 0;
 

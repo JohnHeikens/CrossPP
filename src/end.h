@@ -15,8 +15,8 @@ struct end :dimension
 	int obsidianPillarRadius[obsidianPillarCount] = {};
 
 	end();
-	virtual generationData* generateTerrain(chunk* generateIn) override;
-	virtual void generateStructures(chunk* generateIn) override;
+	virtual generationData* generateTerrain(chunk& generateIn) override;
+	virtual void generateStructures(chunk& generateIn) override;
 	virtual void serializeValue(nbtSerializer& s) override;
 	virtual void renderSky(crectangle2& blockRect, crectangle2& drawRect, const gameRenderData& targetData) const override;
 	virtual biomeID getBiome(cvec2& position) const final;

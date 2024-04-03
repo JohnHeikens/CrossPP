@@ -130,8 +130,12 @@ set(SFML_DIR "build\\_deps\\sfml-build")
 
 #find_package(SFML 2.6.1 COMPONENTS audio network graphics system window REQUIRED)
 
+set(CMAKE_EXE_LINKER_FLAGS " -static")
+target_link_libraries(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
+
 #find_path(GZIP_HPP_INCLUDE_DIRS "gzip/compress.hpp")
 #target_include_directories(${PROJECT_NAME} PRIVATE ${ZLIB_INCLUDE_DIRS})
+set(ZLIB_USE_STATIC_LIBS "ON")
 target_link_libraries(${PROJECT_NAME} PUBLIC ZLIB::ZLIB)
 
 # Here we link 3rd party library ImGui-SFML
@@ -148,6 +152,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ZLIB::ZLIB)
 
 #add_executable(SFMLTest main.cpp)
 #target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
+
+#we aren't allowed to link OpenAL static, because it's in their terms. the user should be able to modify the OpenAL DLL
 
 target_link_libraries(${PROJECT_NAME} PUBLIC 
 sfml-audio

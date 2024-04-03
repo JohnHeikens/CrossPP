@@ -283,7 +283,7 @@ overWorld::overWorld() :dimension(dimensionID::overworld)
 
 }
 
-generationData* overWorld::generateTerrain(chunk* generateIn)
+generationData* overWorld::generateTerrain(chunk& generateIn)
 {
 
 	overworldGenerationData* data = new overworldGenerationData();
@@ -294,12 +294,12 @@ generationData* overWorld::generateTerrain(chunk* generateIn)
 	//get heights to interpolate
 	for (int x = -interpolationRadius; x < ((int)chunkSize.x + interpolationRadius); x++)
 	{
-		biomesToInterpolate[x + interpolationRadius] = getBiome(cvec2(x + generateIn->worldPos.x, 0));
+		biomesToInterpolate[x + interpolationRadius] = getBiome(cvec2(x + generateIn.worldPos.x, 0));
 	}
 	//initialize biome list
 	for (int relativeX = 0; relativeX < (int)chunkSize.x; relativeX++)
 	{
-		data->biomes[relativeX] = getBiome(cvec2(relativeX + generateIn->worldPos.x, 0));
+		data->biomes[relativeX] = getBiome(cvec2(relativeX + generateIn.worldPos.x, 0));
 		fp height = 0;
 		fp totalWeight = 0;
 		std::vector<biomeID> currentBiomes;
@@ -325,25 +325,25 @@ generationData* overWorld::generateTerrain(chunk* generateIn)
 		}
 		for (int biomeIndex = 0; biomeIndex < currentBiomes.size(); biomeIndex++)
 		{
-			height += ((overWorldBiomeGenerator*)currentWorld->biomeList[(int)currentBiomes[biomeIndex]])->getHeight(generateIn->worldPos.x + relativeX) * currentBiomeWeights[biomeIndex];
+			height += ((overWorldBiomeGenerator*)currentWorld->biomeList[(int)currentBiomes[biomeIndex]])->getHeight(generateIn.worldPos.x + relativeX) * currentBiomeWeights[biomeIndex];
 		}
 		height /= totalWeight;
 		data->heights[relativeX] = (int)floor(height);
 
 
-		if (data->heights[relativeX] > generateIn->worldPos.y)
+		if (data->heights[relativeX] > generateIn.worldPos.y)
 		{
-			csize_t& relativeHeight = data->heights[relativeX] - generateIn->worldPos.y;
+			csize_t& relativeHeight = data->heights[relativeX] - generateIn.worldPos.y;
 			csize_t& cappedHeight = math::minimum(relativeHeight, chunkSize.y);
-			setBlockRange(generateIn->worldPos + cveci2(relativeX, 0), generateIn->worldPos + cveci2(relativeX, (int)cappedHeight - 1), blockID::stone);
+			setBlockRange(generateIn.worldPos + cveci2(relativeX, 0), generateIn.worldPos + cveci2(relativeX, (int)cappedHeight - 1), blockID::stone);
 		}
 	}
 	return data;
 }
 
-void overWorld::generateStructures(chunk* generateIn)
+void overWorld::generateStructures(chunk& generateIn)
 {
-	overworldGenerationData* data = (overworldGenerationData*)generateIn->terrainData;
+	overworldGenerationData* data = (overworldGenerationData*)generateIn.terrainData;
 	//generate caves
 
 	cfp caveChance = 0.05;
@@ -369,16 +369,16 @@ void overWorld::generateStructures(chunk* generateIn)
 	{
 		for (caveSquare.x = 0; caveSquare.x < chunkSize.x; caveSquare.x += caveStep)
 		{
-			veci2 caveSquareIndex = veci2(randIndex(generateIn->chunkRandom, caveStep), randIndex(generateIn->chunkRandom, caveStep)) + caveSquare;
-			if (caveSquareIndex.x < chunkSize.x && caveSquareIndex.y < chunkSize.y && (randFp(generateIn->chunkRandom) < caveChance))
+			veci2 caveSquareIndex = veci2(randIndex(generateIn.chunkRandom, caveStep), randIndex(generateIn.chunkRandom, caveStep)) + caveSquare;
+			if (caveSquareIndex.x < chunkSize.x && caveSquareIndex.y < chunkSize.y && (randFp(generateIn.chunkRandom) < caveChance))
 			{
-				vec2 caveCentre = caveSquareIndex + generateIn->worldPos;
+				vec2 caveCentre = caveSquareIndex + generateIn.worldPos;
 				std::vector<vec2> caveSegments = std::vector<vec2>();
-				cfp caveHeightMultiplier = sqrt(randFp(generateIn->chunkRandom));//deeper are more caves
-				if (caveCentre.y < (data->heights[(int)caveCentre.x - generateIn->worldPos.x] * caveHeightMultiplier))
+				cfp caveHeightMultiplier = sqrt(randFp(generateIn.chunkRandom));//deeper are more caves
+				if (caveCentre.y < (data->heights[(int)caveCentre.x - generateIn.worldPos.x] * caveHeightMultiplier))
 				{
-					fp size = caveSizeDistribution.getValue(randFp(generateIn->chunkRandom));
-					fp rot = randFp(generateIn->chunkRandom, math::PI2);
+					fp size = caveSizeDistribution.getValue(randFp(generateIn.chunkRandom));
+					fp rot = randFp(generateIn.chunkRandom, math::PI2);
 					fp speed = size * 0.2;
 					int maxCaveLength = 0x100;
 					//iterate
@@ -414,12 +414,12 @@ void overWorld::generateStructures(chunk* generateIn)
 
 	//add pools
 	cfp poolAttemptsPerChunk = chunkSize.volume() / (fp)0x100;
-	cint count = roundRandom(generateIn->chunkRandom, poolAttemptsPerChunk);
+	cint count = roundRandom(generateIn.chunkRandom, poolAttemptsPerChunk);
 	for (int attempt = 0; attempt < count; attempt++)
 	{
 		//more chance on pools the lower you get
-		cfp& heightPart = math::squared(randFp(generateIn->chunkRandom));
-		cveci2& pos = generateIn->worldPos + cveci2(randIndex(generateIn->chunkRandom, (int)chunkSize.x), randIndex(generateIn->chunkRandom, (int)chunkSize.y));
+		cfp& heightPart = math::squared(randFp(generateIn.chunkRandom));
+		cveci2& pos = generateIn.worldPos + cveci2(randIndex(generateIn.chunkRandom, (int)chunkSize.x), randIndex(generateIn.chunkRandom, (int)chunkSize.y));
 
 		//more lava at the bottom at warmer biomes
 		cfp& temperature = ((1 - heightPart) + biomeTemperatureNoise->evaluate(vec1(pos.x))) * 0.5;
@@ -433,7 +433,7 @@ void overWorld::generateStructures(chunk* generateIn)
 	//add structures
 	for (size_t i = 0; i < chunkSize.x; i++)
 	{
-		if ((data->heights[i] >= generateIn->worldPos.y) && (data->heights[i] < (generateIn->worldPos.y + (int)chunkSize.y)))
+		if ((data->heights[i] >= generateIn.worldPos.y) && (data->heights[i] < (generateIn.worldPos.y + (int)chunkSize.y)))
 		{
 			biomeID biomeToUse = data->biomes[i];
 
@@ -441,7 +441,7 @@ void overWorld::generateStructures(chunk* generateIn)
 			{
 				biomeToUse = biomeID::ocean;
 			}
-			currentWorld->biomeList[(int)biomeToUse]->attemptgenerateStructures(this, cveci2((int)i + generateIn->worldPos.x, data->heights[i]), generateIn->chunkRandom);
+			currentWorld->biomeList[(int)biomeToUse]->attemptgenerateStructures(this, cveci2((int)i + generateIn.worldPos.x, data->heights[i]), generateIn.chunkRandom);
 		}
 	}
 	//generate ores
@@ -478,7 +478,7 @@ void overWorld::generateStructures(chunk* generateIn)
 		8,
 	};
 
-	cint& compressionLevel = math::maximum(-generateIn->worldPos.y, 0);
+	cint& compressionLevel = math::maximum(-generateIn.worldPos.y, 0);
 
 	//coal has more chance to convert to diamond when deeper
 	//gold is weighty, so it has more chance to be lower
@@ -516,14 +516,14 @@ void overWorld::generateStructures(chunk* generateIn)
 
 				currentOreRarity *= chunkOreMultiplier;
 
-				csize_t& count = roundRandom(generateIn->chunkRandom, currentOreRarity);
+				csize_t& count = roundRandom(generateIn.chunkRandom, currentOreRarity);
 
 				for (size_t j = 0; j < count; j++)
 				{
-					veci2 depositPosition = generateIn->worldPos + veci2(rand(generateIn->chunkRandom, (int)chunkSize.x - 1), rand(generateIn->chunkRandom, (int)chunkSize.x - 1));
+					veci2 depositPosition = generateIn.worldPos + veci2(rand(generateIn.chunkRandom, (int)chunkSize.x - 1), rand(generateIn.chunkRandom, (int)chunkSize.x - 1));
 
 
-					addOres(depositPosition, currentOre, rand(generateIn->chunkRandom, maxVeinSize[i]), generateIn->chunkRandom, { blockID::stone });
+					addOres(depositPosition, currentOre, rand(generateIn.chunkRandom, maxVeinSize[i]), generateIn.chunkRandom, { blockID::stone });
 				}
 			}
 }

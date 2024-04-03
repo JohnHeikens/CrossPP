@@ -1,5 +1,5 @@
 #pragma once
-enum class dimensionID :size_t
+enum class dimensionID
 {
 	overworld,
 	nether,

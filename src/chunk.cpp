@@ -61,13 +61,13 @@ void chunk::generateTerrain()
 {
 	loadLevel = chunkLoadLevel::worldGenerationLoaded;
 
-	terrainData = dimensionIn->generateTerrain(this);
+	terrainData = dimensionIn->generateTerrain(*this);
 }
 
 void chunk::generateStructures()
 {
 	loadLevel = chunkLoadLevel::updateLoaded;
-	dimensionIn->generateStructures(this);
+	dimensionIn->generateStructures(*this);
 
 	//generate structures
 	for (structureID id : generatedStructures)
@@ -231,7 +231,7 @@ void chunk::generateStructures()
 		}
 
 	}
-	delete[] terrainData;
+	delete terrainData;
 	terrainData = nullptr;
 
 	//set it to update loaded here, to add light updates

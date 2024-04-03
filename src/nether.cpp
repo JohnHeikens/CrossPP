@@ -11,7 +11,7 @@ nether::nether() : dimension(dimensionID::nether)
 
 }
 
-generationData* nether::generateTerrain(chunk* generateIn)
+generationData* nether::generateTerrain(chunk& generateIn)
 {
 	netherGenerationData* data = new netherGenerationData();
 	transition<fp> thicknessAt = transition<fp>(std::vector<keyFrame<fp>>({
@@ -23,7 +23,7 @@ generationData* nether::generateTerrain(chunk* generateIn)
 		}));
 
 
-	crectanglei2& rect = crectanglei2(generateIn->worldPos, chunkSize);
+	crectanglei2& rect = crectanglei2(generateIn.worldPos, chunkSize);
 	for (cveci2& pos : rect)
 	{
 		cfp thickness = thicknessAt.getValue(pos.y);
@@ -41,9 +41,9 @@ generationData* nether::generateTerrain(chunk* generateIn)
 	return data;
 }
 
-void nether::generateStructures(chunk* generateIn)
+void nether::generateStructures(chunk& generateIn)
 {
-	netherGenerationData* data = (netherGenerationData*)generateIn->terrainData;
+	netherGenerationData* data = (netherGenerationData*)generateIn.terrainData;
 	cfp rarity[netherOreTypeCount]
 	{
 		0x10 * chunkOreMultiplier,
@@ -63,7 +63,7 @@ void nether::generateStructures(chunk* generateIn)
 
 	std::vector<veci2> ceilingPositions = std::vector<veci2>();
 
-	crectanglei2& chunkRect = crectanglei2(generateIn->worldPos, chunkSize);
+	crectanglei2& chunkRect = crectanglei2(generateIn.worldPos, chunkSize);
 	for (cveci2& pos : chunkRect)
 	{
 		if (getBlockID(pos) == blockID::netherrack)
@@ -84,23 +84,23 @@ void nether::generateStructures(chunk* generateIn)
 	for (int i = 0; i < netherOreTypeCount; i++)
 	{
 		const blockID currentOre = netherOreList[i];
-		csize_t& count = roundRandom(generateIn->chunkRandom, rarity[i]);
-		cveci2& depositPosition = generateIn->worldPos + veci2(randIndex(generateIn->chunkRandom, (int)chunkSize.x), randIndex(generateIn->chunkRandom, (int)chunkSize.y));
+		csize_t& count = roundRandom(generateIn.chunkRandom, rarity[i]);
+		cveci2& depositPosition = generateIn.worldPos + veci2(randIndex(generateIn.chunkRandom, (int)chunkSize.x), randIndex(generateIn.chunkRandom, (int)chunkSize.y));
 		for (size_t j = 0; j < count; j++)
 		{
-			addOres(depositPosition, currentOre, rand(generateIn->chunkRandom, maxVeinSize[i]), generateIn->chunkRandom, { blockID::netherrack });
+			addOres(depositPosition, currentOre, rand(generateIn.chunkRandom, maxVeinSize[i]), generateIn.chunkRandom, { blockID::netherrack });
 		}
 	}
 
 	//for the soul sand to not fall down
 	for (cveci2 pos : ceilingPositions)
 	{
-		((netherBiomeGenerator*)currentWorld->biomeList[(int)getBiome(pos)])->attemptgenerateCeilingStructures(this, pos, generateIn->chunkRandom);
+		((netherBiomeGenerator*)currentWorld->biomeList[(int)getBiome(pos)])->attemptgenerateCeilingStructures(this, pos, generateIn.chunkRandom);
 	}
 
 	for (cveci2 pos : data->groundPositions)
 	{
-		currentWorld->biomeList[(int)getBiome(pos)]->attemptgenerateStructures(this, pos, generateIn->chunkRandom);
+		currentWorld->biomeList[(int)getBiome(pos)]->attemptgenerateStructures(this, pos, generateIn.chunkRandom);
 	}
 }
 

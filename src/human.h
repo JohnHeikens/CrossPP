@@ -63,15 +63,20 @@ struct human :public humanoid, public INamable
 	bool wantsToStartUsing = false;
 	bool wantsToStopUsing = false;
 
+	fp spectatorSpeed = humanFlyingSpeed;
+
+	fp visibleRangeXWalk = defaultVisibleRangeXWalk;
+	
+	//hands
+	int rightHandSlotIndex = 0;
+	bool seenCredits = false;
+
 	void addExperience(cint& amount);
 	void calculateFood();
 	void addExhaustion(cfp& exhaustion);
 	using humanoid::calculateHitBox;
 	virtual rectangle2 calculateHitBox(cvec2& position) const override;
 
-	//hands
-	int rightHandSlotIndex = 0;
-	bool seenCredits = false;
 
 	//drop the itemstack as if the player dropped it
 	void drop(itemStack& s);

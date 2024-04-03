@@ -20,6 +20,11 @@ struct gameRenderData : public renderData {
 	{
 		return oldPosition + getRenderOffset(oldPosition, newPosition);
 	}
+
+	constexpr fp getSecondsSinceStart(cint& ticksSinceStart) const{
+		return ((ticksSinceStart + tickPartOffset) / ticksPerRealLifeSecond);
+	}
+
 	gameRenderData clone(cmat3x3& newMatrix) const {
 		return gameRenderData(newMatrix, renderTarget, screen, secondsOffset);
 	}

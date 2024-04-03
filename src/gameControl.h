@@ -26,6 +26,8 @@ struct gameControl : form, clientInput
 	virtual void focus() override;
 	virtual void lostFocus() override;
 
+	fp currentFrameStartSeconds = 0;
+
 	settingsForm* options = new settingsForm();
 	videoSettingsForm* videoOptions = new videoSettingsForm();
 	soundSettingsForm* soundOptions = new soundSettingsForm();
@@ -45,8 +47,7 @@ struct gameControl : form, clientInput
 	vec2 cameraPosition = vec2();
 	fp hudScale;
 
-	fp visibleRangeXWalk = 0xa;
-	vec2 visibleRange = vec2(visibleRangeXWalk);
+	vec2 visibleRange = vec2(defaultVisibleRangeXWalk);
 
 	veci2 unFocusedMousePosition = veci2();
 	vec2 currentMousePositionWorld = vec2();

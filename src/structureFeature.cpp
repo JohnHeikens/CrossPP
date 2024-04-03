@@ -114,7 +114,7 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 					stdPath pathWithoutExtension = firstStructure->pathWithoutExtension;
 					pathWithoutExtension.remove_filename();
 					pathWithoutExtension /= currentJigsawData->targetPoolName;
-					jigsawPool* targetPool = getJigsawPoolByName(pathWithoutExtension);
+					jigsawPool* targetPool = getJigsawPoolByPath(pathWithoutExtension);
 
 					std::vector<structure*> checkStructures;
 					std::vector<fp> checkStructureWeights;
@@ -211,41 +211,40 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 								if (checkStructureCollisions)
 								{
 									//check if the connected structure does not collide
-									for (int collisionStructureIndex = 0; collisionStructureIndex < placedStructures.size(); collisionStructureIndex++)
+									for (const structurePlacementBlueprint* const& placedStructureData : placedStructures)
 									{
-										structurePlacementBlueprint* data = placedStructures[collisionStructureIndex];
 										if (collides2d(
-											crectangle2(data->structurePos00, data->placedStructure->blockIDArray.size),
+											crectangle2(placedStructureData->structurePos00, placedStructureData->placedStructure->blockIDArray.size),
 											crectangle2(connectingStructureData->structurePos00, connectingStructureData->placedStructure->blockIDArray.size)))
 										{
 											//check if there is structure void in the colliding places
 											//transform new structure into colliding structure
-											cmat3x3i connectingToColliding = mat3x3::cross(
-												data->placedStructure->getBlocksToWorldTransform(data->structurePos00, data->flipX).inverse(),
+											cmat3x3i& connectingToColliding = mat3x3::cross(
+												placedStructureData->placedStructure->getBlocksToWorldTransform(placedStructureData->structurePos00, placedStructureData->flipX).inverse(),
 												connectedStructureTransform
 											);
 
-											cmat3x3i collidingToConnecting = connectingToColliding.inverse();
+											cmat3x3i& collidingToConnecting = connectingToColliding.inverse();
 
-											cveci2 transformedConnectingStructurePos00 = connectingToColliding.multPointMatrix(cveci2());
+											cveci2& transformedConnectingStructurePos00 = connectingToColliding.multPointMatrix(cveci2());
 											//substracting 1 to prevent loop errors. for example pos00 = 1, 1 and pos11 = 10, 10. then you would loop from 1 to 9. but when you flip it (pos00 = 10, pos11 = 1), then you would start the loop at 10
-											cveci2 transformedConnectingStructurePos11 = connectingToColliding.multPointMatrix(cveci2(checkStructure->blockIDArray.size) - 1);
+											cveci2& transformedConnectingStructurePos11 = connectingToColliding.multPointMatrix(cveci2(checkStructure->blockIDArray.size) - 1);
 
-											crectanglei2 otherRect = crectanglei2(cveci2(), data->placedStructure->blockIDArray.size - 1);
-											crectanglei2 collisionRectMinus1 = otherRect.cropClientRectUnsafe(crectanglei2::fromOppositeCorners(transformedConnectingStructurePos00, transformedConnectingStructurePos11));
+											crectanglei2& otherRect = crectanglei2(cveci2(), placedStructureData->placedStructure->blockIDArray.size - 1);
+											crectanglei2& collisionRectMinus1 = otherRect.cropClientRectUnsafe(crectanglei2::fromOppositeCorners(transformedConnectingStructurePos00, transformedConnectingStructurePos11));
 											//adding the 1 back for the loop
-											crectanglei2 collisionRect = crectanglei2(collisionRectMinus1.pos0, collisionRectMinus1.size + 1);
+											crectanglei2& collisionRect = crectanglei2(collisionRectMinus1.pos0, collisionRectMinus1.size + 1);
 
 											//crectanglei2 collidingStructureRect = crectanglei2(connectingStructureData->structurePos00 - data->structurePos00, connectingStructureData->placedStructure->blocks->size);
 
 											for (cveci2& checkPos : collisionRect)
 											{
-												const blockID a = data->placedStructure->blockIDArray.getValueUnsafe(checkPos);
+												const blockID& a = placedStructureData->placedStructure->blockIDArray.getValueUnsafe(checkPos);
 												if (a != blockID::structure_void)
 												{
 													if (a == blockID::jigsaw)
 													{
-														if (dynamic_cast<jigsawData*>(data->placedStructure->blockDataArray.getValueUnsafe(checkPos))->turnsInto == blockID::structure_void)
+														if (dynamic_cast<jigsawData*>(placedStructureData->placedStructure->blockDataArray.getValueUnsafe(checkPos))->turnsInto == blockID::structure_void)
 														{
 															continue;
 														}

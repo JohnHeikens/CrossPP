@@ -12,12 +12,12 @@ end::end() :dimension(dimensionID::end)
 
 }
 
-generationData* end::generateTerrain(chunk* generateIn)
+generationData* end::generateTerrain(chunk& generateIn)
 {
 	endGenerationData* data = new endGenerationData();
 
 
-	crectanglei2& rect = crectanglei2(generateIn->worldPos, chunkSize);
+	crectanglei2& rect = crectanglei2(generateIn.worldPos, chunkSize);
 	for (cveci2& pos : rect)
 	{
 		cfp thickness = getThickness(cvec2(pos));
@@ -32,11 +32,11 @@ generationData* end::generateTerrain(chunk* generateIn)
 	return data;
 }
 
-void end::generateStructures(chunk* generateIn)
+void end::generateStructures(chunk& generateIn)
 {
-	endGenerationData* generationData = (endGenerationData*)generateIn->terrainData;
+	endGenerationData* generationData = (endGenerationData*)generateIn.terrainData;
 
-	crectanglei2& chunkRect = crectanglei2(generateIn->worldPos, chunkSize);
+	crectanglei2& chunkRect = crectanglei2(generateIn.worldPos, chunkSize);
 	for (cveci2& pos : chunkRect)
 	{
 		if (getBlockID(pos) == blockID::end_stone)
@@ -50,10 +50,10 @@ void end::generateStructures(chunk* generateIn)
 	}
 	for (cveci2 pos : generationData->groundPositions)
 	{
-		currentWorld->biomeList[(int)getBiome(pos)]->attemptgenerateStructures(this, pos, generateIn->chunkRandom);
+		currentWorld->biomeList[(int)getBiome(pos)]->attemptgenerateStructures(this, pos, generateIn.chunkRandom);
 	}
 
-	if (generateIn->chunkCoordinates == veci2())
+	if (generateIn.chunkCoordinates == veci2())
 	{
 		//generate the structures
 

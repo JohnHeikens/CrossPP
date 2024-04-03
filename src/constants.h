@@ -475,7 +475,6 @@ extern std::mt19937 worldRandom;
 extern std::mt19937 currentRandom;
 extern microseconds lastTickTimeMicroseconds;
 extern seconds lastTickTime;
-extern seconds currentFrameStartSeconds;
 
 //template<typename t>
 //std::wstring getClassName(const t& instance);

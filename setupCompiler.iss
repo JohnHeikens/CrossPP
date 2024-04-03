@@ -11,7 +11,7 @@ WizardResizable=yes
 WizardStyle=modern
 
 [Files]
-Source: "build/MedievalSurvival.exe"; DestDir: "{app}"
+Source: "build/a.exe"; DestDir: "{app}"; DestName: "MedievalSurvival.exe"
 Source: "build/*.dll"; DestDir: "{app}"
 //Source: "x64/release/*.pdb"; DestDir: "{app}"
 Source: "Data\*"; DestDir: "{commonappdata}\JohnHeikens\Medieval Survival\data\"; Flags: recursesubdirs; Excludes: "playerdata.dat,saves,screenshots,*.class,*.zip"; Permissions: users-full

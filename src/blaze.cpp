@@ -4,13 +4,14 @@
 #include "blazeFireBallAI.h"
 #include "attackOnCollideAI.h"
 #include "wanderAI.h"
-blaze::blaze(dimension* dimensionIn, cvec2& position) :mob(dimensionIn, position, entityID::blaze)
+#include "world.h"
+blaze::blaze(dimension *dimensionIn, cvec2 &position) : mob(dimensionIn, position, entityID::blaze)
 {
 	tasks = new taskList(this, {
-		new blazeFireBallAI(this),
-		new attackOnCollideAI(this, entityID::human),
-		new wanderAI(this),
-		});
+								   new blazeFireBallAI(this),
+								   new attackOnCollideAI(this, entityID::human),
+								   new wanderAI(this),
+							   });
 
 	flying = true;
 
@@ -30,16 +31,14 @@ void blaze::updateBodyParts() const
 	head->changed = true;
 	for (size_t ringIndex = 0; ringIndex < blazeRingCount; ringIndex++)
 	{
-		//the rods don't rotate really; they go forward until a quarter and then lag back, in order to maintain the correct z-order
-		cfp additionalRingRotation = math::mod((fp)(currentFrameStartSeconds * blazeRodSpeed[ringIndex]), (fp)(1.0 / blazeRingRodCount));
+		// the rods don't rotate really; they go forward until a quarter and then lag back, in order to maintain the correct z-order
+		cfp additionalRingRotation = math::mod((fp)(currentWorld->ticksSinceStart * secondsPerTick * blazeRodSpeed[ringIndex]), (fp)(1.0 / blazeRingRodCount));
 		for (size_t ringRodIndex = 0; ringRodIndex < blazeRingRodCount; ringRodIndex++)
 		{
-			//group 0: behind the head
-			//group 1: in front of the head
-			csize_t& rodIndex =
-				(ringRodIndex < blazeRingBackRodCount) ?
-				ringIndex * blazeRingBackRodCount + ringRodIndex :
-				(ringIndex + blazeRingCount) * blazeRingBackRodCount + (ringRodIndex - blazeRingBackRodCount);
+			// group 0: behind the head
+			// group 1: in front of the head
+			csize_t &rodIndex =
+				(ringRodIndex < blazeRingBackRodCount) ? ringIndex * blazeRingBackRodCount + ringRodIndex : (ringIndex + blazeRingCount) * blazeRingBackRodCount + (ringRodIndex - blazeRingBackRodCount);
 
 			cfp rodRotation = ((ringRodIndex / (fp)blazeRingRodCount) + additionalRingRotation) * math::PI2;
 			rods[rodIndex]->translate = cvec2(-cos(rodRotation) * blazeRingRadius[ringIndex], relativeBlazeRingHeight[ringIndex]);

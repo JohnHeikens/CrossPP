@@ -1050,11 +1050,11 @@ void entity::serializeValue(nbtSerializer& s)
 		if (s.write)
 		{
 			newDimensionID = newDimension->identifier;
-			s.serializeValue(std::wstring(L"new dimension"), (int&)newDimensionID);
+			s.serializeValue(std::wstring(L"new dimension"), newDimensionID);
 		}
 		else
 		{
-			if (s.serializeValue(std::wstring(L"new dimension"), (int&)newDimensionID))
+			if (s.serializeValue(std::wstring(L"new dimension"), newDimensionID))
 			{
 				newDimension = currentWorld->dimensions[(int)newDimensionID];
 			}

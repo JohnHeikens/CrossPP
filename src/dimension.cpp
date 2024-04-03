@@ -590,7 +590,7 @@ lightLevel dimension::getVisibleLightLevel(cveci2& pos)
 		return math::maximum(blockLight, visibleSunLight);
 	}
 }
-void dimension::generateStructures(chunk* generateIn)
+void dimension::generateStructures(chunk& generateIn)
 {
 }
 

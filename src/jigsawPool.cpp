@@ -8,8 +8,8 @@ void reloadJigsawPools()
 	jigsawPoolList = std::vector<jigsawPool*>();
 	for (const auto& fileIterator : stdFileSystem::recursive_directory_iterator(structureFolder))
 	{
-		std::wstring path = fileIterator.path().wstring();
-		std::wstring extension = fileIterator.path().extension().wstring();
+		const stdPath& path = fileIterator.path();
+		const stdPath& extension = path.extension().wstring();
 		if (extension == jsonFileExtension)
 		{
 			jigsawPool* pool = jigsawPool::fromFile(path);
@@ -20,7 +20,7 @@ jigsawPool* jigsawPool::fromFile(const stdPath& path)
 {
 	if (stdFileSystem::exists(path))
 	{
-		jigsawPool* pool = new jigsawPool(stdPath(path).replace_extension().wstring());
+		jigsawPool* pool = new jigsawPool(stdPath(path).replace_extension());
 
 		const jsonContainer& content = readJson(stringToWString(readalltext(path)));
 		const jsonContainer& elementContainer = content.children[content.getChildIndex(std::wstring(L"elements"))];
@@ -48,7 +48,7 @@ jigsawPool* jigsawPool::fromFile(const stdPath& path)
 	}
 }
 
-jigsawPool::jigsawPool(const std::wstring& name) :INamable(name)
+jigsawPool::jigsawPool(const stdPath& path) :path(path)
 {
 }
 
@@ -66,7 +66,7 @@ void jigsawPool::addTargetStructure(const stdPath& seekFolder, const std::wstrin
 	}
 	else
 	{
-		const jigsawPool* pool = getJigsawPoolByName(seekFolder / structureName);
+		const jigsawPool* pool = getJigsawPoolByPath(seekFolder / structureName);
 		if (!pool)
 		{
 			pool = jigsawPool::fromFile(seekFolder / (structureName + jsonFileExtension));
@@ -97,12 +97,11 @@ structure* jigsawPool::getRandomStructure(std::mt19937& randomToUse)
 		return nullptr;
 	}
 }
-jigsawPool* getJigsawPoolByName(std::wstring name)
+jigsawPool* getJigsawPoolByPath(const stdPath& path)
 {
-	const stdPath pathToSearch(name);
 	auto it = std::find_if(jigsawPoolList.begin(), jigsawPoolList.end(),
-		[pathToSearch](const auto& a) {
-			return stdPath(a->name).compare(pathToSearch) == 0;
+		[path](const auto& a) {
+			return a->path.compare(path) == 0;
 		});
 
 	return it == jigsawPoolList.end() ? nullptr : (*it);
