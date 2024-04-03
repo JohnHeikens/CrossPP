@@ -123,21 +123,11 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-      - name: Install dependencies
+      - name: create-folders
         shell: bash
-      
+        working-directory: ${{ github.workspace }}
         run: |
-          # Add commands to execute your code on each platform
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            sudo apt update
-            sudo apt install build-essential
-            sudo apt install libx11-dev xorg-dev freeglut3-dev libudev-dev
-            # we assume cmake is installed already
-            # sudo apt install cmake
-            # we can't allow empty clauses
-            # elif [ "$RUNNER_OS" == "Windows" ]; then
-            # elif [ "$RUNNER_OS" == "macOS" ]; then
-          fi
+          mkdir build
 
       #- name: update git
       #  shell: bash
