@@ -94,7 +94,7 @@ jobs:
         if: matrix.sys.os == 'ubuntu-latest'
         run: |
           sudo apt-get update && sudo apt-get install ninja-build -y
-          sudo apt-get install libopenal-dev
+          sudo apt-get update && sudo apt-get install libopenal-dev
         
       - name: install-deps-mac
         if: matrix.sys.os == 'macos-latest'
@@ -105,6 +105,11 @@ jobs:
       - name: checkNinja # shell: msys2 {0}
         run: Ninja --version
 
+      - name: install-vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          ./bootstrap-vcpkg.sh
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
