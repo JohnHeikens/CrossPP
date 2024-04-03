@@ -35,25 +35,23 @@ jobs:
           - { cc: gcc,   cxx: g++ }
           - { cc: clang, cxx: clang++ }
           - { cc: cl, cxx: cl }
-        include:
-          - sys.os: windows-latest
-            compiler.cc: cl
-            compiler.cxx: cl
-          - sys.os: ubuntu-latest
-            needs: setup-ubuntu
-            compiler.cc: gcc
-            compiler.cxx: g++
-          - sys.os: ubuntu-latest
-            needs: setup-ubuntu
-            compiler.cc: clang
-            compiler.cxx: clang++
+        # include:
+        #   - sys.os: windows-latest
+        #     compiler.cc: cl
+        #     compiler.cxx: cl
+        #   - sys.os: ubuntu-latest
+        #     needs: setup-ubuntu
+        #     compiler.cc: gcc
+        #     compiler.cxx: g++
+        #   - sys.os: ubuntu-latest
+        #     needs: setup-ubuntu
+        #     compiler.cc: clang
+        #     compiler.cxx: clang++
         exclude:
-          - sys: { os: windows-latest, shell: 'msys2 {0}' }
-            compiler.cc: gcc
-          - sys.os: windows-latest
-            compiler.cc: clang
-          - sys.os: ubuntu-latest
-            compiler.cc: cl
+          - sys: { os: ubuntu-latest, shell: bash }
+            compiler: { cc: clang, cxx: clang++ }
+          - sys: { os: macos-latest, shell: bash }
+            compiler: { cc: clang, cxx: clang++ }
     defaults:
       run:
         shell: ${{ matrix.sys.shell }}
