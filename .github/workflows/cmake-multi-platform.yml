@@ -81,9 +81,10 @@ jobs:
       - shell: msys2 {0}
         if: matrix.os == 'windows-latest'
         run: Ninja --version
-        
+
       - shell: bash
         if: matrix.os != 'windows-latest'
+        run: sudo apt-get update && sudo apt-get install ninja-build -y
         run: Ninja --version
 
       - name: Set reusable strings
