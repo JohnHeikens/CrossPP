@@ -89,14 +89,15 @@ jobs:
       #  if: matrix.os == 'windows-latest'
       #  #needs: install-msys2
       #  run: Add-Content $env:GITHUB_PATH "C:\msys64\mingw64\bin"
-      
-      - shell: msys2 {0}
+
+      - name: installNinja # shell: bash
+        if: matrix.os != 'windows-latest'
+        run: sudo apt-get update && sudo apt-get install ninja-build -y
+
+      - name: checkNinja # shell: msys2 {0}
         if: matrix.os == 'windows-latest'
         run: Ninja --version
 
-      - shell: bash
-        if: matrix.os != 'windows-latest'
-        run: sudo apt-get update && sudo apt-get install ninja-build -y
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -126,7 +127,7 @@ jobs:
       #  run:
       #    git pull
       - name: Configure CMake
-        shell: msys2 {0}
+        # shell: msys2 {0}
 
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
@@ -143,7 +144,7 @@ jobs:
         #  -S ${{ github.workspace }}
 
       - name: Build
-        shell: msys2 {0}
+        # shell: msys2 {0}
         # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: ninja.exe --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
