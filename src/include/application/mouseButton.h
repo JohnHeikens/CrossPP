@@ -1,5 +1,5 @@
 //#include "GlobalFunctions.h"
-//#include <sfml/Window.hpp>
+//#include <SFML/Window.hpp>
 //#pragma once
 //enum mouseButton : byte {
 //	left,

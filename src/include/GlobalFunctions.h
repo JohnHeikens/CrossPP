@@ -25,7 +25,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <sfml/Window.hpp>
+#include <SFML/Window.hpp>
 
 //https://stackoverflow.com/questions/2324658/how-to-determine-the-version-of-the-c-standard-used-by-the-compiler
 namespace cPlusPlusVersions

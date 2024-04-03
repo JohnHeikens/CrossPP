@@ -1,5 +1,5 @@
 #pragma once
-#include <sfml/Window.hpp>
+#include <SFML/Window.hpp>
 #include "keyID.h"
 #include "keyHistoryEvent.h"
 struct nbtSerializer;

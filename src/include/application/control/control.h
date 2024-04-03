@@ -3,7 +3,7 @@
 #include "event/eventhandler.h"
 #include "event/eventargs.h"
 #include <initializer_list>
-#include <sfml/Window.hpp>
+#include <SFML/Window.hpp>
 
 struct control;
 

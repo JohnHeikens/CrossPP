@@ -48,7 +48,7 @@
 #include "statusEffectID.h"
 #include "structureID.h"
 #include "minecraftFont.h"
-#include <sfml/Network.hpp>
+#include <SFML/Network.hpp>
 
 constexpr int selectedPositionCount = 2;
 vec2 selectedPositions[selectedPositionCount]{};

@@ -11,7 +11,7 @@
 #include "clientInput.h"
 #include "creditsForm.h"
 #include "soundPacket.h"
-#include <sfml/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 
 constexpr fp defaultGuiTextureSize = (fp)0x200;
 struct playerSocket;

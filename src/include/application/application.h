@@ -1,7 +1,7 @@
 #pragma once
 #include "control/form.h"
 #include "math/graphics/graphics.h"
-#include <sfml/Window.hpp>
+#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "clientInput.h"

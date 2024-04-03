@@ -60,7 +60,7 @@
 #include "soundhandler2d.h"
 #include "keyHistoryEvent.h"
 #include "minecraftFont.h"
-#include <sfml/Window.hpp>
+#include <SFML/Window.hpp>
 #include "GlobalFunctions.h"
 #include "constants.h"
 #include "type/types.h"
