@@ -90,12 +90,19 @@ jobs:
       #  #needs: install-msys2
       #  run: Add-Content $env:GITHUB_PATH "C:\msys64\mingw64\bin"
 
-      - name: installNinja # shell: bash
-        if: matrix.sys.os != 'windows-latest'
-        run: sudo apt-get update && sudo apt-get install ninja-build -y
+      - name: install-deps-linux # shell: bash
+        if: matrix.sys.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update && sudo apt-get install ninja-build -y
+          sudo apt-get install libopenal-dev
+        
+      - name: install-deps-mac
+        if: matrix.sys.os == 'macos-latest'
+        run: |
+          brew install ninja
+          brew install openal-soft
 
       - name: checkNinja # shell: msys2 {0}
-        if: matrix.sys.os == 'windows-latest'
         run: Ninja --version
 
 
