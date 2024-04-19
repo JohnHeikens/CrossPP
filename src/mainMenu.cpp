@@ -17,28 +17,12 @@ mainMenu::mainMenu() :form()
 	//gameNameLabel->currentFont = new baseFont(defaultTheme().font->family, 0);
 	gameNameLabel->currentFont = new minecraftFont();
 	addChildren({ backgroundPicture, gameNameLabel, playOfflineButton , playOnlineButton, accountButton });
+    addEventHandlers(&mainMenu::clickedOnButton, playOfflineButton->onClick, playOnlineButton->onClick, accountButton->onClick);
 }
 
 void mainMenu::render(cveci2& position, const texture& renderTarget)
 {
 	form::render(position, renderTarget);
-}
-
-void mainMenu::mouseDown(cveci2& position, cmb& button)
-{
-	control* highestChild = getHighestChild(position);
-	if (highestChild == playOfflineButton)
-	{
-		mainForm->switchVisibleChild(currentWorldSelector);
-	}
-	else if (highestChild == playOnlineButton)
-	{
-		mainForm->switchVisibleChild(currentServerSelector);
-	}
-	else if (highestChild == accountButton)
-	{
-		mainForm->switchVisibleChild(currentAccountEditor);
-	}
 }
 
 void mainMenu::layout(crectanglei2& newRect)
@@ -73,4 +57,20 @@ void mainMenu::keyDown(cvk& key)
 		mainForm->switchVisibleChild(currentWorldSelector);
 		return;
 	}
+}
+
+void mainMenu::clickedOnButton(const controlEventArgs &args) {
+
+    if (&args.sender == playOfflineButton)
+    {
+        mainForm->switchVisibleChild(currentWorldSelector);
+    }
+    else if (&args.sender == playOnlineButton)
+    {
+        mainForm->switchVisibleChild(currentServerSelector);
+    }
+    else if (&args.sender == accountButton)
+    {
+        mainForm->switchVisibleChild(currentAccountEditor);
+    }
 }

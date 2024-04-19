@@ -20,6 +20,7 @@
 #include "nbtData.h"
 #include "nbtDataTag.h"
 #include "type/types.h"
+#include "array/arrayfunctions.h"
 
 template <typename t>
 constexpr nbtDataTag getListDataTag()
@@ -38,7 +39,7 @@ constexpr nbtDataTag getListDataTag()
 	}
 	else
 	{
-		return nbtDataTag::tagEnd;
+		return nbtDataTag::tagEnd;//data tag not found
 	}
 }
 
@@ -75,8 +76,6 @@ constexpr nbtDataTag getNBTDataTag()
 	}
 	else
 	{
-		// throw "this tag is not allowed";//TODO: make static assert again
-		// static_assert(false, "this tag is not allowed");
 		return getListDataTag<t>();
 	}
 }
@@ -186,28 +185,28 @@ struct nbtSerializer : iSerializer
 			{
 				value = new t[count];
 			}
-			// TODO: instead of just copying, it should be possible to convert from int8_t to int16_t for example
 			switch (data.dataTag)
 			{
 			case nbtDataTag::tagSignedInt8Array:
 			{
 				int8_t *&ptr = ((nbtDataArray<int8_t>&)data).data;
 				count = (int)((nbtDataArray<int8_t>&)data).arraySize;
-				std::copy(ptr, ptr + count, (int8_t *)value);
+                //value should not be cast to int8_t* because that could possibly corrupt memory
+                copyAndCast(ptr, ptr + count, value);
 			}
 			break;
 			case nbtDataTag::tagSignedInt32Array:
 			{
 				int32_t *&ptr = ((nbtDataArray<int32_t>&)data).data;
 				count = (int)((nbtDataArray<int32_t>&)data).arraySize;
-				std::copy(ptr, ptr + count, (int32_t *)value);
+                copyAndCast(ptr, ptr + count, value);
 			}
 			break;
 			case nbtDataTag::tagSignedInt64Array:
 			{
 				int64_t *&ptr = ((nbtDataArray<int64_t>&)data).data;
 				count = (int)((nbtDataArray<int64_t>&)data).arraySize;
-				std::copy(ptr, ptr + count, (int64_t *)value);
+                copyAndCast(ptr, ptr + count, value);
 			}
 			break;
 			default:

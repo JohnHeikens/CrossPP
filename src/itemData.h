@@ -28,7 +28,7 @@ struct itemData :IItemComparable, IDestructable
 	int enchantability = 0;
 	std::vector<enchantmentID> possibleEnchantments = std::vector<enchantmentID>();
 	void setEatingValues(cint& foodPoints, cfp& extraSaturation);
-	virtual bool compare(const itemID& itemToCompare) const;
+	bool compare(const itemID& itemToCompare) const override;
 	virtual ~itemData() override;
 };
 extern idList<itemData*, itemID> itemList;

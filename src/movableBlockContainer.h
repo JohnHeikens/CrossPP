@@ -18,15 +18,15 @@ struct movableBlockContainer : tickableBlockContainer, public blockArrayContaine
 	veci2 relativeAttachmentPosition = cveci2();
 	veci2 arrayPos00Offset = veci2();//for if the array expands
 
-	virtual void* getArrayValuePointerUnsafe(cveci2& position, const arrayDataType& dataType, const chunkLoadLevel& minimalLoadLevel) override;
-	virtual bool inBounds(cveci2& position) const override;
+	void* getArrayValuePointerUnsafe(cveci2& position, const arrayDataType& dataType, const chunkLoadLevel& minimalLoadLevel) override;
+	bool inBounds(cveci2& position) const override;
 
 	rectanglei2 getCurrentArrayRect() const;
 
-	virtual collisionDataCollection getHitboxCollisionData(crectangle2& box);
-	virtual bool cropRelativeLineToContainer(vec2& p0, vec2& p1) override;
+	collisionDataCollection getHitboxCollisionData(crectangle2& box) override;
+	bool cropRelativeLineToContainer(vec2& p0, vec2& p1) override;
 
 	movableBlockContainer(cvect2<size_t>& size) :blockArrayContainer(size) {}
-	virtual void serializeValue(nbtSerializer& s) override;
-	virtual ~movableBlockContainer() override;
+	void serializeValue(nbtSerializer& s) override;
+	~movableBlockContainer() override;
 };

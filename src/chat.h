@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "dimensionID.h"
 #include "gameControl.h"
 struct chat

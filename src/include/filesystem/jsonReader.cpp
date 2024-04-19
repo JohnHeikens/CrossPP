@@ -1,5 +1,5 @@
 #include "jsonReader.h"
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 
 jsonContainer readJson(std::wstring content)
 {
@@ -11,7 +11,7 @@ jsonContainer readJson(std::wstring content)
 	csize_t& indexCurlyBracket = find(content, 0, std::wstring(L"{"), std::wstring(L""));
 	csize_t& indexBracket = find(content, 0, std::wstring(L"["), std::wstring(L""));
 	csize_t& nearestIndex = FindNearest(std::vector<size_t>({ indexQuote,indexCurlyBracket,indexBracket }));
-	if (nearestIndex == -1)
+	if (nearestIndex == std::wstring::npos)
 	{
 		container.value = trim_copy(content);
 	}
@@ -24,11 +24,11 @@ jsonContainer readJson(std::wstring content)
 		container.value = content.substr(startPos, endPos - startPos);
 
 		csize_t& indexColon = find(content, endPos + 1, std::wstring(L":"), std::wstring(L"{}[]()\"\""));
-		if (indexCurlyBracket == -1 && indexBracket == -1 && indexColon != -1)
+		if (indexCurlyBracket == std::wstring::npos && indexBracket == std::wstring::npos && indexColon != std::wstring::npos)
 		{
 			jsonContainer movingBlocks = jsonContainer();
 			size_t indexQuote2 = find(content, endPos + 1, std::wstring(L"\""), std::wstring(L"{}[]"));
-			if (indexQuote2 == -1)
+			if (indexQuote2 == std::wstring::npos)
 			{
 				movingBlocks.value = trim_copy(content.substr(indexColon + 1));
 			}
@@ -66,7 +66,7 @@ jsonContainer readJson(std::wstring content)
 	return container;
 }
 
-int jsonContainer::getChildIndex(const std::wstring& value) const
+size_t jsonContainer::getChildIndex(const std::wstring& value) const
 {
 	for (size_t i = 0; i < children.size(); i++)
 	{
@@ -75,13 +75,13 @@ int jsonContainer::getChildIndex(const std::wstring& value) const
 			return i;
 		}
 	}
-	return -1;
+	return std::wstring::npos;
 }
 
 jsonContainer jsonContainer::getChild(const std::wstring& value) const
 {
 	cint index = getChildIndex(value);
-	if (index == -1)
+	if (index == std::wstring::npos)
 	{
 		throw "no child found with this value";
 	}

@@ -325,28 +325,28 @@ void human::tick()
 					}
 					goto rightClickUsed;
 				}
-				else if ((selectedBlockID == blockID::lever))
+				else if (selectedBlockID == blockID::lever)
 				{
 					leverData* toLeverData = dynamic_cast<leverData*>(selectedBlockData);
 					toLeverData->active = !toLeverData->active;
 					dimensionIn->addUpdatePosition(selectedBlockPosition);
 					goto rightClickUsed;
 				}
-				else if ((selectedBlockID == blockID::repeater))
+				else if (selectedBlockID == blockID::repeater)
 				{
 					repeaterData* toRepeaterData = dynamic_cast<repeaterData*>(selectedBlockData);
 					toRepeaterData->delayArrayIndex = (toRepeaterData->delayArrayIndex + 1) % delayArraySize;
 					dimensionIn->addUpdatePosition(selectedBlockPosition);
 					goto rightClickUsed;
 				}
-				else if ((selectedBlockID == blockID::comparator))
+				else if (selectedBlockID == blockID::comparator)
 				{
 					comparatorData* toComparatorData = dynamic_cast<comparatorData*>(selectedBlockData);
 					toComparatorData->substractionMode = !toComparatorData->substractionMode;
 					dimensionIn->addUpdatePosition(selectedBlockPosition);
 					goto rightClickUsed;
 				}
-				else if ((selectedBlockID == blockID::jukebox))
+				else if (selectedBlockID == blockID::jukebox)
 				{
 					jukeBoxData* toJukeBoxData = dynamic_cast<jukeBoxData*>(selectedBlockData);
 					if (toJukeBoxData->recordSlot->slots[0].count)
@@ -362,7 +362,7 @@ void human::tick()
 						goto rightClickUsed;
 					}
 				}
-				else if ((selectedBlockID == blockID::note_block))
+				else if (selectedBlockID == blockID::note_block)
 				{
 					noteBlockData* toNoteBlockData = dynamic_cast<noteBlockData*>(selectedBlockData);
 
@@ -1148,13 +1148,13 @@ void human::onItemRightClick(itemStack& stackIn)
 	}
 	else if (stackIn.stackItemID == itemID::potion && wantsToStartUsing && (((potionData*)stackIn.data)->effectsToAdd.size() == 0))
 	{
-		if ((selectedBlock == blockID::water || selectedBlock == blockID::air))
+		if (selectedBlock == blockID::water || selectedBlock == blockID::air)
 		{
 			if (selectedBlock == blockID::air)
 			{
 				selectedBlockContainer->setBlockWithData(selectedBlockPosition, blockID::water, new fluidData(bottleFluidLevel), chunkLoadLevel::updateLoaded);
 			}
-			else if (selectedBlock == blockID::air)
+			else if (selectedBlock == blockID::water)
 			{
 				fluidData* data = dynamic_cast<fluidData*>(selectedBlockContainer->getBlockData(selectedBlockPosition));
 				data->currentFluidLevel = math::minimum(data->currentFluidLevel, maxFluidLevel);
@@ -1208,21 +1208,21 @@ void human::onItemRightClick(itemStack& stackIn)
 						statusEffect(statusEffectID::resistance, 5 * ticksPerRealLifeMinute)
 						}));
 				}
-				else if ((stackIn.stackItemID == itemID::rotten_flesh))
+				else if (stackIn.stackItemID == itemID::rotten_flesh)
 				{
 					if (!randChance(currentRandom, 5))
 					{
 						addStatusEffects({ statusEffect(statusEffectID::hunger, 600, 1) });
 					}
 				}
-				else if ((stackIn.stackItemID == itemID::chicken))
+				else if (stackIn.stackItemID == itemID::chicken)
 				{
 					if (randIndex(currentRandom, 10) < 3)//30 % chance
 					{
 						addStatusEffects({ statusEffect(statusEffectID::hunger, 600, 1) });
 					}
 				}
-				else if ((stackIn.stackItemID == itemID::pufferfish))
+				else if (stackIn.stackItemID == itemID::pufferfish)
 				{
 					addStatusEffects({
 						statusEffect(statusEffectID::hunger, 300, 3),

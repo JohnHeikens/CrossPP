@@ -39,16 +39,12 @@ bool nbtSerializer::isArrayTag(const nbtDataTag& dataTag)
 {
 	return dataTag == nbtDataTag::tagSignedInt8Array || dataTag == nbtDataTag::tagSignedInt32Array || dataTag == nbtDataTag::tagSignedInt64Array;
 }
-nbtSerializer::nbtSerializer(nbtCompound& compound, cbool& write, cbool& convert) :iSerializer(write), compound(compound), converter(converter)
+nbtSerializer::nbtSerializer(nbtCompound& compound, cbool& write, cbool& convert) :iSerializer(write), compound(compound)
 {
 	if (convert)
 	{
 		int version = currentFileVersionID;
 		serializeValue(std::wstring(L"version"), version);
 		converter = getConverter(version);
-	}
-	else
-	{
-		converter = nullptr;
 	}
 }

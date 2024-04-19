@@ -1,14 +1,17 @@
 #pragma once
 #include "GlobalFunctions.h"
-#include <ctime>
+//#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include <format>
+#include <string>
+
 
 //typedefs
-typedef long long miliseconds;//stores miliseconds
-typedef long long microseconds;//stores microseconds
+typedef std::chrono::milliseconds::rep miliseconds;//stores miliseconds
+typedef std::chrono::microseconds::rep microseconds;//stores microseconds
 typedef long double seconds;
 typedef const miliseconds cmiliseconds;
 typedef const microseconds cmicroseconds;
@@ -93,24 +96,27 @@ inline std::time_t getEpochTime(const std::wstring& dateTime, const std::wstring
 	return std::mktime(&dt);
 }
 inline std::wstring timeToString(const std::wstring& format = L"%A, %B %d, %Y %I:%M:%S %p") {
-	//const auto& t = std::time(nullptr);
-	//const auto& tm = *std::localtime(&t);
-	//
-	//std::wostringstream oss;
-	//oss << std::put_time(&tm, format.c_str());
-	//return oss.str();
+	const auto& t = std::time(nullptr);
+	const auto& tm = *std::localtime(&t);
+
+	std::wostringstream oss;
+	oss << std::put_time(&tm, format.c_str());
+	return oss.str();
 	//https://stackoverflow.com/questions/24750855/c-how-to-get-timestamp-string-both-on-linux-and-windows
 
-	time_t rawtime;
-	struct tm timeinfo = tm();
-	wchar_t buffer[80];
 
-	time(&rawtime);
-	localtime_s(&timeinfo, &rawtime);
+	//time_t rawtime;
+	//struct tm timeinfo = tm();
+	//wchar_t buffer[80];
+
+	//time(&rawtime);
+	//localtime_r(&timeinfo, &rawtime);
 
 	// Wednesday, March 19, 2014 01:06:18 PM
-	wcsftime(buffer, 80, format.c_str(), &timeinfo);
+	//wcsftime(buffer, 80, format.c_str(), &timeinfo);
 	
 
-	return std::wstring(buffer);
+	//return std::wstring(buffer);
+    //https://stackoverflow.com/questions/34963738/c11-get-current-date-and-time-as-string
+    //return std::format(L"{:"+ format + L"}", std::chrono::system_clock::now());
 }

@@ -10,11 +10,26 @@
 //#endif
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
 #define onWindows true
-#elif defined(__linux__)
-#define onLinux true
-#elif defined(__APPLE__)
-#define onMac true
+#else
+#define onWindows false
+#endif
 
+#ifdef __linux__
+#define onLinux true
+#else
+#define onLinux false
+#endif
+
+#ifdef __ANDROID__
+#define  onAndroid true
+#else
+#define  onAndroid false
+#endif
+
+#if defined(__APPLE__)
+#define onMac true
+#else
+#define onMac false
 #endif
 
 #if __cplusplus >= 202002L
@@ -22,6 +37,7 @@
 #else
 	#define constexpr20
 #endif
+
 
 #include <cstddef>
 #include <cstdint>
@@ -41,8 +57,8 @@ namespace cPlusPlusVersions
 
 //not changing types, but make it easier to type every time.
 typedef double fp;//a floating point precision-value, precision can be fp(4 bytes), fp(8 bytes, fp 4 = 8), or long fp(16 bytes).
-typedef long long ll;
-typedef unsigned long long ull;
+typedef int64_t ll;//not using long long, because the bit count of long long can change
+typedef uint64_t ull;
 typedef unsigned char byte;
 typedef signed char sbyte;
 typedef unsigned int uint;
@@ -50,7 +66,14 @@ typedef unsigned short ushort;
 typedef wchar_t letter;//unicode charachter
 //virtual keycode
 typedef sf::Keyboard::Key vk;
+#if onAndroid
+enum mb : uint {
+    ButtonCount = 2
+};
+#else
 typedef sf::Mouse::Button mb;
+
+#endif
 
 typedef uint fsize_t;//fast size type, will result in sse instructions and loop unrolling
 typedef const fsize_t cfsize_t;//fast size type, will result in sse instructions and loop unrolling
@@ -75,3 +98,7 @@ typedef const size_t csize_t;
 constexpr int ByteToBits = 8;//there are 8 bits in a byte
 constexpr fp bytemult0to1 = 1.0 / 0xff;
 constexpr byte bytemax = (byte)0xff;
+constexpr bool isNormalClick(cmb& button)
+{
+    return onAndroid || button == (mb)sf::Mouse::Left;
+}

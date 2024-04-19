@@ -32,10 +32,9 @@ struct baseRect
 		pos0.~vectn<t, axisCount>();                                                                   \
 		size.~vectn<t, axisCount>();                                                                   \
 	}
-	rectConstructor(axisCount) constexpr baseRect(const t &x, const t &y, const t &w, const t &h)
+	rectConstructor(axisCount)
+    constexpr baseRect(const t &x, const t &y, const t &w, const t &h) : pos0(vect2<t>(x, y)), size( vect2<t>(w, h))
 	{
-		pos0 = vect2<t>(x, y);
-		size = vect2<t>(w, h);
 	}
 };
 template <typename t>
@@ -48,9 +47,7 @@ struct baseRect<t, 0>
 			vectn<t, 1> pos0;
 			vectn<t, 1> size;
 		};
-		struct
-		{
-		};
+        //no need to declare the empty struct, it'd just issue a warning
 	};
 	rectConstructor(0)
 	// constexpr baseRect() = default;

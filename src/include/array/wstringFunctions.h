@@ -7,6 +7,7 @@
 #include <vector>
 #include <locale>
 #include <codecvt>
+#include <sstream>
 
 typedef std::vector<std::wstring> wstringContainer;
 typedef std::vector<std::string> stringContainer;

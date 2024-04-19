@@ -9,7 +9,7 @@ struct solidBrush final :public brush<resultingType, inputType>
 {
 	resultingType value = resultingType();
 	solidBrush(const resultingType& value) :value(value) {}
-	constexpr resultingType getValue(const inputType& pos) const noexcept
+	constexpr resultingType getValue(const inputType&) const noexcept
 	{
 		return value;
 	}
@@ -31,7 +31,7 @@ struct saturator final :public colorBrush
 		const color original = baseBrush.getValue(pos);
 		const colorf& rgbOriginal(original);
 		const colorf& hsv = rgb2hsv(rgbOriginal);
-		const colorf& saturated = colorf(hsv.h, math::minimum(hsv.s() + addsaturation, (fp)1.0), math::minimum(hsv.v() + addvalue, (fp)1.0));
+		const colorf& saturated = colorf(hsv.h(), math::minimum(hsv.s() + addsaturation, (fp)1.0), math::minimum(hsv.v() + addvalue, (fp)1.0));
 		const colorf& rgbSaturated = hsv2rgb(saturated);
 		return color(rgbSaturated);
 	}

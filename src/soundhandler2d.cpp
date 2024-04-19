@@ -1,11 +1,12 @@
 #include "soundhandler2d.h"
+#include "filesystem/sfmlInputStream.h"
+#include "filesystem/fileio.h"
 int playingSoundCount = 0;
 
-void soundHandler2d::update(cvec2& earPosition, cfp& hearingRange, cfp& playerHeadOffset, cfp& maxVolume)
+void soundHandler2d::update(cvec3& earPosition, cfp& hearingRange, cfp& maxVolume)
 {
-	cvec3 earPosition3d = cvec3(earPosition.x, earPosition.y, playerHeadOffset);
-	cfp hearingRange3d = cvec2(hearingRange, playerHeadOffset).length();
-	sf::Listener::setPosition((float)earPosition3d.x, (float)earPosition3d.y, (float)earPosition3d.z);
+	cfp hearingRange3d = cvec2(hearingRange, earPosition.z).length();
+	sf::Listener::setPosition((float)earPosition.x, (float)earPosition.y, (float)earPosition.z);
 	sf::Listener::setDirection(0.0f, 0.0f, -1.0f);//-z is at the back of the screen
 	sf::Listener::setUpVector(0.0f, 1.0f, 0.0f);
 	sf::Listener::setGlobalVolume((float)maxVolume * 100.0f);
@@ -18,7 +19,7 @@ void soundHandler2d::update(cvec2& earPosition, cfp& hearingRange, cfp& playerHe
 	{
 		std::shared_ptr<audio2d> s = currentlyPlayIngAudio[i];
 
-		cfp distance3D = (vec3(s->pos) - earPosition3d).length();
+		cfp distance3D = (vec3(s->pos) - earPosition).length();
 		cbool canHear = (distance3D <= hearingRange3d) || (!s->isSpatial);
 		cfp volumeMultiplier = math::minimum(distanceFullVolume3D / distance3D, maximalVolume);
 
@@ -110,7 +111,9 @@ microseconds sound2d::getDuration()
 void music2d::loadAudio()
 {
 	playingAudio = new sf::Music();
-	if (!playingAudio->openFromFile(WStringToString(path)))
+    //this way, even on android we can read from an actual file instead of the internal APK storage
+    stream = new sfmlInputStream(std::make_shared<std::ifstream>(path, getOpenMode(false)));
+	if (!playingAudio->openFromStream(*stream))
 	{
 		throw "file not found";
 	}
@@ -123,6 +126,11 @@ microseconds music2d::getDuration()
 		loadAudio();
 	}
 	return playingAudio->getDuration().asMicroseconds();
+}
+
+music2d::~music2d()
+{
+    delete stream;
 }
 
 void audio2d::setPosition(cvec2& newPosition)

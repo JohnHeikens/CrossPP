@@ -60,7 +60,7 @@ bool world::serialize(cbool& write)
 		}
 	}
 	nbtCompound* compound = nullptr;
-	const std::wstring worldDataPath = path / saveFolderWorldData;
+	const stdPath &worldDataPath = path / saveFolderWorldData;
 	if (write)
 	{
 		compound = new nbtCompound(name);

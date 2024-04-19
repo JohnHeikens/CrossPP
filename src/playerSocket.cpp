@@ -137,7 +137,8 @@ void renderAsync(playerSocket *socket)
 	nbtCompound *compound = new nbtCompound(L"packetOut");
 	nbtSerializer *outSerializer = new nbtSerializer(*compound, true);
 
-	vec2 earPosition = socket->screen->player->getHeadPosition();
+	vec3 earPosition = vec3(socket->screen->cameraPosition.x, socket->screen->cameraPosition.y, settings::soundSettings::headScreenDistance * socket->screen->visibleRange.x);
+	// vec2 earPosition = socket->screen->player->getHeadPosition();
 	outSerializer->serializeValue(L"earPosition", earPosition);
 
 	if (outSerializer->push<nbtDataTag::tagList>(L"sounds"))

@@ -212,7 +212,7 @@ bool tickableBlockContainer::fillNetherPortal(cveci2& position)
 
 			int portalDistance[directionCount2D]{};
 			//raycast to all sides
-			for (int portalSideIndex = 0; portalSideIndex < relativeCheckPositions.size(); portalSideIndex++)
+			for (size_t portalSideIndex = 0; portalSideIndex < relativeCheckPositions.size(); portalSideIndex++)
 			{
 				veci2 portalSideDirection = relativeCheckPositions[portalSideIndex];
 				for (int distance = 1;; distance++)

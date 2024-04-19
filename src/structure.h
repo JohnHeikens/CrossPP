@@ -7,12 +7,12 @@ struct structure :IDestructable, blockContainer
 	array2d<blockID> blockIDArray = array2d<blockID>();
 	array2d<blockData*> blockDataArray = array2d<blockData*>();
 	fastList<entity*> entities = fastList<entity*>();
+    //for example: c:/path/to/structure (without the .dat)
 	stdPath pathWithoutExtension = stdPath();
 
 	mat3x3i getBlocksToWorldTransform(cveci2& pos00, cbool& flipX) const;
 	mat3x3 getEntitiesToWorldTransform(cveci2& pos00, cbool& flipX) const;
-	structure() :blockIDArray(array2d<blockID>()), blockDataArray(array2d<blockData*>()), entities(fastList<entity*>()), pathWithoutExtension() {}
-	inline structure(const stdPath pathWithoutExtension) : structure() { this->pathWithoutExtension = pathWithoutExtension; }
+	structure(const stdPath pathWithoutExtension = stdPath()) :blockIDArray(array2d<blockID>()), blockDataArray(array2d<blockData*>()), entities(fastList<entity*>()), pathWithoutExtension(pathWithoutExtension) {}
 	bool serialize(const stdPath& path, cbool& write);
 	void createStructure(dimension& dimensionIn, crectanglei2& rect, cbool& includeEntities);
 
@@ -23,6 +23,6 @@ struct structure :IDestructable, blockContainer
 	virtual bool inBounds(cveci2& position) const override;
 };
 
-structure* getStructureByName(std::wstring name);
-std::vector<structure*> getStructuresByName(const std::wstring& seekFolder, const std::wstring& name);
+structure* getStructureByPath(const stdPath& path);
+std::vector<structure*> getStructuresByName(const stdPath& seekFolder, const std::wstring& name);
 extern std::vector<structure*> structureList;

@@ -16,12 +16,12 @@ worldCreator::worldCreator() : form()
 		cheatsButton,
 		createButton,
 		cancelButton});
+    addEventHandlers(&worldCreator::onClick, createButton->onClick, cheatsButton->onClick, cancelButton->onClick);
 }
 
-void worldCreator::mouseDown(cveci2& position, cmb& button)
+void worldCreator::onClick(const controlEventArgs& args)
 {
-	control* highestChild = getHighestChild(position);
-	if (highestChild == createButton)
+	if (&args.sender == createButton)
 	{
 		worldCreating->name = getAvailableWorldName(worldNameTextBox->text);
 		//create a new world
@@ -57,17 +57,13 @@ void worldCreator::mouseDown(cveci2& position, cmb& button)
 
 		mainForm->switchVisibleChild(currentClient);
 	}
-	else if (highestChild == cheatsButton)
+	else if (&args.sender == cheatsButton)
 	{
 		worldCreating->allowCheats = !worldCreating->allowCheats;
 	}
-	else if (highestChild == cancelButton)
+	else if (&args.sender == cancelButton)
 	{
 		cancelWorldCreation();
-	}
-	else
-	{
-		form::mouseDown(position, button);
 	}
 }
 

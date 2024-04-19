@@ -6,7 +6,7 @@
 #include "playerData.h"
 struct client : control, socketContainer {
 	serverData currentServerData = serverData();
-	vec2 earPosition = vec2();
+	vec3 earPosition = vec2();
 
 	clientInput currentInput;
 	playerData data;

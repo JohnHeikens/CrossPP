@@ -225,6 +225,7 @@ void entity::tick()
 						dimensionPosition = floorVector(floorVector(position / netherToOverWorldScale));
 					}
 					break;
+                        default: break;
 					}
 					cveci2& portalBlockPosition = newDimension->searchPortal(dimensionPosition);
 					cvec2& teleportPosition = cvec2(portalBlockPosition) + cvec2(0.5, math::fpepsilon);

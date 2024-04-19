@@ -1,5 +1,5 @@
 #pragma once
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "fileio.h"
 #include <filesystem>
 #include <fstream>
@@ -9,7 +9,7 @@
 //reads an entire file into a string.
 //source
 //https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
-inline std::string readalltext(const stdPath& path)
+inline std::string readAllText(const stdPath& path)
 {
 
 	std::ifstream t(path, getOpenMode(false));

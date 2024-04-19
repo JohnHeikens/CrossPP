@@ -133,7 +133,7 @@ void control::mouseDown(cveci2 &position, cmb &button)
 	{
 		focusedChild->mouseDown(position - focusedChild->rect.pos0, button);
 	}
-	else if (button == mb::Left)
+	else
 	{
 		click();
 	}
@@ -253,3 +253,4 @@ control *control::getHighestChild(cveci2 &pos) const
 	}
 	return nullptr;
 }
+

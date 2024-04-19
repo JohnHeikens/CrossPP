@@ -40,13 +40,13 @@ void playerControlledAI::execute()
 	}
 	else
 	{
-		connectedPlayer->wantsToHit = worldFocus && connectedPlayer->screen.clickedFocused[mb::Left];
+		connectedPlayer->wantsToHit = worldFocus && connectedPlayer->screen.clickedFocused[sf::Mouse::Left];
 	}
-	connectedPlayer->wantsToDig = worldFocus && (!spectating) && connectedPlayer->screen.holding[mb::Left];
+	connectedPlayer->wantsToDig = worldFocus && (!spectating) && connectedPlayer->screen.holding[sf::Mouse::Left];
 
-	connectedPlayer->wantsToKeepUsing = worldFocus && connectedPlayer->screen.holding[mb::Right];
-	connectedPlayer->wantsToStartUsing = worldFocus && connectedPlayer->screen.clickedFocused[mb::Right];
-	connectedPlayer->wantsToStopUsing = worldFocus && connectedPlayer->screen.clickReleased[mb::Right];
+	connectedPlayer->wantsToKeepUsing = worldFocus && connectedPlayer->screen.holding[sf::Mouse::Right];
+	connectedPlayer->wantsToStartUsing = worldFocus && connectedPlayer->screen.clickedFocused[sf::Mouse::Right];
+	connectedPlayer->wantsToStopUsing = worldFocus && connectedPlayer->screen.clickReleased[sf::Mouse::Right];
 
 	if (connectedPlayer->wantsToJump)
 	{
@@ -134,7 +134,7 @@ void playerControlledAI::execute()
 			}
 
 			itemStack *selectedHotbarSlot = connectedPlayer->hotbarSlots->getSlot(cveci2(connectedPlayer->rightHandSlotIndex, 0));
-			if (worldFocus && connectedPlayer->screen.clickedFocused[mb::Middle] && connectedPlayer->currentGameMode == gameModeID::creative)
+			if (worldFocus && connectedPlayer->screen.clickedFocused[sf::Mouse::Middle] && connectedPlayer->currentGameMode == gameModeID::creative)
 			{
 				// pick block
 				selectedHotbarSlot->clearData();

@@ -365,9 +365,9 @@ void overWorld::generateStructures(chunk& generateIn)
 
 	cfp caveSteepness = 0.4;
 	veci2 caveSquare = veci2();
-	for (caveSquare.y = 0; caveSquare.y < chunkSize.y; caveSquare.y += caveStep)
+	for (caveSquare.y = 0; caveSquare.y < (int)chunkSize.y; caveSquare.y += caveStep)
 	{
-		for (caveSquare.x = 0; caveSquare.x < chunkSize.x; caveSquare.x += caveStep)
+		for (caveSquare.x = 0; caveSquare.x < (int)chunkSize.x; caveSquare.x += caveStep)
 		{
 			veci2 caveSquareIndex = veci2(randIndex(generateIn.chunkRandom, caveStep), randIndex(generateIn.chunkRandom, caveStep)) + caveSquare;
 			if (caveSquareIndex.x < chunkSize.x && caveSquareIndex.y < chunkSize.y && (randFp(generateIn.chunkRandom) < caveChance))

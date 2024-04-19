@@ -21,7 +21,7 @@ std::map<std::wstring, std::shared_ptr <lootTable>> chestLootTables = std::map<s
 
 std::shared_ptr <lootTable> readLootTable(const stdPath& path)
 {
-	const jsonContainer& container = readJson(stringToWString(readalltext(path)));
+	const jsonContainer& container = readJson(stringToWString(readAllText(path)));
 
 	std::shared_ptr<lootTable> table = std::shared_ptr <lootTable>(readDrop(container));
 	return table;

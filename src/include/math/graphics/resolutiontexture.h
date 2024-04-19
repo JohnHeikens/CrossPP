@@ -20,11 +20,11 @@ struct resolutionTexture : public colorBrush
 	{
 		return crectangle2(cvec2(0), defaultSize);
 	}
-	inline resolutionTexture(resolutionTexture& other)
-	{
-		//static_assert(false);
-		throw "unnecessary copy. struct way too large";
-	}
+	inline resolutionTexture(resolutionTexture& other) = delete;
+	//{
+	//	//static_assert(false);
+	//	throw "unnecessary copy. struct way too large";
+	//}
 
 	//inline const texture& getTexture(cvec2& renderSize) const
 	//{

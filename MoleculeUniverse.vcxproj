@@ -343,7 +343,7 @@
     <ClCompile Include="src\include\application\control\slider.cpp" />
     <ClCompile Include="src\include\application\control\TextBox.cpp" />
     <ClCompile Include="src\include\application\interaction.cpp" />
-    <ClCompile Include="src\include\array\wstring.cpp" />
+    <ClCompile Include="src\include\array\wstringFunctions.cpp" />
     <ClCompile Include="src\include\compiler\area.cpp" />
     <ClCompile Include="src\include\compiler\compiler.cpp" />
     <ClCompile Include="src\include\compiler\errors.cpp" />
@@ -764,7 +764,7 @@
     <ClInclude Include="src\include\array\rectiteratortn.h" />
     <ClInclude Include="src\include\array\skiplist.h" />
     <ClInclude Include="src\include\array\tileList.h" />
-    <ClInclude Include="src\include\array\wstring.h" />
+    <ClInclude Include="src\include\array\wstringFunctions.h"ctions.h" />
     <ClInclude Include="src\include\array\zipiterator.h" />
     <ClInclude Include="src\include\compiler\area.h" />
     <ClInclude Include="src\include\compiler\compiler.h" />

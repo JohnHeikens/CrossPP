@@ -12,7 +12,7 @@ public:
 	// the colors wont be deleted when the texture is deleted.
 	void switchChannels(colorb *byteArray, cint &channelIndex1, cint &channelIndex2) const;
 	void Flip() const;
-	bool Save(std::wstring path) const;
+	bool Save(const stdPath& path) const;
 
 	inline color getValue(cvect2<fsize_t> &pos) const
 	{

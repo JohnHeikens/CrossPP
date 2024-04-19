@@ -22,6 +22,8 @@ void* renderBlockContainer::getArrayValuePointerUnsafe(cveci2& position, const a
 	{
 		return (void*)&powerLevelArray.getValueReferenceUnsafe(position);
 	}
+        default:
+            break;
 	}
 	return nullptr;
 }

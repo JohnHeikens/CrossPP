@@ -8,6 +8,6 @@ struct smithingTableSlotContainer : craftableSlotContainer
 	virtual bool addStack(itemStack& stack) override;
 	virtual ~smithingTableSlotContainer() override;
 	virtual itemStack calculateRecipeResult() override;
-	virtual bool canAddStack(uiSlotContainer* containerToAddTo, itemStack& s);
-	virtual void substractCraftingIngredients() override;
+	bool canAddStack(uiSlotContainer* containerToAddTo, itemStack& s) override;
+	void substractCraftingIngredients() override;
 };

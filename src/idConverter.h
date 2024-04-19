@@ -117,14 +117,15 @@ struct idConverter
 	template<typename dataType, typename idType>
 	inline static bool findArrayDifference(const idList<dataType*, idType>& dataList, const std::vector<idType>& converter)
 	{
+        typedef std::underlying_type_t<idType> ut;
 		if (dataList.size != converter.size())
 		{
 			return true;
 		}
 		//convert everything to the new value
-		for (int index = 0; index < converter.size(); index++)
+		for (ut index = 0; index < (ut)converter.size(); index++)
 		{
-			if ((int)converter[index] != index)
+			if ((ut)converter[index] != index)
 			{
 				return true;
 			}

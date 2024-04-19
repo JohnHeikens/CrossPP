@@ -6,6 +6,7 @@ Output
 saves
 *.class
 models
+ndk
 # *.ipch
 #.vs/MedievalSurvival
 Debug

@@ -190,6 +190,26 @@ error with std::chrono::system_clock::now: use steady_clock everywhere
 
 vs code intellisense lagging: another extension is causing it. disable all extensions and see what extension causes it
 
+Android studio:
+renamed something, but databinding gives errors:
+- rebuild
+- file-> invalidate caches and restart
+
+libmedievalsurvival.so not found:
+so files are for example in app\build\intermediates\cxx\Debug\235d3j5x\obj\arm64-v8a
+
+ANativeActivity_OnCreate unresolved symbol while the basic functions of sfml get loaded: make sure to link sfml-main using -Wl --whole-archive!
+
+error when calling something from JNI: check logcat!!
+
+cannot open a certain folder in the device explorer: make sure to simulate a device without a google system image (just use a normal android image like upsidedowncake)
+
+problem with a base function not behaving the same way as the parent function: the parent function is derived!!
+
+android studio not updating info about c++ function template: delete the function call (ctrl + x) and let it reappear (ctrl + v or ctrl + z)
+
+error running app: build type isn't debuggable: when built in release mode. select build - > build variants - > debug to debug
+
 TODO:
 
 maybe add vcpkg-configuration.json for version consistency (see https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)

@@ -26,126 +26,123 @@
 //	std::wcout << L"Active Keyboard Layout: " << activeLayout << std::endl;
 // }
 
-int application::run()
-{
-	sf::ContextSettings settings;
+int application::run() {
+    sf::ContextSettings settings;
 
-	settings.antialiasingLevel = 0;
+    settings.antialiasingLevel = 0;
 
-	veci2 size = veci2(1920, 1080);
-	window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name), sf::Style::Close | sf::Style::Resize, settings);
-	//settings = window->getSettings();
-	//std::cout << SFML_VERSION_MAJOR << "." << SFML_VERSION_MINOR << "." << SFML_VERSION_PATCH << std::endl;
-	//std::cout << settings.majorVersion << "." << settings.minorVersion << std::endl;
+    veci2 size = veci2(1920, 1080);
+    window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name),
+                                  sf::Style::Close | sf::Style::Resize, settings);
+    //initialize them AFTER the render window has been created, so they have a context
+    windowTexture = new sf::Texture();
+    windowSprite = new sf::Sprite();
+    //settings = window->getSettings();
+    //std::cout << SFML_VERSION_MAJOR << "." << SFML_VERSION_MINOR << "." << SFML_VERSION_PATCH << std::endl;
+    //std::cout << settings.majorVersion << "." << settings.minorVersion << std::endl;
 
-	//window->setFramerateLimit(60);
-	// ImGui::SFML::Init(window);
+    //window->setFramerateLimit(60);
+    // ImGui::SFML::Init(window);
 
-	// Create a texture with initial size
-	
-
-	// Create a sprite to display the texture
+    // Create a texture with initial size
 
 
-	// cap at 60fps
-	cmicroseconds &frameTime = (microseconds)(1000000 / cappedFps);
-	stableLoop loop = stableLoop(frameTime);
-	// changeKeyboardLayout();
-	//windowSprite->scale(1, -1);
-	//windowSprite->move(0, (float)size.y);
-	//windowSprite.scale(1, -1);
-	//windowSprite.move(0, (float)size.y);
-	layout(crectanglei2(cveci2(), size));
-	mainForm->focus();
-	while (window->isOpen())
-	{
-		loop.waitTillNextLoopTime();
-		// Do stuff with graphics->colors
-		mainForm->render(cveci2(0, 0), graphics);
-		// Draw graphics->colors to window
+    // Create a sprite to display the texture
 
-		window->clear();
-		graphics.switchChannels(graphics.baseArray, 0, 2);
-		windowTexture.update((byte *)graphics.baseArray);
-		//window->setActive(true);
-		window->draw(windowSprite);
-		// ImGui::SFML::Render(window);
-		window->display();
-		//window->setActive(false);
 
-		processInput(); // process events from user right before the check if window->isOpen()
-	}
-	delete window;
-	return 0;
+    // cap at 60fps
+    cmicroseconds &frameTime = (microseconds) (1000000 / cappedFps);
+    stableLoop loop = stableLoop(frameTime);
+    // changeKeyboardLayout();
+    //windowSprite->scale(1, -1);
+    //windowSprite->move(0, (float)size.y);
+    //windowSprite.scale(1, -1);
+    //windowSprite.move(0, (float)size.y);
+    layout(crectanglei2(cveci2(), size));
+    mainForm->focus();
+    while (window->isOpen()) {
+        loop.waitTillNextLoopTime();
+        // Do stuff with graphics->colors
+        mainForm->render(cveci2(0, 0), graphics);
+        // Draw graphics->colors to window
+
+        window->clear();
+        graphics.switchChannels(graphics.baseArray, 0, 2);
+        windowTexture->update((byte *) graphics.baseArray);
+        //window->setActive(true);
+        window->draw(*windowSprite);
+        // ImGui::SFML::Render(window);
+        window->display();
+        //window->setActive(false);
+
+        processInput(); // process events from user right before the check if window->isOpen()
+    }
+    delete windowSprite;
+    delete windowTexture;
+    delete window;
+    return 0;
 }
 
-void application::layout(crectanglei2& newRect)
-{
-	window->setView(sf::View(sf::FloatRect((float)newRect.x, (float)newRect.y, (float)newRect.w, (float)newRect.h)));
-	windowTexture.create(newRect.size.x, newRect.size.y);
-	windowSprite.setTexture(windowTexture, true);
-	windowSprite.setScale(1, -1);
-	windowSprite.setPosition(0, (float)newRect.size.y);
+void application::layout(crectanglei2 &newRect) {
+    window->setView(sf::View(sf::FloatRect((float) newRect.x, (float) newRect.y, (float) newRect.w,
+                                           (float) newRect.h)));
+    windowTexture->create(newRect.size.x, newRect.size.y);
+    windowSprite->setTexture(*windowTexture, true);
+    windowSprite->setScale(1, -1);
+    windowSprite->setPosition(0, (float) newRect.size.y);
 
-	graphics = texture(cvect2<fsize_t>(newRect.size));
-	mainForm->layout(crectanglei2(cveci2(), newRect.size));
+    graphics = texture(cvect2<fsize_t>(newRect.size));
+    mainForm->layout(crectanglei2(cveci2(), newRect.size));
 }
 
-void application::processInput()
-{
-	sf::Event event;
-	while (window->pollEvent(event))
-	{
-		if (event.type == sf::Event::Closed)
-		{
-			if (mainForm->close()) {
-				window->close();
-			}
-		}
-		else if (event.type == sf::Event::KeyPressed)
-		{
-			if (addWithoutDupes(input.keysHolding, event.key.code)) {
-				mainForm->keyDown(event.key.code);
-			}
-		}
-		else if (event.type == sf::Event::KeyReleased)
-		{
-			const auto& it = std::find(input.keysHolding.begin(), input.keysHolding.end(), event.key.code);
-			if (it != input.keysHolding.end())
-			{
-				mainForm->keyUp(event.key.code);
-				input.keysHolding.erase(it);
-			}
-		}
-		else if (event.type == sf::Event::TextEntered)
-		{
-			mainForm->enterText(event.text.unicode);
-		}
-		else if (event.type == sf::Event::MouseButtonPressed)
-		{
-			mainForm->mouseDown(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y), event.mouseButton.button);
-		}
-		else if (event.type == sf::Event::MouseButtonReleased)
-		{
-			mainForm->mouseUp(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y), event.mouseButton.button);
-		}
-		else if (event.type == sf::Event::MouseWheelScrolled)
-		{
-			mainForm->scroll(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y), (int)event.mouseWheelScroll.delta);
-		}
-		else if (event.type == sf::Event::Resized) {
-			layout(rectanglei2(cveci2(), cveci2(event.size.width, event.size.height)));
-		}
-		else if (event.type == sf::Event::LostFocus) {
-			mainForm->lostFocus();
-		}
-		else if (event.type == sf::Event::GainedFocus) {
-			mainForm->focus();
-		}
-		else if (event.type == sf::Event::MouseMoved) {
-			mainForm->hover(cveci2(event.mouseMove.x, window->getSize().y - event.mouseMove.y));
-		}
-	}
+void application::processInput() {
+    sf::Event event;
+    while (window->pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            if (mainForm->close()) {
+                window->close();
+            }
+        } else if (event.type == sf::Event::KeyPressed) {
+            if (addWithoutDupes(input.keysHolding, event.key.code)) {
+                mainForm->keyDown(event.key.code);
+            }
+        } else if (event.type == sf::Event::KeyReleased) {
+            const auto &it = std::find(input.keysHolding.begin(), input.keysHolding.end(),
+                                       event.key.code);
+            if (it != input.keysHolding.end()) {
+                mainForm->keyUp(event.key.code);
+                input.keysHolding.erase(it);
+            }
+        } else if (event.type == sf::Event::TextEntered) {
+            mainForm->enterText(event.text.unicode);
+        } else if (event.type == sf::Event::TouchBegan) {
+            mainForm->mouseDown(cveci2(event.touch.x, window->getSize().y - event.touch.y),
+                                 (mb)event.touch.finger);
+        } else if (event.type == sf::Event::TouchMoved) {
+            mainForm->hover(cveci2(event.touch.x, window->getSize().y - event.touch.y));
+        } else if (event.type == sf::Event::TouchEnded) {
+            mainForm->mouseUp(cveci2(event.touch.x, window->getSize().y - event.touch.y), (mb)event.touch.finger);
+        } else if (event.type == sf::Event::MouseButtonPressed) {
+            mainForm->mouseDown(
+                    cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y),
+                    (mb)event.mouseButton.button);
+        } else if (event.type == sf::Event::MouseButtonReleased) {
+            mainForm->mouseUp(
+                    cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y),
+                    (mb)event.mouseButton.button);
+        } else if (event.type == sf::Event::MouseWheelScrolled) {
+            mainForm->scroll(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y),
+                             (int) event.mouseWheelScroll.delta);
+        } else if (event.type == sf::Event::Resized) {
+            layout(rectanglei2(cveci2(), cveci2(event.size.width, event.size.height)));
+        } else if (event.type == sf::Event::LostFocus) {
+            mainForm->lostFocus();
+        } else if (event.type == sf::Event::GainedFocus) {
+            mainForm->focus();
+        } else if (event.type == sf::Event::MouseMoved) {
+            mainForm->hover(cveci2(event.mouseMove.x, window->getSize().y - event.mouseMove.y));
+        }
+    }
 }
 
 // LRESULT CALLBACK WndProc(
@@ -392,11 +389,10 @@ void application::processInput()
 //
 //	mainForm->layout(crectanglei2(0, 0, (int)graphics.size.x, (int)graphics.size.y));
 // }
-application::application(form *mainForm, const std::wstring& name) : INamable (name)
-{
-	graphics = texture(cvecs2());
-	this->mainForm = mainForm;
-	//std::fill(lastKeyDown, lastKeyDown + 0x100, false);
+application::application(form *mainForm, const std::wstring &name) : INamable(name) {
+    graphics = texture(cvecs2());
+    this->mainForm = mainForm;
+    //std::fill(lastKeyDown, lastKeyDown + 0x100, false);
 }
 
 // OpenGL debug callback function
@@ -459,14 +455,13 @@ application::application(form *mainForm, const std::wstring& name) : INamable (n
 //	LONG_PTR l = GetWindowLongPtr(mainWindow, GWLP_USERDATA);
 //	return (application*)l;
 // }
-application::~application()
-{
-	delete mainForm;
+application::~application() {
+    delete mainForm;
 
-	// we dont have to delete its colors because they are part of the DIBSection
+    // we dont have to delete its colors because they are part of the DIBSection
 
-	//if (graphics.baseArray)
-	//{
-	//	graphics.baseArray = nullptr;
-	//}
+    //if (graphics.baseArray)
+    //{
+    //	graphics.baseArray = nullptr;
+    //}
 }

@@ -1218,7 +1218,7 @@
     <ClCompile Include="src\include\math\triangle.cpp">
       <Filter>Source Files\include</Filter>
     </ClCompile>
-    <ClCompile Include="src\include\array\wstring.cpp">
+    <ClCompile Include="src\include\array\wstringFunctions.cpp">
       <Filter>Source Files\include</Filter>
     </ClCompile>
     <ClCompile Include="src\include\application\control\picturebox.cpp">
@@ -3533,7 +3533,7 @@
     <ClInclude Include="src\include\math\vectorrandom.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\array\wstring.h">
+    <ClInclude Include="src\include\array\wstringFunctions.h"ctions.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
     <ClInclude Include="src\include\array\zipiterator.h">

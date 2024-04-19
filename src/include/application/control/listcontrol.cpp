@@ -4,12 +4,7 @@ listControl::listControl(cint& sideSliderWidth) :control(),
 sideSliderWidth(sideSliderWidth)
 {
 	addChildren({ sideSlider });
-}
-
-void listControl::mouseDown(cveci2& position, cmb& button)
-{
-	control::mouseDown(position, button);
-	reOrganizeChildControls();
+    sideSlider->addEventHandlers(&listControl::sideSliderOnValueChanged, sideSlider->onValueChanged);
 }
 
 void listControl::reOrganizeChildControls()
@@ -52,4 +47,8 @@ void listControl::layout(crectanglei2& newRect)
 	crectanglei2 sideSliderRect = crectanglei2(rect.w - sideSliderWidth, 0, sideSliderWidth, rect.h);
 	sideSlider->layout(sideSliderRect);
 	reOrganizeChildControls();
+}
+
+void listControl::sideSliderOnValueChanged(const valueEventArgs &args) {
+    reOrganizeChildControls();
 }

@@ -8,6 +8,8 @@ extern int playingSoundCount;
 
 constexpr fp maxVolume = 1;
 
+class sfmlInputStream;
+
 struct audio2d
 {
 	virtual void play() = 0;
@@ -83,7 +85,8 @@ struct sound2d :audio2dt<sf::Sound>
 
 struct music2d : audio2dt<sf::Music>
 {
-	std::wstring path = std::wstring(L"");
+	stdPath path;
+    sfmlInputStream* stream = nullptr;
 
 	inline music2d(const stdPath& path, cvec2& pos, cfp& volume, cfp& pitch, cbool& isSpatial) :
 		path(path), audio2dt(pos, volume, pitch, isSpatial)
@@ -92,13 +95,14 @@ struct music2d : audio2dt<sf::Music>
 
 	virtual void loadAudio() override;
 	virtual microseconds getDuration() override;
+    ~music2d();
 };
 
 struct soundHandler2d :IDestructable
 {
 	fastList<std::shared_ptr<audio2d>> currentlyPlayIngAudio = fastList<std::shared_ptr<audio2d>>();
-	//the distance of the player to the screen in real life converted to 'ingame distance'
-	void update(cvec2& earPosition, cfp& hearingRange, cfp& playerHeadOffset, cfp& maxVolume);
+	//earPosition.z = the distance of the player to the screen in real life converted to 'ingame distance'
+	void update(cvec3& earPosition, cfp& hearingRange, cfp& maxVolume);
 
 	void playAudio(std::shared_ptr<audio2d> audioToPlay);
 	void stopAudio(std::shared_ptr<audio2d> audioToStop);

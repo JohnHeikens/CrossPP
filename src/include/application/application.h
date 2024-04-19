@@ -15,8 +15,8 @@ struct application: INamable, IDestructable
 
 	//pointer because a copy constructor isn't implemented
 	sf::RenderWindow* window = nullptr;
-	sf::Texture windowTexture;
-	sf::Sprite windowSprite;
+	sf::Texture* windowTexture;
+	sf::Sprite* windowSprite;
 	clientInput input = clientInput();
 
 	//data

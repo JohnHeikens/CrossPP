@@ -19,7 +19,6 @@ inline std::fstream getAcceleratedFstream(const stdPath& path, cbool& write, std
 	{
 		//give a buffer to read faster
 		//https://stackoverflow.com/questions/11563963/how-to-write-a-large-buffer-into-a-binary-file-in-c-fast/39097696#39097696
-		cint bufferSize = 0x1000;
 		buffer = std::shared_ptr<char[]>(new char[bufferSize]);
 		stream.rdbuf()->pubsetbuf(buffer.get(), bufferSize);
 	}

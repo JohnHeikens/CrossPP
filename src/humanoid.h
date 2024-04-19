@@ -71,7 +71,7 @@ struct humanoid : public mob, public slotContainer
 
 	virtual void updateBodyParts() const override;
 	void render(const gameRenderData& targetData) const override;
-	virtual void updateSelection();
+	void updateSelection() override;
 	void resetDigProgress();
 	virtual fp getAttackDamage() const override;
 

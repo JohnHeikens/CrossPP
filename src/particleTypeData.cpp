@@ -9,7 +9,7 @@ particleTypeData::particleTypeData(const std::wstring& name) : INamable(name), t
 	const auto locations = getResourceLocations(particleDataFolder / (name + L".json"));
 	if (locations.size()) {
 		const stdPath& path = locations[locations.size() - 1];
-		jsonContainer container = readJson(stringToWString(readalltext(path)));
+		jsonContainer container = readJson(stringToWString(readAllText(path)));
 		if (container.children.size()) {
 			//textures = std::vector<resolutionTexture*>(container.children[0].children.size());
 			for (const auto& c : container.children[0].children) {

@@ -1,5 +1,5 @@
 #pragma once
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "dropCondition.h"
 struct blockStateCondition : public dropCondition
 {

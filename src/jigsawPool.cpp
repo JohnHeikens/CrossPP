@@ -22,7 +22,7 @@ jigsawPool* jigsawPool::fromFile(const stdPath& path)
 	{
 		jigsawPool* pool = new jigsawPool(stdPath(path).replace_extension());
 
-		const jsonContainer& content = readJson(stringToWString(readalltext(path)));
+		const jsonContainer& content = readJson(stringToWString(readAllText(path)));
 		const jsonContainer& elementContainer = content.children[content.getChildIndex(std::wstring(L"elements"))];
 		for (const jsonContainer& element : elementContainer.children)
 		{

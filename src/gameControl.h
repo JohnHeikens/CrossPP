@@ -20,7 +20,7 @@ struct gameControl : form, clientInput
 {
 	gameControl(playerSocket& socket);
 	//virtual void render(cveci2& position, const texture& renderTarget) override;
-	void render(cveci2& position, const texture& renderTarget);
+	void render(cveci2& position, const texture& renderTarget) override;
 	virtual void processInput();
 	virtual void layout(crectanglei2& newRect) override;
 	virtual void focus() override;

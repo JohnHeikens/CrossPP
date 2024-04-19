@@ -10,6 +10,6 @@ void playerData::serializeValue(nbtSerializer& s)
 bool playerData::serialize(cbool& write)
 {
 	createFoldersIfNotExists(playerDataFolder);
-	std::wstring playerDataFile = playerDataFolder / (std::wstring(L"playerdata") + nbtFileExtension);
+	const stdPath& playerDataFile = playerDataFolder / (std::wstring(L"playerdata") + nbtFileExtension);
 	return nbtSerializable::serialize(L"playerdata", playerDataFile, write);
 }

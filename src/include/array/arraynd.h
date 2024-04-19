@@ -285,7 +285,7 @@ struct arraynd :IDestructable
 		}
 		return true;
 	}
-	inline bool inBounds(crectanglein<axisCount>& rect) const
+	constexpr bool inBounds(crectanglein<axisCount>& rect) const
 	{
 		cveci2 pos11 = rect.pos1();
 
@@ -315,7 +315,9 @@ struct arraynd :IDestructable
 		}
 		else
 		{
+#ifndef __clang__
 			assumeInRelease(inBounds(pos));
+#endif
 		}
 		return baseArray[pos.getDimensionalArrayIndex(size)];
 	}

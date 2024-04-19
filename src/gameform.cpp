@@ -174,7 +174,7 @@ void gameForm::render(cveci2& position, const texture& renderTarget)
 	{
 		updateMusic(mainMenuBackgroundMusic);
 	}
-	handler->update(currentClient->earPosition, hearingRange, settings::soundSettings::headScreenDistance, settings::soundSettings::volume);
+	handler->update(currentClient->earPosition, hearingRange, settings::soundSettings::volume);
 
 	currentApplication->window->setMouseCursorVisible(focusedChild != currentClient);
 

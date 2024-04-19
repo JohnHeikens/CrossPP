@@ -32,7 +32,7 @@ idConverter::idConverter(cint& oldVersion, cint& newVersion)
 
 void idConverter::writeIDsToFile()
 {
-	const std::wstring path = fileVersionsFolder / (std::to_wstring(currentFileVersionID) + nbtFileExtension);
+	const stdPath path = fileVersionsFolder / (std::to_wstring(currentFileVersionID) + nbtFileExtension);
 	//get last converter
 	if (stdFileSystem::exists(path))
 	{

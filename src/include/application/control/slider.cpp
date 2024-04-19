@@ -23,12 +23,13 @@ void slider::setValue(cfp& newValue)
 	{
 		value = correctedValue;
 		rePositionDragButton();
+        onValueChanged.invoke(valueEventArgs(*this, correctedValue));
 	}
 }
 
 void slider::mouseDown(cveci2& position,cmb& button)
 {
-	if (button == mb::Left) 
+	if (isNormalClick(button))
 	{
 		control* child = getHighestChild(position);
 		if (!child || child == dragButton)
@@ -63,7 +64,7 @@ void slider::dragCompleted()
 	cfp max = increaseButton->rect.pos0.axis[horizontalAxis] - dragButton->rect.size.axis[horizontalAxis] - decreaseButton->rect.size.axis[horizontalAxis];
 	value = math::mapValue(part, (fp)0, max, minValue, maxValue);
 
-	if (onDragCompleted) 
+	if (onDragCompleted)
 	{
 		onDragCompleted();
 	}
@@ -88,4 +89,8 @@ void slider::layout(crectanglei2& newRect)
 	}
 
 	rePositionDragButton();
+}
+
+void slider::onClick(const controlEventArgs &args) {
+
 }

@@ -151,6 +151,8 @@ void mob::tick()
 							case toolTypeID::axe:
 							case toolTypeID::shovel:
 								durabilityDecrease *= 2;
+                                default:
+                                    break;
 							}
 						}
 						if (isHumanoid(entityType))
@@ -425,7 +427,6 @@ void mob::tick()
 		if (randChance(currentRandom, (ticksPerRealLifeSecond / activeEffects[i].potency)))
 		{
 			summonParticle(dimensionIn, getrandomPosition(currentRandom, calculateHitBox()), new effectParticleBrush(statusEffectDataList[activeEffects[i].identifier]->particleColor));
-			activeEffects[i].identifier;
 		}
 	}
 

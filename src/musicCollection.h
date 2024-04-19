@@ -5,7 +5,7 @@
 struct tickableBlockContainer;
 struct musicCollection : audioCollection
 {
-	std::vector<std::wstring> audioPaths = std::vector<std::wstring>();
+	std::vector<stdPath> audioPaths = std::vector<stdPath>();
 	void addAudioFile(const stdPath& path) override;
 	musicCollection(const stdPath& path);
 	musicCollection() {}

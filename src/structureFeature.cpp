@@ -89,9 +89,9 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 		return false;
 	}
 
-	for (int structureIndex = 0; structureIndex < placedStructures.size(); structureIndex++)
+	for (const structurePlacementBlueprint* const& currentData : placedStructures)
 	{
-		structurePlacementBlueprint* currentData = placedStructures[structureIndex];
+		//structurePlacementBlueprint* currentData = placedStructures[structureIndex];
 		placeStructurePart(currentData->placedStructure, containerIn, currentData->structurePos00, currentData->flipX, currentData->structureLevel, includeEntities, replaceStructureVoid);
 		if (currentData->structureLevel >= 0)
 		{
@@ -126,7 +126,7 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 					}
 					else
 					{
-						structure* s = getStructureByName(pathWithoutExtension);
+						structure* s = getStructureByPath(pathWithoutExtension);
 						if (s)
 						{
 							checkStructures = { s };

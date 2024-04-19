@@ -10,7 +10,7 @@ struct particle :public entity
 
 	particleBrush* brush = nullptr;
 	particle(dimension* dimensionIn, cvec2& position);
-	virtual void tick();
+	void tick() override;
 	virtual void render(const gameRenderData& targetData) const override;
 	virtual void serializeValue(nbtSerializer& s) override;
 	virtual ~particle() override;

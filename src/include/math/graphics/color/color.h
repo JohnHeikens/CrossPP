@@ -35,6 +35,7 @@ struct colortn : public vectn<t, channelCount>
 	static constexpr t quarterMaxValue = maxValue / 4;
 
 	constexpr colortn(const colortn& other) = default;
+    constexpr colortn& operator=(const colortn& other) = default;
 
 	constexpr colortn(ccolort& c, const t& a) :vectn<t, channelCount>(c)
 	{

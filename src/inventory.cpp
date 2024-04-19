@@ -6,7 +6,7 @@ void inventory::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContai
 	{
 		if (canAddStack(selectedSlotContainer, stackHolding))
 		{
-			if (button == mb::Right)
+			if (!onAndroid || button == (mb)sf::Mouse::Right)
 			{
 				selectedSlotContainer->linkedContainer->getSlot(selectedSlot)->addStack(stackHolding, 1);
 			}

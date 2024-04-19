@@ -94,7 +94,7 @@
 #include "humanoid.h"
 #include "idAnalysis.h"
 #include "array/fastlist.h"
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "filesystem/jsonReader.h"
 #include "GlobalFunctions.h"
 #include "math/graphics/brush/brushes.h"
@@ -2921,7 +2921,7 @@ void loadResourcePacks()
 	for (const auto &fileIterator : stdFileSystem::directory_iterator(recipeFolder))
 	{
 		std::wstring path = fileIterator.path().wstring();
-		const jsonContainer &content = readJson(stringToWString(readalltext(path)));
+		const jsonContainer &content = readJson(stringToWString(readAllText(path)));
 
 		readRecipe(content);
 	}
@@ -3089,7 +3089,7 @@ void loadResourcePacks()
 
 	reloadJigsawPools();
 
-	creditsText = stringToWString(readalltext(minecraftAssetsFolder / L"texts" / L"end.txt"));
+	creditsText = stringToWString(readAllText(minecraftAssetsFolder / L"texts" / L"end.txt"));
 	creditsText = replace(creditsText, std::wstring(L"PLAYERNAME"), std::wstring(L"Me"));
 }
 std::vector<resolutionTexture *> loadGrowthStageTextures(const std::wstring &blockName, std::vector<int> growthStageIndexes)

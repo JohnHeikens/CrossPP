@@ -275,21 +275,21 @@ void biomeGenerator::placeDesertPyramid(tickableBlockContainer *containerIn, cve
 {
 	// middle bottom
 	cveci2 pos00 = pos + cveci2(-10, -13);
-	structure *desertPyramidStructure = getStructureByName(structureFolder / std::wstring(L"desert_pyramid/desert_pyramid"));
+	structure *desertPyramidStructure = getStructureByPath(structureFolder / std::wstring(L"desert_pyramid/desert_pyramid"));
 	structureFeature().placeStructure(desertPyramidStructure, containerIn, pos00, randomToUse, 0, false);
 }
 
 void biomeGenerator::placeJungleTemple(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	// middle bottom
-	structure *junglePyramidStructure = getStructureByName(structureFolder / std::wstring(L"jungle_pyramid/jungle_pyramid"));
+	structure *junglePyramidStructure = getStructureByPath(structureFolder / std::wstring(L"jungle_pyramid/jungle_pyramid"));
 	structureFeature().placeStructure(junglePyramidStructure, containerIn, structureFeature().getStructureBottom(junglePyramidStructure), randomToUse, 0, false);
 }
 
 void biomeGenerator::placeShipWreck(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	cveci2 pos00 = pos + cveci2(-14, 0);
-	decayedStructureFeature(&randomToUse, 0.95, 0.03).placeStructure(getStructureByName(structureFolder / L"shipwreck" / L"with_mast"), containerIn, pos00, randomToUse, 0, false);
+	decayedStructureFeature(&randomToUse, 0.95, 0.03).placeStructure(getStructureByPath(structureFolder / L"shipwreck" / L"with_mast"), containerIn, pos00, randomToUse, 0, false);
 }
 
 void biomeGenerator::placeOceanRuins(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
@@ -302,14 +302,14 @@ void biomeGenerator::placeOceanRuins(tickableBlockContainer *containerIn, cveci2
 
 void biomeGenerator::placeMineShaft(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	structure *railAreaStructure = getStructureByName(structureFolder / L"mineshaft" / "rail_area");
+	structure *railAreaStructure = getStructureByPath(structureFolder / L"mineshaft" / "rail_area");
 	cveci2 pos00 = pos + cveci2((int)railAreaStructure->blockIDArray.size.x / -2, 0);
 	decayedStructureFeature(&randomToUse, 0.95, 0.02).placeStructure(railAreaStructure, containerIn, pos00, randomToUse, 0x10, false);
 }
 
 void biomeGenerator::placeNamedStructure(tickableBlockContainer *containerIn, cveci2 &pos, const std::wstring &structureName, std::mt19937 &randomToUse)
 {
-	structure *structureToPlace = getStructureByName(structureFolder / structureName);
+	structure *structureToPlace = getStructureByPath(structureFolder / structureName);
 	cveci2 pos00 = pos + cveci2((int)structureToPlace->blockIDArray.size.x / -2, 0);
 	structureFeature().placeStructure(structureToPlace, containerIn, pos00, randomToUse, 0x10, false);
 }
@@ -318,7 +318,7 @@ void biomeGenerator::placeNetherFortress(tickableBlockContainer *containerIn, cv
 {
 	// start with a corridor balcony
 	cint corridorBalconyLevel = 3; // the amount of levels before the floor
-	structure *corridorBalconyStructure = getStructureByName(structureFolder / L"nether_fortress" / "corridor_balcony");
+	structure *corridorBalconyStructure = getStructureByPath(structureFolder / L"nether_fortress" / "corridor_balcony");
 	netherFortressFeature().placeStructure(corridorBalconyStructure, containerIn, pos + cveci2(-(int)corridorBalconyStructure->blockIDArray.size.x / 2, -(int)corridorBalconyLevel), randomToUse, 0x10);
 }
 
@@ -326,14 +326,14 @@ void biomeGenerator::placeStronghold(tickableBlockContainer *containerIn, cveci2
 {
 	// middle
 	cveci2 pos00 = pos + cveci2(-8, -4);
-	decayedStructureFeature(&randomToUse, 0.95, 0.02).placeStructure(getStructureByName(structureFolder / L"stronghold" / L"portal_room"), containerIn, pos00, randomToUse, 0x8, false);
+	decayedStructureFeature(&randomToUse, 0.95, 0.02).placeStructure(getStructureByPath(structureFolder / L"stronghold" / L"portal_room"), containerIn, pos00, randomToUse, 0x8, false);
 }
 
 void biomeGenerator::placeDungeon(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
 	// middle
 	cveci2 pos00 = pos + cveci2(-8, 0);
-	decayedStructureFeature(&randomToUse, 0.95, 0.05).placeStructure(getStructureByName(structureFolder / L"dungeon" / L"dungeon"), containerIn, pos00, randomToUse, 1, false);
+	decayedStructureFeature(&randomToUse, 0.95, 0.05).placeStructure(getStructureByPath(structureFolder / L"dungeon" / L"dungeon"), containerIn, pos00, randomToUse, 1, false);
 }
 
 void biomeGenerator::placeRuinedPortal(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
@@ -342,7 +342,7 @@ void biomeGenerator::placeRuinedPortal(tickableBlockContainer *containerIn, cvec
 
 void biomeGenerator::placeEndCity(tickableBlockContainer *containerIn, cveci2 &pos, std::mt19937 &randomToUse)
 {
-	structure *endCityBaseFloor = getStructureByName(structureFolder / std::wstring(L"end_city/base_floor"));
+	structure *endCityBaseFloor = getStructureByPath(structureFolder / std::wstring(L"end_city/base_floor"));
 	cveci2 pos00 = pos + cveci2((int)endCityBaseFloor->blockIDArray.size.x / -2, 0);
 	structureFeature().placeStructure(endCityBaseFloor, containerIn, pos00, randomToUse, 0x100, false);
 }

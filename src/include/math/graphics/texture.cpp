@@ -1,4 +1,4 @@
-#include "Texture.h"
+#include "texture.h"
 
 #include "stbincluder.h"
 
@@ -10,7 +10,7 @@ texture::texture(const stdPath& path, cbool& flip) : texture(cveci2(), nullptr)
 	int channelCount;
 	veci2 intSize;
 
-	colorb* byteArray = (colorb*)stbi_load(WStringToString( path).c_str(), &intSize.x, &intSize.y, &channelCount, bgraColorChannelCount);
+	colorb* byteArray = (colorb*)stbi_load(path.string().c_str(), &intSize.x, &intSize.y, &channelCount, bgraColorChannelCount);
 	size = (vect2<size_t>)intSize;
 	if (byteArray)
 	{
@@ -68,9 +68,8 @@ void texture::Flip() const
 	}
 }
 
-bool texture::Save(std::wstring path) const
+bool texture::Save(const stdPath& path) const
 {
-	std::wstring extension = path.substr(path.rfind(L'.') + 1);
 	colorb* byteArray;
 	if constexpr (color::isByteColor)
 	{
@@ -84,13 +83,13 @@ bool texture::Save(std::wstring path) const
 	//bgra to rgba
 	switchChannels(byteArray, 0, 2);
 	bool success = false;
-	if (extension == std::wstring(L"png"))
+	if (path.extension() == std::wstring(L"png"))
 	{
-		success = stbi_write_png(WStringToString(path).c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray, 0);
+		success = stbi_write_png(path.string().c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray, 0);
 	}
-	else if (extension == std::wstring(L"bmp"))
+	else if (path.extension() == std::wstring(L"bmp"))
 	{
-		success = stbi_write_bmp(WStringToString(path).c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray);
+		success = stbi_write_bmp(path.string().c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray);
 	}
 	if constexpr (!color::isByteColor)
 	{
@@ -127,6 +126,6 @@ veci2 getImageSize(const stdPath& path)
 {
 	veci2 size;
 	int comp;
-	stbi_info(WStringToString(path).c_str(), &size.x, &size.y, &comp);
+	stbi_info(path.string().c_str(), &size.x, &size.y, &comp);
 	return size;
 }

@@ -1,5 +1,5 @@
 #include "interaction.h"
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "GlobalFunctions.h"
 
 //process events

@@ -9,8 +9,7 @@ struct control;
 
 typedef eventArgs<control> controlEventArgs;
 typedef eventHandler<controlEventArgs> controlEventHandler;
-
-struct mouseEventArgs : controlEventArgs 
+struct mouseEventArgs : controlEventArgs
 {
 	veci2 position = veci2();
 	mouseEventArgs(control& sender, cveci2& position) : controlEventArgs(sender), position(position) 
@@ -18,19 +17,21 @@ struct mouseEventArgs : controlEventArgs
 
 	}
 };
+typedef eventHandler<mouseEventArgs> mouseEventHandler;
+
 struct mouseButtonEventArgs : mouseEventArgs{
 	mb button;
-	mouseButtonEventArgs(control& sencder, cveci2& position, cmb& button) : mouseEventArgs(sender, position), button(button) 
+	mouseButtonEventArgs(control& sender, cveci2& position, cmb& button) : mouseEventArgs(sender, position), button(button)
 	{
 
 	}
 };
-typedef eventHandler<mouseEventArgs> mouseEventHandler;
+typedef eventHandler<mouseButtonEventArgs> mouseButtonEventHandler;
 
 struct mouseWheelEventArgs : mouseEventArgs
 {
 	int scrollDelta = 0;
-	mouseWheelEventArgs(control& sencder, cveci2& position, cint& scrollDelta):mouseEventArgs(sender, position), scrollDelta(scrollDelta)
+	mouseWheelEventArgs(control& sender, cveci2& position, cint& scrollDelta):mouseEventArgs(sender, position), scrollDelta(scrollDelta)
 	{
 	
 	}
@@ -69,9 +70,9 @@ public:
 
 	mouseWheelEventHandler onScroll = mouseWheelEventHandler();
 
-	mouseEventHandler onMouseDown = mouseEventHandler();
+    mouseButtonEventHandler onMouseDown = mouseButtonEventHandler();
+    mouseButtonEventHandler onMouseUp = mouseButtonEventHandler();
 	mouseEventHandler onHover = mouseEventHandler();
-	mouseEventHandler onMouseUp = mouseEventHandler();
 
 	controlEventHandler onFocus = controlEventHandler();
 	controlEventHandler onLostFocus = controlEventHandler();
@@ -114,6 +115,17 @@ public:
 			currentChildRect.y += offsetStep;
 		}
 	}
+
+    template<typename mostDerivedType, typename returnValueType, typename eventArgsType, typename eventHandlerType, typename ...eventHandlerTypes>
+    inline void addEventHandlers( returnValueType(mostDerivedType::*memberFunction)(eventArgsType), eventHandlerType& handler, eventHandlerTypes&&... handlers)
+    {
+        //typename eventHandlerType::functionType f = std::bind(memberFunction, (mostDerivedType*)this, std::placeholders::_1);
+        //handler.eventList.push_back(f);
+        handler.hook(memberFunction, (mostDerivedType*)this);
+        if constexpr (sizeof...(handlers)){
+            addEventHandlers(memberFunction, std::forward<eventHandlerTypes>(handlers)...);
+        }
+    }
 
 	//called when this control gains focus
 	virtual void focus();

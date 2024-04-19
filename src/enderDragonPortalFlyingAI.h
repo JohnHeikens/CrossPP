@@ -3,6 +3,6 @@
 struct enderDragonPortalFlyingAI : taskAI
 {
 	enderDragonPortalFlyingAI(entity* const& connectedEntity) :taskAI(connectedEntity) {}
-	virtual bool shouldExecute() override;
-	virtual void updateTask();
+	bool shouldExecute() override;
+	void updateTask() override;
 };

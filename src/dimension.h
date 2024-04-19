@@ -52,7 +52,7 @@ struct dimension : nbtSerializable, tickableBlockContainer
 	color getColorMultiplier(cfp& sunLight, cfp& blockLight) const;
 	veci2 searchPortal(cveci2& positionNear);
 	bool serialize(cbool& write);
-	void tick();
+	void tick() override;
 
 	virtual generationData* generateTerrain(chunk& generateIn) = 0;
 	virtual void serializeValue(nbtSerializer& s) override;

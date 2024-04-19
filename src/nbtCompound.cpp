@@ -10,12 +10,13 @@
 #include <iosfwd>
 #include <list>
 #include <string>
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "filesystem/file/endian.h"
 #include "filesystem/serializer.h"
 #include "GlobalFunctions.h"
 #include "nbtData.h"
 #include "nbtDataTag.h"
+#include <sstream>
 bool nbtCompound::serialize(const streamSerializer &s)
 {
 	switch (dataTag)
@@ -289,7 +290,7 @@ bool nbtCompound::serialize(nbtCompound *&compound, cbool &write, const stdPath 
 			return false;
 		}
 
-		const std::string &compressedData = readalltext(path);
+		const std::string &compressedData = readAllText(path);
 		const std::string &uncompressedData = compressed ? gzip::decompress(compressedData.c_str(), compressedData.size()) : compressedData;
 
 		// std::string uncompressedData2 = replace(uncompressedData, std::string(1, '\0'), std::string("<<WATCH OUT>>"));

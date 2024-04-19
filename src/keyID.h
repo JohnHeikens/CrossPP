@@ -31,7 +31,7 @@ enum class keyID
 	up = sf::Keyboard::W,
 	down = sf::Keyboard::S,
 	inventory = sf::Keyboard::E,
-	drop = sf::Keyboard::M,//not q, because you will accidentally drop the worst items, like swords
+	drop = sf::Keyboard::Q,
 	camera = sf::Keyboard::F,
 	hit = sf::Mouse::Left,
 	use = sf::Mouse::Right,

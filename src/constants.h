@@ -7,7 +7,7 @@
 #include "math/graphics/brush/font/font.h"
 #include "math/theme.h"
 #include "GlobalFunctions.h"
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "math/direction.h"
 #include "math/mathfunctions.h"
 #include "math/rectangletn.h"

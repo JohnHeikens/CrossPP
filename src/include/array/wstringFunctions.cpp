@@ -1,4 +1,4 @@
-#include "wstring.h"
+#include "wstringFunctions.h"
 
 //https://stackoverflow.com/questions/4654636/how-to-determine-if-a-wstring-is-a-number-with-c
 //base radix

@@ -4,7 +4,7 @@ constexpr fp enderDragonSightRange = 0x40;
 struct enderDragonStrafingAI : fireBallAI
 {
 	enderDragonStrafingAI(entity* const& connectedEntity) :fireBallAI(connectedEntity, entityID::dragon_fireball, enderDragonSightRange) {}
-	virtual bool shouldExecute() override;
-	virtual bool continueExecuting() override;
-	virtual void updateTask();
+	bool shouldExecute() override;
+	bool continueExecuting() override;
+	void updateTask() override;
 };

@@ -2,7 +2,7 @@
 #include "taskAI.h"
 struct teleportToAttachAI : taskAI
 {
-	virtual bool shouldExecute() override;
-	virtual void updateTask();
+	bool shouldExecute() override;
+	void updateTask() override;
 	teleportToAttachAI(entity* const& connectedEntity = nullptr) : taskAI(connectedEntity) {}
 };

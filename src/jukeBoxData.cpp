@@ -19,12 +19,13 @@ void jukeBoxData::serializeValue(nbtSerializer& s)
 	recordSlot->serialize(s, std::wstring(L"record slot"));
 	if (recordSlot->slots[0].count)
 	{
-		microseconds playProgress;
+        //not microseconds, because the bit length of microseconds may change
+		int64_t playProgress;
 		if (s.write)
 		{
 			if (musicPlaying)
 			{
-				playProgress = musicPlaying->getPlayingOffset();
+				playProgress = (int64_t)musicPlaying->getPlayingOffset();
 				s.serializeValue(std::wstring(L"play progress"), playProgress);
 			}
 		}

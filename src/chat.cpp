@@ -30,7 +30,7 @@
 #include "humanoid.h"
 #include "idAnalysis.h"
 #include "application/control/control.h"
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "GlobalFunctions.h"
 #include "math/graphics/texture.h"
 #include "math/mathfunctions.h"

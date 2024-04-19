@@ -7,3 +7,7 @@ https://github.com/lutrarutra/SFML-Project-Template/tree/master
 
 and this:
 https://github.com/bitmeal/vcpkg-cmake-integration
+
+to build for android:
+we use android studio, also to download the NDK.
+https://github.com/acsbendi/Build-SFML-For-Android-On-Windows

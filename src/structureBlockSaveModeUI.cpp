@@ -86,13 +86,13 @@ void structureBlockSaveModeUI::mouseDown(cveci2& position, cmb& button)
 	if (highestChild == saveButton)
 	{
 		const stdPath& path = structureBlockOptions->temporaryStructureBlockData->structureName;
-		const std::wstring& absolutePath = structureFolder / path;
+		stdPath absolutePath = structureFolder / path;
 		structure* s = new structure(absolutePath);
 		cveci2 pos0 = currentHuman->selectedContainerPosition + structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition;
 		s->createStructure(*currentHuman->dimensionIn, crectanglei2(pos0, structureBlockOptions->temporaryStructureBlockData->structureSize), structureBlockOptions->temporaryStructureBlockData->includeEntities);
-		s->serialize(absolutePath + nbtFileExtension, true);
+		s->serialize(absolutePath += nbtFileExtension, true);
 
-		structure* oldStructure = getStructureByName(s->pathWithoutExtension.wstring());
+		structure* oldStructure = getStructureByPath(s->pathWithoutExtension.wstring());
 		if (oldStructure)
 		{
 			structureList.erase(std::find(structureList.begin(), structureList.end(), oldStructure));

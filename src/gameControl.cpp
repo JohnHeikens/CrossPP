@@ -188,7 +188,7 @@ void gameControl::processInput()
 	{
 		if (highestChild == focusedChild)
 		{
-			for (sf::Mouse::Button button = (sf::Mouse::Button)0; button < sf::Mouse::Button::ButtonCount; button = (mb)((byte)button + 1))
+			for (mb button = (mb)0; button < mb::ButtonCount; button = (mb)((byte)button + 1))
 			{
 				if (mostRecentInput.clicked[button])
 				{

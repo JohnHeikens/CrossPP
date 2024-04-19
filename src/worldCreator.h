@@ -16,7 +16,7 @@ struct worldCreator : form
 	button* createButton = new button(L"Create New World");
 	button* cancelButton = new button(L"Cancel");
 	button* cheatsButton = new button();
-	virtual void mouseDown(cveci2& position, cmb& button) override;
+	void onClick(const controlEventArgs & args);
 	virtual void keyPress(cvk& key) override;
 	virtual void layout(crectanglei2& newRect) override;
 	void render(cveci2& position, const texture& renderTarget) override;

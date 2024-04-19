@@ -1,7 +1,7 @@
 #pragma once
 #include <tuple>
 #include <stddef.h>
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #ifndef _MSC_VER
 #include <cxxabi.h>  // needed for abi::__cxa_demangle
 #endif

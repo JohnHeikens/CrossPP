@@ -10,7 +10,7 @@
 #include <map>
 struct lootTable : IDestructable
 {
-	inline virtual std::vector<itemStack> roll(const dropData& data, std::mt19937& randomToUse) const
+	inline virtual std::vector<itemStack> roll(const dropData& /*data*/, std::mt19937& /*randomToUse*/) const
 	{
 		return std::vector<itemStack>();
 	}

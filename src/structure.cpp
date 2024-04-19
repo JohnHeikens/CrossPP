@@ -272,17 +272,16 @@ bool structure::inBounds(cveci2& position) const
 {
 	return blockIDArray.inBounds(position);
 }
-structure* getStructureByName(std::wstring name)
+structure* getStructureByPath(const stdPath& path)
 {
-	const stdPath pathToSearch(name);
 
-	const auto i = std::find_if(structureList.begin(), structureList.end(), [pathToSearch](const auto& a) {
-		return a->pathWithoutExtension.compare(pathToSearch) == 0;
+	const auto i = std::find_if(structureList.begin(), structureList.end(), [path](const auto& a) {
+		return a->pathWithoutExtension.compare(path) == 0;
 		});
 	return i == structureList.end() ? nullptr : *i;
 }
 
-std::vector<structure*> getStructuresByName(const std::wstring& seekFolder, const std::wstring& name)
+std::vector<structure*> getStructuresByName(const stdPath& seekFolder, const std::wstring& name)
 {
 	std::vector<structure*> foundStructures = std::vector<structure*>();
 	for (size_t i = 0; i < structureList.size(); i++)
@@ -294,7 +293,7 @@ std::vector<structure*> getStructuresByName(const std::wstring& seekFolder, cons
 
 		if (currentFolder.compare(seekFolder) == 0)
 		{
-			std::wstring currentFileName = stdPath(s->pathWithoutExtension).filename();
+			const std::wstring& currentFileName = stdPath(s->pathWithoutExtension).filename().wstring();
 			if (name == currentFileName)
 			{
 				foundStructures.push_back(s);

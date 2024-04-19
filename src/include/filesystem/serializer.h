@@ -1,7 +1,7 @@
 #include "GlobalFunctions.h"
 #pragma once
 #include "file/endian.h"
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "serialization.h"
 #include "iserializer.h"
 #include "math/vectn.h"

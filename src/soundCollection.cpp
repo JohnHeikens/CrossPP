@@ -8,13 +8,17 @@
 #include <vector>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include "audioCollection.h"
-#include "array/wstring.h"
+#include "array/wstringFunctions.h"
 #include "GlobalFunctions.h"
 #include "math/random/random.h"
 #include "math/vectn.h"
 #include "soundhandler2d.h"
 #include "soundPacket.h"
 #include "human.h"
+#include <fstream>
+#include "filesystem/fileio.h"
+#include "filesystem/textfile.h"
+#include "filesystem/sfmlInputStream.h"
 
 std::vector<soundCollection *> globalSoundCollectionList = std::vector<soundCollection *>();
 
@@ -72,8 +76,23 @@ void audioCollection::addAudioFile(const stdPath &path)
 
 void soundCollection::addAudioFile(const stdPath &path)
 {
-	const auto buffer = std::make_shared<sf::SoundBuffer>();
-	buffer->loadFromFile(WStringToString(path));
+    const auto buffer = std::make_shared<sf::SoundBuffer>();
+    //this way, even on android we can read from an actual file instead of the internal APK storage
+    auto stream = sfmlInputStream(std::make_shared<std::ifstream>(path, getOpenMode(false)));
+
+    //std::string data = readAllText(path);
+
+    //std::ifstream s(path, getOpenMode(false));
+
+    //s.write(text.c_str(), (std::streamsize)text.size());
+    //s.close();
+    //str = std::ifstream(path,fileOpenMode::read)
+    //sf::FileInputStream str;
+    //str.open(path);
+
+
+    //sf::InputStream str
+    buffer->loadFromStream(stream);
 	audioToChooseFrom.push_back(buffer);
 }
 

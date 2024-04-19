@@ -11,12 +11,15 @@ gameSelector::gameSelector() : form()
 {
 	//add gamelistcontrol first, so it will be at the bottom of the controls
 	addChildren({ gameListControl, openButton, newButton, deleteButton, refreshButton });
+    //addEventHandler(&gameSelector::onClick,openButton->onClick);
+    addEventHandlers(&gameSelector::onClick,openButton->onClick, newButton->onClick, deleteButton->onClick, refreshButton->onClick);
+    //addEventHandlers(&gameSelector::onClick,openButton->onClick);
+    //openButton->onClick.hook(&gameSelector::onClick, this);
 }
 
-void gameSelector::mouseDown(cveci2& position, cmb& button)
+void gameSelector::onClick(const controlEventArgs& args)
 {
-	control* highestChild = getHighestChild(position);
-	if (highestChild == openButton)
+	if (&args.sender == openButton)
 	{
 		//open the selected world
 		control* c = gameListControl->getSelectedChild();
@@ -25,17 +28,17 @@ void gameSelector::mouseDown(cveci2& position, cmb& button)
 			openGame(c);
 		}
 	}
-	else if (highestChild == newButton)
+	else if (&args.sender == newButton)
 	{
 		//create a new world
 		visible = false;
 		addGame();
 	}
-	else if (highestChild == refreshButton)
+	else if (&args.sender == refreshButton)
 	{
 		refresh();
 	}
-	else if (highestChild == deleteButton)
+	else if (&args.sender == deleteButton)
 	{
 		//delete the selected world
 		control* c = gameListControl->getSelectedChild();
@@ -51,7 +54,6 @@ void gameSelector::mouseDown(cveci2& position, cmb& button)
 			//}
 		}
 	}
-	form::mouseDown(position, button);
 }
 
 void gameSelector::refresh()

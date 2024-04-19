@@ -350,6 +350,8 @@ bool humanoid::addDamageSource(cfp& damage, std::shared_ptr<damageSource> source
 			case blastDamage:
 				enchantmentProtectionFactor += s->getEnchantmentLevel(enchantmentID::blastProtection) * 2;
 				break;
+                default:
+                    break;
 			}
 		}
 	}
