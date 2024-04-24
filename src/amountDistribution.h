@@ -2,7 +2,8 @@
 #include "filesystem/jsonReader.h"
 #include <random>
 #include "constants.h"
-struct amountDistribution
+#include "interface/idestructable.h"
+struct amountDistribution : IDestructable
 {
 	virtual int getAmount(cint& amountToIncrease, const dropData& data, std::mt19937& randomToUse) const = 0;
 };

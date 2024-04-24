@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include <climits>
 #include <cmath>
 #include "optimization/debug.h"

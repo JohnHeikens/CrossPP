@@ -6,8 +6,9 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "clientInput.h"
 #include "math/vectn.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "interface/inamable.h"
+#include "event/eventhandler.h"
 
 struct application: INamable, IDestructable
 {
@@ -29,6 +30,8 @@ struct application: INamable, IDestructable
 	//vecl2 MousePos = vecl2();
 	//clientInput input = clientInput();
 	fp cappedFps = 60;
+
+    mat3x3 screenToApp = mat3x3();
 	//function pointer to initialize the form
 	//void changeKeyboardLayout();
 	int run();
@@ -40,5 +43,6 @@ struct application: INamable, IDestructable
 	application(form* mainForm, const std::wstring& name);
 	bool isFullScreen = false;
 	void switchFullScreen();
+    eventHandler<sf::Event> listener = eventHandler<sf::Event>();
 	//void enableGLDebugCallback();
 };

@@ -1,6 +1,6 @@
 #include "interaction.h"
 #include "array/wstringFunctions.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 
 //process events
 //return if to continue the program

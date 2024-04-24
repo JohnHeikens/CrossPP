@@ -2,7 +2,7 @@
 #include "application/control/button.h"
 #include "structureBlockModeUI.h"
 #include "application/control/label.h"
-#include "application/control/TextBox.h"
+#include "application/control/textBox.h"
 struct structureBlockSaveModeUI : structureBlockModeUI
 {
 	label* relativePositionLabel = new label();

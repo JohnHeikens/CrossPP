@@ -1,7 +1,7 @@
 //#include <cstdlib>
 #include <random>
 #include <stdexcept>
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/mathfunctions.h"
 #include "math/uuid.h"
 #pragma once

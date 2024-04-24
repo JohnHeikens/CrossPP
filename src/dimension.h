@@ -13,7 +13,7 @@
 #include "entity.h"
 #include "gameRenderData.h"
 #include "array/arraynd.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/graphics/color/color.h"
 #include "math/mathfunctions.h"
 #include "math/rectangletn.h"

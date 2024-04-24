@@ -28,6 +28,9 @@ struct itemStack : IDestructable, nbtSerializable
 
 	void swap(itemStack& with);
 
+    //will return true if:
+    //both stacks are empty
+    //both stacks have the exact same stuff
 	bool compare(const itemStack& other) const;
 
 	void clearData();

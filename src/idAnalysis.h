@@ -11,7 +11,7 @@
 #include "constants.h"
 #include "entityID.h"
 #include "harvestTier.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "optimization/optimization.h"
 #include "levelID.h"
 #include "lightLevelID.h"
@@ -19,7 +19,7 @@
 #include "toolTypeID.h"
 #include "treeItemTypeID.h"
 #include "woodtypeID.h"
-#include "GamemodeID.h"
+#include "gameModeID.h"
 
 #pragma once
 

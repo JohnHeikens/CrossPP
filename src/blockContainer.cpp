@@ -34,7 +34,7 @@
 #include "constants.h"
 #include "entityID.h"
 #include "array/arraynd.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/axis.h"
 #include "math/collisions.h"
 #include "math/direction.h"

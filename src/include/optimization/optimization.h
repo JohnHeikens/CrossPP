@@ -1,7 +1,7 @@
 #pragma once
 #include <assert.h>
 #include <stdexcept>
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "array/wstringFunctions.h"
 #include "macrotricks.h"
 #include <string>

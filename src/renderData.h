@@ -1,7 +1,7 @@
 #pragma once
 #include "math/mattnxn.h"
 #include "math/graphics/texture.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/vectn.h"
 struct gameControl;
 struct renderData

@@ -1,6 +1,6 @@
 #pragma once
 #include "math/vectn.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include <type_traits> 
 
 constexpr fsize_t bgraColorChannelCount = 4;

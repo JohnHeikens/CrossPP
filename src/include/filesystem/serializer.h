@@ -1,4 +1,4 @@
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #pragma once
 #include "file/endian.h"
 #include "array/wstringFunctions.h"

@@ -1,6 +1,6 @@
 #include "application/control/form.h"
 #include "application/control/button.h"
-#include "application/control/TextBox.h"
+#include "application/control/textBox.h"
 #include "math/rectangletn.h"
 #pragma once
 

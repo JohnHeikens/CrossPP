@@ -39,7 +39,7 @@ enchantingTableSlotContainer::~enchantingTableSlotContainer()
 	delete hotbarSlots;
 }
 
-void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cmb& button, itemStack& stackHolding)
+void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cmb& button, stackDivider& divider)
 {
 	human* currentHuman = (human*)linkedPlayer;
 	constexpr rectangle2 optionsRect = crectangle2(enchantmentBottomOptionPos.getX(), enchantmentBottomOptionPos.getY(), enchantmentOptionSize.getX(), enchantmentOptionSize.getY() * enchantmentOptionCount);
@@ -86,7 +86,7 @@ void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cmb& button,
 	}
 	else
 	{
-		inventory::mouseDown(pixelPosition, button, stackHolding);
+		inventory::mouseDown(pixelPosition, button, divider);
 	}
 }
 

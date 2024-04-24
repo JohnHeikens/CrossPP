@@ -7,6 +7,7 @@
 struct client : control, socketContainer {
 	serverData currentServerData = serverData();
 	vec3 earPosition = vec2();
+    bool socketWantsTextInput = false;
 
 	clientInput currentInput;
 	playerData data;
@@ -19,14 +20,15 @@ struct client : control, socketContainer {
 	virtual void scroll(cveci2& position, cint& scrollDelta) override;
 	virtual void enterText(cuint& keyCode) override;
 
-	virtual void hover(cveci2& position) override;
+	virtual void mouseMove(cveci2& position, cmb& button) override;
 	virtual void keyDown(cvk& keyCode) override;
 	virtual void keyUp(cvk& keyCode) override;
 	virtual void lostFocus() override;
+    bool wantsTextInput() const override;
 
-
-	bool connectToServer(const serverData& server);
+    bool connectToServer(const serverData& server);
 	void sendPacket(const texture &renderTarget);
 	void processIncomingPackets(const texture &renderTarget);
+    void addEvent(const sf::Event& e);
 };
 extern client* currentClient;

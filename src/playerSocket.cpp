@@ -6,7 +6,7 @@
 #include "constants.h"
 #include "gameControl.h"
 #include "array/arrayfunctions.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/graphics/color/color.h"
 #include "math/graphics/texture.h"
 #include "math/rectangletn.h"
@@ -67,7 +67,13 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	inNBTSerializer.serializeValue(L"name", playerName);
 	screen->player = player = new human(currentWorld->dimensions[(int)currentWorld->worldSpawnDimension], vec2(), *screen, playerName);
 
-	rectanglei2 screenRect = rectanglei2();
+    std::wstring clientOSName;
+    inNBTSerializer.serializeValue(L"OS", clientOSName);
+    if(clientOSName == L"Android"){
+        screen->addTouchInput();
+    }
+
+    rectanglei2 screenRect = rectanglei2();
 	inNBTSerializer.serializeValue(L"screenSize", screenRect.size);
 	screen->layout(screenRect);
 
@@ -136,6 +142,10 @@ void renderAsync(playerSocket *socket)
 	// pointers because we pass this to another thread
 	nbtCompound *compound = new nbtCompound(L"packetOut");
 	nbtSerializer *outSerializer = new nbtSerializer(*compound, true);
+
+    //always serialize. the target client may be on android or need an on-screen keyboard in another way
+    bool wantsTextInput = socket->screen->wantsTextInput();
+    outSerializer->serializeValue(L"wantsTextInput", wantsTextInput);
 
 	vec3 earPosition = vec3(socket->screen->cameraPosition.x, socket->screen->cameraPosition.y, settings::soundSettings::headScreenDistance * socket->screen->visibleRange.x);
 	// vec2 earPosition = socket->screen->player->getHeadPosition();

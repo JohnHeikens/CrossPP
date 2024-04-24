@@ -1,4 +1,4 @@
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #pragma once
 enum class nbtDataTag :sbyte
 {

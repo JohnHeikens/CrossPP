@@ -48,7 +48,7 @@ inline bool insertSortedWithoutDoubles(listType &list, const t &value, compareFu
     }
 }
 
-
+//returns indexes sorted from less to more
 template<typename T>
 std::vector<size_t> sort_indexes(const std::vector<T> &v) {
 
@@ -64,6 +64,22 @@ std::vector<size_t> sort_indexes(const std::vector<T> &v) {
                 [&v](size_t i1, size_t i2) { return v[i1] < v[i2]; });
 
     return idx;
+}
+
+template<typename t = size_t>
+std::vector<t> divideOverArray(t& amount, const std::vector<t>& capacities){
+    //first step, sort capacities
+    const std::vector<size_t>& sortedIndexes = sort_indexes(capacities);
+    //sortedindexes contains the indexes of the capacities sorted from less to more
+    std::vector<t> divideAmounts = std::vector<t>(capacities.size());
+    fp slotsLeft = (fp)sortedIndexes.size();
+    for(csize_t& sortedIndex : sortedIndexes){
+        size_t amountToPut = math::minimum(math::ceil<size_t>((fp)amount / slotsLeft), capacities[sortedIndex]) ;
+        divideAmounts[sortedIndex] = amountToPut;
+        amount -= amountToPut;
+        slotsLeft--;
+    }
+    return divideAmounts;
 }
 
 template<typename T, int arraySize>

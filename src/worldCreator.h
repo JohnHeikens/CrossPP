@@ -1,7 +1,7 @@
 #pragma once
 #include "application/control/form.h"
 #include "application/control/label.h"
-#include "application/control/TextBox.h"
+#include "application/control/textBox.h"
 #include "application/control/button.h"
 #include "constants.h"
 struct worldCreator : form

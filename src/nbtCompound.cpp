@@ -13,7 +13,7 @@
 #include "array/wstringFunctions.h"
 #include "filesystem/file/endian.h"
 #include "filesystem/serializer.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "nbtData.h"
 #include "nbtDataTag.h"
 #include <sstream>

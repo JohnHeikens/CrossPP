@@ -1,6 +1,6 @@
 #pragma once
 #include "renderData.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/timemath.h"
 #include "constants.h"
 struct gameControl;

@@ -1,4 +1,4 @@
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #if onWindows
 #include "windowsIncluder.h"
 #elif onLinux
@@ -14,7 +14,10 @@ inline bool setCurrentThreadName(const std::wstring &threadName)
 #if onWindows
     HRESULT hr = SetThreadDescription(GetCurrentThread(), threadName.c_str());
     return !FAILED(hr);
-#elif onLinux && (!onAndroid)
+#elif onAndroid
+    const std::string &threadNameString = WStringToString(threadName);
+    pthread_setname_np(pthread_self(), threadNameString.c_str());
+#elif onLinux
     const std::string &threadNameString = WStringToString(threadName);
     prctl(PR_SET_NAME, threadNameString.c_str(), 0, 0, 0);
     return true;

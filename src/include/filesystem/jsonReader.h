@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "array/fastlist.h"
 #include "interface/idestructable.h"
 struct jsonContainer

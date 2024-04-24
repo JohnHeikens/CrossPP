@@ -207,8 +207,6 @@ ZLIB::ZLIB)
 #don't try to find_package sfml! we use fetchcontent_declare.
 #find_package(SFML 2 COMPONENTS Graphics REQUIRED)
 
-
-
  IF(ANDROID)
     message("cmake toolchain file: ${CMAKE_TOOLCHAIN_FILE} android stl type: ${CMAKE_ANDROID_STL_TYPE} build type: ${CMAKE_BUILD_TYPE}")
 

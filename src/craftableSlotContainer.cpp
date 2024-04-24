@@ -32,18 +32,18 @@ void craftableSlotContainer::recalculateOutputSlot()
 	craftingOutputSlot->linkedContainer->slots[0] = currentRecipeResult.count ? currentRecipeResult : itemStack();
 }
 
-void craftableSlotContainer::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
+void craftableSlotContainer::clickedOnItem(cmb& button, stackDivider& divider, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
 {
 	if (selectedSlotContainer == craftingOutputSlot)
 	{
-		if (currentRecipeResult.count)
+		if (currentRecipeResult.count && divider.divideOver.size() == 0)
 		{
 			itemStack* s = selectedSlotContainer->getSlot(selectedSlot);
 			cint previousOutputSlotCount = s->count;
-			if (stackHolding.count == 0 || s->compare(stackHolding))
+			if (divider.stackHolding.count == 0 || s->compare(divider.stackHolding))
 			{
 				//add crafting result
-				stackHolding.addStack(*s);
+                divider.addStack(*s);
 
 				if (previousOutputSlotCount == currentRecipeResult.count && s->count < currentRecipeResult.count)
 				{
@@ -59,7 +59,8 @@ void craftableSlotContainer::clickedOnItem(cmb& button, itemStack& stackHolding,
 	}
 	else
 	{
-		inventory::clickedOnItem(button, stackHolding, selectedSlotContainer, selectedSlot);
+		inventory::clickedOnItem(button, divider, selectedSlotContainer, selectedSlot);
+        //when dragging items across different slot containers, the result of a the recipe may also change. but
 		if (std::find(craftingInputContainers.begin(), craftingInputContainers.end(), selectedSlotContainer) != craftingInputContainers.end())
 		{
 			recalculateOutputSlot();

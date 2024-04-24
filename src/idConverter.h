@@ -4,7 +4,7 @@
 #include "biomeID.h"
 #include "enchantmentID.h"
 #include "statusEffectID.h"
-#include "GamemodeID.h"
+#include "gameModeID.h"
 #include "fireworkShapeID.h"
 #include "idList.h"
 #include "nbtSerializer.h"

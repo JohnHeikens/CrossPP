@@ -5,6 +5,7 @@
 #include "optimization/stableTickLoop.h"
 #include "control/control.h"
 #include "math/graphics/texture.h"
+#include <future>
 
 #include <SFML/OpenGL.hpp>
 //#include <gl/glew.h>
@@ -26,12 +27,15 @@
 //	std::wcout << L"Active Keyboard Layout: " << activeLayout << std::endl;
 // }
 
+constexpr int pixelMultiplier = onAndroid ? 4 : 1;
+
 int application::run() {
     sf::ContextSettings settings;
 
     settings.antialiasingLevel = 0;
+    auto screenSize = sf::VideoMode::getDesktopMode();
 
-    veci2 size = veci2(1920, 1080);
+    veci2 size = veci2(screenSize.width / pixelMultiplier, screenSize.height / pixelMultiplier);
     window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name),
                                   sf::Style::Close | sf::Style::Resize, settings);
     //initialize them AFTER the render window has been created, so they have a context
@@ -60,22 +64,39 @@ int application::run() {
     //windowSprite.move(0, (float)size.y);
     layout(crectanglei2(cveci2(), size));
     mainForm->focus();
+    std::future<void> updateAsync = std::future<void>();
     while (window->isOpen()) {
         loop.waitTillNextLoopTime();
+        //copy the texture to a temporary texture
+        texture tCopy = graphics;
+
+        auto asyncUpdate = [this, tCopy]() {
+            windowTexture->update((byte *) tCopy.baseArray);
+            window->clear();
+            //window->setActive(true);
+            window->draw(*windowSprite);
+            // ImGui::SFML::Render(window);
+            window->display();
+            //window->setActive(false);
+        };
+        // Start the asynchronous task
+        updateAsync = std::async(std::launch::async, asyncUpdate);
+
         // Do stuff with graphics->colors
         mainForm->render(cveci2(0, 0), graphics);
         // Draw graphics->colors to window
 
-        window->clear();
         graphics.switchChannels(graphics.baseArray, 0, 2);
-        windowTexture->update((byte *) graphics.baseArray);
-        //window->setActive(true);
-        window->draw(*windowSprite);
-        // ImGui::SFML::Render(window);
-        window->display();
-        //window->setActive(false);
+
+        if (updateAsync.valid()) {
+            updateAsync.get();
+        }
+        sf::Keyboard::setVirtualKeyboardVisible(mainForm->wantsTextInput());
 
         processInput(); // process events from user right before the check if window->isOpen()
+    }
+    if (updateAsync.valid()) {
+        updateAsync.get();
     }
     delete windowSprite;
     delete windowTexture;
@@ -84,6 +105,15 @@ int application::run() {
 }
 
 void application::layout(crectanglei2 &newRect) {
+    sf::FloatRect visibleArea(newRect.x, newRect.y, newRect.w, newRect.h);
+    window->setView(sf::View(visibleArea));
+
+    screenToApp = mat3x3::combine({
+                                          mat3x3::scale(vec2(1.0 / pixelMultiplier)),
+                                          mat3x3::translate(cvec2(0, -newRect.size.y)),
+                                          mat3x3::mirror(axisID::y, 0)
+                                  });
+
     window->setView(sf::View(sf::FloatRect((float) newRect.x, (float) newRect.y, (float) newRect.w,
                                            (float) newRect.h)));
     windowTexture->create(newRect.size.x, newRect.size.y);
@@ -104,43 +134,42 @@ void application::processInput() {
             }
         } else if (event.type == sf::Event::KeyPressed) {
             if (addWithoutDupes(input.keysHolding, event.key.code)) {
-                mainForm->keyDown(event.key.code);
+                listener.invoke(event);
             }
         } else if (event.type == sf::Event::KeyReleased) {
             const auto &it = std::find(input.keysHolding.begin(), input.keysHolding.end(),
                                        event.key.code);
             if (it != input.keysHolding.end()) {
-                mainForm->keyUp(event.key.code);
+                listener.invoke(event);
                 input.keysHolding.erase(it);
             }
         } else if (event.type == sf::Event::TextEntered) {
             mainForm->enterText(event.text.unicode);
-        } else if (event.type == sf::Event::TouchBegan) {
-            mainForm->mouseDown(cveci2(event.touch.x, window->getSize().y - event.touch.y),
-                                 (mb)event.touch.finger);
-        } else if (event.type == sf::Event::TouchMoved) {
-            mainForm->hover(cveci2(event.touch.x, window->getSize().y - event.touch.y));
-        } else if (event.type == sf::Event::TouchEnded) {
-            mainForm->mouseUp(cveci2(event.touch.x, window->getSize().y - event.touch.y), (mb)event.touch.finger);
-        } else if (event.type == sf::Event::MouseButtonPressed) {
-            mainForm->mouseDown(
-                    cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y),
-                    (mb)event.mouseButton.button);
-        } else if (event.type == sf::Event::MouseButtonReleased) {
-            mainForm->mouseUp(
-                    cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y),
-                    (mb)event.mouseButton.button);
-        } else if (event.type == sf::Event::MouseWheelScrolled) {
-            mainForm->scroll(cveci2(event.mouseButton.x, window->getSize().y - event.mouseButton.y),
-                             (int) event.mouseWheelScroll.delta);
-        } else if (event.type == sf::Event::Resized) {
-            layout(rectanglei2(cveci2(), cveci2(event.size.width, event.size.height)));
-        } else if (event.type == sf::Event::LostFocus) {
-            mainForm->lostFocus();
-        } else if (event.type == sf::Event::GainedFocus) {
-            mainForm->focus();
+        } else if (is_in(event.type, sf::Event::TouchBegan, sf::Event::TouchMoved, sf::Event::TouchEnded)) {
+            cveci2& correctedPos = veci2(screenToApp.multPointMatrix(cvec2(event.touch.x, event.touch.y)));
+            sf::Event correctedEvent = event;
+            correctedEvent.touch.x = correctedPos.x;
+            correctedEvent.touch.y = correctedPos.y;
+            listener.invoke(correctedEvent);
+        } else if (is_in(event.type, sf::Event::MouseButtonPressed, sf::Event::MouseButtonReleased)) {
+            cveci2& correctedPos = veci2(screenToApp.multPointMatrix(cvec2(event.mouseButton.x, event.mouseButton.y)));
+            sf::Event correctedEvent = event;
+            correctedEvent.mouseButton.x = correctedPos.x;
+            correctedEvent.mouseButton.y = correctedPos.y;
+            listener.invoke(correctedEvent);
         } else if (event.type == sf::Event::MouseMoved) {
-            mainForm->hover(cveci2(event.mouseMove.x, window->getSize().y - event.mouseMove.y));
+            cveci2& correctedPos = veci2(screenToApp.multPointMatrix(cvec2(event.mouseMove.x, event.mouseMove.y)));
+            sf::Event correctedEvent = event;
+            correctedEvent.mouseMove.x = correctedPos.x;
+            correctedEvent.mouseMove.y = correctedPos.y;
+            listener.invoke(correctedEvent);
+        } else if (event.type == sf::Event::Resized) {
+        layout(rectanglei2(cveci2(), cveci2(event.size.width / pixelMultiplier,
+                                            event.size.height / pixelMultiplier)));
+        }
+        else{
+            //all other events are passed through directly
+            listener.invoke(event);
         }
     }
 }
@@ -392,6 +421,7 @@ void application::processInput() {
 application::application(form *mainForm, const std::wstring &name) : INamable(name) {
     graphics = texture(cvecs2());
     this->mainForm = mainForm;
+    this->mainForm->addEventHandlers(&control::processEvent, listener);
     //std::fill(lastKeyDown, lastKeyDown + 0x100, false);
 }
 

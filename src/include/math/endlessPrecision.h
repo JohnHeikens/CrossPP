@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 
 template<fsize_t precision = 0x10>
 struct ep

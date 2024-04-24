@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 //#include <stringapiset.h>
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include <filesystem>
 #include <algorithm>
 #include <vector>

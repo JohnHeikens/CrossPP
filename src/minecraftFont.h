@@ -7,7 +7,7 @@
 #include "math/graphics/brush/brushes.h"
 #include "math/rectangletn.h"
 #include "math/vectn.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "constants.h"
 #pragma once
 

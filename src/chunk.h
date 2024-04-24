@@ -11,7 +11,7 @@
 #include "constants.h"
 #include "dimension.h"
 #include "array/arraynd.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/vectn.h"
 
 constexpr int chunkSaveTreshold = 0x10;//the amount of ticks a chunk needs to have no update for it to be saved if no chunk is saved that tick

@@ -106,10 +106,10 @@ void control::enterText(cuint &unicode)
 		focusedChild->enterText(unicode);
 	}
 }
-void control::hover(cveci2 &position)
+void control::mouseMove(cveci2 &position, cmb &button)
 {
 	// TODO: the button argument is not working
-	onHover.invoke(mouseEventArgs(*this, position));
+	onMouseMove.invoke(mouseButtonEventArgs(*this, position, button));
 	// if (onHover)
 	//{
 	//	onHover(position);
@@ -117,7 +117,7 @@ void control::hover(cveci2 &position)
 	control *highest = getHighestChild(position);
 	if (highest)
 	{
-		highest->hover(position - highest->rect.pos0);
+		highest->mouseMove(position - highest->rect.pos0, button);
 	}
 }
 void control::mouseDown(cveci2 &position, cmb &button)
@@ -254,3 +254,49 @@ control *control::getHighestChild(cveci2 &pos) const
 	return nullptr;
 }
 
+bool control::wantsTextInput() const {
+    return false;
+}
+
+void control::processEvent(const sf::Event &event) {
+    if(event.type == sf::Event::KeyPressed){
+        keyDown(event.key.code);
+    }
+    else if(event.type == sf::Event::KeyReleased){
+        keyUp(event.key.code);
+    }
+    else if (event.type == sf::Event::TextEntered) {
+        enterText(event.text.unicode);
+    } else if (event.type == sf::Event::TouchBegan) {
+        mouseDown(
+                cveci2(event.touch.x, event.touch.y),
+                (mb) event.touch.finger);
+    } else if (event.type == sf::Event::TouchMoved) {
+        mouseMove(
+                cveci2(event.touch.x, event.touch.y), (mb)event.touch.finger);
+    } else if (event.type == sf::Event::TouchEnded) {
+        mouseUp(
+                cveci2(event.touch.x, event.touch.y),
+                (mb) event.touch.finger);
+    } else if (event.type == sf::Event::MouseButtonPressed) {
+        mouseDown(
+                cveci2(event.mouseButton.x, event.mouseButton.y),
+                (mb) event.mouseButton.button);
+    } else if (event.type == sf::Event::MouseButtonReleased) {
+        mouseUp(
+                cveci2(event.mouseButton.x, event.mouseButton.y),
+                (mb) event.mouseButton.button);
+    } else if (event.type == sf::Event::MouseWheelScrolled) {
+        scroll(cveci2(event.mouseButton.x, event.mouseButton.y),
+                         (int) event.mouseWheelScroll.delta);
+    } else if (event.type == sf::Event::Resized) {
+        layout(rectanglei2(cveci2(), cveci2(event.size.width,
+                                            event.size.height)));
+    } else if (event.type == sf::Event::LostFocus) {
+        lostFocus();
+    } else if (event.type == sf::Event::GainedFocus) {
+        focus();
+    } else if (event.type == sf::Event::MouseMoved) {
+        mouseMove(cveci2(event.mouseMove.x, event.mouseMove.y), (mb)-1);
+    }
+}

@@ -1,6 +1,6 @@
 #pragma once
 #include "application/control/form.h"
-#include "application/control/listcontrol.h"
+#include "application/control/listControl.h"
 
 struct gameSelector : form
 {

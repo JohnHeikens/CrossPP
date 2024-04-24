@@ -10,8 +10,6 @@ inline bool cropLine(vec2& p0, vec2& p1, crectangle2& cropRect)
 	//swap so p1.x >= p0.x
 	vec2x2 croppedPositions = vec2x2(shouldSwap ? p1 : p0, shouldSwap ? p0 : p1);
 
-	assumeInRelease(croppedPositions[1].x >= croppedPositions[0].x);
-
 	cvec2 difference = croppedPositions[1] - croppedPositions[0];
 
 	cfp& dydx = difference.y / difference.x;

@@ -2,7 +2,7 @@
 #include <random>
 #include <vector>
 #include "constants.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "itemStack.h"
 inline std::vector<itemStack> rollDrop::roll(const dropData& data, std::mt19937& randomToUse) const
 {

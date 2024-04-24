@@ -2,7 +2,7 @@
 #include "facingData.h"
 #include "doubleBlockData.h"
 #include "constants.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/direction.h"
 #include "math/uuid.h"
 #include "math/vectn.h"

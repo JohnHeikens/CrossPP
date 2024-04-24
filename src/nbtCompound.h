@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "filesystem/serializer.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "nbtDataTag.h"
 #include "constants.h"
 struct nbtCompound :nbtData

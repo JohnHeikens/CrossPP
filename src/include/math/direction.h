@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "axis.h"
 #include "optimization/optimization.h"
 #include "math/mathfunctions.h"

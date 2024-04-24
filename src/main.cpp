@@ -4,7 +4,7 @@
 #include "constants.h"
 #include "gameForm.h"
 #include "application/application.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "array/wstringFunctions.h"
 #include <thread>
 #include <filesystem>
@@ -225,8 +225,17 @@ std::filesystem::path getCommonAppDataFolder()
 // #include <imgui-SFML.h>
 // #include <imgui.h>
 
+bool mainRunning = false;
+
 int main(int argc, char *argv[])
 {
+    if(mainRunning){
+        std::cout << "main function is being called again. this is probably because of a changed config in android";
+        //the main function is called
+        return 0;
+        handleError(L"main is somehow called twice");
+    }
+    mainRunning = true;
     // check if the application is installed or if we're debugging
     //
     if (onAndroid || !std::filesystem::exists(L"data"))

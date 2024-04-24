@@ -9,7 +9,7 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include "audioCollection.h"
 #include "array/wstringFunctions.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/random/random.h"
 #include "math/vectn.h"
 #include "soundhandler2d.h"

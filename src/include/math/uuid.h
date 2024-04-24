@@ -1,4 +1,4 @@
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include <array/arrayfunctions.h>
 #include <sstream>
 #pragma once

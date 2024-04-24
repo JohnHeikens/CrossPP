@@ -72,7 +72,8 @@ public:
 
     mouseButtonEventHandler onMouseDown = mouseButtonEventHandler();
     mouseButtonEventHandler onMouseUp = mouseButtonEventHandler();
-	mouseEventHandler onHover = mouseEventHandler();
+    mouseButtonEventHandler onMouseMove = mouseButtonEventHandler();
+	//mouseEventHandler onHover = mouseEventHandler();
 
 	controlEventHandler onFocus = controlEventHandler();
 	controlEventHandler onLostFocus = controlEventHandler();
@@ -83,6 +84,8 @@ public:
 
 	control();
 
+    void processEvent(const sf::Event& event);
+
 	//function invokers
 	//position includes the position of this element
 	virtual void render(cveci2& position, const texture& renderTarget);
@@ -90,13 +93,14 @@ public:
 	virtual void renderBackGround(cveci2& position, const texture& renderTarget);
 	virtual void renderText(cveci2& position, const texture& renderTarget);
 	virtual void renderChildren(cveci2& position, const texture& renderTarget);
+    virtual bool wantsTextInput() const;
 
 	virtual void keyDown(cvk& keyCode);
 	virtual void keyUp(cvk& keyCode);
 	virtual void keyPress(cvk& keyCode);
 	virtual void enterText(cuint& keyCode);
 
-	virtual void hover(cveci2& position);
+	virtual void mouseMove(cveci2& position, cmb& button);
 	virtual void mouseDown(cveci2& position, cmb& button);
 	virtual void mouseUp(cveci2& position, cmb& button);
 	virtual void click();

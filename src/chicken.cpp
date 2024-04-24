@@ -6,7 +6,7 @@
 #include "entityData.h"
 #include "entityID.h"
 #include "experienceDrop.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/bodypart2d.h"
 #include "math/random/random.h"
 #include "math/vectn.h"

@@ -15,25 +15,25 @@ humanSlotContainerUI::humanSlotContainerUI() : craftingGridSlotContainer(new uiS
 	containers.push_back(craftingOutputSlot = new uiSlotContainer(cveci2(154, 122), new rectangularSlotContainer(cveci2(1))));
 }
 
-void humanSlotContainerUI::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
+void humanSlotContainerUI::clickedOnItem(cmb& button, stackDivider& divider, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
 {
 	human* currentHuman = (human*)linkedPlayer;
 	if (selectedSlotContainer == armorSlots)
 	{
-		if (stackHolding.count)
+		if (divider.originalStack.count)
 		{
 			//check if it is the right armor(piece)
-			if (getArmorTier(stackHolding.stackItemID) == noArmorTier)
+			if (getArmorTier(divider.originalStack.stackItemID) == noArmorTier)
 			{
 				return;
 			}
-			else if ((getArmorType(stackHolding.stackItemID) - bootsArmorType) != selectedSlot.y)
+			else if ((getArmorType(divider.originalStack.stackItemID) - bootsArmorType) != selectedSlot.y)
 			{
 				return;
 			}
 			else
 			{
-				getEquipSound(stackHolding.stackItemID)->playRandomSound(linkedPlayer->dimensionIn, currentHuman->getHeadPosition());
+				getEquipSound(divider.originalStack.stackItemID)->playRandomSound(linkedPlayer->dimensionIn, currentHuman->getHeadPosition());
 			}
 		}
 		else
@@ -45,5 +45,5 @@ void humanSlotContainerUI::clickedOnItem(cmb& button, itemStack& stackHolding, u
 			}
 		}
 	}
-	craftableSlotContainer::clickedOnItem(button, stackHolding, selectedSlotContainer, selectedSlot);
+	craftableSlotContainer::clickedOnItem(button, divider, selectedSlotContainer, selectedSlot);
 }

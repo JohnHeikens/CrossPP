@@ -138,6 +138,8 @@ void server::tick()
 	//also set them to false if the world does not have focus, so it will not be placing random blocks
 	for (auto c : clients) {
 		c->screen->clearTemporaryData();
+        c->screen->touchStarted = false;
+        c->screen->touchEnded = false;
 		fillAllElements(c->screen->clickedFocused, false);
 		//fillAllElements(c->screen->holding, false);
 	}

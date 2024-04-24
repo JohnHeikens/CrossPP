@@ -14,7 +14,7 @@
 #include <vector>
 #include "enchantment.h"
 #include "enchantmentID.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/mathfunctions.h"
 #include "math/vectn.h"
 #include "itemID.h"

@@ -1,6 +1,6 @@
 #include "nbtSerializable.h"
 #include "serverData.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #pragma once
 struct serverDataList: nbtSerializable {
 	std::vector<serverData> servers = std::vector<serverData>();

@@ -26,7 +26,7 @@
 #include "facingData.h"
 #include "idAnalysis.h"
 #include "array/fastarray.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/direction.h"
 #include "math/mathfunctions.h"
 #include "math/mattnxn.h"

@@ -75,7 +75,7 @@
 #include "entityID.h"
 #include "humanoid.h"
 #include "array/arraynd.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/direction.h"
 #include "math/graphics/brush/brushes.h"
 #include "math/graphics/color/color.h"

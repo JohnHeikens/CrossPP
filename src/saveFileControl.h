@@ -1,6 +1,6 @@
 #pragma once
 #include "gameTile.h"
-#include "application/control/picturebox.h"
+#include "application/control/pictureBox.h"
 #include "application/control/label.h"
 struct saveFileControl : gameTile
 {

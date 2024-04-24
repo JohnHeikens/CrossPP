@@ -8,7 +8,7 @@
 #include "chunkLoadLevel.h"
 #include "constants.h"
 #include "entity.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "interface/idestructable.h"
 #include "math/mattnxn.h"
 #include "math/rectangletn.h"

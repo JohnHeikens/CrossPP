@@ -1,4 +1,4 @@
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/timemath.h"
 #pragma once
 template<typename t>

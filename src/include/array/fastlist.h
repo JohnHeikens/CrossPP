@@ -7,7 +7,7 @@
 #include <filesystem>
 #include <initializer_list>
 #include <utility>
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 
 //super fast solution for iterating through a list while deleting certain items and adding items
 constexpr bool keepindicator = true;
@@ -185,7 +185,7 @@ struct fastList :IDestructable
 		{
 			if (baseArray[index] == element)return index;
 		}
-		return -1;
+		return (size_t)-1;
 	}
 
 	//this is slow

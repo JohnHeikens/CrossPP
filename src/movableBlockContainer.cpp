@@ -9,7 +9,7 @@
 #include "collisionDataCollection.h"
 #include "constants.h"
 #include "array/arraynd.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/rectangletn.h"
 #include "math/vectn.h"
 #include "levelID.h"

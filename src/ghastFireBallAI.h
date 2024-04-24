@@ -1,4 +1,4 @@
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "fireBallAI.h"
 #pragma once
 constexpr fp ghastSightRange = 0x20;

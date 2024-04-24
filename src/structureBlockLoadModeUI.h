@@ -1,7 +1,7 @@
 #pragma once
 #include "application/control/slider.h"
 #include "application/control/button.h"
-#include "application/control/TextBox.h"
+#include "application/control/textBox.h"
 #include "application/control/label.h"
 #include "structureBlockModeUI.h"
 

@@ -1,4 +1,4 @@
-#include "colorpicker.h"
+#include "colorPicker.h"
 colorPicker::colorPicker()
 {
 	children.push_back(colorPlane);

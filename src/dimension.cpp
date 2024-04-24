@@ -26,7 +26,7 @@
 #include "idAnalysis.h"
 #include "array/arraynd.h"
 #include "array/fastlist.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/collisions.h"
 #include "math/graphics/brush/brushes.h"
 #include "math/graphics/color/color.h"

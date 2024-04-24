@@ -1,7 +1,7 @@
 #pragma once
 #include "control.h"
 #include "slider.h"
-#include "TextBox.h"
+#include "textBox.h"
 #pragma once
 struct colorPicker :public control
 {

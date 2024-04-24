@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "interface/idestructable.h"
 #include "mathfunctions.h"
 #include <vector>

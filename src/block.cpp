@@ -42,7 +42,7 @@
 #include "idAnalysis.h"
 #include "array/arraynd.h"
 #include "array/fastarray.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/axis.h"
 #include "math/direction.h"
 #include "math/graphics/color/color.h"

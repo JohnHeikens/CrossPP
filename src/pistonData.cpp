@@ -14,7 +14,7 @@
 #include "entity.h"
 #include "entityID.h"
 #include "facingData.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/direction.h"
 #include "math/mathfunctions.h"
 #include "math/mattnxn.h"

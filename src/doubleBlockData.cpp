@@ -5,7 +5,7 @@
 #include "blockID.h"
 #include "constants.h"
 #include "idAnalysis.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/direction.h"
 #include "math/vectn.h"
 #include "nbtSerializer.h"

@@ -1,4 +1,4 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 
 uint* getPlaneIndices(cint& planeCount);

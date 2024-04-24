@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "filemanager.h"
 #include <fstream>
 #include <string>

@@ -1,5 +1,5 @@
 #include "interface/idestructable.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include <ranges>
 #include "optimization/debug.h"
 #include <stdexcept>

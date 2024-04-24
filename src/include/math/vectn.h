@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "axis.h"
 // #include "array/zipiterator.h"
 #include "optimization/optimization.h"

@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 constexpr int rectangle3sidecount = 6;
 constexpr int planevertcount = 4;
 constexpr int vertsize = 3 + 2 + 3;//8 fps for 1 vert

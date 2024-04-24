@@ -210,6 +210,10 @@ android studio not updating info about c++ function template: delete the functio
 
 error running app: build type isn't debuggable: when built in release mode. select build - > build variants - > debug to debug
 
+disable the app being restarted when rotating:
+things you add to configchanges will not close the app when they happen.
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+
 TODO:
 
 maybe add vcpkg-configuration.json for version consistency (see https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)

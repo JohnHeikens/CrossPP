@@ -20,7 +20,7 @@
 #include "iceSpikes.h"
 #include "mushroomFields.h"
 
-#include "badlands.h"
+#include "badLands.h"
 #include "mountains.h"
 
 #include "netherWastes.h"

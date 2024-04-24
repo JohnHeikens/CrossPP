@@ -2,8 +2,9 @@
 #include "gameRenderData.h"
 #include "particleID.h"
 #include "nbtSerializable.h"
+#include "interface/idestructable.h"
 
-struct particleBrush : nbtSerializable
+struct particleBrush : nbtSerializable, IDestructable
 {
 	particleID particleType = particleID();
 	particleBrush(const particleID& particleType) :particleType(particleType) {}

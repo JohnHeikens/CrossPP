@@ -1,4 +1,4 @@
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #pragma once
 template<int Dimensioncount>
 struct dimensionalindex

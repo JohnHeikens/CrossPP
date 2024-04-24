@@ -1,4 +1,4 @@
-#include "filedialog.h"
+#include "fileDialog.h"
 #include <iostream>
 //filter: std::wstring(L"Text Files\0*.txt\0Any File\0*.*\0");
 //WCHAR* getopenfilename(filedialogmode mode,const WCHAR* filter, const WCHAR* title)

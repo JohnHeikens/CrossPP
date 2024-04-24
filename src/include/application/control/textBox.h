@@ -11,7 +11,9 @@ public:
 	virtual void keyDown(cvk& keyCode) override;
 	//virtual void keyUp(cvk& keyCode) override;
 	virtual void lostFocus() override;
+    virtual void focus() override;
 	virtual void paste() override;
 	virtual void mouseDown(cveci2& position, cmb& button) override;
 	void checkCursorIndex();
+    virtual bool wantsTextInput() const override;
 };

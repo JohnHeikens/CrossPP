@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 struct iSerializer
 {
 	//true if the serializer is writing, false if the serializer is reading

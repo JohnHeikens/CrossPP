@@ -6,7 +6,7 @@
 #include "math/graphics/color/color.h"
 #include "math/graphics/brush/font/font.h"
 #include "math/theme.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "array/wstringFunctions.h"
 #include "math/direction.h"
 #include "math/mathfunctions.h"

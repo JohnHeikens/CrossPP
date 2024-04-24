@@ -62,11 +62,11 @@ void brewingStandSlotContainer::drawExtraData(cmat3x3& transform, const texture&
 	}
 }
 
-void brewingStandSlotContainer::clickedOnItem(cmb& button, itemStack& stackHolding, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
+void brewingStandSlotContainer::clickedOnItem(cmb& button, stackDivider& divider, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot)
 {
 	//reset process when adding bottle
 
-	inventory::clickedOnItem(button, stackHolding, selectedSlotContainer, selectedSlot);
+	inventory::clickedOnItem(button, divider, selectedSlotContainer, selectedSlot);
 
 	human* currentHuman = (human*)linkedPlayer;
 	currentHuman->selectedContainerContainer->addUpdatePosition(currentHuman->selectedContainerPosition);
@@ -84,11 +84,11 @@ brewingStandSlotContainer::~brewingStandSlotContainer()
 	delete inventorySlots;
 }
 
-bool brewingStandSlotContainer::canAddStack(uiSlotContainer* containerToAddTo, itemStack& s)
+bool brewingStandSlotContainer::canAddStack(uiSlotContainer* containerToAddTo, stackDivider& s)
 {
 	if (containerToAddTo == blazePowderSlot)
 	{
-		return s.stackItemID == itemID::blaze_powder;
+		return s.originalStack.stackItemID == itemID::blaze_powder;
 	}
 	else
 	{

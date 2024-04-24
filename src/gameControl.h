@@ -1,4 +1,5 @@
 #pragma once
+
 #include "application/control/form.h"
 #include "structureBlockUI.h"
 #include "jigsawUI.h"
@@ -11,68 +12,101 @@
 #include "clientInput.h"
 #include "creditsForm.h"
 #include "soundPacket.h"
+#include "application/control/touchJoystick.h"
 #include <SFML/Graphics/RenderTexture.hpp>
 
-constexpr fp defaultGuiTextureSize = (fp)0x200;
+constexpr fp defaultGuiTextureSize = (fp) 0x200;
 struct playerSocket;
+
 //the game will be rendered on a texture using this class
-struct gameControl : form, clientInput
-{
-	gameControl(playerSocket& socket);
-	//virtual void render(cveci2& position, const texture& renderTarget) override;
-	void render(cveci2& position, const texture& renderTarget) override;
-	virtual void processInput();
-	virtual void layout(crectanglei2& newRect) override;
-	virtual void focus() override;
-	virtual void lostFocus() override;
+struct gameControl : form, clientInput {
+    gameControl(playerSocket &socket);
 
-	fp currentFrameStartSeconds = 0;
+    fp currentFrameStartSeconds = 0;
 
-	settingsForm* options = new settingsForm();
-	videoSettingsForm* videoOptions = new videoSettingsForm();
-	soundSettingsForm* soundOptions = new soundSettingsForm();
-	structureBlockUI* structureBlockOptions = new structureBlockUI();
-	jigsawUI* jigsawOptions = new jigsawUI();
-	textBox* commandLineTextbox = new textBox();
-	inventoryForm* inventoryUI = new inventoryForm();
-	creditsForm* currentCredits = new creditsForm();
+    settingsForm *options = new settingsForm();
+    videoSettingsForm *videoOptions = new videoSettingsForm();
+    soundSettingsForm *soundOptions = new soundSettingsForm();
+    structureBlockUI *structureBlockOptions = new structureBlockUI();
+    jigsawUI *jigsawOptions = new jigsawUI();
+    textBox *commandLineTextbox = new textBox();
+    inventoryForm *inventoryUI = new inventoryForm();
+    creditsForm *currentCredits = new creditsForm();
 
-	bool startCredits = false;
 
-	//connections
-	playerSocket& socket;
-	human* player;//for less code
+    bool startCredits = false;
+    //touch variables
+    bool touchInput = false;
 
-	//rendering
-	vec2 cameraPosition = vec2();
-	fp hudScale;
+    bool touchStarted = false;
+    bool touching = false;
+    bool touchEnded = false;
 
-	vec2 visibleRange = vec2(defaultVisibleRangeXWalk);
+    //connections
+    playerSocket &socket;
+    human *player;//for less code
 
-	veci2 unFocusedMousePosition = veci2();
-	vec2 currentMousePositionWorld = vec2();
-	//veci2 mousePositionPixels = veci2();
+    //rendering
+    vec2 cameraPosition = vec2();
 
-	//veci2 newMousePositionPixels = veci2();
-	//controls respond faster, so we have another input for controls
+    vec2 visibleRange = vec2(defaultVisibleRangeXWalk);
 
-	clientInput mostRecentInput = clientInput();
+    veci2 unFocusedMousePosition = veci2();
+    vec2 currentMousePositionWorld = vec2();
+    //veci2 mousePositionPixels = veci2();
 
-	bool clickedFocused[(byte)sf::Mouse::ButtonCount];
+    //veci2 newMousePositionPixels = veci2();
+    //controls respond faster, so we have another input for controls
 
-	//creditsForm* currentCredits = nullptr;
+    clientInput mostRecentInput = clientInput();
 
-	mat3x3 worldToRenderTargetTransform = mat3x3();
+    bool clickedFocused[(byte) sf::Mouse::ButtonCount];
 
-	std::vector<soundPacket> dataToSend = std::vector<soundPacket>();
+    //creditsForm* currentCredits = nullptr;
 
-	void renderGame(crectanglei2& rect, const texture& renderTarget, cbool& renderHUD);
-	gameRenderData getRenderData(const texture& renderTarget, cfp& secondsOffset = 0);
-	mat3x3 getWorldToScreenTransform(cvec2& middleWorldPosition, cfp& pixelsPerBlock);
+    mat3x3 worldToRenderTargetTransform = mat3x3();
+
+    std::vector<soundPacket> dataToSend = std::vector<soundPacket>();
+    touchJoystick *moveJoystick = nullptr;
+    touchJoystick *interactJoystick = nullptr;
+
+    inline fp getHUDScale() const{
+        return (settings::videoSettings::guiScale * rect.size.x) /
+               ((StandardInventoryColumnCount * 2) * hotbarSpacing);
+    }
+    //overrides
+    //virtual void render(cveci2& position, const texture& renderTarget) override;
+    void render(cveci2 &position, const texture &renderTarget) override;
+
+    virtual void layout(crectanglei2 &newRect) override;
+
+    virtual void focus() override;
+
+    virtual void lostFocus() override;
+
+    void onJoystickTouch(const mouseButtonEventArgs &args);
+    void onJoystickTouchEnd(const mouseButtonEventArgs &args);
+    void onBackgroundTouch(const mouseButtonEventArgs &args);
+    void switchInventoryGUI();
+
+    void addTouchInput();
+
+    void processInput();
+
+    void renderGame(crectanglei2 &rect, const texture &renderTarget, cbool &renderHUD);
+
+    gameRenderData getRenderData(const texture &renderTarget, cfp &secondsOffset = 0);
+
+    mat3x3 getWorldToScreenTransform(cvec2 &middleWorldPosition, cfp &pixelsPerBlock);
+
 };
 
 extern std::mt19937 currentRandom;
 
 extern std::shared_ptr<musicCollection> currentlyPlayingCollection;
-void renderIcons(const std::vector<fp>& values, const std::vector<rectangle2>& iconFullTextureRects, const std::vector<rectangle2>& iconHalfTextureRects, crectangle2& firstIconRect, cfp& xOffset, const texture& renderTarget);
-void renderOptionsBackGround(crectanglei2& rect, const texture& renderTarget);
+
+void renderIcons(const std::vector<fp> &values, const std::vector<rectangle2> &iconFullTextureRects,
+                 const std::vector<rectangle2> &iconHalfTextureRects, crectangle2 &firstIconRect,
+                 cfp &xOffset, const texture &renderTarget);
+
+void renderOptionsBackGround(crectanglei2 &rect, const texture &renderTarget);

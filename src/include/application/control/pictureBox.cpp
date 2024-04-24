@@ -1,4 +1,4 @@
-#include "picturebox.h"
+#include "pictureBox.h"
 
 pictureBox::pictureBox(texture* const& backGroundImage)
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "baseFont.h"
 #include <string>
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "fontfamily.h"
 #include "math/graphics/texture.h"
 #include "math/rectangletn.h"

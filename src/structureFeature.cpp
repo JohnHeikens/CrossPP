@@ -19,7 +19,7 @@
 #include "blockData.h"
 #include "blockID.h"
 #include "constants.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/axis.h"
 #include "math/direction.h"
 #include "math/mattnxn.h"
@@ -89,24 +89,26 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 		return false;
 	}
 
-	for (const structurePlacementBlueprint* const& currentData : placedStructures)
+	for (size_t structureIndex = 0; structureIndex < placedStructures.size();structureIndex++)
 	{
-		//structurePlacementBlueprint* currentData = placedStructures[structureIndex];
-		placeStructurePart(currentData->placedStructure, containerIn, currentData->structurePos00, currentData->flipX, currentData->structureLevel, includeEntities, replaceStructureVoid);
-		if (currentData->structureLevel >= 0)
+        //we cannot iterate over it in the way of for (structureplacementdata* : placedStructures) because this vector keeps being modified
+        //also we have to make a copy of the pointer, as the vector of pointers can get deleted and a bigger array allocated
+		const structurePlacementBlueprint* expandFrom = placedStructures[structureIndex];
+		placeStructurePart(expandFrom->placedStructure, containerIn, expandFrom->structurePos00, expandFrom->flipX, expandFrom->structureLevel, includeEntities, replaceStructureVoid);
+		if (expandFrom->structureLevel >= 0)
 		{
-			cmat3x3i structureToWorldTransform = currentData->placedStructure->getBlocksToWorldTransform(currentData->structurePos00, currentData->flipX);
+			cmat3x3i structureToWorldTransform = expandFrom->placedStructure->getBlocksToWorldTransform(expandFrom->structurePos00, expandFrom->flipX);
 
-			for (cveci2& pos : currentData->positionsToConnect)
+			for (cveci2& pos : expandFrom->positionsToConnect)
 			{
-				jigsawData* currentJigsawData = dynamic_cast<jigsawData*>(currentData->placedStructure->blockDataArray.getValueUnsafe(pos));
+				jigsawData* currentJigsawData = dynamic_cast<jigsawData*>(expandFrom->placedStructure->blockDataArray.getValueUnsafe(pos));
 				if (currentJigsawData->targetName != std::wstring(L""))
 				{
 					//find fitting piece for this jigsaw
 					cveci2 currentJigsawWorldPos = structureToWorldTransform.multPointMatrix(pos);
 
 					directionID worldDirection = currentJigsawData->directionFacing;
-					if (currentData->flipX && getAxis(worldDirection) == axisID::x)
+					if (expandFrom->flipX && getAxis(worldDirection) == axisID::x)
 					{
 						worldDirection = flipDirection(worldDirection);
 					}
@@ -196,8 +198,8 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 								cveci2 connectedJigsawWorldPos = currentJigsawWorldPos + directionVectors2D[(int)worldDirection];
 
 								structurePlacementBlueprint* connectingStructureData = new structurePlacementBlueprint(
-									checkStructure, positionToPlace, connectedStructureJigsawPositions,
-									currentData->structureLevel - 1, flipConnectingStructure
+                                        checkStructure, positionToPlace, connectedStructureJigsawPositions,
+                                        expandFrom->structureLevel - 1, flipConnectingStructure
 								);
 
 								cmat3x3i connectedStructureTransform = checkStructure->getBlocksToWorldTransform(connectingStructureData->structurePos00, connectingStructureData->flipX);

@@ -1,9 +1,10 @@
-#include "TextBox.h"
+#include "textBox.h"
 #include "math/timemath.h"
 #include "application/interaction.h"
 
 textBox::textBox() : control()
 {
+
 }
 
 void textBox::render(cveci2& position, const texture& renderTarget)
@@ -161,6 +162,10 @@ void textBox::keyDown(cvk& keyCode)
 	{
 		text = text.erase(cursorIndex, 1);
 	}
+    if (keyCode == vk::BackSpace && cursorIndex > 0)
+    {
+        text = text.erase(cursorIndex - 1, 1);
+    }
 	else if (keyCode == vk::Left && cursorIndex > 0)
 	{
 		cursorIndex--;
@@ -241,4 +246,12 @@ void textBox::checkCursorIndex()
 	{
 		cursorIndex = text.length();
 	}
+}
+
+void textBox::focus() {
+    control::focus();
+}
+
+bool textBox::wantsTextInput() const {
+    return focused;
 }

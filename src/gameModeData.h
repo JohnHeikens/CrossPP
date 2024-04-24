@@ -1,7 +1,7 @@
 #pragma once
 #include "interface/inamable.h"
 #include "idList.h"
-#include "GamemodeID.h"
+#include "gameModeID.h"
 struct gameModeData : public INamable
 {
 	bool canFly = false;

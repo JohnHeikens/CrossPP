@@ -13,7 +13,7 @@
 #include <type_traits>
 #include <vector>
 #include "constants.h"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "math/axis.h"
 #include "math/vectn.h"
 #include "optimization/debug.h"

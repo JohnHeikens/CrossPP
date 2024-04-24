@@ -1,6 +1,6 @@
 #pragma once
 #include "SFML/Audio.hpp"
-#include "GlobalFunctions.h"
+#include "globalFunctions.h"
 #include "array/fastlist.h"
 struct soundHandler
 {

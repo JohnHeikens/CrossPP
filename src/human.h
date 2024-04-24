@@ -1,6 +1,6 @@
 #pragma once
 #include "humanoid.h"
-#include "GamemodeID.h"
+#include "gameModeID.h"
 
 #include "humanSlotContainerUI.h"
 #include "anvilSlotContainer.h"
