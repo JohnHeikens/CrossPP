@@ -214,6 +214,12 @@ disable the app being restarted when rotating:
 things you add to configchanges will not close the app when they happen.
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
 
+segmentation fault:
+make sure to capture things in lambdas as (const) references where possible!
+
+all files appear to be rolled back:
+check if you're in the right directory and if you're the right user!!
+
 TODO:
 
 maybe add vcpkg-configuration.json for version consistency (see https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)

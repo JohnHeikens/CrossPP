@@ -8,7 +8,8 @@ struct listControl :public control
 	int sideSliderWidth = 0;
 	listControl(cint& sideSliderWidth = 0x10);
 	virtual void reOrganizeChildControls();
-	control* getSelectedChild();
+    control* selectedChild = nullptr;
+    void mouseDown(cveci2& position, cmb& button) override;
 	virtual void layout(crectanglei2& newRect) override;
     void sideSliderOnValueChanged(const valueEventArgs& args);
 };

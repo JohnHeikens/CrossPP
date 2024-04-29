@@ -21,7 +21,7 @@
 #include "math/random/random.h"
 #include "math/vectn.h"
 #include "serverData.h"
-#include "soundhandler2d.h"
+#include "soundHandler2D.h"
 #include "folderList.h"
 #include "math/timemath.h"
 #include "main.h"
@@ -184,7 +184,8 @@ void client::processIncomingPackets(const texture &renderTarget) {
     do {
         delete inCompound;
         inCompound = new nbtCompound(std::wstring(L"packetIn"));
-        if (s.receivePacket() != sf::TcpSocket::Status::Done) {
+        sf::TcpSocket::Status status = s.receivePacket();
+        if (status != sf::TcpSocket::Status::Done) {
             auto f = std::bind(&client::addEvent, this, std::placeholders::_1);
             //std::function{f}.target_type();
             currentApplication->listener.unhook(&client::addEvent, this);

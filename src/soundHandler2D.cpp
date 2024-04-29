@@ -1,4 +1,4 @@
-#include "soundhandler2d.h"
+#include "soundHandler2D.h"
 #include "filesystem/sfmlInputStream.h"
 #include "filesystem/fileio.h"
 int playingSoundCount = 0;

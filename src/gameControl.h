@@ -14,6 +14,7 @@
 #include "soundPacket.h"
 #include "application/control/touchJoystick.h"
 #include <SFML/Graphics/RenderTexture.hpp>
+#include <application/control/pictureBox.h>
 
 constexpr fp defaultGuiTextureSize = (fp) 0x200;
 struct playerSocket;
@@ -69,6 +70,9 @@ struct gameControl : form, clientInput {
     std::vector<soundPacket> dataToSend = std::vector<soundPacket>();
     touchJoystick *moveJoystick = nullptr;
     touchJoystick *interactJoystick = nullptr;
+    pictureBox* chatButton = nullptr;
+    pictureBox* settingsButton = nullptr;
+    pictureBox* inventoryButton = nullptr;
 
     inline fp getHUDScale() const{
         return (settings::videoSettings::guiScale * rect.size.x) /
@@ -87,6 +91,7 @@ struct gameControl : form, clientInput {
     void onJoystickTouch(const mouseButtonEventArgs &args);
     void onJoystickTouchEnd(const mouseButtonEventArgs &args);
     void onBackgroundTouch(const mouseButtonEventArgs &args);
+    void onButtonClick(const controlEventArgs &args);
     void switchInventoryGUI();
 
     void addTouchInput();
@@ -94,6 +99,8 @@ struct gameControl : form, clientInput {
     void processInput();
 
     void renderGame(crectanglei2 &rect, const texture &renderTarget, cbool &renderHUD);
+
+    void commandLineKeyPressed(const keyEventArgs& e);
 
     gameRenderData getRenderData(const texture &renderTarget, cfp &secondsOffset = 0);
 

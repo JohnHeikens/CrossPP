@@ -29,7 +29,7 @@
 #include "math/vectn.h"
 #include "optimization/benchmark.h"
 #include "recipe.h"
-#include "soundhandler2d.h"
+#include "soundHandler2D.h"
 #include "structure.h"
 #include "serverEditor.h"
 #include "client.h"

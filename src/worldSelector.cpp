@@ -25,10 +25,16 @@ void worldSelector::addGame()
 
 void worldSelector::addGameControls()
 {
+    std::set<stdFileSystem::path> sortedByName;
 	//generate save folder controls
-	for (const auto& folderIterator : stdFileSystem::directory_iterator(savesFolder))
+    for (const auto &entry : stdFileSystem::directory_iterator(savesFolder))
+    {
+        sortedByName.insert(entry.path());
+    }
+
+	for (const auto& folderIterator : sortedByName)
 	{
-		gameListControl->children.push_back(new saveFileControl(folderIterator.path().filename().wstring()));
+		gameListControl->children.push_back(new saveFileControl(folderIterator.filename().wstring()));
 	}
 }
 

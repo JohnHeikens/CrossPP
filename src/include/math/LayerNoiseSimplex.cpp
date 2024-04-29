@@ -15,7 +15,7 @@ layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vecto
 {
 	for (size_t i = 0; i < octaveWeights.size(); i++)
 	{
-		octaveFrequencies[i] = cvec3(1.0 / noiseScale);
+		octaveFrequencies[i] = vec3(1.0 / noiseScale);
 		noiseScale *= 0.5;
 	}
 
@@ -50,10 +50,12 @@ layerNoiseSimplex::layerNoiseSimplex(std::mt19937& randomToUse, const std::vecto
 	this->OutputPlus = mid;
 	cfp& amplitude = outputRange.pos1().x - mid;
 	cfp& mult = amplitude * NOISE_MULT / TotalWeight;
+    octaveOffsets = std::vector<vec3>(octaveWeights.size());
 	for (size_t i = 0; i < octaveWeights.size(); i++)
 	{
 		this->octaveWeights[i] *= mult;
-	}
+        octaveOffsets[i] = vec3(randFp(randomToUse), randFp(randomToUse), randFp(randomToUse));
+    }
 }
 
 layerNoiseSimplex::~layerNoiseSimplex()

@@ -743,8 +743,9 @@ void chat::render(const texture& renderTarget, const gameControl& screen) const
 
 	int lineCount = 0;
 	cint maxLineCount = 0x10;
-	vec2 offset = cvec2(screen.commandLineTextbox->rect.pos01());
-	minecraftFont f = minecraftFont();
+    minecraftFont f = minecraftFont();
+	vec2 offset = cvec2(screen.commandLineTextbox->rect.pos0);
+    offset.y -= f.fontSize;
 	for (int i = (int)linesSaid.size() - 1; (i >= 0) && (lineCount < maxLineCount); i--)
 	{
 		if (((timesSaid[i] + chatTime) > currentWorld->ticksSinceStart) || showMoreChat)
@@ -753,7 +754,7 @@ void chat::render(const texture& renderTarget, const gameControl& screen) const
 			veci2 size = f.measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
 			f.DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
 			lineCount++;
-			offset.y += size.y;
+			offset.y -= size.y;
 		}
 		else
 		{

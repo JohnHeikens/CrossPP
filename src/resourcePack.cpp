@@ -507,8 +507,15 @@ void loadResourcePacks()
 
 	experienceTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"experience_orb.png"));
 
+    //gui
 	widgetsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"widgets.png"));
 	iconsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"icons.png"));
+    barsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"bars.png"));
+
+    chatButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"chat.png");
+    settingsButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"settings.png");
+    inventoryButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"inventory.png");
+
 	grassOverlay = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grass_block_side_overlay.png"));
 	woolOverlay = loadTextureFromResourcePack(entityTextureFolder / L"sheep" / L"sheep_fur.png");
 	endPortalFrameEyeTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"end_portal_frame_eye.png"));
@@ -517,7 +524,6 @@ void loadResourcePacks()
 	endCrystalBeamTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"end_crystal/end_crystal_beam.png"));
 	fireChargeTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"fire_charge.png"));
 	dirtTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"dirt.png"));
-	barsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"bars.png"));
 	potionOverlayTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"potion_overlay.png"));
 	rainTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"rain.png"));
 	snowTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"snow.png"));

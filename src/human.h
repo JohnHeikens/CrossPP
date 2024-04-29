@@ -11,7 +11,7 @@
 #include "chestSlotContainer.h"
 #include "furnaceSlotContainer.h"
 #include "craftingTableSlotContainer.h"
-#include "soundhandler2d.h"
+#include "soundHandler2D.h"
 
 //extern humanSlotContainerUI* humanSlots;
 //extern craftingTableSlotContainer* craftingTableSlots;

@@ -113,7 +113,7 @@ functionType typename std::enable_if<std::is_arithmetic_v<t2>, void>											\
 addOperator(+, newExpression, structType, functionType)																\
 addOperator(-, newExpression, structType, functionType)																\
 addOperator(*, newExpression, structType, functionType)																\
-addOperator(/, newExpression, structType, functionType)									
+addOperator(/, newExpression, structType, functionType)
 
 #define addAssignmentOperator(structName, functionType) \
 functionType structName& operator=(structName copy)\

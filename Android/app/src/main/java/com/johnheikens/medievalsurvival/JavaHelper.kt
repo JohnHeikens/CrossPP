@@ -1,34 +1,136 @@
 package com.johnheikens.medievalsurvival
 
+import android.R
+import android.app.Activity
 import android.content.Context
 import android.content.res.AssetManager
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ProgressBar
+import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStreamReader
 import java.io.OutputStream
-import android.util.Log
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Paths
+
+
 class JavaHelper {
-    companion object{
+    companion object {
 
 
-        @JvmStatic fun initializeContext(context: Context): String {
+        @JvmStatic
+        fun initializeContext(activity: Activity): String {
             print("initializing the context")
             val assetDir = "data" // Assuming "data" is the directory you want to copy recursively
-            val destinationDir = File(context.filesDir, assetDir)//context.cacheDir
+            val destinationDir = File(activity.filesDir, assetDir)//context.cacheDir
+
+            var shouldCopy = false
+            if (!destinationDir.exists()) {
+                shouldCopy = true
+                print("didn't find the data folder")
+            } else {
+                val extractedVersionFilePath =
+                    Paths.get(activity.filesDir.toString(), assetDir, "version.txt")
+                if (File(extractedVersionFilePath.toUri()).exists()) {
+
+                    val extractedVersion =
+                        Integer.valueOf(Files.readAllLines(extractedVersionFilePath)[0])
+
+                    val assetStream =
+                        activity.assets.open(Paths.get(assetDir, "version.txt").toString());
+
+                    val sb = StringBuilder()
+                    val br = BufferedReader(InputStreamReader(assetStream, StandardCharsets.UTF_8))
+                    var str: String?
+                    while (br.readLine().also { str = it } != null) {
+                        sb.append(str)
+                    }
+                    br.close()
+                    if (sb.isEmpty()) {
+                        shouldCopy = true;
+                        print("couldn't extract asset version")
+                    } else {
+                        val assetVersion = Integer.valueOf(sb.toString());
+                        shouldCopy = assetVersion > extractedVersion;
+                    }
+                } else {
+                    shouldCopy = true
+                    print("didn't find version.txt")
+                }
+            }
+
+            //activity.runOnUiThread{
+            //    var pb = ProgressBar(activity, null, R.attr.progressBarStyleHorizontal);
+            //    pb.setPadding(20, 10, 10, 10);
+            //    pb.isIndeterminate = false;
+            //    pb.progress = 0;
+            //    pb.scrollBarStyle = ProgressBar.SCROLLBARS_OUTSIDE_INSET;
+            //    pb.setMax(100);
+            //    pb.visibility = ProgressBar.VISIBLE;
+//
+            //    // Set the layout parameters for the ProgressBar
+            //    val layoutParams = FrameLayout.LayoutParams(
+            //        ViewGroup.LayoutParams.WRAP_CONTENT,
+            //        ViewGroup.LayoutParams.WRAP_CONTENT
+            //    )
+            //    layoutParams.gravity = Gravity.CENTER
+            //    val rootView = activity.findViewById<ViewGroup>(android.R.id.content)
+            //    rootView?.addView(pb, layoutParams)
+            //};
+            //activity.setVisible(true);
+            //var pb = ProgressBar(activity, null, R.attr.progressBarStyleHorizontal);
+            //pb.setPadding(20, 10, 10, 10);
+            //pb.isIndeterminate = false;
+            //pb.progress = 0;
+            //pb.scrollBarStyle = ProgressBar.SCROLLBARS_OUTSIDE_INSET;
+            //pb.setMax(100);
+            //pb.visibility = ProgressBar.VISIBLE;
+//
+            //// Set the layout parameters for the ProgressBar
+            //val layoutParams = FrameLayout.LayoutParams(
+            //    ViewGroup.LayoutParams.WRAP_CONTENT,
+            //    ViewGroup.LayoutParams.WRAP_CONTENT
+            //)
+            //layoutParams.gravity = Gravity.CENTER
+            //val rootView = activity.findViewById<ViewGroup>(android.R.id.content)
+            //activity.setContentView(pb);
+            //rootView?.addView(pb, layoutParams)
+            Thread.sleep(1000);
 
             //when the 'data' folder is not found, then we extract the data folder.
-            if(!destinationDir.exists())
-            {
-                print("didn't find the data folder")
-                copyAssetsToCache(context, assetDir, destinationDir)
+            if (shouldCopy) {
+
+
+//
+                //// Add the ProgressBar to the root layout of the activity
+//
+
+
+                //print("extracting assets...")
+                //val layout: RelativeLayout =
+                //    findViewById(R.id.display) //specify here Root layout Id
+//
+                //val dialog = ProgressDialog(context)
+                //dialog.setMessage("message")
+                //dialog.setCancelable(false)
+                //dialog.setInverseBackgroundForced(false)
+                //dialog.show()
+                copyAssetsToCache(activity, assetDir, destinationDir)
             }
             return destinationDir.toString();
         }
-        @JvmStatic fun copyAssetsToCache(context: Context, assetDir: String, destinationDir: File) {
+
+        @JvmStatic
+        fun copyAssetsToCache(context: Context, assetDir: String, destinationDir: File) {
             val assetManager = context.assets
             try {
                 val assets = assetManager.list(assetDir)
-                if (assets != null && assets.size > 0) {
+                if (!assets.isNullOrEmpty()) {
                     // If the assetDir is a directory
                     destinationDir.mkdirs()
                     for (asset in assets) {
@@ -57,7 +159,8 @@ class JavaHelper {
         }
 
         @Throws(IOException::class)
-        @JvmStatic private fun copyAssetFile(
+        @JvmStatic
+        private fun copyAssetFile(
             assetManager: AssetManager,
             assetPath: String,
             destinationPath: String

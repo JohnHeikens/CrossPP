@@ -34,10 +34,13 @@ resolutionTexture* attachedStemTextures[stemPlantTypeCount]{};
 resolutionTexture* unAttachedStemTextures[stemPlantTypeCount]{};
 resolutionTexture* redstoneLampOnTexture = nullptr;
 resolutionTexture* furnaceOnTextures[furnaceTypeCount]{};
-resolutionTexture* verticalDispenserTextures[2];
-resolutionTexture* lightMapTextures[(int)dimensionID::count];
-resolutionTexture* armorTextures[armorTierCount];
-resolutionTexture* armorLegTextures[armorTierCount];
+resolutionTexture* verticalDispenserTextures[2]{};
+resolutionTexture* lightMapTextures[(int)dimensionID::count]{};
+resolutionTexture* armorTextures[armorTierCount]{};
+resolutionTexture* armorLegTextures[armorTierCount]{};
+resolutionTexture* chatButtonTexture = nullptr;
+resolutionTexture* settingsButtonTexture = nullptr;
+resolutionTexture* inventoryButtonTexture = nullptr;
 
 resolutionTexture* boatTextures[normalTreeTypeCount];
 std::vector<resolutionTexture* > destroyStageTextures = std::vector<resolutionTexture* >();

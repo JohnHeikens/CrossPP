@@ -245,10 +245,10 @@ control *control::getHighestChild(cveci2 &pos) const
 	// loop through childs from back to front
 	for (size_t index = children.size; index--;) // first comparison (index), then substraction (--)
 	{
-		control *currentChild = (children)[index];
+		control * const& currentChild = (children)[index];
 		if (currentChild->visible && (currentChild->rect).contains(pos))
 		{
-			return (children)[index];
+			return currentChild;
 		}
 	}
 	return nullptr;

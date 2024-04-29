@@ -107,7 +107,7 @@
 #include "gameRenderData.h"
 #include "smithingTableSlotContainer.h"
 #include "soundCollection.h"
-#include "soundhandler2d.h"
+#include "soundHandler2D.h"
 #include "statusEffect.h"
 #include "statusEffectID.h"
 #include "treeItemTypeID.h"

@@ -57,13 +57,15 @@
 #include "lightLevelID.h"
 #include "mob.h"
 #include "gameRenderData.h"
-#include "soundhandler2d.h"
+#include "soundHandler2D.h"
 #include "keyHistoryEvent.h"
 #include "minecraftFont.h"
 #include <SFML/Window.hpp>
 #include "globalFunctions.h"
 #include "constants.h"
 #include "type/types.h"
+#include "resourcePack.h"
+#include "folderList.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
@@ -209,7 +211,7 @@ void gameControl::render(cveci2 &position, const texture &renderTarget) {
 void gameControl::processInput() {
     // this function will get called on other times than the tick() function.
     form::mouseMove(mousePositionPixels, (mb) -1);
-    for(const sf::Event& e : mostRecentInput.eventHistory){
+    for (const sf::Event &e: mostRecentInput.eventHistory) {
         processEvent(e);
     }
     // process buttons
@@ -230,7 +232,7 @@ void gameControl::processInput() {
         fillAllElements(clickedFocused, false);
     } else {
         unFocusedMousePosition = mousePositionPixels;
-        cfp& hudScale = getHUDScale();
+        cfp &hudScale = getHUDScale();
         rectangle2 hotbarDrawRect = rectangle2((rect.w - (hotbarTextureRect.size.x * hudScale)) / 2,
                                                0, hotbarTextureRect.size.x * hudScale,
                                                hotbarTextureRect.h * hudScale);
@@ -247,56 +249,51 @@ void gameControl::processInput() {
         std::copy(clicked, clicked + mb::ButtonCount, clickedFocused);
     }
 
-    // process keys
-    for (const keyHistoryEvent &e: mostRecentInput.keyDownHistory) {
-        if (e.down) {
-            if (e.key == (vk) keyID::inventory) {
-                switchInventoryGUI();
-            }
-            if (((e.key == (vk) keyID::commandLine) || (e.key == (vk) keyID::text)) &&
-                focusedChild == nullptr) {
-                commandLineTextbox->visible = true;
-                focusChild(commandLineTextbox);
+    if (focusedChild != commandLineTextbox) {
 
-                if (e.key == (vk) keyID::text) {
-                    // avoid typing the text keybind
-                    return;
+        // process keys
+        for (const keyHistoryEvent &e: mostRecentInput.keyDownHistory) {
+            if (e.down) {
+                if (e.key == (vk) keyID::inventory) {
+                    switchInventoryGUI();
                 }
-            }
-            if (e.key == vk::Enter && focusedChild == commandLineTextbox) {
-                // execute the commandline
-                std::wstring line = commandLineTextbox->text;
-                currentWorld->currentChat.say(*player, line);
+                if (((e.key == (vk) keyID::commandLine) || (e.key == (vk) keyID::text)) &&
+                    focusedChild == nullptr) {
+                    commandLineTextbox->visible = true;
+                    focusChild(commandLineTextbox);
 
-                focusChild(nullptr); // back to the game
-                commandLineTextbox->visible = false;
-                commandLineTextbox->text = std::wstring(L"");
-                commandLineTextbox->cursorIndex = 0;
-            } else if (e.key == (vk) keyID::escape) {
-                if (focusedChild == nullptr) {
-                    options->visible = true;
-                    focusChild(options);
-                } else if (focusedChild != videoOptions || videoOptions->focusedChild == nullptr) {
-                    focusedChild->visible = false;
-                    focusChild(nullptr);
+                    if (e.key == (vk) keyID::text) {
+                        // avoid typing the text keybind
+                        return;
+                    }
                 }
-            } else if (focusedChild == nullptr) {
-                if (e.key == (vk) keyID::renderHitboxes && settings::renderDebugData) {
-                    settings::renderHitboxes = !settings::renderHitboxes;
-                } else if (e.key == (vk) keyID::debug) {
-                    settings::renderDebugData = !settings::renderDebugData;
-                } else if (e.key == (vk) keyID::headUpDisplay) {
-                    settings::renderHUD = !settings::renderHUD;
+                if (e.key == (vk) keyID::escape) {
+                    if (focusedChild == nullptr) {
+                        options->visible = true;
+                        focusChild(options);
+                    } else if (focusedChild != videoOptions ||
+                               videoOptions->focusedChild == nullptr) {
+                        focusedChild->visible = false;
+                        focusChild(nullptr);
+                    }
+                } else if (focusedChild == nullptr) {
+                    if (e.key == (vk) keyID::renderHitboxes && settings::renderDebugData) {
+                        settings::renderHitboxes = !settings::renderHitboxes;
+                    } else if (e.key == (vk) keyID::debug) {
+                        settings::renderDebugData = !settings::renderDebugData;
+                    } else if (e.key == (vk) keyID::headUpDisplay) {
+                        settings::renderHUD = !settings::renderHUD;
+                    }
+                } else {
+                    form::keyDown(e.key);
                 }
             } else {
-                form::keyDown(e.key);
+                form::keyUp(e.key);
             }
-        } else {
-            form::keyUp(e.key);
         }
-    }
-    for (const auto c: mostRecentInput.textEntered) {
-        form::enterText(c);
+        for (const auto c: mostRecentInput.textEntered) {
+            form::enterText(c);
+        }
     }
 }
 
@@ -327,23 +324,21 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
 
     // if (currentGame->focusedChild == nullptr)
     //{
-    if(touchInput)
-    {
+    if (touchInput) {
         cameraPosition = headPosition;
-    }
-    else{
+    } else {
         cmat3x3 mouseLookingTransform = getWorldToScreenTransform(headPosition, pixelsPerBlock);
         cmat3x3 inverseMouseLookingTransform = mouseLookingTransform.inverse();
-        cameraPosition = inverseMouseLookingTransform.multPointMatrix(cvec2(unFocusedMousePosition));
+        cameraPosition = inverseMouseLookingTransform.multPointMatrix(
+                cvec2(unFocusedMousePosition));
     }
 
     worldToRenderTargetTransform = getWorldToScreenTransform(cameraPosition, pixelsPerBlock);
     cmat3x3 renderTargetToWorldTransform = worldToRenderTargetTransform.inverse();
-    if (!touchInput){
+    if (!touchInput) {
         currentMousePositionWorld = renderTargetToWorldTransform.multPointMatrix(
                 cvec2(unFocusedMousePosition));
-    }
-    else{
+    } else {
         currentMousePositionWorld = player->getHeadPosition() + interactJoystick->value;
     }
 
@@ -923,9 +918,9 @@ void gameControl::layout(crectanglei2 &newRect) {
     bigUIRect.moveToCenter(rect);
     structureBlockOptions->layout(bigUIRect);
     jigsawOptions->layout(bigUIRect);
-    rectanglei2 commandLineRect = rectanglei2(0, 0, rect.size.x,
-                                              (int) defaultTheme().font->fontSize +
-                                              defaultTheme().borderSize * 2);
+    cint &commandLineHeight = (int) defaultTheme().font->fontSize + defaultTheme().borderSize * 2;
+    rectanglei2 commandLineRect = rectanglei2(0, rect.size.y - commandLineHeight, rect.size.x,
+                                              commandLineHeight);
     commandLineTextbox->layout(commandLineRect);
     if (touchInput) {
         cint &joystickSize = rect.size.x / 0x10 * 0x4;
@@ -933,8 +928,14 @@ void gameControl::layout(crectanglei2 &newRect) {
 
         moveJoystick->layout(rectanglei2(veci2(joystickOffset), veci2(joystickSize)));
         interactJoystick->layout(
-                rectanglei2(veci2(rect.x + rect.size.x - (joystickOffset + joystickSize), joystickOffset),
+                rectanglei2(veci2(rect.x + rect.size.x - (joystickOffset + joystickSize),
+                                  joystickOffset),
                             veci2(joystickSize)));
+        cveci2& pos1 = rect.pos1();
+        chatButton->layout(crectanglei2(0, pos1.y - commandLineHeight, commandLineHeight, commandLineHeight));
+        settingsButton->layout(crectanglei2(pos1.x - commandLineHeight, pos1.y - commandLineHeight, commandLineHeight, commandLineHeight));
+        //above the joystick with one button as margin
+        inventoryButton->layout(crectanglei2(pos1.x - commandLineHeight, joystickOffset + joystickSize + commandLineHeight, commandLineHeight, commandLineHeight));
     }
 }
 
@@ -1050,6 +1051,7 @@ gameControl::gameControl(playerSocket &socket) : form(),
                  structureBlockOptions,
                  jigsawOptions,
                  currentCredits});
+    addEventHandlers(&gameControl::commandLineKeyPressed, commandLineTextbox->onKeyUp);
 }
 
 void gameControl::addTouchInput() {
@@ -1058,7 +1060,12 @@ void gameControl::addTouchInput() {
     moveJoystick = new touchJoystick(rectangle2(vec2(-2), vec2(4)));
     constexpr fp armRangePlusMargin = armRange + 1;
     //from -1
-    interactJoystick = new touchJoystick(rectangle2(vec2(-armRangePlusMargin), vec2(armRangePlusMargin * 2)));
+    interactJoystick = new touchJoystick(
+            rectangle2(vec2(-armRangePlusMargin), vec2(armRangePlusMargin * 2)));
+
+    chatButton = new pictureBox(chatButtonTexture->scaledTextures[0]);
+    settingsButton = new pictureBox(settingsButtonTexture->scaledTextures[0]);
+    inventoryButton = new pictureBox(inventoryButtonTexture->scaledTextures[0]);
 
     //since the other controls aren't laid out as well, we don't have to lay them out
     addChildren({moveJoystick, interactJoystick});
@@ -1068,10 +1075,9 @@ void gameControl::addTouchInput() {
 }
 
 void gameControl::onJoystickTouch(const mouseButtonEventArgs &args) {
-    if(&args.sender == moveJoystick){
+    if (&args.sender == moveJoystick) {
 
-    }
-    else{//interactJoystick
+    } else {//interactJoystick
         //wants to click or dig
         //calculate relative position
         touchStarted = true;
@@ -1085,15 +1091,14 @@ void gameControl::onJoystickTouchEnd(const mouseButtonEventArgs &args) {
     touchEnded = true;
 }
 
-void gameControl::onBackgroundTouch(const mouseButtonEventArgs&args) {
-    if(!inventoryUI->visible){//a bit cheaty
-        inventoryUI->inventoryToDisplay = player->humanSlots;
-        inventoryUI->updateScale();
-        inventoryUI->inventoryToDisplay = nullptr;
-    }
-    if(inventoryUI->visible ^ inventoryUI->rect.contains(args.position)){
+void gameControl::onBackgroundTouch(const mouseButtonEventArgs &args) {
+    if (inventoryUI->visible && !(inventoryUI->rect.contains(args.position) ||
+                                (getHighestChild(args.position) == commandLineTextbox))) {
         //open inventory
         switchInventoryGUI();
+    }
+    if (commandLineTextbox->visible && !(commandLineTextbox->rect.contains(args.position))) {
+        commandLineTextbox->visible = false;
     }
 }
 
@@ -1123,5 +1128,31 @@ void renderOptionsBackGround(crectanglei2 &rect, const texture &renderTarget) {
         const auto &brush = vignetteBrush<repeatingBrush<transformBrush<resolutionTexture>>>(
                 cvec2(rect.pos0) + halfSize, 1, halfSize.length(), currentRepeatingBrush);
         renderTarget.fillRectangle(rect, brush);
+    }
+}
+
+void gameControl::commandLineKeyPressed(const keyEventArgs &e) {
+    if (e.keyCode == sf::Keyboard::Enter) {
+        // execute the commandline
+        std::wstring line = commandLineTextbox->text;
+        currentWorld->currentChat.say(*player, line);
+
+        focusChild(nullptr); // back to the game
+        commandLineTextbox->visible = false;
+        commandLineTextbox->text = std::wstring(L"");
+        commandLineTextbox->cursorIndex = 0;
+    }
+}
+
+void gameControl::onButtonClick(const controlEventArgs &args) {
+    if (&args.sender == inventoryButton) {
+        switchInventoryGUI();
+    } else if (&args.sender == chatButton) {
+        if((commandLineTextbox->visible = !commandLineTextbox->visible)){
+            focusChild(commandLineTextbox);
+        }
+    } else {//settings button
+        options->visible = true;
+        focusChild(options);
     }
 }

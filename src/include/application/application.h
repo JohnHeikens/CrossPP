@@ -34,6 +34,7 @@ struct application: INamable, IDestructable
     mat3x3 screenToApp = mat3x3();
 	//function pointer to initialize the form
 	//void changeKeyboardLayout();
+    static sf::RenderWindow* createWindow(const std::wstring& name);
 	int run();
 	void layout(crectanglei2& newRect);
 	void processInput();

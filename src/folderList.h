@@ -23,6 +23,7 @@ const stdPath particleDataFolder = assetsFolder / L"particles";
 const stdPath generalTextureFolder = assetsFolder / L"textures";
 const stdPath particleTexturesFolder = generalTextureFolder / L"particle";
 const stdPath guiTextureFolder = generalTextureFolder / L"gui";
+const stdPath buttonTextureFolder = guiTextureFolder / L"button";
 const stdPath blockTextureFolder = generalTextureFolder / L"block";
 const stdPath environmentTextureFolder = generalTextureFolder / L"environment";
 const stdPath containerTextureFolder = generalTextureFolder / L"gui" / "container";

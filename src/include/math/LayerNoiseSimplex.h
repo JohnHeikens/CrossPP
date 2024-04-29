@@ -16,6 +16,7 @@ public:
 	simplexNoise* baseNoise = nullptr;
 	std::vector<fp> octaveWeights = std::vector<fp>();
 	std::vector<vec3> octaveFrequencies = std::vector<vec3>();//the multiplier for the input coordinates
+    std::vector<vec3> octaveOffsets = std::vector<vec3>();//the offset for input coordinates
 	fp OutputPlus = 0;//the addition to the output to map it between min and max
 
 	template<fsize_t dimensions>
@@ -24,7 +25,7 @@ public:
 		fp val = OutputPlus;
 		for (size_t i = 0; i < octaveWeights.size(); i++)
 		{
-			val += octaveWeights[i] * baseNoise->evaluate<dimensions>(position * octaveFrequencies[i]);
+			val += octaveWeights[i] * baseNoise->evaluate<dimensions>((position * (vecn<dimensions>)octaveFrequencies[i]) + (vecn<dimensions>)octaveOffsets[i]);
 		}
 		return val;
 	}

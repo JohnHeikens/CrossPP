@@ -22,10 +22,9 @@ void gameSelector::onClick(const controlEventArgs& args)
 	if (&args.sender == openButton)
 	{
 		//open the selected world
-		control* c = gameListControl->getSelectedChild();
-		if (c)
+		if (gameListControl->selectedChild)
 		{
-			openGame(c);
+			openGame(gameListControl->selectedChild);
 		}
 	}
 	else if (&args.sender == newButton)
@@ -41,8 +40,7 @@ void gameSelector::onClick(const controlEventArgs& args)
 	else if (&args.sender == deleteButton)
 	{
 		//delete the selected world
-		control* c = gameListControl->getSelectedChild();
-		if (c)
+		if (gameListControl->selectedChild)
 		{
 			//ask for confirmation
 			//TODO: make a new messagebox function

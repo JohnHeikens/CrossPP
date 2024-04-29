@@ -38,6 +38,9 @@ extern resolutionTexture* verticalDispenserTextures[2];
 extern resolutionTexture* lightMapTextures[(int)dimensionID::count];
 extern resolutionTexture* armorTextures[armorTierCount];
 extern resolutionTexture* armorLegTextures[armorTierCount];
+extern resolutionTexture* chatButtonTexture;
+extern resolutionTexture* settingsButtonTexture;
+extern resolutionTexture* inventoryButtonTexture;
 
 extern resolutionTexture* boatTextures[normalTreeTypeCount];
 extern std::vector<resolutionTexture* > destroyStageTextures;

@@ -30,14 +30,10 @@
 constexpr int pixelMultiplier = onAndroid ? 4 : 1;
 
 int application::run() {
-    sf::ContextSettings settings;
+    if (!window) {
+        window = createWindow(name);
+    }
 
-    settings.antialiasingLevel = 0;
-    auto screenSize = sf::VideoMode::getDesktopMode();
-
-    veci2 size = veci2(screenSize.width / pixelMultiplier, screenSize.height / pixelMultiplier);
-    window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name),
-                                  sf::Style::Close | sf::Style::Resize, settings);
     //initialize them AFTER the render window has been created, so they have a context
     windowTexture = new sf::Texture();
     windowSprite = new sf::Sprite();
@@ -62,15 +58,15 @@ int application::run() {
     //windowSprite->move(0, (float)size.y);
     //windowSprite.scale(1, -1);
     //windowSprite.move(0, (float)size.y);
-    layout(crectanglei2(cveci2(), size));
+    layout(crectanglei2(cveci2(), veci2(window->getSize().x, window->getSize().y)));
     mainForm->focus();
     std::future<void> updateAsync = std::future<void>();
     while (window->isOpen()) {
         loop.waitTillNextLoopTime();
         //copy the texture to a temporary texture
-        texture tCopy = graphics;
+        const texture tCopy = graphics;
 
-        auto asyncUpdate = [this, tCopy]() {
+        auto asyncUpdate = [this, &tCopy]() {
             windowTexture->update((byte *) tCopy.baseArray);
             window->clear();
             //window->setActive(true);
@@ -129,6 +125,7 @@ void application::processInput() {
     sf::Event event;
     while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
+            std::cout << "got close signal";
             if (mainForm->close()) {
                 window->close();
             }
@@ -143,31 +140,33 @@ void application::processInput() {
                 listener.invoke(event);
                 input.keysHolding.erase(it);
             }
-        } else if (event.type == sf::Event::TextEntered) {
-            mainForm->enterText(event.text.unicode);
-        } else if (is_in(event.type, sf::Event::TouchBegan, sf::Event::TouchMoved, sf::Event::TouchEnded)) {
-            cveci2& correctedPos = veci2(screenToApp.multPointMatrix(cvec2(event.touch.x, event.touch.y)));
+        } else if (is_in(event.type, sf::Event::TouchBegan, sf::Event::TouchMoved,
+                         sf::Event::TouchEnded)) {
+            cveci2 &correctedPos = veci2(
+                    screenToApp.multPointMatrix(cvec2(event.touch.x, event.touch.y)));
             sf::Event correctedEvent = event;
             correctedEvent.touch.x = correctedPos.x;
             correctedEvent.touch.y = correctedPos.y;
             listener.invoke(correctedEvent);
-        } else if (is_in(event.type, sf::Event::MouseButtonPressed, sf::Event::MouseButtonReleased)) {
-            cveci2& correctedPos = veci2(screenToApp.multPointMatrix(cvec2(event.mouseButton.x, event.mouseButton.y)));
+        } else if (is_in(event.type, sf::Event::MouseButtonPressed,
+                         sf::Event::MouseButtonReleased)) {
+            cveci2 &correctedPos = veci2(
+                    screenToApp.multPointMatrix(cvec2(event.mouseButton.x, event.mouseButton.y)));
             sf::Event correctedEvent = event;
             correctedEvent.mouseButton.x = correctedPos.x;
             correctedEvent.mouseButton.y = correctedPos.y;
             listener.invoke(correctedEvent);
         } else if (event.type == sf::Event::MouseMoved) {
-            cveci2& correctedPos = veci2(screenToApp.multPointMatrix(cvec2(event.mouseMove.x, event.mouseMove.y)));
+            cveci2 &correctedPos = veci2(
+                    screenToApp.multPointMatrix(cvec2(event.mouseMove.x, event.mouseMove.y)));
             sf::Event correctedEvent = event;
             correctedEvent.mouseMove.x = correctedPos.x;
             correctedEvent.mouseMove.y = correctedPos.y;
             listener.invoke(correctedEvent);
         } else if (event.type == sf::Event::Resized) {
-        layout(rectanglei2(cveci2(), cveci2(event.size.width / pixelMultiplier,
-                                            event.size.height / pixelMultiplier)));
-        }
-        else{
+            layout(rectanglei2(cveci2(), cveci2(event.size.width / pixelMultiplier,
+                                                event.size.height / pixelMultiplier)));
+        } else {
             //all other events are passed through directly
             listener.invoke(event);
         }
@@ -494,4 +493,16 @@ application::~application() {
     //{
     //	graphics.baseArray = nullptr;
     //}
+}
+
+sf::RenderWindow *application::createWindow(const std::wstring& name) {
+    sf::ContextSettings settings;
+
+    settings.antialiasingLevel = 0;
+    auto screenSize = sf::VideoMode::getDesktopMode();
+
+
+    veci2 size = veci2(screenSize.width / pixelMultiplier, screenSize.height / pixelMultiplier);
+    return new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name),
+                                  sf::Style::Close | sf::Style::Resize, settings);
 }

@@ -44,8 +44,8 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 		sf::SocketSelector selector;
 		selector.add(*socket);
 		// the packet should follow the connect shortly. we can wait safely, but one player can join at a time.
-		// max 100 delay
-		if (!selector.wait(sf::milliseconds(100)))
+		// max 1000 delay (1 second)
+		if (!selector.wait(sf::milliseconds(1000)))
 			return;
 		s.receivePacket();
 	}
