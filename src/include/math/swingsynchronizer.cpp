@@ -1,5 +1,5 @@
 #include "swingsynchronizer.h"
-#include "mathfunctions.h"
+#include "mathFunctions.h"
 #include <cmath>
 
 fp swingSynchronizer::getSwingAngle(cfp& timePoint) const

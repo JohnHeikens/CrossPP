@@ -2,7 +2,7 @@
 #include "globalFunctions.h"
 #include "axis.h"
 #include "optimization/optimization.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 
 template <fsize_t dimensionCount>
 constexpr fsize_t directionCount()

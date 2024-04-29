@@ -32,7 +32,7 @@
 #include "entityID.h"
 #include "array/arraynd.h"
 #include "globalFunctions.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/random/random.h"
 #include "math/vectn.h"
 #include "levelID.h"

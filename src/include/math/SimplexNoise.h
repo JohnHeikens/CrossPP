@@ -21,7 +21,7 @@
 #include <cstddef>  // int
 #include <cstdint>  // int32_t/uint8_t
 #include "vectn.h"
-#include "mathfunctions.h"
+#include "mathFunctions.h"
 #include <random>
 
  //A Perlin Simplex Noise C++ Implementation (1D, 2D, 3D).

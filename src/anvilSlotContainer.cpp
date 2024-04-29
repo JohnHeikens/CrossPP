@@ -15,7 +15,7 @@
 #include "enchantment.h"
 #include "enchantmentID.h"
 #include "globalFunctions.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/vectn.h"
 #include "itemID.h"
 #include "itemStack.h"

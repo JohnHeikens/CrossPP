@@ -79,7 +79,7 @@
 #include "math/direction.h"
 #include "math/graphics/brush/brushes.h"
 #include "math/graphics/color/color.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/rectangletn.h"
 #include "nbtData.h"
 #include "nbtDataTag.h"

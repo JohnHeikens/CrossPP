@@ -2,7 +2,7 @@
 #include <random>
 #include <stdexcept>
 #include "globalFunctions.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/uuid.h"
 #pragma once
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "interface/idestructable.h"
 #include "filesystem/iserializable.h"
 #include "fastarray.h"

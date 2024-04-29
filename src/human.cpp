@@ -90,7 +90,7 @@
 #include "math/graphics/color/color.h"
 #include "math/graphics/resolutiontexture.h"
 #include "math/keyframe.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/random/random.h"
 #include "math/rectangletn.h"

@@ -1,7 +1,7 @@
 #pragma once
 #include "globalFunctions.h"
 #include "interface/idestructable.h"
-#include "mathfunctions.h"
+#include "mathFunctions.h"
 #include <vector>
 
 template<typename t>

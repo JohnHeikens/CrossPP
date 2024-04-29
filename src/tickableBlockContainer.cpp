@@ -28,7 +28,7 @@
 #include "array/fastarray.h"
 #include "globalFunctions.h"
 #include "math/direction.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/random/random.h"
 #include "math/rectangletn.h"

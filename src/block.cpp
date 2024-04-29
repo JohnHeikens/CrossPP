@@ -48,7 +48,7 @@
 #include "math/graphics/color/color.h"
 #include "math/graphics/resolutiontexture.h"
 #include "math/graphics/texture.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/rectangletn.h"
 #include "math/vectn.h"

@@ -15,7 +15,7 @@
 #include "array/arraynd.h"
 #include "globalFunctions.h"
 #include "math/graphics/color/color.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/rectangletn.h"
 #include "math/uuid.h"
 #include "math/vectn.h"

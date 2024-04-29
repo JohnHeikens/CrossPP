@@ -16,7 +16,7 @@
 #include "facingData.h"
 #include "globalFunctions.h"
 #include "math/direction.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/uuid.h"
 #include "math/vectn.h"

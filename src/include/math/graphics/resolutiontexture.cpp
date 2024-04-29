@@ -1,6 +1,6 @@
 #include "resolutiontexture.h"
 #include "math/graphics/brush/brushes.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 //COPIES THE COLORS, NOT THE POINTER
 resolutionTexture::resolutionTexture(const texture& highestResolution, cvec2& size)
 {
