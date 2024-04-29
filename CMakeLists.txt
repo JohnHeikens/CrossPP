@@ -45,7 +45,7 @@ ELSE()
         #set(SFML_DIR "build\\_deps\\sfml-build")
         
     # If you want to link SFML statically
-    #set(SFML_STATIC_LIBRARIES TRUE)
+    set(SFML_STATIC_LIBRARIES TRUE)
     IF (WIN32)
         IF(EXISTS C:/msys64/mingw64/bin/gcc.exe)
             set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)

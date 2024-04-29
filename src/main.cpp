@@ -18,6 +18,44 @@
 #include <SFML/Config.hpp>
 #include "application/thread/setThreadName.h"
 
+
+std::filesystem::path workingDirectory;
+
+sf::RenderWindow* window;
+bool finishedLoading = false;
+
+void showLoadingScreen(){
+    window = application::createWindow(gameName);
+    sf::Font font;
+    //we can load this font as it's in the cache
+    font.loadFromFile("data/font.otf");
+    sf::Text text = sf::Text("medieval survival is loading...\nwhen installing or updating,\nthis might take several minutes", font);
+    text.setFillColor(sf::Color::White);
+    int minSize = math::minimum(window->getView().getSize().x, window->getView().getSize().y);
+    text.setCharacterSize(minSize / 20);
+
+    sf::FloatRect textRect = text.getLocalBounds();
+    text.setOrigin(textRect.left + textRect.width/2.0f,
+                   textRect.top  + textRect.height/2.0f);
+    text.setPosition(window->getView().getCenter());
+    while(window->isOpen()){
+
+        sf::Event e;
+        while(window->pollEvent(e)){
+            if(e.type == sf::Event::Closed){
+                window->close();
+                return;
+            }
+        }
+        if(finishedLoading){
+            return;
+        }
+        window->clear(sf::Color::Magenta);
+        window->draw(text);
+        window->display();
+    }
+}
+
 #if onWindows
 #include "windowsIncluder.h"
 #include <corecrt.h>
@@ -84,7 +122,6 @@ stdPath androidCacheDir;
 //    return 0;
 //}
 #endif
-
 
 std::filesystem::path getCommonAppDataFolder()
 {
@@ -236,6 +273,9 @@ int main(int argc, char *argv[])
         handleError(L"main is somehow called twice");
     }
     mainRunning = true;
+
+    std::thread loadingScreenThread(showLoadingScreen);
+
     // check if the application is installed or if we're debugging
     //
     if (onAndroid || !std::filesystem::exists(L"data"))
@@ -275,6 +315,9 @@ int main(int argc, char *argv[])
     // defaultTheme = new theme(new font(family));
     currentApplication = new application(new gameForm(), gameName);
     setCurrentThreadName(L"client thread");
+    finishedLoading = true;
+    loadingScreenThread.join();
+    currentApplication->window = window;
     cint &result = currentApplication->run();
     //
     //
@@ -283,95 +326,3 @@ int main(int argc, char *argv[])
     return result;
 }
 
-std::filesystem::path workingDirectory;
-
-//#if onAndroid
-//#include <jni.h>
-//
-//extern "C" JNIEXPORT void JNICALL
-//Java_com_johnheikens_medievalsurvival_MainActivity_nativeMain(JNIEnv *env, jobject thiz,
-//                                                              jobject destination_dir) {
-//    // Call the main() function of your C++ code
-//
-//    // Get the class of the destination_dir object
-//    jclass fileClass = env->GetObjectClass(destination_dir);
-//
-//    // Find the getAbsolutePath() method of the File class
-//    jmethodID getAbsolutePathMethod = env->GetMethodID(fileClass, "getAbsolutePath", "()Ljava/lang/String;");
-//
-//    // Call getAbsolutePath() to get the absolute path of the directory
-//    jstring absolutePathString = (jstring) env->CallObjectMethod(destination_dir, getAbsolutePathMethod);
-//
-//    // Convert the absolute path string to a C-style string
-//    const char *absolutePath = env->GetStringUTFChars(absolutePathString, nullptr);
-//
-//    androidCacheDir = absolutePath;//convert the C-style string to a path object
-//    // Release the UTF characters
-//    env->ReleaseStringUTFChars(absolutePathString, absolutePath);
-//
-//    main(0, nullptr);
-//}
-//#endif
-//
-
-//
-// std::wstring getUserAppDataFolder()
-//{
-//	char* pValue;
-//	size_t len;
-//	errno_t err = _dupenv_s(&pValue, &len, "APPDATA");
-//	if (pValue && !err)
-//	{
-//		std::wstring appDataFolder = stringToWString(std::string(pValue, len));
-//		delete pValue;
-//		return appDataFolder;
-//	}
-//	handleError(L"user appdata folder not found");
-//	return L"";
-//}
-//
-// int WINAPI WinMain(
-//	HINSTANCE hInstance,
-//	HINSTANCE hPrevInstance,
-//	LPSTR lpCmdLine,
-//	int nShowCmd)
-//{
-//
-//	std::wstring arguments = stringToWString(std::string(lpCmdLine));
-//
-//	//check if the application is installed or if we're debugging
-//
-//	if (!std::filesystem::exists(L"data")) {//this application is not deployed
-//		//change data folder to %appdata%/JohnHeikens/Medieval Survival/data
-//
-//		std::wstring commonAppDataFolder = getCommonAppDataFolder();
-//		std::wstring newWorkingDirectory = commonAppDataFolder / L"\\JohnHeikens\\Medieval Survival";
-//		if (std::filesystem::exists(newWorkingDirectory)) {
-//			std::filesystem::current_path(newWorkingDirectory); //setting path
-//		}
-//		else {
-//			handleError(newWorkingDirectory + L" not found");
-//		}
-//
-//		//check if it worked
-//		if (std::filesystem::exists(L"data")) {
-//			std::cout << "true";
-//		}
-//		else {
-//			handleError(L"data folder not found in " + commonAppDataFolder);
-//		}
-//	}
-//	workingDirectory = std::filesystem::current_path();
-//	createFoldersIfNotExists(savesFolder);
-//
-//	//fontFamily* family = new fontFamily(new texture(std::wstring(L"data\\ascii.png"), true));
-//	//defaultTheme = new theme(new font(family));
-//	currentApplication = new application(new gameForm(), hInstance);
-//	currentApplication->windowCaption = gameName;
-//	cint& result = currentApplication->run();
-//
-//
-//	delete currentApplication;
-//	_CrtDumpMemoryLeaks();
-//	return result;
-//}

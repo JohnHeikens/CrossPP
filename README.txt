@@ -178,6 +178,11 @@ for now, let's just use the CPU for rendering. later we could try to create a si
 ERROR: Unable to start debugging. GDB exited unexpectedly.
 to debug this, try running the exe by double clicking on it (not with a debugger)
 
+ERROR: Unable to start debugging. Unexpected GDB output from command "-exec-run". During startup program exited with code 0xc0000135.
+The program 'C:\Users\Eigenaar\Documents\Github\MedievalSurvival\build\a.exe' has exited with code 0 (0x00000000).
+
+see what happens when you run the .exe without a debugger (just by clicking on it)
+
 c++ standard:
 change in CMakeLists.txt : 
 set(CMAKE_CXX_STANDARD ##) with ## being version number

@@ -30,14 +30,6 @@
 constexpr int pixelMultiplier = onAndroid ? 4 : 1;
 
 int application::run() {
-    sf::ContextSettings settings;
-
-    settings.antialiasingLevel = 0;
-    auto screenSize = sf::VideoMode::getDesktopMode();
-
-    veci2 size = veci2(screenSize.width / pixelMultiplier, screenSize.height / pixelMultiplier);
-    window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name),
-                                  sf::Style::Close | sf::Style::Resize, settings);
     //initialize them AFTER the render window has been created, so they have a context
     windowTexture = new sf::Texture();
     windowSprite = new sf::Sprite();
@@ -57,12 +49,15 @@ int application::run() {
     // cap at 60fps
     cmicroseconds &frameTime = (microseconds) (1000000 / cappedFps);
     stableLoop loop = stableLoop(frameTime);
+    if(!window){
+        window = createWindow(name);
+    }
     // changeKeyboardLayout();
     //windowSprite->scale(1, -1);
     //windowSprite->move(0, (float)size.y);
     //windowSprite.scale(1, -1);
     //windowSprite.move(0, (float)size.y);
-    layout(crectanglei2(cveci2(), size));
+    layout(crectanglei2(cveci2(), veci2(window->getView().getSize().x, window->getView().getSize().y)));
     mainForm->focus();
     std::future<void> updateAsync = std::future<void>();
     while (window->isOpen()) {
@@ -423,6 +418,20 @@ application::application(form *mainForm, const std::wstring &name) : INamable(na
     this->mainForm = mainForm;
     this->mainForm->addEventHandlers(&control::processEvent, listener);
     //std::fill(lastKeyDown, lastKeyDown + 0x100, false);
+}
+
+sf::RenderWindow *application::createWindow(const std::wstring& name)
+{
+        sf::ContextSettings settings;
+
+    settings.antialiasingLevel = 0;
+    auto screenSize = sf::VideoMode::getDesktopMode();
+
+    veci2 size = veci2(screenSize.width / pixelMultiplier, screenSize.height / pixelMultiplier);
+    return new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name),
+                                  sf::Style::Close | sf::Style::Resize, settings);
+
+    return nullptr;
 }
 
 // OpenGL debug callback function

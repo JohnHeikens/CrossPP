@@ -43,6 +43,7 @@ struct application: INamable, IDestructable
 	application(form* mainForm, const std::wstring& name);
 	bool isFullScreen = false;
 	void switchFullScreen();
+	static sf::RenderWindow* createWindow(const std::wstring& name);
     eventHandler<sf::Event> listener = eventHandler<sf::Event>();
 	//void enableGLDebugCallback();
 };

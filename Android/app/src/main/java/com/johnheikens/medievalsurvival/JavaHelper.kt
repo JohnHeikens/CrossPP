@@ -2,29 +2,66 @@ package com.johnheikens.medievalsurvival
 
 import android.content.Context
 import android.content.res.AssetManager
+import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.io.OutputStream
-import android.util.Log
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Paths
+import kotlin.io.path.exists
+
+
 class JavaHelper {
-    companion object{
+    companion object {
 
 
-        @JvmStatic fun initializeContext(context: Context): String {
+        @JvmStatic
+        fun initializeContext(context: Context): String {
             print("initializing the context")
             val assetDir = "data" // Assuming "data" is the directory you want to copy recursively
             val destinationDir = File(context.filesDir, assetDir)//context.cacheDir
 
-            //when the 'data' folder is not found, then we extract the data folder.
-            if(!destinationDir.exists())
-            {
+            var shouldCopyAssets = false
+
+            if (destinationDir.exists()) {
+                //read version from version.txt and from cache
+                val sb = StringBuilder()
+                val `is`: InputStream = context.assets.open("data/version.txt")
+                val br = BufferedReader(InputStreamReader(`is`, StandardCharsets.UTF_8))
+                var str: String?
+                while (br.readLine().also { str = it } != null) {
+                    sb.append(str)
+                }
+                br.close()
+                val cacheVersion = Integer.valueOf(sb.toString())
+                val versionFile = Paths.get(context.filesDir.toString(), assetDir, "version.txt")
+                if (versionFile.exists()) {
+                    val fileVersion = Integer.valueOf(Files.readAllLines(versionFile)[0])
+                    if (cacheVersion != fileVersion) {
+                        print("cache version ($cacheVersion) differs from file version ($fileVersion)")
+                        shouldCopyAssets = true
+                    }
+                }
+                else{
+                    print("version file doesn't exist in $versionFile")
+                    shouldCopyAssets = true
+                }
+            } else {
                 print("didn't find the data folder")
+                shouldCopyAssets = true
+            }
+            if (shouldCopyAssets) {
                 copyAssetsToCache(context, assetDir, destinationDir)
             }
             return destinationDir.toString();
         }
-        @JvmStatic fun copyAssetsToCache(context: Context, assetDir: String, destinationDir: File) {
+
+        @JvmStatic
+        fun copyAssetsToCache(context: Context, assetDir: String, destinationDir: File) {
             val assetManager = context.assets
             try {
                 val assets = assetManager.list(assetDir)
@@ -57,7 +94,8 @@ class JavaHelper {
         }
 
         @Throws(IOException::class)
-        @JvmStatic private fun copyAssetFile(
+        @JvmStatic
+        private fun copyAssetFile(
             assetManager: AssetManager,
             assetPath: String,
             destinationPath: String
