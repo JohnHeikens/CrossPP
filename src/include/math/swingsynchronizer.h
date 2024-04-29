@@ -1,4 +1,4 @@
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #pragma once
 
 struct swingSynchronizer

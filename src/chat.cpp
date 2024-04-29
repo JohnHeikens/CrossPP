@@ -33,7 +33,7 @@
 #include "array/wstringFunctions.h"
 #include "globalFunctions.h"
 #include "math/graphics/texture.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/rectangletn.h"
 #include "math/vectn.h"
 #include "type/conversion.h"

@@ -5,7 +5,7 @@
 // #include "array/zipiterator.h"
 #include "optimization/optimization.h"
 #include "direction.h"
-#include "mathfunctions.h"
+#include "mathFunctions.h"
 #include <ranges>
 #include <array>
 

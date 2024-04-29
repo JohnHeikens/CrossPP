@@ -9,7 +9,7 @@
 #include "globalFunctions.h"
 #include "array/wstringFunctions.h"
 #include "math/direction.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/rectangletn.h"
 
 

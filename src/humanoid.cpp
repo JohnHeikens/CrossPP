@@ -49,7 +49,7 @@
 #include "math/bodypart2d.h"
 #include "math/direction.h"
 #include "math/graphics/brush/brushes.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/random/random.h"
 #include "math/rectangletn.h"

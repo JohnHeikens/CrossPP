@@ -47,7 +47,7 @@
 #include "math/graphics/resolutiontexture.h"
 #include "math/graphics/texture.h"
 #include "math/LayerNoiseSimplex.h"
-#include "math/mathfunctions.h"
+#include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/rectangletn.h"
 #include "math/timemath.h"

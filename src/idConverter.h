@@ -25,7 +25,7 @@ struct idConverter
 	idConverter(cint& oldVersion, cint& newVersion = currentFileVersionID);
 
 	template<typename dataType, typename idType>
-	inline static bool convertID(const idType& valueToConvert, idType& destination, const std::vector <dataType>& converter)
+	inline static bool convertID(idType& valueToConvert, const std::vector <dataType>& converter)
 	{
 		cint index = (int)converter[(int)valueToConvert];
 		if (index != -1)
@@ -38,7 +38,7 @@ struct idConverter
 				}
 			}
 
-			destination = (idType)index;
+			valueToConvert = (idType)index;
 			return true;
 		}
 		else
@@ -56,12 +56,10 @@ struct idConverter
 		}
 		else
 		{
-			int intValue;
-			if (s.serializeValue(memberName, intValue))
+			if (s.serializeValue(memberName, (int&)value))
 			{
-				if ((!converter) || convertID<idType>((idType&)intValue, (idType&)intValue, *converter))
+				if ((!converter) || convertID<idType>(value, *converter))
 				{
-					value = (idType)intValue;
 					return true;
 				}
 			}
@@ -111,7 +109,7 @@ struct idConverter
 		//convert everything to the new value
 		for (size_t index = 0; index < idArraySize; index++)
 		{
-			convertID<idType>(idArray[index], idArray[index], converter);
+			convertID<idType>(idArray[index], converter);
 		}
 	}
 	template<typename dataType, typename idType>
