@@ -93,6 +93,9 @@ https://developercommunity.visualstudio.com/t/pragma-warningpush-0-no-longer-wor
 to include sfml:
 use vcpkg (click on an include directive to see)
 
+a window is attached to a thread. use that thread only!
+do the rendering preferrably on the main thread, while the game itself can be on another thread.
+
 do NOT put code in your onedrive documents folder! once it's full, it basically plays a ransom game where you either heve to buy more storage or lose your files after 30 days.
 to fix, delete the ipch files and the installer EXE and empty the release and debug output folders
 
@@ -159,7 +162,38 @@ mingw-w64-x86_64-ninja
 to msys2
 
 cmake set to debug:
-"command": "cmake .. -G Ninja -DCMAKE_BUILD_TYPE:STRING=Debug"
+"command": "cmake .. -G Ninja -DCMAKE_BUILD_TYPE:STRING=Release"
+
+these loops are nested loops!
+    do
+        while (startRendering->get_future().get())
+        {
+            // wait until signal to start processing is set
+
+            startRendering = std::make_shared<std::promise<bool>>();
+
+            texture &graphics = *buffer[0];
+            mainForm->render(cveci2(0, 0), graphics);
+            // Draw graphics->colors to window
+
+            graphics.switchChannels(graphics.baseArray, 0, 2);
+            finishedRendering->set_value();
+        }
+    while (true);
+
+error in a member function with an almost empty stack trace:
+make sure to std::bind to a reference, not a copy!
+socket->sendPacketThread = new std::thread(std::bind(&tcpSerializer::sendPacket, &socket->s));
+&socket->s instead of socket->s
+
+analyze apk file:
+android studio -> build -> analyze apk...
+
+ignoreassetspattern:
+https://stackoverflow.com/questions/59158942/make-android-copy-all-from-next-asset-folder-via-aaptoptions
+
+there are no arguments to that depend on a template parameter:
+typedef the base class as 'base'. then call the base functions using 'base::'
 
 linker.exe exits with code 5:
 remove all other compiler paths from PATH

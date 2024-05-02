@@ -6,24 +6,27 @@
 #include "socketContainer.h"
 #include <thread>
 #include <SFML/Graphics/RenderTexture.hpp>
+#include "math/graphics/doubleBuffer.h"
+#include "math/graphics/video/videoEncoder.h"
 struct playerSocket : socketContainer {
 	human* player = nullptr;
 	gameControl* screen = nullptr;
 	bool authenticated = false;
 	playerSocket(sf::TcpSocket* socket);
 
-	//2 contexts and rendertextures, 1 for each thread. this is to prevent contexts from being created and deleted constantly
-	byte thread0DoubleBufferIndex = 0;
-	texture* doubleBuffer[2]{};
 	//sf::RenderTexture doubleBuffer[2]{};
 	//sf::Context contexts[2]{};
 	//texture* lastRenderResult = nullptr;
 	//sf::RenderTexture* lastRenderResult = nullptr;
+	doubleBuffer buffer = doubleBuffer();
+	videoEncoder encoder = videoEncoder();
 	void processSocketInput();
 	~playerSocket();
 	bool shouldDisconnect = false;
 	std::thread* sendRenderResultThread = nullptr;
 	std::thread* sendPacketThread = nullptr;
+	fp packetsReceivedPerSecond = 0;
+	fp packetsSentPerSecond = 0;
 };
 void renderAsync(playerSocket* socket);
 void sendRenderResultAsync(playerSocket* socket, nbtCompound* compound, nbtSerializer* s);

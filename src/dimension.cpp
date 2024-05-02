@@ -47,6 +47,7 @@
 #include "nbtSerializer.h"
 #include "structureID.h"
 #include "tickableBlockContainer.h"
+#include "math/algorithm/findInCircles.h"
 
 color dimension::getColorMultiplier(cfp& sunLight, cfp& blockLight) const
 {
@@ -344,7 +345,7 @@ bool dimension::locateStructureChunkCoordinates(const structureID& id, cveci2& i
 {
 	//expand outwards from position
 	constexpr int chunkSearchRadius = 0x100;
-	auto checkFunction = [this, id, initialChunkCoordinates](cveci2& pos) {
+	auto checkFunction = [this, &id, &initialChunkCoordinates](cveci2& pos) {
 		const chunk& c = chunk(this, pos + initialChunkCoordinates);
 		return std::find(c.generatedStructures.begin(), c.generatedStructures.end(), id) != c.generatedStructures.end();
 		};

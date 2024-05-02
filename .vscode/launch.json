@@ -25,14 +25,14 @@
             },
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/a",
+            "program": "${workspaceFolder}/build/${config:buildType}/a",
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "make",
             "args": [],
             "externalConsole": false,
             "environment": [],
-            "visualizerFile": "${workspaceFolder}/visualization.natvis",
-            "showDisplayString": true,
+            //"visualizerFile": "${workspaceFolder}/visualization.natvis",
+            //"showDisplayString": true,
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",

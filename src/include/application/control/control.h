@@ -136,7 +136,7 @@ public:
 	//called when this control looses focus
 	virtual void lostFocus();
 
-	virtual void paste();
+	virtual void paste(const std::wstring& text);
 
 	//called when a child gains focus
 	void focusChild(control* newFocusedChild);

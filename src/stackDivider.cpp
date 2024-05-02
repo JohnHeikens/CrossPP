@@ -1,6 +1,7 @@
 
 #include "stackDivider.h"
 #include "itemData.h"
+#include "array/arrayFunctions/sortedArray.h"
 
 bool stackDivider::addStack(itemStack &s) {
     if (!stackHolding.addStack(s))return false;

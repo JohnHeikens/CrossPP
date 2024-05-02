@@ -56,11 +56,11 @@ void worldCreator::onClick(const controlEventArgs &args) {
         worldNameTextBox->text = L"";
         //'move' the new world to the game
         currentWorld = worldCreating;
+        worldCreating = new world();
         generateNewWorld();
 
         createServerFromCurrentWorld();
 
-        worldCreating = new world();
 
         mainForm->switchVisibleChild(currentClient);
     } else if (&args.sender == cheatsButton) {

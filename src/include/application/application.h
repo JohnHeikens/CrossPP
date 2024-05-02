@@ -9,6 +9,8 @@
 #include "globalFunctions.h"
 #include "interface/inamable.h"
 #include "event/eventhandler.h"
+#include <future>
+#include "math/graphics/doubleBuffer.h"
 
 struct application: INamable, IDestructable
 {
@@ -24,7 +26,8 @@ struct application: INamable, IDestructable
 	//std::wstring windowCaption = std::wstring(L"");
 	//colorb* windowColorPtr = nullptr;
 	//graphicsObject graphics = graphicsObject();
-	texture graphics = texture(cvect2<fsize_t>());
+
+	doubleBuffer buffer = doubleBuffer();
 	form* mainForm;
 
 	//vecl2 MousePos = vecl2();
@@ -36,6 +39,7 @@ struct application: INamable, IDestructable
 	//void changeKeyboardLayout();
     static sf::RenderWindow* createWindow(const std::wstring& name);
 	int run();
+	void runGraphics();
 	void layout(crectanglei2& newRect);
 	void processInput();
 	void linkGraphics();
@@ -44,7 +48,9 @@ struct application: INamable, IDestructable
 	application(form* mainForm, const std::wstring& name);
 	bool isFullScreen = false;
 	void switchFullScreen();
-	static sf::RenderWindow* createWindow(const std::wstring& name);
     eventHandler<sf::Event> listener = eventHandler<sf::Event>();
+	std::thread* renderThread = nullptr;
+    std::shared_ptr<std::promise<bool>> startRendering = std::make_shared<std::promise<bool>>();
+    std::shared_ptr<std::promise<void>> finishedRendering = std::make_shared<std::promise<void>>();
 	//void enableGLDebugCallback();
 };

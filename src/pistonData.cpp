@@ -56,7 +56,7 @@ bool pistonData::tick(tickableBlockContainer* containerIn, cveci2& position)
 
 				//check if can push
 				if (containerIn->getAffectedPositions(blockNextToPistonHeadPosition, directionNormal, pistonPushLimit,
-					[containerIn, position, pistonHeadPosition, pushDirection](cveci2& pos, cveci2& checkDirection) {
+					[containerIn, &position, &pistonHeadPosition, &pushDirection](cveci2& pos, cveci2& checkDirection) {
 						if ((pos == position) || (pos == pistonHeadPosition))
 						{
 							return false;

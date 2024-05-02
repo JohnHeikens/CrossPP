@@ -78,5 +78,5 @@ size_t getTagListIndexByName(std::wstring name)
 	name = removeNameSpace(name);
 	//std::function<bool(block*)> func = std::function<bool(block*)>([name](const auto& a) {return a->name == name; });
 	//return itemtagList.find(func);
-	return tagList.findFunction([name](const auto& a) {return a->name == name; });
+	return tagList.findFunction([&name](const auto& a) {return a->name == name; });
 }

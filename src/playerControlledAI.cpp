@@ -15,7 +15,9 @@
 void playerControlledAI::execute() {
     human *connectedPlayer = (human *) connectedEntity;
     // currentGame->focused && !currentGame->focusedChild;
-    cbool &worldFocus = connectedPlayer->screen.touchInput ? is_in(
+    cbool &worldFocus =
+            !connectedPlayer->screen.inventoryUI->visible &&
+            connectedPlayer->screen.touchInput ? is_in(
             connectedPlayer->screen.focusedChild,
             connectedPlayer->screen.moveJoystick,
             connectedPlayer->screen.interactJoystick,
@@ -23,6 +25,7 @@ void playerControlledAI::execute() {
                                                            :
                         !(connectedPlayer->screen.focusedChild);
 
+    if (worldFocus) {
     //all values are set to false automatically
     if (connectedPlayer->screen.touchInput) {
         if (connectedPlayer->screen.moveJoystick->fingerDown) {
@@ -48,7 +51,7 @@ void playerControlledAI::execute() {
             connectedPlayer->wantsToJump = connectedPlayer->wantsToGoUp;
         }
 
-    } else if (worldFocus) {
+    } else {
         connectedPlayer->wantsToSprint =
                 connectedPlayer->screen.holdingDownKey((vk) keyID::sprint);
         connectedPlayer->wantsToJump =
@@ -67,7 +70,6 @@ void playerControlledAI::execute() {
 
     cbool &spectating = connectedPlayer->currentGameMode == gameModeID::spectator;
 
-    if (worldFocus) {
         if (spectating) {
             if (connectedPlayer->screen.scrollDelta &&
                 !connectedPlayer->screen.holdingDownKey((vk) keyID::camera)) {

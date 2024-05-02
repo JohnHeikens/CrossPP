@@ -2,7 +2,7 @@
 #include "clientInput.h"
 #include <filesystem/file/tcpSerializer.h>
 #include "socketContainer.h"
-#include <array/arrayfunctions.h>
+#include "array/arrayFunctions/arrayFunctions.h"
 #include "nbtSerializer.h"
 
 bool clientInput::serialize(nbtSerializer &s)
@@ -42,8 +42,11 @@ bool clientInput::serialize(nbtSerializer &s)
                         break;
                     case sf::Event::KeyPressed:
                     case sf::Event::KeyReleased:
-                        //we don't need to serialize anything else. scan code is the local key code.
+                        //we don't need to serialize the scan code, that is the local key code.
                         //when reading this data on another device, the result would be completely different.
+                        s.serializeValue(L"alt", eventHistory[i].key.alt);
+                        s.serializeValue(L"control", eventHistory[i].key.control);
+                        s.serializeValue(L"shift", eventHistory[i].key.shift);
                         s.serializeValue(L"code", eventHistory[i].key.code);
                         break;
                     case sf::Event::SensorChanged:

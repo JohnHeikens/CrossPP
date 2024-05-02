@@ -20,7 +20,7 @@
 #include "nbtData.h"
 #include "nbtDataTag.h"
 #include "type/types.h"
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 
 template <typename t>
 constexpr nbtDataTag getListDataTag()
@@ -251,7 +251,7 @@ struct nbtSerializer : iSerializer
 			if (currentChildCompound.dataTag == nbtDataTag::tagCompound)
 			{
 				// check for multiple children with the same name
-				auto it = std::find_if(currentChildCompound.children.begin(), currentChildCompound.children.end(), [memberName](const auto &a)
+				auto it = std::find_if(currentChildCompound.children.begin(), currentChildCompound.children.end(), [&memberName](const auto &a)
 									   { return a->name == memberName; });
 				if (it != currentChildCompound.children.end())
 				{
@@ -297,7 +297,7 @@ struct nbtSerializer : iSerializer
 						handleError(std::wstring(L"compound tags have names"));
 					}
 				}
-				auto it = std::find_if(currentChildCompound.children.begin(), currentChildCompound.children.end(), [memberName](const auto &a)
+				auto it = std::find_if(currentChildCompound.children.begin(), currentChildCompound.children.end(), [&memberName](const auto &a)
 									   { return a->name == memberName; });
 				if (it == currentChildCompound.children.end()) // || (*it)->dataTag != valueDataTag)
 				{

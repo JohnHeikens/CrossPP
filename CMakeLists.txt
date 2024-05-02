@@ -3,6 +3,11 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
     SET(ANDROID 1)
 ENDIF()
 
+#output all files to the same directory, to make it easier
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 # Use c++ 23
 if(NOT DEFINED CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
@@ -40,12 +45,12 @@ ELSE()
     # Enable additional warnings and debug mode
     # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
     # -pedantic removed; it complains about anonymous structs
-    set (CMAKE_CXX_FLAGS "-g -W -Wno-stringop-overread -D__GXX_TYPEINFO_EQUALITY_INLINE=1")#added D__GXX_TYPEINFO_EQUALITY_INLINE=0 for workaround test
+    set (CMAKE_CXX_FLAGS "-g -W -Wno-stringop-overread")#added D__GXX_TYPEINFO_EQUALITY_INLINE=0 for workaround test
         message ("android is not defined : ${CMAKE_SYSTEM_NAME}")
         #set(SFML_DIR "build\\_deps\\sfml-build")
         
     # If you want to link SFML statically
-    set(SFML_STATIC_LIBRARIES TRUE)
+    #set(SFML_STATIC_LIBRARIES TRUE) #typeinfo problem
     IF (WIN32)
         IF(EXISTS C:/msys64/mingw64/bin/gcc.exe)
             set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)
@@ -85,62 +90,25 @@ string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId}) 
 
 
-
 # add .cpp-files
 
 file(GLOB_RECURSE source_list "src/*.cpp")
 
-#list(FILTER source_list EXCLUDE REGEX "!(${PROJECT_SOURCE_DIR}/src/*.(c|cpp))" )
-#list(FILTER source_list EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/src/gzip/*" )
-
 IF (LOG_FILES_INCLUDED)
-foreach(header_dir ${source_list})
-    message(STATUS "[INFO] source file included: ${header_dir}")
+foreach(source_dir ${source_list})
+    message(STATUS "[INFO] source file included: ${source_dir}")
 endforeach()
 ENDIF()
 set(SOURCES ${source_list}) 
 
-# folder with .h files, e.g. include/
-#MACRO(HEADER_DIRECTORIES return_list)
-#    FILE(GLOB_RECURSE new_list 
-#    src/*.h)
-#    SET(dir_list "")
-#    FOREACH(file_path ${new_list})
-#        GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
-#        SET(dir_list ${dir_list} ${dir_path})
-#    ENDFOREACH()
-#    LIST(REMOVE_DUPLICATES dir_list)
-#    SET(${return_list} ${dir_list})
-#ENDMACRO()
-#
-#
-#HEADER_DIRECTORIES(header_dir_list)
-#
-#foreach(header_dir ${header_dir_list})
-#    message(STATUS "[INFO] Directory included: ${header_dir}")
-#endforeach()
-#
-#list(LENGTH header_dir_list header_dir_list_count)
-#message(STATUS "[INFO] Found ${header_dir_list_count} header directories.")
-
-
 #add directories to add to #include statements for example we don't have to #include "include/math/..." but with this shortcut we can #include "math/..."
 find_package(ZLIB REQUIRED)
-include_directories(src) 
+include_directories(src)
 include_directories(src/include)
 include_directories( ${ZLIB_INCLUDE_DIRS} )
 
-#include_directories(ZLIB src/gzip/zlib-1.2.11/zlib-1.2.11)
-
-#set(SOURCE_DIR )
 # 3rd party dependencies
 add_subdirectory(lib)
-
-#add_subdirectory(src/gzip/zlib-1.2.11/zlib-1.2.11)
-#find_package(ZLIB REQUIRED)
-
-#vcpkg_init()
-#vcpkg_add_package(zlib)
 
 # Here the .c/.cpp files get linked
 IF(ANDROID)
@@ -182,8 +150,6 @@ IF(SFML_STATIC_LIBRARIES)
     target_link_libraries(${PROJECT_NAME} PUBLIC 
     -static-libgcc -static-libstdc++)
 
-    #find_path(GZIP_HPP_INCLUDE_DIRS "gzip/compress.hpp")
-    #target_include_directories(${PROJECT_NAME} PRIVATE ${ZLIB_INCLUDE_DIRS})
     set(ZLIB_USE_STATIC_LIBS "ON")
 ENDIF()
 target_link_libraries(${PROJECT_NAME} PUBLIC

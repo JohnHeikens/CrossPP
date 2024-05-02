@@ -205,7 +205,7 @@ structure::createStructure(dimension &dimensionIn, crectanglei2 &rect, cbool &in
 
 std::vector<veci2> structure::findBlocks(const blockID &id) {
     return getAffectedPositions(crectanglei2(blockIDArray.getClientRect()),
-                                [this, id](cveci2 &pos) {
+                                [this, &id](cveci2 &pos) {
                                     return getBlockID(pos) == id;
                                 });
 }
@@ -242,7 +242,7 @@ bool structure::inBounds(cveci2 &position) const {
 
 structure *getStructureByPath(const stdPath &path) {
 
-    const auto i = std::find_if(structureList.begin(), structureList.end(), [path](const auto &a) {
+    const auto i = std::find_if(structureList.begin(), structureList.end(), [&path](const auto &a) {
         return a->pathWithoutExtension.compare(path) == 0;
     });
     return i == structureList.end() ? nullptr : *i;

@@ -21,7 +21,7 @@ bool repeaterData::tick(tickableBlockContainer* containerIn, cveci2& position)
 			containerIn->addUpdatePosition(position);
 		}
 
-		if (std::find_if(&delayedPowerLevels[0], endPtr, [constantPowerLevel](const auto& a) { return a != constantPowerLevel; }) != endPtr)
+		if (std::find_if(&delayedPowerLevels[0], endPtr, [&constantPowerLevel](const auto& a) { return a != constantPowerLevel; }) != endPtr)
 		{
 			return true;
 		}

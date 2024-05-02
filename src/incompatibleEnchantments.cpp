@@ -1,4 +1,4 @@
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 #include "incompatibleEnchantments.h"
 bool canCombine(const enchantmentID& enchantment0, const enchantmentID& enchantment1)
 {

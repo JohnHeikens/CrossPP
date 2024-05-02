@@ -80,6 +80,7 @@ struct arraynd :IDestructable
 		std::swap(size, with.size);
 	}
 
+	//this operator is necessary!!!
 	inline arraynd& operator=(arraynd copy)
 	{
 		this->swap(copy);

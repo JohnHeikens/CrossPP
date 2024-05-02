@@ -284,7 +284,7 @@ void blockContainer::setBlockID(cveci2& position, const blockID& block, const ch
 }
 std::vector<veci2> blockContainer::getBlockPositions(crectanglei2& rectToSearch, const std::vector<blockID>& blocksToFind)
 {
-	return getAffectedPositions(rectToSearch, [this, blocksToFind](cveci2& pos) {
+	return getAffectedPositions(rectToSearch, [this, &blocksToFind](cveci2& pos) {
 		return std::find(blocksToFind.begin(), blocksToFind.end(), getBlockID(pos)) != blocksToFind.end();
 		});
 }
@@ -692,7 +692,7 @@ void blockContainer::addPool(cveci2& pos, const blockID& block, cint& maxPoolSiz
 }
 void blockContainer::addFluidPool(cveci2& pos, const blockID& block, cint& maxPoolSize)
 {
-	addPool(pos, block, maxPoolSize, [this, block](cveci2& pos, cveci2& relativeCheckDirection) {
+	addPool(pos, block, maxPoolSize, [this, &block](cveci2& pos, cveci2& relativeCheckDirection) {
 		const blockID& b = getBlockID(pos);
 		return canBeDestroyedByFluids(b) || (isFluid(b) && b != block);
 		});

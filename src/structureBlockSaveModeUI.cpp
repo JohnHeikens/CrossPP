@@ -109,7 +109,7 @@ void structureBlockSaveModeUI::mouseDown(cveci2& position, cmb& button)
 		cveci2 absoluteStartPosition = currentHuman->selectedContainerPosition + structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition;
 
 		std::vector<veci2> possibleStructureBlockPositions = containerIn->getAffectedPositions(crectanglei2(absoluteStartPosition, cveci2(maxStructureSize)),
-			[containerIn, nameToFind = structureBlockOptions->temporaryStructureBlockData->structureName](cveci2& pos)
+			[containerIn, &nameToFind = structureBlockOptions->temporaryStructureBlockData->structureName](cveci2& pos)
 			{
 				if (containerIn->getBlockID(pos) == blockID::structure_block)
 				{

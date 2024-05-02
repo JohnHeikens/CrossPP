@@ -1,6 +1,6 @@
 #pragma once
 #include "array/fastlist.h"
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 std::wstring removeNameSpace(const std::wstring& name);
 template<typename dataType, typename idType>
 struct idList :fastList<dataType>

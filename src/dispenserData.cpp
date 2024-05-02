@@ -6,7 +6,7 @@
 #include "dispenserData.h"
 #include "rectangularSlotContainer.h"
 #include "tickableBlockContainer.h"
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 #include "soundList.h"
 #include "entityData.h"
 #include "entity.h"

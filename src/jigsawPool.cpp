@@ -1,7 +1,7 @@
 #include "folderList.h"
 #include "jigsawPool.h"
 #include "filesystem/textfile.h"
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 std::vector<jigsawPool*> jigsawPoolList = std::vector<jigsawPool*>();
 void reloadJigsawPools()
 {

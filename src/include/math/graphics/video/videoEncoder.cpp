@@ -1,5 +1,6 @@
 #include "videoEncoder.h"
-
+#include "math/algorithm/findInCircles.h"
+#include "math/graphics/brush/brushes.h"
 textureRGB videoEncoder::addFrame(const textureRGB &frame)
 {
     if (frame.size != totalTexture.size)
@@ -17,9 +18,9 @@ textureRGB videoEncoder::addFrame(const textureRGB &frame)
 
     // check in a grid
     cint &gridStepSize = 0x200;
-    cint &gridStepcount = frame.size.x / gridStepSize;
-    array2d<veci2> motionVectors = array2d<veci2>(veci2(gridStepcount));
-    array2d<int> leastErrorPerBlock = array2d<int>(veci2(gridStepcount));
+    cveci2 &gridSteps = frame.size / gridStepSize;
+    array2d<veci2> motionVectors = array2d<veci2>(gridSteps);
+    array2d<int> leastErrorPerBlock = array2d<int>(gridSteps);
     rectanglei2 blocksRect = rectanglei2(motionVectors.size);
     // the outer borders of the frame will not be checked. too bad
     for (cveci2 &blockPos : blocksRect)
@@ -30,18 +31,19 @@ textureRGB videoEncoder::addFrame(const textureRGB &frame)
         constexpr int searchRadius = 0x4;
         veci2 &leastErrorPos = motionVectors.getValueReferenceUnsafe(blockPos);
         int &leastError = leastErrorPerBlock.getValueReferenceUnsafe(blockPos);
+        leastError = INT_MAX;
 
         auto checkFunction = [&posToCheck, &colorToCompare, &leastError, &leastErrorPos, &frame](cveci2 &relativePosition)
         {
             ccolor &c = frame.getValue(posToCheck + relativePosition);
-            int error = 0;
-            if (c != colorToCompare)
-            {
-                error = 1;
-            }
+            cint& error = 
+            c[0] > colorToCompare[0] ? (c[0] - colorToCompare[0]) : (colorToCompare[0] - c[0]) +
+            c[1] > colorToCompare[1] ? (c[1] - colorToCompare[1]) : (colorToCompare[1] - c[1]) +
+            c[2] > colorToCompare[2] ? (c[2] - colorToCompare[2]) : (colorToCompare[2] - c[2]);
             if (error < leastError)
             {
-                leastErrorPos = posToCheck;
+                leastErrorPos = relativePosition;
+                leastError = error;
             }
             return error == 0;
         };
@@ -51,6 +53,19 @@ textureRGB videoEncoder::addFrame(const textureRGB &frame)
         }
         motionWeights[leastErrorPos] += leastError;
     }
+
+    int maxVotes = 0;
+    veci2 movementVector;
+    for(auto p : motionWeights){
+        if(p.second > maxVotes){
+            movementVector = p.first;
+        }
+    }
+    textureRGB texCopy = totalTexture;
+    //move the whole texture
+    auto movedRect = texCopy.getClientRect();
+    movedRect.pos0 += movementVector;
+    fillTransformedBrushRectangle(rectangle2(texCopy.getClientRect()), vec2(movementVector), texCopy, totalTexture);
 
     const colorChannel *const &totalTexEndPtr = (colorChannel *)totalTexture.end();
     colorChannel *diffPtr = (colorChannel *)diffTex.baseArray;

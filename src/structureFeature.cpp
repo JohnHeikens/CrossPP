@@ -5,7 +5,7 @@
 #include "idAnalysis.h"
 #include "structureFeature.h"
 #include "jigsawData.h"
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 #include "tickableBlockContainer.h"
 #include "doubleBlockData.h"
 #include "entity.h"

@@ -1,6 +1,6 @@
 #include "globalFunctions.h"
-#include <array/arrayfunctions.h>
 #include <sstream>
+#include "array/arrayFunctions/arrayFunctions.h"
 #pragma once
 struct uuid 
 {

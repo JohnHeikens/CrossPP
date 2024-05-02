@@ -1,5 +1,10 @@
 {
     "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}/build/${config:buildType}",
+        "env": {
+        },
+    },
     "tasks": [
         {
             "label": "make",
@@ -14,7 +19,6 @@
                 "command": "make -j$((`sysctl -n hw.ncpu`))"
             },
             "options": {
-                "cwd": "${workspaceFolder}/build"
             },
             "problemMatcher": [],
             "group": {
@@ -23,14 +27,18 @@
             }
         },
         {
+            
             "label": "populate",
             "type": "shell",
             "windows": {
-                "command": "cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release" // <-- ld returned 5 exit status
+                "command": "cmake -B . -S ../.. -G Ninja -DCMAKE_BUILD_TYPE=${config:buildType}" // <-- ld returned 5 exit status
             },
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            },
+            //"options": {
+            //    "cwd": "${workspaceFolder}/build/${config:buildType}",
+            //    "env": {
+            //        "buildType": "Release"
+            //    },
+            //},
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -42,9 +50,6 @@
             "type": "shell",
             "windows": {
                 "command": "ninja --version -t clean"
-            },
-            "options": {
-                "cwd": "${workspaceFolder}/build"
             },
             "problemMatcher": []
         },

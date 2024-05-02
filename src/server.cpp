@@ -24,7 +24,7 @@ void server::execute()
 	listenerSelector.add(listener);
 
 
-	stableLoop loop = stableLoop(1000000 / 60);
+	stableLoop loop = stableLoop(1000000 / defaultFPS);
 	//connectionManagerThread = new std::thread(listenForIncomingConnections);
 
 	std::future<playerSocket*> newPlayerSocket = std::async(&listenForIncomingConnections);
@@ -50,7 +50,19 @@ void server::execute()
 		//accept connection
 		if (newPlayerSocket.valid()) {
 			if (playerSocket* newSocket = newPlayerSocket.get()) {
-				addToServer(newSocket);
+                //check if not double joining
+                for(auto const& cl : clients){
+                    if(cl->player->identifier == newSocket->player->identifier)
+                    {
+						currentWorld->currentChat.addLine(newSocket->player->name + L" tried to join, but a player with UUID " + (std::wstring)cl->player->identifier + L" is online already");
+                        delete newSocket;
+                        newSocket = nullptr;
+                        break;
+                    }
+                }
+                if(newSocket){
+                    addToServer(newSocket);
+                }
 			}
 			newPlayerSocket = std::async(&listenForIncomingConnections);
 		}
@@ -83,13 +95,25 @@ void server::renderClients()
 
 	std::vector<std::thread*> threads = std::vector<std::thread*>();
 	for (auto c : clients) {
-		threads.push_back(new std::thread(renderAsync, c));
+		constexpr fp multiplier = 1 - (1 / defaultFPS);
+		c->packetsReceivedPerSecond *= multiplier;
+		c->packetsSentPerSecond *= multiplier;
+        //sync frame rate with ticks
+		//when the client is not keeping up with the server, send less packets, less to render. yay!
+		//synchronize the client's screen with the ticks
+		cbool& clientOverloaded = c->packetsSentPerSecond - c->packetsReceivedPerSecond > 10;// || c->packetsSentPerSecond < 25;
+		
+        if(!clientOverloaded || currentWorld->ticksSinceStart > lastRenderTick){
+            //mobile device, don't send that many frames to avoid overloading it
+            threads.push_back(new std::thread(renderAsync, c));
+        }
 	}
 	//wait until all screens have rendered
 	for (auto t : threads) {
 		t->join();
 		delete t;
 	}
+    lastRenderTick = currentWorld->ticksSinceStart;
 	currentBenchmark->removeOldBenchmarks();//the rendering time will be displayed in the next render session
 	currentBenchmark->addBenchmarkPoint(cpuUsageID::miscellaneous);
 }

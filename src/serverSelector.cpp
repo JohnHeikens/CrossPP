@@ -8,7 +8,7 @@
 #include "serverEditor.h"
 #include "serverControl.h"
 #include "client.h"
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 
 serverSelector::serverSelector() : gameSelector()
 {

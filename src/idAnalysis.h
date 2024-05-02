@@ -1,4 +1,4 @@
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 #include "statusEffectID.h"
 #include "itemID.h"
 #include "biomeID.h"

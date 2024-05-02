@@ -1,3 +1,6 @@
+import com.android.build.api.dsl.AndroidResources
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -52,6 +55,42 @@ android {
             useLegacyPackaging = true
         }
     }
+    //applicationVariants.all { variant ->
+    //    if (variant.buildType.name == "release") {
+    //        variant.mergeAssetsProvider.configure {
+    //            doLast {
+    //                delete( fileTree(outputDir))
+    //            }
+    //        }
+    //    }
+    //}
+    androidResources() {
+        //ignoreAssetsPatterns.add("!data/saves/**")
+        //ignoreAssetsPatterns.add("!**")
+        //ignoreAssetsPatterns.add("!*.dat")
+    }
+    buildTypes {
+        release {
+            androidResources {
+                ignoreAssetsPattern = "<dir>saves:<dir>screenshots:<dir>4thful:<dir>4x4:<dir>creator pack:<file>playerdata.dat:<file>serverlist.dat:<file>.class"
+            }
+        }
+    }
+
+    //sourceSets {
+    //    named("main") {
+//
+    //        resources {
+    //            srcDirs("src/main/assets")
+    //            exclude()
+    //        }
+    //        assets.srcDir("src/main/assets").
+    //        //assets fileTree(projectDir).matching {
+    //        //    include '**/src/main/java'
+    //        //}
+    //    }
+    //}
+
     //sourceSets {
     //    getByName("main") {
     //        jni {
@@ -89,7 +128,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

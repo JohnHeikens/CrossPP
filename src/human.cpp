@@ -619,8 +619,6 @@ void human::closeBlockGUI()
 {
 	screen.inventoryUI->unLink();
 
-	screen.switchVisibleChild(nullptr);
-
 	selectedContainerContainer = nullptr;
 	selectedContainerPosition = veci2();
 }

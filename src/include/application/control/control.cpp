@@ -129,9 +129,9 @@ void control::mouseDown(cveci2 &position, cmb &button)
 	{
 		focusChild(highest);
 	}
-	if (focusedChild)
+	if (highest)
 	{
-		focusedChild->mouseDown(position - focusedChild->rect.pos0, button);
+        highest->mouseDown(position - highest->rect.pos0, button);
 	}
 	else
 	{
@@ -143,9 +143,9 @@ void control::mouseUp(cveci2 &position, cmb &button)
 {
 	control *highest = getHighestChild(position);
 	onMouseUp.invoke(mouseButtonEventArgs(*this, position, button));
-	if (highest && (highest == focusedChild))
+	if (highest)
 	{
-		focusedChild->mouseUp(position - focusedChild->rect.pos0, button);
+        highest->mouseUp(position - highest->rect.pos0, button);
 	}
 }
 
@@ -156,10 +156,11 @@ void control::click()
 
 void control::scroll(cveci2 &position, cint &scrollDelta)
 {
+    control *highest = getHighestChild(position);
 	onScroll.invoke(mouseWheelEventArgs(*this, position, scrollDelta));
-	if (focusedChild)
+	if (highest)
 	{
-		focusedChild->scroll(position - focusedChild->rect.pos0, scrollDelta);
+        highest->scroll(position - highest->rect.pos0, scrollDelta);
 	}
 }
 
@@ -195,11 +196,11 @@ void control::lostFocus()
 	}
 }
 
-void control::paste()
+void control::paste(const std::wstring& text)
 {
 	if (focusedChild)
 	{
-		focusedChild->paste();
+		focusedChild->paste(text);
 	}
 }
 

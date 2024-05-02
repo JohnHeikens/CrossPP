@@ -3,18 +3,22 @@
 #include <network/compressedPacket.h>
 #include <utility>
 #include "optimization/optimization.h"
-struct tcpSerializer : streamBaseInterface {
-	sf::TcpSocket* socket = nullptr;
-	compressedPacket* receivingPacket = new compressedPacket();
-	compressedPacket* sendingPacket = new compressedPacket();
-	const char* receivingPacketPos = nullptr;
-	const char* receivingPacketEndPos = nullptr;
-	inline bool write(const char* const& value, const size_t& size) override
+#include <future>
+#include <functional>
+struct tcpSerializer : streamBaseInterface
+{
+	sf::TcpSocket *socket = nullptr;
+	compressedPacket *receivingPacket = new compressedPacket();
+	compressedPacket *sendingPacket = new compressedPacket();
+	const char *receivingPacketPos = nullptr;
+	const char *receivingPacketEndPos = nullptr;
+
+	inline bool write(const char *const &value, const size_t &size) override
 	{
 		sendingPacket->append(value, size);
 		return true;
 	}
-	inline bool read(char* const& value, const size_t& size) override
+	inline bool read(char *const &value, const size_t &size) override
 	{
 		const auto newDataPos = receivingPacketPos + size;
 		assumeInRelease(newDataPos <= receivingPacketEndPos);
@@ -22,26 +26,46 @@ struct tcpSerializer : streamBaseInterface {
 		receivingPacketPos = newDataPos;
 		return true;
 	}
-	sf::Socket::Status sendPacket() {
-		//this way, other threads can construct a new packet already while the old packet is sending
-		compressedPacket* packetCopy = new compressedPacket();
-		std::swap(packetCopy, sendingPacket);
-		//sendingPacket;
-		const sf::Socket::Status& status = socket->send(*packetCopy);
-		delete packetCopy;
+	inline sf::Socket::Status sendPacket()
+	{
+		// this way, other threads can construct a new packet already while the old packet is sending
+		compressedPacket *packetCopy = sendingPacket;
+		sendingPacket = new compressedPacket();
+		// std::swap(packetCopy, sendingPacket);
+		// sendingPacket;
+
+		std::thread([this, packetCopy]
+					{
+					if (packetCopy->getDataSize() == 0)
+						{
+							throw "sending empty packet!!";
+						}
+					const sf::Socket::Status &status = socket->send(*packetCopy);
+					delete packetCopy; })
+			.detach();
+
+		return sf::Socket::Done;
+	}
+
+	inline void setReceivingPacket(compressedPacket *p)
+	{
+		receivingPacket = p;
+		receivingPacketPos = (const char *)p->getData();
+		receivingPacketEndPos = receivingPacketPos + p->getDataSize();
+	}
+	inline sf::Socket::Status receivePacket()
+	{
+		const sf::Socket::Status &status = socket->receive(*receivingPacket);
+		setReceivingPacket(receivingPacket);
 		return status;
 	}
-	sf::Socket::Status receivePacket() {
-		const sf::Socket::Status& status = socket->receive(*receivingPacket);
-		receivingPacketPos = (const char*)receivingPacket->getData();
-		receivingPacketEndPos = receivingPacketPos + receivingPacket->getDataSize();
-		return status;
-	}
-	~tcpSerializer() {
+
+	~tcpSerializer()
+	{
 		delete receivingPacket;
 		delete sendingPacket;
 	}
-	//inline bool write(const char* const& value, const size_t& size) const
+	// inline bool write(const char* const& value, const size_t& size) const
 	//{
 	//	size_t sentSize;
 	//	if (socket->send(value, size, sentSize) == sf::Socket::Status::Done) {
@@ -52,8 +76,8 @@ struct tcpSerializer : streamBaseInterface {
 	//		return true;
 	//	}
 	//	return false;
-	//}
-	//inline bool read(char* const& value, const size_t& size) const
+	// }
+	// inline bool read(char* const& value, const size_t& size) const
 	//{
 	//	size_t receivedSize;
 	//	if (socket->receive(value, size, receivedSize) == sf::Socket::Status::Done) {
@@ -64,5 +88,5 @@ struct tcpSerializer : streamBaseInterface {
 	//		return true;
 	//	}
 	//	return false;
-	//}
+	// }
 };

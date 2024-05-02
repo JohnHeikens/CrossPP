@@ -2,23 +2,24 @@
 #include "brush/brush.h"
 #include "array/arraynd.h"
 
-struct texture : public virtual colorBrushSizeT, public array2d<color>
+struct texture : public virtual colorBrushSizeT, public array2d<colortn<colorChannel, bgraColorChannelCount>>
 {
 public:
-	texture(cvect2<fsize_t> &size, cbool &initializeToDefault = true) : array2d<color>(size, initializeToDefault) {}
-	texture(cvect2<fsize_t> &size, color *const &baseArray) : array2d<color>(size, baseArray) {}
+	typedef array2d<colortn<colorChannel, bgraColorChannelCount>> base;
+	texture(cvect2<fsize_t> &size, cbool &initializeToDefault = true) : base(size, initializeToDefault) {}
+	texture(cvect2<fsize_t> &size, color *const &baseArray) : base(size, baseArray) {}
 
-	texture(const stdPath& path, cbool &flip);
+	texture(const stdPath &path, cbool &flip);
 	// the colors wont be deleted when the texture is deleted.
 	void switchChannels(colorb *byteArray, cint &channelIndex1, cint &channelIndex2) const;
 	void Flip() const;
-	bool Save(const stdPath& path) const;
+	bool Save(const stdPath &path) const;
 
 	inline color getValue(cvect2<fsize_t> &pos) const
 	{
 		if constexpr (isDebugging)
 		{
-			if (!inBounds(pos))
+			if (!base::inBounds(pos))
 			{
 				return colorPalette::magenta;
 			}
@@ -42,7 +43,7 @@ public:
 			//	}
 			// }
 		}
-		return getValueUnsafe(pos);
+		return base::getValueUnsafe(pos);
 	}
 
 	static void Barycentric(cvec2 &p, cvec2 &a, cvec2 &b, cvec2 &c, fp &u, fp &v, fp &w);
@@ -68,14 +69,14 @@ public:
 	void Fade(cfp &weight, const color &fadeto) const;
 
 	template <typename brush0Type>
-	inline void visualizeFormula(crectangle2& screenRect, crectangle2& spaceRect, fp(*func)(cfp& x), const brush0Type& b)
+	inline void visualizeFormula(crectangle2 &screenRect, crectangle2 &spaceRect, fp (*func)(cfp &x), const brush0Type &b)
 	{
 		mat3x3 spaceToScreen = mat3x3::fromRectToRect(spaceRect, screenRect);
 		fp dotDistance = 0.01;
 		for (fp spaceX = math::ceil(spaceRect.pos0.x); spaceX < spaceRect.pos1().x; spaceX += dotDistance)
 		{
 			cvec2 pos = spaceToScreen.multPointMatrix(vec2(spaceX, func(spaceX)));
-			fillEllipseCentered(pos, vec2(4), b);
+			base::fillEllipseCentered(pos, vec2(4), b);
 		}
 	}
 	virtual ~texture() override
@@ -83,4 +84,4 @@ public:
 	}
 };
 
-veci2 getImageSize(const stdPath& path);
+veci2 getImageSize(const stdPath &path);

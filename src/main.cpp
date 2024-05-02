@@ -31,7 +31,7 @@ stdPath androidCacheDir;
 #include <android/native_activity.h>
 #include <jni.h>
 // NDK/JNI sub example - call Java code from native code
-//int vibrate(sf::Time duration)
+// int vibrate(sf::Time duration)
 //{
 //    // First we'll need the native activity handle
 //    ANativeActivity* activity = sf::getNativeActivity();
@@ -86,29 +86,33 @@ stdPath androidCacheDir;
 #endif
 
 bool loadingFinished = false;
-sf::RenderWindow* window = nullptr;
+sf::RenderWindow *window = nullptr;
 
-void showLoadingScreen() {
+
+
+void showLoadingScreen()
+{
     // Create the main rendering window
     window = application::createWindow(gameName);
 
     sf::Font font;
-    //this will also work on android when the data folder has not been copied yet,
-    //as it will look for data/font.otf in the assets folder.
+    // this will also work on android when the data folder has not been copied yet,
+    // as it will look for data/font.otf in the assets folder.
     font.loadFromFile("data/font.otf");
 
     // Start game loop
-    while (window->isOpen()) {
+    while (window->isOpen())
+    {
         // Process events
         sf::Event Event;
-        while (window->pollEvent(Event)) {
+        while (window->pollEvent(Event))
+        {
             // Close window : exit
             if (Event.type == sf::Event::Closed)
                 window->close();
         }
-        if (loadingFinished) {
-            //don't close the window, we will use it for later
-            //window->close();
+        if (loadingFinished)
+        {
             return;
         }
 
@@ -116,16 +120,15 @@ void showLoadingScreen() {
         window->clear(sf::Color::Magenta);
 
         sf::Text loadingText(
-                "Loading medieval survival\nwhen you updated this app,\nthis might take several minutes.\nDO NOT CLOSE",
-                font);
+            "Loading medieval survival\nwhen you updated this app,\nthis might take several minutes.\nDO NOT CLOSE",
+            font);
         loadingText.setFillColor(sf::Color::White);
         loadingText.setCharacterSize(math::minimum(window->getView().getSize().y, window->getView().getSize().x) / 20);
 
-
-        //center text
+        // center text
         sf::FloatRect textRect = loadingText.getLocalBounds();
         loadingText.setOrigin(textRect.left + textRect.width / 2.0f,
-                       textRect.top + textRect.height / 2.0f);
+                              textRect.top + textRect.height / 2.0f);
         loadingText.setPosition(window->getView().getCenter());
 
         window->draw(loadingText);
@@ -135,7 +138,8 @@ void showLoadingScreen() {
     }
 }
 
-std::filesystem::path getCommonAppDataFolder() {
+std::filesystem::path getCommonAppDataFolder()
+{
 #if onWindows
     TCHAR szPath[MAX_PATH];
     // https://stackoverflow.com/questions/2899013/how-do-i-get-the-application-data-path-in-windows-using-c
@@ -149,7 +153,6 @@ std::filesystem::path getCommonAppDataFolder() {
     // First we'll need the native activity handle
     ANativeActivity *activity = sf::getNativeActivity();
 
-
     JNIEnv *env = activity->env;
     JavaVM *vm = activity->vm;
 
@@ -159,17 +162,15 @@ std::filesystem::path getCommonAppDataFolder() {
     attachargs.name = "NativeThread";
     attachargs.group = nullptr;
     jint res = vm->AttachCurrentThread(&env, &attachargs);
-    if (res == JNI_ERR) {
+    if (res == JNI_ERR)
+    {
         handleError(L"couldn't attach to current thread");
         return L"";
     }
 
-
-
-    //https://stackoverflow.com/questions/7701801/obtaining-the-name-of-an-android-apk-using-c-and-the-nativeactivity-class
+    // https://stackoverflow.com/questions/7701801/obtaining-the-name-of-an-android-apk-using-c-and-the-nativeactivity-class
     jobject obj = activity->clazz;
     jclass nativeActivityClass = env->GetObjectClass(obj);
-
 
     jmethodID getApplicationContextMethod = env->GetMethodID(nativeActivityClass,
                                                              "getApplicationContext",
@@ -184,21 +185,19 @@ std::filesystem::path getCommonAppDataFolder() {
     jmethodID findClass = env->GetMethodID(classLoaderClass, "loadClass",
                                            "(Ljava/lang/String;)Ljava/lang/Class;");
     jstring strClassName = env->NewStringUTF("com.johnheikens.medievalsurvival.JavaHelper");
-    jclass javaHelperClass = (jclass) (env->CallObjectMethod(classLoader, findClass, strClassName));
+    jclass javaHelperClass = (jclass)(env->CallObjectMethod(classLoader, findClass, strClassName));
 
-    //jclass javaHelperClass = env->FindClass("com/johnheikens/medievalsurvival/JavaHelper");
+    // jclass javaHelperClass = env->FindClass("com/johnheikens/medievalsurvival/JavaHelper");
     jmethodID initializeContextMethod = env->GetStaticMethodID(javaHelperClass, "initializeContext",
                                                                "(Landroid/app/Activity;)Ljava/lang/String;");
     jobject jExtractedAssetsDir = env->CallStaticObjectMethod(javaHelperClass,
                                                               initializeContextMethod,
                                                               activity->clazz);
-    const char *assetsDir = env->GetStringUTFChars((jstring) jExtractedAssetsDir, nullptr);
+    const char *assetsDir = env->GetStringUTFChars((jstring)jExtractedAssetsDir, nullptr);
     androidCacheDir = assetsDir;
-    androidCacheDir = androidCacheDir.parent_path();//remove the 'data/'
+    androidCacheDir = androidCacheDir.parent_path(); // remove the 'data/'
 
-
-    env->ReleaseStringUTFChars((jstring) jExtractedAssetsDir, assetsDir);
-
+    env->ReleaseStringUTFChars((jstring)jExtractedAssetsDir, assetsDir);
 
     env->DeleteLocalRef(javaHelperClass);
     env->DeleteLocalRef(strClassName);
@@ -208,7 +207,6 @@ std::filesystem::path getCommonAppDataFolder() {
     env->DeleteLocalRef(nativeActivityClass);
 
     vm->DetachCurrentThread();
-
 
     return androidCacheDir;
 #elif onLinux
@@ -222,45 +220,38 @@ std::filesystem::path getCommonAppDataFolder() {
     return std::filesystem::path();
 }
 
-// #include <imgui-SFML.h>
-// #include <imgui.h>
-
-bool mainRunning = false;
-
-int main(int argc, char *argv[]) {
-    if (mainRunning) {
-        std::cout
-                << "main function is being called again. this is probably because of a changed config in android";
-        //the main function is called
-        return 0;
-        handleError(L"main is somehow called twice");
-    }
-    mainRunning = true;
-    std::thread loadingThread(showLoadingScreen);
+void loadResources()
+{
+    setCurrentThreadName(L"resource loader");
     // check if the application is installed or if we're debugging
     //
-    if (onAndroid || !std::filesystem::exists(L"data")) { // this application is not deployed
+    if (onAndroid || !std::filesystem::exists(L"data"))
+    { // this application is not deployed
         // change data folder to %appdata%/JohnHeikens/Medieval Survival/data
         //
         // TODO: get common appdata folder on every system
         std::filesystem::path commonAppDataFolder = getCommonAppDataFolder();
-        std::filesystem::path newWorkingDirectory = onAndroid ? commonAppDataFolder :
-                                                    commonAppDataFolder / L"JohnHeikens" /
-                                                    L"Medieval Survival";
-        if (std::filesystem::exists(newWorkingDirectory)) {
+        std::filesystem::path newWorkingDirectory = onAndroid ? commonAppDataFolder : commonAppDataFolder / L"JohnHeikens" / L"Medieval Survival";
+        if (std::filesystem::exists(newWorkingDirectory))
+        {
             std::filesystem::current_path(newWorkingDirectory); // setting path
 #if onAndroid
-//copy files from APK to working directory
+            // copy files from APK to working directory
 
 #endif
-        } else {
+        }
+        else
+        {
             handleError(newWorkingDirectory.wstring() + L" not found");
         }
         //
         // check if it worked
-        if (std::filesystem::exists(L"data")) {
+        if (std::filesystem::exists(L"data"))
+        {
             std::cout << "true";
-        } else {
+        }
+        else
+        {
             handleError(L"data folder not found in " + commonAppDataFolder.wstring());
         }
     }
@@ -270,8 +261,29 @@ int main(int argc, char *argv[]) {
     // fontFamily* family = new fontFamily(new texture(std::wstring(L"data\\ascii.png"), true));
     // defaultTheme = new theme(new font(family));
     currentApplication = new application(new gameForm(), gameName);
-    setCurrentThreadName(L"client thread");
     loadingFinished = true;
+}
+
+// #include <imgui-SFML.h>
+// #include <imgui.h>
+
+bool mainRunning = false;
+
+int main(int argc, char *argv[])
+{
+    if (mainRunning)
+    {
+        std::cout
+            << "main function is being called again. this is probably because of a changed config in android";
+        // the main function is called
+        return 0;
+        handleError(L"main is somehow called twice");
+    }
+    mainRunning = true;
+    setCurrentThreadName(L"client thread");
+    std::thread loadingThread(loadResources);
+    showLoadingScreen();
+
     loadingThread.join();
     currentApplication->window = window;
     cint &result = currentApplication->run();
@@ -284,33 +296,33 @@ int main(int argc, char *argv[]) {
 
 std::filesystem::path workingDirectory;
 
-//#if onAndroid
-//#include <jni.h>
+// #if onAndroid
+// #include <jni.h>
 //
-//extern "C" JNIEXPORT void JNICALL
-//Java_com_johnheikens_medievalsurvival_MainActivity_nativeMain(JNIEnv *env, jobject thiz,
-//                                                              jobject destination_dir) {
-//    // Call the main() function of your C++ code
+// extern "C" JNIEXPORT void JNICALL
+// Java_com_johnheikens_medievalsurvival_MainActivity_nativeMain(JNIEnv *env, jobject thiz,
+//                                                               jobject destination_dir) {
+//     // Call the main() function of your C++ code
 //
-//    // Get the class of the destination_dir object
-//    jclass fileClass = env->GetObjectClass(destination_dir);
+//     // Get the class of the destination_dir object
+//     jclass fileClass = env->GetObjectClass(destination_dir);
 //
-//    // Find the getAbsolutePath() method of the File class
-//    jmethodID getAbsolutePathMethod = env->GetMethodID(fileClass, "getAbsolutePath", "()Ljava/lang/String;");
+//     // Find the getAbsolutePath() method of the File class
+//     jmethodID getAbsolutePathMethod = env->GetMethodID(fileClass, "getAbsolutePath", "()Ljava/lang/String;");
 //
-//    // Call getAbsolutePath() to get the absolute path of the directory
-//    jstring absolutePathString = (jstring) env->CallObjectMethod(destination_dir, getAbsolutePathMethod);
+//     // Call getAbsolutePath() to get the absolute path of the directory
+//     jstring absolutePathString = (jstring) env->CallObjectMethod(destination_dir, getAbsolutePathMethod);
 //
-//    // Convert the absolute path string to a C-style string
-//    const char *absolutePath = env->GetStringUTFChars(absolutePathString, nullptr);
+//     // Convert the absolute path string to a C-style string
+//     const char *absolutePath = env->GetStringUTFChars(absolutePathString, nullptr);
 //
-//    androidCacheDir = absolutePath;//convert the C-style string to a path object
-//    // Release the UTF characters
-//    env->ReleaseStringUTFChars(absolutePathString, absolutePath);
+//     androidCacheDir = absolutePath;//convert the C-style string to a path object
+//     // Release the UTF characters
+//     env->ReleaseStringUTFChars(absolutePathString, absolutePath);
 //
-//    main(0, nullptr);
-//}
-//#endif
+//     main(0, nullptr);
+// }
+// #endif
 //
 
 //

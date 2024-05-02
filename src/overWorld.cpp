@@ -160,8 +160,6 @@ overWorld::~overWorld() {
     //we can safely delete null pointers. it won't do anything
     delete biomeElevationNoise;
 
-    delete biomeElevationNoise;
-
     delete biomeTemperatureNoise;
 
     delete biomeHumidityNoise;
@@ -364,7 +362,7 @@ void overWorld::generateStructures(chunk &generateIn) {
         for (caveSquare.x = 0; caveSquare.x < (int) chunkSize.x; caveSquare.x += caveStep) {
             veci2 caveSquareIndex = veci2(randIndex(generateIn.chunkRandom, caveStep),
                                           randIndex(generateIn.chunkRandom, caveStep)) + caveSquare;
-            if (caveSquareIndex.x < chunkSize.x && caveSquareIndex.y < chunkSize.y &&
+            if (caveSquareIndex.x < (int)chunkSize.x && caveSquareIndex.y < (int)chunkSize.y &&
                 (randFp(generateIn.chunkRandom) < caveChance)) {
                 vec2 caveCentre = caveSquareIndex + generateIn.worldPos;
                 std::vector<vec2> caveSegments = std::vector<vec2>();

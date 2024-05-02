@@ -1,6 +1,7 @@
 #pragma once
 #include "playerSocket.h"
 #include "constants.h"
+constexpr fp defaultFPS = 60.0;
 struct server {
 	sf::TcpListener listener = sf::TcpListener();
 	sf::SocketSelector listenerSelector = sf::SocketSelector();
@@ -8,6 +9,7 @@ struct server {
 	bool everyoneSleeping = false;//to increase tick speed
 
 	bool stopping = false;
+    int lastRenderTick = 0;
 
 	void execute();
 	void renderClients();

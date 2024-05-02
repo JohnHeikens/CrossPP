@@ -5,7 +5,7 @@
 #include <SFML/Network/TcpSocket.hpp>
 #include "constants.h"
 #include "gameControl.h"
-#include "array/arrayfunctions.h"
+#include "array/arrayFunctions/arrayFunctions.h"
 #include "globalFunctions.h"
 #include "math/graphics/color/color.h"
 #include "math/graphics/texture.h"
@@ -28,14 +28,6 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	this->s.socket = socket;
 	write = false;
 
-	// doubleBuffer[0].setActive(false);
-	// doubleBuffer[1].setActive(false);
-
-	// contexts[0].setActive(false);
-	// contexts[1].setActive(false);
-
-	// contexts[0] = std::move(sf::Context());
-
 	ull num;
 	// receive authentication packet.
 	// wait for packet until timeout (fixes random connects pausing the server)
@@ -44,8 +36,7 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 		sf::SocketSelector selector;
 		selector.add(*socket);
 		// the packet should follow the connect shortly. we can wait safely, but one player can join at a time.
-		// max 1000 delay (1 second)
-		if (!selector.wait(sf::milliseconds(1000)))
+		if (!selector.wait(sf::milliseconds(5000)))
 			return;
 		s.receivePacket();
 	}
@@ -67,13 +58,14 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	inNBTSerializer.serializeValue(L"name", playerName);
 	screen->player = player = new human(currentWorld->dimensions[(int)currentWorld->worldSpawnDimension], vec2(), *screen, playerName);
 
-    std::wstring clientOSName;
-    inNBTSerializer.serializeValue(L"OS", clientOSName);
-    if(clientOSName == L"Android"){
-        screen->addTouchInput();
-    }
+	std::wstring clientOSName;
+	inNBTSerializer.serializeValue(L"OS", clientOSName);
+	if (clientOSName == L"Android")
+	{
+		screen->addTouchInput();
+	}
 
-    rectanglei2 screenRect = rectanglei2();
+	rectanglei2 screenRect = rectanglei2();
 	inNBTSerializer.serializeValue(L"screenSize", screenRect.size);
 	screen->layout(screenRect);
 
@@ -108,7 +100,7 @@ void renderAsync(playerSocket *socket)
 	// newRenderResult.create(socket->screen->rect.size.x, socket->screen->rect.size.y, sf::ContextSettings());
 	// newRenderResult.setActive(true);
 	// TODO: check if it needs clear()
-	texture *&currentRenderTarget = socket->doubleBuffer[socket->thread0DoubleBufferIndex];
+	texture *&currentRenderTarget = socket->buffer[0];
 
 	if (!currentRenderTarget || currentRenderTarget->size != vect2<fsize_t>(socket->screen->rect.size))
 	{
@@ -143,9 +135,11 @@ void renderAsync(playerSocket *socket)
 	nbtCompound *compound = new nbtCompound(L"packetOut");
 	nbtSerializer *outSerializer = new nbtSerializer(*compound, true);
 
-    //always serialize. the target client may be on android or need an on-screen keyboard in another way
-    bool wantsTextInput = socket->screen->wantsTextInput();
-    outSerializer->serializeValue(L"wantsTextInput", wantsTextInput);
+	// always serialize. the target client may be on android or need an on-screen keyboard in another way
+	bool wantsTextInput = socket->screen->wantsTextInput();
+	outSerializer->serializeValue(L"wantsTextInput", wantsTextInput);
+
+	outSerializer->serializeValue(L"wantsClipboardInput", socket->screen->wantsClipboardInput);
 
 	vec3 earPosition = vec3(socket->screen->cameraPosition.x, socket->screen->cameraPosition.y, settings::soundSettings::headScreenDistance * socket->screen->visibleRange.x);
 	// vec2 earPosition = socket->screen->player->getHeadPosition();
@@ -167,13 +161,14 @@ void renderAsync(playerSocket *socket)
 	socket->screen->dataToSend.clear();
 
 	// newRenderResult.setActive(false);
-	socket->thread0DoubleBufferIndex = 1 - socket->thread0DoubleBufferIndex;
+	socket->buffer.swap();
 	// deletion of compound and outSerializer happen in the sendRenderResultAsync function
 	socket->sendRenderResultThread = new std::thread(sendRenderResultAsync, socket, compound, outSerializer);
 
 	sf::SocketSelector selector;
 	selector.add(*socket->s.socket);
 	selector.wait(sf::microseconds(1));
+	fp receivedPackets = 0;
 	// we don't wait for input, we just process the input in the next frame. too bad, it would cause server lag
 	while (selector.isReady(*socket->s.socket))
 	{ // the wait() of the socket is called in the main server loop once a tick
@@ -205,20 +200,26 @@ void renderAsync(playerSocket *socket)
 				socket->screen->layout(crectanglei2(veci2(), veci2(newScreenSize)));
 			}
 
-			// socket->s.socket->setBlocking(true);
 			socket->screen->addClientInput(socket->screen->mostRecentInput);
 			socket->screen->processInput();
+			std::wstring clientClipboardText;
+			if (currentNBTSerializer.serializeValue(L"clipboard", clientClipboardText))
+			{
+				socket->screen->paste(clientClipboardText);
+			}
 			selector.wait(sf::microseconds(1));
 		}
+		receivedPackets++;
 	}
+	socket->packetsReceivedPerSecond += receivedPackets;
+	socket->packetsSentPerSecond ++;
 }
 
 void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSerializer *s)
 {
-	setCurrentThreadName(L"screen sender for " + socket->player->name);
-	byte thread1DoubleBufferIndex = 1 - socket->thread0DoubleBufferIndex;
+	setCurrentThreadName(L"screen compresser for " + socket->player->name);
 	// sf::Context &currentContext = socket->contexts[thread1DoubleBufferIndex];
-	texture *&currentRenderResult = socket->doubleBuffer[thread1DoubleBufferIndex];
+	texture *&currentRenderResult = socket->buffer[1];
 	// serialize screen and finally, send the packet
 
 	// TODO: serialize the screen in 'sendrenderresultasync'. this is hard because s->write = false
@@ -241,54 +242,25 @@ void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSeria
 
 	// uint pixelCount = i.getSize().x * i.getSize().y;
 
-	std::vector<byte> compressedScreen;
-	typedef colortn<byte, 3> color3;
-	color3 *colorsWithoutAlpha = new color3[currentRenderResult->size.volume()];
-	const color3 c = color3();
-	color3 *ptr = colorsWithoutAlpha;
+	const textureRGB &texWithoutAlpha = textureRGB(currentRenderResult->size);
+	const colorRGB c = colorRGB();
+	colorRGB *ptr = texWithoutAlpha.baseArray;
 	// color *imagePtr = (color *)i.getPixelsPtr();
 	for (const color &c : *currentRenderResult)
 	{
-		*ptr++ = color3(c);
+		*ptr++ = colorRGB(c);
 	}
+	const textureRGB &differenceTex = socket->encoder.addFrame(texWithoutAlpha);
 
+	std::vector<byte> compressedScreen;
 	// std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
-	fpng::fpng_encode_image_to_memory(colorsWithoutAlpha, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedScreen);
-	delete[] colorsWithoutAlpha;
-	// color* ptr = socket->lastRenderResult->baseArray;
-	// std::vector<colorChannel> channels[rgbColorChannelCount]{};
-	//
-	////for (int i = 0; i < rgbColorChannelCount; i++) {
-	////	channels[i] = new colorChannel[];
-	////}
-	////[socket->screen->rect.size.volume()] ;
-	// for (int i = 0; i < socket->screen->rect.size.volume(); i++, ptr++) {
-	//	channels[0].push_back(ptr->axis[0]);//b
-	//	channels[1].push_back(ptr->axis[1]);//g
-	//	channels[2].push_back(ptr->axis[2]);//r
-	//	//compressedScreenPacket..write(ptr->r(), ptr->g(), ptr->b())
-	//
-	// }
-	// for (int channelIndex = 0; channelIndex < rgbColorChannelCount; channelIndex++) {
-	//	size_t s = channels[channelIndex].size();
-	//	socket->s.write((const char*)&s, sizeof(size_t));
-	//	socket->s.write((const char*)&(*channels[channelIndex].begin()), channels[channelIndex].size());
-	// }
-
-	// socket->s.write((char*)(color::channelType*)socket->lastRenderResult->baseArray, socket->screen->rect.size.volume() * bgraColorChannelCount * sizeof(color::channelType));
+	fpng::fpng_encode_image_to_memory(differenceTex.baseArray, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedScreen);
 
 	s->serializeList(L"compressedScreen", compressedScreen);
-	// this way we can set the 'write' value to true
-	streamSerializer streamS = streamSerializer(socket->s, true, std::endian::big);
-	compound->serialize(streamS);
 
-	delete compound;
 	delete s;
-
-	// size_t s = compressedScreen.size(); // TODO: video streaming
-	//// TODO: fix endian
-	// socket->s.write((const char *)&s, sizeof(size_t));
-	// socket->s.write((const char *)&(*compressedScreen.begin()), compressedScreen.size());
+	// TODO: video streaming
+	// we are guaranteed to be sending one packet at the same time. but we might be reading and sending at the same time
 	if (socket->sendPacketThread)
 	{
 		socket->sendPacketThread->join();
@@ -296,8 +268,17 @@ void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSeria
 	}
 
 	// socket->sendPacketThread = new std::thread(sendPacketAsync, socket);
-	socket->sendPacketThread = new std::thread([socket]()
-											   { socket->s.sendPacket(); });
+	socket->sendPacketThread = new std::thread([compound, socket]()
+											   { 
+	setCurrentThreadName(L"packet sender for " + socket->player->name);
+	// this way we can set the 'write' value to true
+	//we can only start serializing once the old sending thread has finished
+	streamSerializer streamS = streamSerializer(socket->s, true, std::endian::big);
+	
+	compound->serialize(streamS);
+	
+	delete compound;
+	socket->s.sendPacket(); });
 }
 
 // void sendPacketAsync(playerSocket* socket) {

@@ -4,14 +4,26 @@
 #include "socketContainer.h"
 #include "clientInput.h"
 #include "playerData.h"
+#include "math/graphics/video/videoEncoder.h"
+#include <queue>
+#include <memory>
+#include <future>
 struct client : control, socketContainer {
 	serverData currentServerData = serverData();
 	vec3 earPosition = vec2();
     bool socketWantsTextInput = false;
+	bool socketWantsClipboardInput = false;
 
 	clientInput currentInput;
 	playerData data;
 	sf::SocketSelector selector = sf::SocketSelector();
+	videoEncoder decoder = videoEncoder();
+    std::queue<std::shared_ptr<compressedPacket>> receivedPackets = std::queue<std::shared_ptr<compressedPacket>>();
+    std::mutex receivedPacketsMutex;
+    std::shared_ptr<std::promise<void>> packetWaiter = std::make_shared<std::promise<void>>();
+    sf::Socket::Status status = sf::Socket::Done;
+    //std::promise<std::shared_ptr<compressedPacket>> receivePacket = std::promise<std::shared_ptr<compressedPacket>>();
+    bool lagging = false;
 
 	virtual void render(cveci2& position, const texture& renderTarget) override;
 	client();
@@ -25,6 +37,8 @@ struct client : control, socketContainer {
 	virtual void keyUp(cvk& keyCode) override;
 	virtual void lostFocus() override;
     bool wantsTextInput() const override;
+
+    void retrievePacketsAsync();
 
     bool connectToServer(const serverData& server);
 	void sendPacket(const texture &renderTarget);

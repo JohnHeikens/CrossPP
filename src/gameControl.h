@@ -30,7 +30,7 @@ struct gameControl : form, clientInput {
     soundSettingsForm *soundOptions = new soundSettingsForm();
     structureBlockUI *structureBlockOptions = new structureBlockUI();
     jigsawUI *jigsawOptions = new jigsawUI();
-    textBox *commandLineTextbox = new textBox();
+    textBox *commandLineTextbox = new textBox(false);
     inventoryForm *inventoryUI = new inventoryForm();
     creditsForm *currentCredits = new creditsForm();
 
@@ -46,6 +46,8 @@ struct gameControl : form, clientInput {
     //connections
     playerSocket &socket;
     human *player;//for less code
+
+    bool wantsClipboardInput = false;
 
     //rendering
     vec2 cameraPosition = vec2();
@@ -90,9 +92,10 @@ struct gameControl : form, clientInput {
 
     void onJoystickTouch(const mouseButtonEventArgs &args);
     void onJoystickTouchEnd(const mouseButtonEventArgs &args);
-    void onBackgroundTouch(const mouseButtonEventArgs &args);
     void onButtonClick(const controlEventArgs &args);
     void switchInventoryGUI();
+
+    bool processScreenTouch(const mouseButtonEventArgs &args);
 
     void addTouchInput();
 
