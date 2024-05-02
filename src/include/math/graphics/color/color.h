@@ -65,7 +65,7 @@ struct colortn : public vectn<t, channelCount>
 	// template <typename = std::enable_if_t<channelCount == 3>>
 	// when channelcount = 3, then the other channelcount = 4
 	// do not add explicit, then you'd have to use it like a constructor
-	constexpr colortn(const colortn<t, 7 - channelCount> &in) : vectn<t, channelCount>(in)
+	explicit constexpr colortn(const colortn<t, 7 - channelCount> &in) : vectn<t, channelCount>(in)
 	{
 		if constexpr (channelCount == 4)
 		{

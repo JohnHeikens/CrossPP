@@ -44,7 +44,7 @@ constexpr bool findInCircles(int maxRadius, checkFunction check, veci2 &result) 
                         cveci2(position.x, -position.y),
                         cveci2(-position.x, position.y),
                         cveci2(-position.x, -position.y),
-                        cveci2(position.y, -position.x),
+                        cveci2(position.y, position.x),
                         cveci2(position.y, -position.x),
                         cveci2(-position.y, position.x),
                         cveci2(-position.y, -position.x),
