@@ -23,6 +23,7 @@ void nbtSerializer::pop()
 	if (recursiveChildCompounds.size())
 	{
 		recursiveChildCompounds.pop_back();
+		nextListIndexes.pop_back();
 	}
 	else
 	{

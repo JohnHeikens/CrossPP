@@ -11,7 +11,8 @@ struct nbtValue :nbtData
 		if (dataTag == nbtDataTag::tagUTF8String)
 		{
 			byte* ptr = (byte*)&data;
-			s.serializeWStringAsString<int16_t>(*((std::wstring*)ptr));
+			s.serializeString<int16_t>(*(std::string*)ptr);
+			//s.serializeWStringAsString<int16_t>(*((std::wstring*)ptr));
 		}
 		else
 		{

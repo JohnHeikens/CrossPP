@@ -204,6 +204,8 @@ seems to have to do with gl context creation. create as few as possible and reus
 facts about sfml:
 rendertextures don't have their own contexts, they use the current context and bind to that
 
+openCV doesn't support live streams or writing to a byte stream!
+
 setactive() must also be called when you don't use openGL but use multithreading
 
 it's better to have all openGL rendering in one thread! multiple rendering threads using OpenGL won't give any speedup, if they even work!

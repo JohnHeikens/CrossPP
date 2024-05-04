@@ -225,8 +225,8 @@ void client::processIncomingPackets(const texture &renderTarget)
 
     // receive packets, but don't process the screen if another packet is waiting, so we can catch up
     // dividing by 4 to make the experience more smooth
-    //math::ceil<fp, size_t>(size / 4.0)
-    //size
+    // math::ceil<fp, size_t>(size / 4.0)
+    // size
     for (size_t amountToPopLeft = math::minimum(receivedPacketsCount, (size_t)2); amountToPopLeft; amountToPopLeft--)
     {
         receivedPacketsMutex.lock();
@@ -291,7 +291,7 @@ void client::processIncomingPackets(const texture &renderTarget)
                                      size.y, channelCount, rgbColorChannelCount);
 
             textureRGB tex = textureRGB(size, (colorRGB *)&*decompressedScreen.begin());
-            decoder.addFrameDiff(tex);
+            decoder.addFrameDiff(tex, *inSerializer);
 
             // tex will safely go out of scope, as it doesn't hurt to delete a null pointer
             tex.baseArray = nullptr;
@@ -313,6 +313,7 @@ void client::processIncomingPackets(const texture &renderTarget)
                 fillTransformedTexture(crectangle2(renderTarget.getClientRect()), oldSizeTex,
                                        renderTarget);
             }
+            decoder.visualize(renderTarget);
         }
     }
     // while (selector.wait(sf::microseconds(1))); // pop off all packets on the chain and catch up

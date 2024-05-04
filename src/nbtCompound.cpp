@@ -337,7 +337,7 @@ nbtData *nbtCompound::createNBTData(const std::wstring &name, const nbtDataTag &
         }
             break;
         case nbtDataTag::tagUTF8String: {
-            resultingData = new nbtValue<std::wstring>(name, dataTag);
+            resultingData = new nbtValue<std::string>(name, dataTag);
         }
             break;
         default:

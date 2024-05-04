@@ -65,7 +65,7 @@ std::vector<t> divideOverArray(t& amount, const std::vector<t>& capacities){
     std::vector<t> divideAmounts = std::vector<t>(capacities.size());
     fp slotsLeft = (fp)sortedIndexes.size();
     for(csize_t& sortedIndex : sortedIndexes){
-        size_t amountToPut = math::minimum(math::ceil<size_t>((fp)amount / slotsLeft), capacities[sortedIndex]) ;
+        t amountToPut = math::minimum(math::ceil<fp, t>((fp)amount / slotsLeft), capacities[sortedIndex]) ;
         divideAmounts[sortedIndex] = amountToPut;
         amount -= amountToPut;
         slotsLeft--;

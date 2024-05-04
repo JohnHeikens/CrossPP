@@ -257,6 +257,7 @@ void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSeria
 	fpng::fpng_encode_image_to_memory(differenceTex.baseArray, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedScreen);
 
 	s->serializeList(L"compressedScreen", compressedScreen);
+	socket->encoder.serializeMotionVectors(*s);
 
 	delete s;
 	// TODO: video streaming

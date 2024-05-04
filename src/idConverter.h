@@ -78,7 +78,8 @@ struct idConverter
 			for (size_t i = 0; i < serializedIDList.size(); i++)
 			{
 				std::wstring name;
-				s.serializeValue(*serializedIDList[i], name);
+				//*serializedIDList[i]
+				s.serializeValue(L"", name);
 				conversionList[i] = dataList.getIDByName(name);
 			}
 			s.pop();

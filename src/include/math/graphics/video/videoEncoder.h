@@ -1,27 +1,15 @@
 #include "math/graphics/texture.h"
-#include <map>
 #pragma once
 typedef array2d<colorRGB> textureRGB;
+struct nbtSerializer;
 struct videoEncoder
 {
+    array2d<vect2<sbyte>> motionVectors = array2d<vect2<sbyte>>();
     textureRGB totalTexture = textureRGB(veci2());
-    inline void addFrameDiff(const textureRGB &diffTex)
-    {
-        // temporary, for visualisation
-        if (diffTex.size != totalTexture.size || true)
-        {
-            totalTexture = diffTex;
-        }
-        else
-        {
-            const colorChannel *const &totalTexEndPtr = (colorChannel *)totalTexture.end();
-            colorChannel *diffPtr = (colorChannel *)diffTex.baseArray;
-            for (colorChannel *totalTexPtr = (colorChannel *)totalTexture.baseArray; totalTexPtr < totalTexEndPtr; diffPtr++, totalTexPtr++)
-            {
-                *totalTexPtr += *diffPtr; // difference can be lower than 0, in which case it will be 255 etc.
-            }
-        }
-    }
-    textureRGB addFrame(const textureRGB& frame);
-    
+    void addFrameDiff(const textureRGB &diffTex, nbtSerializer& serializer);
+    void resizeGrid();
+    void addMotionVectors() const;
+    textureRGB addFrame(const textureRGB &frame);
+    void serializeMotionVectors(nbtSerializer &serializer);
+    void visualize(const texture& screen);
 };
