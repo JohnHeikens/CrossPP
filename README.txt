@@ -33,6 +33,8 @@ if you need a library like zlib, you can also install it with vcpkg.
 vcpkg install zlib
 it will give instructions on what to put in cmakelists.txt!
 
+undefined reference while reference is defined: recompile cmakelists.txt. you probably added a .cpp file
+
 'uint32_t' is not a member of 'std':
 #include <cstdint> not <stdint> (stdint has no std:: namespace in front of it)
 
@@ -54,6 +56,9 @@ delete gets called randomly: do NOT copy, but create a reference! const &
 
 why is serializeValue not const? because when const is used, serializeValue() can not read.
 why is it not a template then with read or write? because template functions can't be overloaded or virtual
+
+couldn't deduce template parameter:
+maybe the function calls a subfunction which requires template parameters which it can't deduce
 
 access violation, but only in release mode? maybe you are keeping a const reference as a class member while in release the original variable gets optimized away
 
@@ -205,6 +210,9 @@ facts about sfml:
 rendertextures don't have their own contexts, they use the current context and bind to that
 
 openCV doesn't support live streams or writing to a byte stream!
+
+nbtserializer problems:
+string can only store a string of length short.maxvalue!
 
 setactive() must also be called when you don't use openGL but use multithreading
 

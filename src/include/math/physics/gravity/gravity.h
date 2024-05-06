@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 #include "globalFunctions.h"
-#include "vectn.h"
+#include "..\..\vector\vectn.h"
 
 //calculates speed per second for object 1 to object 2 with mass 1
 // distance is squared

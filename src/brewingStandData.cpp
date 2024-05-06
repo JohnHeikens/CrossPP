@@ -3,6 +3,7 @@
 #include "rectangularSlotContainer.h"
 #include "potionData.h"
 #include "soundList.h"
+#include "nbtSerializer.h"
 
 brewingstandData::brewingstandData() {
     blazePowderSlot = new rectangularSlotContainer(cveci2(1));

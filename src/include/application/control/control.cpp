@@ -25,14 +25,14 @@ void control::render(cveci2 &position, const texture &renderTarget)
 
 void control::renderBorder(cveci2 &position, const texture &renderTarget)
 {
-	renderTarget.fillRectangleBorders(crectanglei2(position, rect.size), borderSize, solidColorBrush(borderColor));
+	fillRectangleBorders(renderTarget, crectanglei2(position, rect.size), borderSize, solidColorBrush(borderColor));
 }
 
 void control::renderBackGround(cveci2 &position, const texture &renderTarget)
 {
 	if (backGroundColor.a() > 0)
 	{
-		renderTarget.fillRectangle(rectanglei2(position + borderSize, rect.size - (borderSize + borderSize)), solidColorBrush(backGroundColor));
+		fillRectangle(renderTarget, rectanglei2(position + borderSize, rect.size - (borderSize + borderSize)), solidColorBrush(backGroundColor));
 	}
 }
 

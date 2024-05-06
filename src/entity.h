@@ -7,6 +7,7 @@
 #include "gameRenderData.h"
 #include "blockID.h"
 #include "math/collisions.h"
+#include <list>
 struct dimension;
 
 struct entityAI;

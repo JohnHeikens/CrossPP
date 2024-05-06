@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "clientInput.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "globalFunctions.h"
 #include "interface/inamable.h"
 #include "event/eventhandler.h"

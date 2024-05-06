@@ -1,5 +1,6 @@
 #include "blockStateCondition.h"
 #include "dropData.h"
+#include "nbtSerializer.h"
 bool blockStateCondition::checkCondition(const dropData& data, std::mt19937& randomToUse) const
 {
 	if (data.harvestedBlockData)

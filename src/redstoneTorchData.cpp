@@ -1,5 +1,6 @@
 #include "redstoneTorchData.h"
 #include "tickableBlockContainer.h"
+#include "nbtSerializer.h"
 void redstoneTorchData::serializeValue(nbtSerializer& s)
 {
 	attachmentDirectionData::serializeValue(s);

@@ -2,6 +2,7 @@
 #include "rectangularSlotContainer.h"
 #include "lootTable.h"
 #include "dropData.h"
+#include "nbtSerializer.h"
 chestData::chestData()
 {
 	slots = new rectangularSlotContainer(cveci2(StandardInventoryColumnCount, StandardInventoryRowCount));

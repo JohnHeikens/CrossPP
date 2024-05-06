@@ -1,6 +1,9 @@
 #include "experienceOrb.h"
 #include "dimension.h"
 #include "textureList.h"
+#include "math/graphics/brush/brushes/colorMultiplier.h"
+#include "nbtSerializer.h"
+
 fp getExperienceLevel(cfp& experience)
 {
 	cfp levelCalc1 = -3.0 + sqrt(experience + 9);

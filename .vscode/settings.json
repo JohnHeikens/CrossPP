@@ -97,7 +97,8 @@
         "queue": "cpp",
         "stack": "cpp",
         "unordered_set": "cpp",
-        "cfenv": "cpp"
+        "cfenv": "cpp",
+        "*.inc": "cpp"
     },
     
     //"cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe"

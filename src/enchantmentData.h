@@ -2,7 +2,7 @@
 #include "interface/inamable.h"
 #include "enchantmentID.h"
 #include "array/fastlist.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "idList.h"
 struct enchantmentData :public INamable
 {

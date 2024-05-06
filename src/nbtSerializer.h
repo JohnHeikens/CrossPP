@@ -1,10 +1,6 @@
 #pragma once
 #include "filesystem/iserializer.h"
 #include "nbtCompound.h"
-#include "math/direction.h"
-#include "math/uuid.h"
-#include "math/graphics/color/color.h"
-#include "math/rectangletn.h"
 #include "nbtValue.h"
 #include "nbtDataArray.h"
 #include <concepts>
@@ -15,7 +11,7 @@
 #include "constants.h"
 #include "globalFunctions.h"
 #include "math/axis.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "optimization/debug.h"
 #include "nbtData.h"
 #include "nbtDataTag.h"
@@ -127,6 +123,7 @@ struct nbtSerializer : iSerializer
 
 	static bool isArrayTag(const nbtDataTag &dataTag);
 
+	// string can only store short.maxValue amount of charachters!!!
 	// can't be static, because it's checking the write member
 	template <nbtType t>
 	inline bool serializeValue(nbtData &data, t &value) const
@@ -341,76 +338,6 @@ struct nbtSerializer : iSerializer
 		}
 	}
 
-	// for basic lists, use the serializeVariableArray function
-	template <typename t>
-	inline bool serializeList(const std::wstring &memberName, std::vector<t> &value)
-	{
-		// CAUTION! this SFINAE construct uses double ::type! basically, it doesn't get the ::type until the end of the evaluation, because not all ::type s are actually defined
-		// std::common_type is just a trick to get a struct with ::type being t
-		using signedT = std::conditional_t<std::is_integral_v<t>, std::make_signed<t>,
-										   std::conditional_t<std::is_enum_v<t>, std::underlying_type<t>,
-															  std::conditional_t<std::is_same_v<t, bool>, std::common_type<bool>,
-																				 std::common_type<t>>>>::type;
-		// using signedT = std::conditional_t<std::is_integral_v<t>, std::make_signed_t<t>, t>;
-		//  using signedT = std::is_integral_v<t> ? std::make_signed_t<t> : t;
-		constexpr auto dataTag = getListDataTag<signedT *>();
-		if constexpr (getListDataTag<signedT *>() != nbtDataTag::tagEnd)
-		{
-			if (nbtData *currentChild = getOrCreateNBTData<signedT *>(memberName))
-			{
-				if (!write)
-				{
-					value.resize(((nbtDataArray<signedT> *)currentChild)->arraySize);
-				}
-				int count = value.size();
-				signedT *ptr = (signedT *)&value[0]; // ptr will not get modified because it's not null
-				return serializeVariableArray(*currentChild, ptr, count);
-			}
-		}
-		else
-		{
-
-			if (push<nbtDataTag::tagList>(memberName))
-			{
-				if (!write)
-				{
-					value = std::vector<t>(getChildren().size());
-				}
-				for (t &it : value)
-				{
-					serializeValue(std::wstring(L""), it);
-				}
-				pop();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	template <typename t>
-	inline bool serializeListOfSerializables(const std::wstring &memberName, std::vector<t> &value)
-	{
-		if (push<nbtDataTag::tagList>(memberName))
-		{
-			if (!write)
-			{
-				value = std::vector<t>(getChildren().size());
-			}
-			size_t i = 0;
-			for (t &it : value)
-			{
-				if (push())
-				{
-					it.serializeValue(*this);
-					pop();
-				}
-			}
-			pop();
-			return true;
-		}
-		return false;
-	}
-
 	template <typename t>
 	inline bool serializeArray(const std::wstring &memberName, t *value, int count)
 	{
@@ -461,65 +388,5 @@ struct nbtSerializer : iSerializer
 	//{
 	//	return serializeValue(memberName, (uint&)value);
 	// }
-	inline bool serializeValue(const std::wstring &memberName, directionID &direction)
-	{
-		return serializeValue(memberName, (sbyte &)direction);
-	}
-	inline bool serializeValue(const std::wstring &memberName, uuid &id)
-	{
-		if (push<nbtDataTag::tagCompound>(memberName))
-		{
-			serializeValue(std::wstring(L"a"), (int &)id.idInts[0]);
-			serializeValue(std::wstring(L"b"), (int &)id.idInts[1]);
-			serializeValue(std::wstring(L"c"), (int &)id.idInts[2]);
-			serializeValue(std::wstring(L"d"), (int &)id.idInts[3]);
-			pop();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 
-	template <typename t, fsize_t axisCount>
-	inline bool serializeValue(const std::wstring &memberName, vectn<t, axisCount> &vector)
-	{
-		if (push<nbtDataTag::tagCompound>(memberName))
-		{
-			for (fsize_t i = 0; i < axisCount; i++)
-			{
-				serializeValue(axisNames[i], vector[i]);
-			}
-
-			pop();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	template <typename t, fsize_t axisCount>
-	inline bool serializeValue(const std::wstring &memberName, colortn<t, axisCount> &vector)
-	{
-		return serializeValue(memberName, (vectn<t, axisCount> &)vector);
-	}
-
-	template <typename t>
-	inline bool serializeValue(const std::wstring &memberName, rectanglet2<t> &box)
-	{
-		if (push<nbtDataTag::tagCompound>(memberName))
-		{
-			serializeValue(std::wstring(L"position"), box.pos0);
-			serializeValue(std::wstring(L"size"), box.size);
-			pop();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 };

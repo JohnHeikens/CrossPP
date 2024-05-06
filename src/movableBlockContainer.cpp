@@ -8,19 +8,21 @@
 #include "chunkLoadLevel.h"
 #include "collisionDataCollection.h"
 #include "constants.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "globalFunctions.h"
-#include "math/rectangletn.h"
-#include "math/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/vector/vectn.h"
 #include "levelID.h"
 #include "nbtSerializer.h"
+#include "include/array/arraynd/arrayndFunctions.h"
+#include "serializer/serializeColor.h"
 void* movableBlockContainer::getArrayValuePointerUnsafe(cveci2& position, const arrayDataType& dataType, const chunkLoadLevel& minimalLoadLevel)
 {
 	veci2 movedPosition = position - arrayPos00Offset;
 	//first expand to contain the point
-	blockIDArray.expandToContain(movedPosition);
-	blockDataArray.expandToContain(movedPosition);
-	powerLevelArray.expandToContain(movedPosition);
+	expandToContain(blockIDArray, movedPosition);
+	expandToContain(blockDataArray, movedPosition);
+	expandToContain(powerLevelArray, movedPosition);
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -88,10 +90,10 @@ bool movableBlockContainer::cropRelativeLineToContainer(vec2& p0, vec2& p1)
 
 void movableBlockContainer::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"relative attachment position"), relativeAttachmentPosition);
-	s.serializeValue(std::wstring(L"pos00 offset"), arrayPos00Offset);
+	serializeNBTValue(s, std::wstring(L"relative attachment position"), relativeAttachmentPosition);
+	serializeNBTValue(s, std::wstring(L"pos00 offset"), arrayPos00Offset);
 	veci2 size = blockIDArray.size;
-	if (s.serializeValue(std::wstring(L"size"), size)) {
+	if (serializeNBTValue(s, std::wstring(L"size"), size)) {
 		if (size.volume()) {
 			if (!s.write)
 			{

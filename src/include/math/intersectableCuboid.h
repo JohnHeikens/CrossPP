@@ -1,6 +1,6 @@
 #pragma once
 #include "intersectable.h"
-#include "rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 struct intersectableCuboid : iIntersectable
 {
 	rectangle3 box;

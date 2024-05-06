@@ -1,4 +1,4 @@
-#include "rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "graphics/graphics.h"
 #include "graphics/brush/brushes.h"
 #pragma once

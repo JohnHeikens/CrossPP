@@ -11,6 +11,10 @@
 #include "idConverter.h"
 #include "renderBlockContainer.h"
 #include "minecraftFont.h"
+#include "include/math/graphics/brush/brushes/repeatingBrush.h"
+#include "include/math/graphics/brush/brushes/alphaMask.h"
+#include "include/math/graphics/brush/brushes/colorMultiplier.h"
+#include "nbtSerializer.h"
 
 itemStack::itemStack(const itemStack &other) {
     enchantments = std::vector<enchantment *>();
@@ -146,15 +150,15 @@ void itemStack::render(crectangle2 &rect, const gameRenderData &targetData) cons
                                                                                    1 - (margin * 2),
                                                                                    0.15));
 
-                targetData.renderTarget.fillRectangle(durabilityBarRect, brushes::black);
+                fillRectangle(targetData.renderTarget, durabilityBarRect, brushes::black);
 
                 crectangle2 &durabilityRect = getAbsoluteRect(durabilityBarRect, crectangle2(0, 0.5,
                                                                                              toDurabilityData->durability,
                                                                                              0.5));
 
-                ccolor &durabilityColor = color::lerpcolor(colorPalette::red, colorPalette::green,
+                ccolor &durabilityColor = lerpColor(colorPalette::red, colorPalette::green,
                                                            toDurabilityData->durability);
-                targetData.renderTarget.fillRectangle(durabilityRect,
+                fillRectangle(targetData.renderTarget, durabilityRect,
                                                       solidColorBrush(durabilityColor));
             }
         }
@@ -265,7 +269,7 @@ void itemStack::drawToolTips(cveci2 &position, const texture &renderTarget) cons
     cvec2 rectangleSize = defaultTheme().font->measureStringSize(maximumSize, stringToDraw);
     crectangle2 stringRect = crectangle2(position.x, position.y - rectangleSize.y, rectangleSize.x,
                                          rectangleSize.y);
-    renderTarget.fillRectangle(stringRect.expanded(defaultTheme().borderSize), brushes::black);
+    fillRectangle(renderTarget, stringRect.expanded(defaultTheme().borderSize), brushes::black);
     const minecraftFont nameFont = minecraftFont();
     nameFont.DrawString(nameText, stringRect, renderTarget);
     crectangle2 enchantmentsStringrect = crectangle2(stringRect.x, stringRect.y, stringRect.w,

@@ -1,10 +1,10 @@
 #pragma once
 #include <assert.h>
 #include <stdexcept>
+#include <string>
 #include "globalFunctions.h"
 #include "array/wstringFunctions.h"
 #include "macrotricks.h"
-#include <string>
 
 #ifdef _DEBUG
 //#define EXTRADEBUGCHECKS

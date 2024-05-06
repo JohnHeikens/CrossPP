@@ -20,7 +20,7 @@
 #pragma once
 #include <cstddef>  // int
 #include <cstdint>  // int32_t/uint8_t
-#include "vectn.h"
+#include "vector\vectn.h"
 #include "mathFunctions.h"
 #include <random>
 

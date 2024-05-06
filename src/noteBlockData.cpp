@@ -3,6 +3,7 @@
 #include "tickableBlockContainer.h"
 #include "soundList.h"
 #include "math/sound/sound.h"
+#include "nbtSerializer.h"
 bool noteBlockData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	//make a copy instead of referencing

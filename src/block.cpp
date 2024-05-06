@@ -40,7 +40,7 @@
 #include "harvestTier.h"
 #include "harvestType.h"
 #include "idAnalysis.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "array/fastarray.h"
 #include "globalFunctions.h"
 #include "math/axis.h"
@@ -50,8 +50,8 @@
 #include "math/graphics/texture.h"
 #include "math/mathFunctions.h"
 #include "math/mattnxn.h"
-#include "math/rectangletn.h"
-#include "math/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/vector/vectn.h"
 #include "itemID.h"
 #include "levelID.h"
 #include "lightLevelID.h"
@@ -62,6 +62,8 @@
 #include "soundCollection.h"
 #include "rectangularSlotContainer.h"
 #include "dimension.h"
+#include "math/graphics/brush/brushes/repeatingBrush.h"
+#include "include/math/graphics/brush/brushes/colorMultiplier.h"
 
 block::block(blockID identifier, fp hardness, fp blastResistance, cfp& weightPerCubicMeter, resolutionTexture* tex, std::wstring name, std::shared_ptr<soundCollection> fallSound, std::shared_ptr<soundCollection> stepSound, std::shared_ptr<soundCollection> hitSound, std::shared_ptr<soundCollection> breakSound, std::shared_ptr<soundCollection> placeSound, cint(&filterStrength)[(size_t)levelID::count], harvestTypeID bestTool, harvestTierID itemTier, collisionTypeID collisiontype, cint& fireEncouragement, cint& flammability, cbool& canCatchFireFromLava, cbool& canReplaceBlock, cint(&emittanceLevel)[(size_t)levelID::count], const experienceDrop& experienceWhenBroken, std::shared_ptr<soundCollection> ambientSound) :
 	hardness(hardness), blastResistance(blastResistance), tex(tex), name(name), bestTool(bestTool), itemTier(itemTier),
@@ -169,7 +171,7 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 		const solidColorBrush b = solidColorBrush(color(c, (colorChannel)(c.a() * transparencyMultiplier)));
 		const auto m = colorMixer<solidColorBrush, texture>(b, targetData.renderTarget);
 		if (drawHeightLeft == drawHeightRight) {
-			targetData.renderTarget.fillTransformedRectangle(crectangle2(cvec2(blockPosition), cvec2(1, drawHeightLeft)), targetData.worldToRenderTargetTransform, m);
+			fillTransformedRectangle(targetData.renderTarget, crectangle2(cvec2(blockPosition), cvec2(1, drawHeightLeft)), targetData.worldToRenderTargetTransform, m);
 		}
 		else {
 			fastArray<vec2> positions({
@@ -182,7 +184,7 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 			{
 				positions[i] = targetData.worldToRenderTargetTransform.multPointMatrix(positions[i] + blockPosition);
 			}
-			targetData.renderTarget.fillPolygon(positions, m);
+			fillPolygon(targetData.renderTarget, positions, m);
 		}
 		return;
 	}
@@ -836,5 +838,5 @@ void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData)
 }
 void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData, const color& c)
 {
-	targetData.renderTarget.fillRectangleBorders(ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect)), (int)(settings::videoSettings::guiScale * 2), solidColorBrush(c));
+	fillRectangleBorders(targetData.renderTarget, ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect)), (int)(settings::videoSettings::guiScale * 2), solidColorBrush(c));
 }

@@ -1,4 +1,5 @@
 #include "endPortalFrameData.h"
+#include "nbtSerializer.h"
 void endPortalFrameData::serializeValue(nbtSerializer& s)
 {
 	blockData::serializeValue(s);

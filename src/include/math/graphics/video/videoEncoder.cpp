@@ -34,7 +34,7 @@ inline bool cropCheckRect(rectanglei2 bounds, rectanglei2 &rect, cveci2 &movemen
 inline int getMovementCostUnsafe(const textureRGB &oldFrame, const textureRGB &newFrame, rectanglei2 rectToCheck, cveci2 &movementVector, cint &maxError)
 {
     int total = 0;
-    //check one pixel of every #x# where # = checkInterval
+    // check one pixel of every #x# where # = checkInterval
     constexpr int checkInterval = 0x4;
     if (cropCheckRect(oldFrame.getClientRect(), rectToCheck, movementVector))
     {
@@ -119,15 +119,14 @@ void videoEncoder::addFrameDiff(const textureRGB &diffTex, nbtSerializer &serial
     }
     else
     {
-
         serializeMotionVectors(serializer);
         addMotionVectors();
-        const colorChannel *const &totalTexEndPtr = (colorChannel *)totalTexture.end();
-        colorChannel *diffPtr = (colorChannel *)diffTex.baseArray;
-        for (colorChannel *totalTexPtr = (colorChannel *)totalTexture.baseArray; totalTexPtr < totalTexEndPtr; diffPtr++, totalTexPtr++)
-        {
-            *totalTexPtr += *diffPtr; // difference can be lower than 0, in which case it will be 255 etc.
-        }
+        // const colorChannel *const &totalTexEndPtr = (colorChannel *)totalTexture.end();
+        // colorChannel *diffPtr = (colorChannel *)diffTex.baseArray;
+        // for (colorChannel *totalTexPtr = (colorChannel *)totalTexture.baseArray; totalTexPtr < totalTexEndPtr; diffPtr++, totalTexPtr++)
+        //{
+        //     *totalTexPtr += *diffPtr; // difference can be lower than 0, in which case it will be 255 etc.
+        // }
     }
 }
 
@@ -144,85 +143,47 @@ textureRGB videoEncoder::addFrame(const textureRGB &frame)
 
     // optimize frame further: detect general image motion
 
+    // block matching algorithms don't seem to help much:
     // https://en.wikipedia.org/wiki/Block-matching_algorithm
+    // we'll store the motion of each pixel and make an image of this motion. the PNG compressor will create a PNG from the motion.
 
     // now compare the error of different parts of the image and 'vote' which way to move
     std::map<veci2, int> motionWeights = std::map<veci2, int>();
 
-    // check in a grid
-    const array2d<int> leastErrorPerBlock = array2d<int>(motionVectors.size);
-    crectanglei2 &blocksRect = rectanglei2(motionVectors.size);
-    // the outer borders of the frame will not be checked. too bad
-    for (cveci2 &blockPos : blocksRect)
-    {
-        //veci2 posToCheck = (blockPos * gridStepSize) + (gridStepSize / 2);
-        // we extend to the right, but that doesn't really matter
-        //crectanglei2 &rectToCheck = crectanglei2(posToCheck - cveci2(0x4), cveci2(0x8));
-        crectanglei2 &rectToCheck = crectanglei2(blockPos * gridStepSize, cveci2(gridStepSize));
-        // ccolor &colorToCompare = totalTexture.getValue(posToCheck);
+    crectanglei2 &imageRect = frame.getClientRect();
 
-        constexpr int searchRadius = 0x8;
-        vect2<sbyte> &leastErrorPos = motionVectors.getValueReferenceUnsafe(blockPos);
-        int &leastError = leastErrorPerBlock.getValueReferenceUnsafe(blockPos);
+    // find rectangles that are moving
 
-        // copy
-        cveci2 lastMotion = leastErrorPos;
+    // std::vector<rectanglei2, veci2> motionRects = std::vector<rectanglei2, veci2>(frame.size);
 
-        // leastError = INT_MAX;
-        std::map<veci2, int> blockMotionWeight = std::map<veci2, int>();
-        // first check 00, then check around the old movement, to create constant motion. constant motion is not appreciated when there's a still part of an image.
-
-        leastErrorPos = veci2();
-        leastError = getMovementCostUnsafe(totalTexture, frame, rectToCheck, leastErrorPos, INT_MAX);
-        blockMotionWeight[leastErrorPos] = leastError;
-
-        if (leastError)
-        {
-            const auto &checkFunction = [this, &lastMotion, &blockMotionWeight, &rectToCheck, &leastError, &leastErrorPos, &frame](cveci2 &circlePosition)
-            {
-                cveci2 &relativePosition = lastMotion + circlePosition;
-                if (blockMotionWeight.contains(relativePosition))
-                {
-                    return false;
-                }
-                cint &error = getMovementCostUnsafe(totalTexture, frame, rectToCheck, relativePosition, leastError);
-                blockMotionWeight[relativePosition] = error;
-                if (error < leastError)
-                {
-                    leastErrorPos = relativePosition;
-                    leastError = error;
-                }
-                return error == 0;
-            };
-            veci2 finalCoords;
-            if (findInCircles(searchRadius, checkFunction, finalCoords))
-            {
-            }
-            // old: // finally, check 00 if it hasn't been checked yet
-            //      if (leastError && !blockMotionWeight.contains(veci2()))
-            //      {
-            //          cint &error = getMovementCostUnsafe(totalTexture, frame, rectToCheck, leastErrorPos, leastError);
-            //          if (error < leastError)
-            //          {
-            //              leastErrorPos = veci2();
-            //              leastError = error;
-            //          }
-            //      }
-
-            motionWeights[leastErrorPos]++; //= leastError;
-        }
-    }
-    int maxVotes = 0;
-    veci2 totalMovementVector;
-    for (auto p : motionWeights)
-    {
-        if (p.second > maxVotes)
-        {
-            totalMovementVector = p.first;
-            maxVotes = p.second;
-        }
-    }
-    addMotionVectors();
+    // for (cveci2 &pixelPos : imageRect)
+    //{
+    //     if (totalTexture.getValueUnsafe(pixelPos) == frame.getValueUnsafe(pixelPos))
+    //     {
+    //         sourceMotionVectors.setValueUnsafe(pixelPos, vect3<sbyte>());
+    //     }
+    //     else
+    //     {
+    //         auto lastSourceMotionVector = sourceMotionVectors.getValueUnsafe(pixelPos);
+    //         cveci2& offsetPos = pixelPos + (veci2)lastSourceMotionVector;
+    //
+    //        // if it's still correct, let it be
+    //        if (!frame.inBounds(offsetPos) || frame.getValueUnsafe(pixelPos) != totalTexture.getValueUnsafe(offsetPos))
+    //        {
+    //            // check pixels left or right for the same pixel (did it move or did it disappear?)
+    //
+    //            const auto &checkFunction = [&frame, &offsetPos, &pixelPos, this](cveci2 &relativePosition) {
+    //                cveci2& checkPos = offsetPos + relativePosition;
+    //                return frame.inBounds(checkPos) && frame.getValueUnsafe(pixelPos) == totalTexture.getValueUnsafe(checkPos);
+    //            };
+    //            veci2 finalPos;
+    //            if (findInCircles(2, checkFunction, finalPos))
+    //            {
+    //                sourceMotionVectors.setValueUnsafe(pixelPos, vect3<sbyte>(offsetPos + finalPos));
+    //            }
+    //        }
+    //    }
+    //}
 
     // if (totalMovementVector != veci2())
     //{
@@ -233,12 +194,27 @@ textureRGB videoEncoder::addFrame(const textureRGB &frame)
     //     fillTransformedBrushRectangle(rectangle2(texCopy.getClientRect()), vec2(totalMovementVector), texCopy, totalTexture);
     // }
 
-    const colorChannel *const &totalTexEndPtr = (colorChannel *)totalTexture.end();
-    colorChannel *diffPtr = (colorChannel *)diffTex.baseArray;
-    colorChannel *framePtr = (colorChannel *)frame.baseArray;
-    for (colorChannel *totalTexPtr = (colorChannel *)totalTexture.baseArray; totalTexPtr < totalTexEndPtr; framePtr++, diffPtr++, totalTexPtr++)
+    const colorRGB *const &totalTexEndPtr = (colorRGB *)totalTexture.end();
+    colorRGB *diffPtr = (colorRGB *)diffTex.baseArray;
+    colorRGB *framePtr = (colorRGB *)frame.baseArray;
+    for (colorRGB *totalTexPtr = (colorRGB *)totalTexture.baseArray; totalTexPtr < totalTexEndPtr; framePtr++, diffPtr++, totalTexPtr++)
     {
-        *diffPtr = *framePtr - *totalTexPtr; // difference can be lower than 0, in which case it will be 255 etc.
+        constexpr colorRGB nothingChangedColor = colorRGB(0x79);
+        if (*framePtr != *totalTexPtr)
+        {
+            // we
+            if (*framePtr == nothingChangedColor)
+            {
+                *diffPtr = colorRGB(0x79, 0x79, 0x80);
+            }
+            else {
+                *diffPtr = *framePtr;
+            }
+        }
+        else
+        {
+            *diffPtr = nothingChangedColor; // difference can be lower than 0, in which case it will be 255 etc.
+        }
         *totalTexPtr = *framePtr;
     }
     return diffTex;
@@ -246,49 +222,56 @@ textureRGB videoEncoder::addFrame(const textureRGB &frame)
 
 void videoEncoder::serializeMotionVectors(nbtSerializer &serializer)
 {
-    std::string compressedVectors;
-    if (serializer.write)
-    {
-        compressedVectors = gzip::compress((const char *)motionVectors.baseArray, motionVectors.size.volume() * sizeof(vect2<sbyte>));
-    }
-    // serialize the motion vectors as one big int array
-    serializer.serializeValue(L"motion vectors", compressedVectors);
+    // std::string compressedVectors;
+    // if (serializer.write)
+    //{
+    //     compressedVectors = gzip::compress((const char *)sourceMotionVectors.baseArray, sourceMotionVectors.size.volume() * sizeof(vect3<sbyte>));
+    // }
+    //  serialize the motion vectors as one big int array
+    // serializer.serializeValue(L"motion vectors", compressedVectors);
 
-    if (!serializer.write)
-    {
-        std::string decomp = gzip::decompress(&compressedVectors[0], compressedVectors.size());
-        std::copy(decomp.begin(), decomp.end(), (char *)motionVectors.baseArray);
-    }
+    // if (!serializer.write)
+    //{
+    //     std::string decomp = gzip::decompress(&compressedVectors[0], compressedVectors.size());
+    //     std::copy(decomp.begin(), decomp.end(), (char *)sourceMotionVectors.baseArray);
+    // }
 }
 
 void videoEncoder::visualize(const texture &screen)
 {
 
     // visualize the moved rects
-    crectanglei2 &blocksRect = rectanglei2(motionVectors.size);
+    crectanglei2 &blocksRect = rectanglei2(sourceMotionVectors.size);
     for (cveci2 &blockPos : blocksRect)
     {
         crectanglei2 &rectToMove = rectanglei2(blockPos * gridStepSize, cveci2(gridStepSize));
-        cveci2 &vec = motionVectors.getValueUnsafe(blockPos);
+        cveci2 &vec = sourceMotionVectors.getValueUnsafe(blockPos);
         if (vec != veci2())
         {
-            screen.fillRectangleBorders(rectToMove, 1, brushes::red);
+            fillRectangleBorders(screen, rectToMove, 1, brushes::red);
             constexpr int motionMult = 30;
-            screen.fillLine(rectToMove.pos0, rectToMove.pos0 + vec * motionMult, brushes::green);
+            fillLine(screen, rectToMove.pos0, rectToMove.pos0 + vec * motionMult, brushes::green);
         }
     }
 }
 
 void videoEncoder::addMotionVectors() const
 {
-    for (cveci2 &blockPos : motionVectors.getClientRect())
-    {
-        crectanglei2 &rectToMove = rectanglei2(blockPos * gridStepSize, cveci2(gridStepSize));
-        moveArrayPart(totalTexture, rectToMove, motionVectors.getValueUnsafe(blockPos));
-    }
+    // copy texture
+    // const textureRGB oldTexture = totalTexture;
+    // for (cveci2 &blockPos : sourceMotionVectors.getClientRect())
+    //{
+    //    veci2 movement = sourceMotionVectors.getValueUnsafe(blockPos);
+    //    if(movement != veci2()){
+    //        totalTexture.setValueUnsafe(blockPos + movement, oldTexture.getValue(blockPos));
+    //    }
+    //    //crectanglei2 &rectToMove = rectanglei2(blockPos * gridStepSize, cveci2(gridStepSize));
+    //    //totalTexture.copyArray(rectToMove, rectToMove.pos0 + sourceMotionVectors.getValueUnsafe(blockPos), oldTexture);
+    //    // moveArrayPart(totalTexture, rectToMove, sourceMotionVectors.getValueUnsafe(blockPos));
+    //}
 }
 
 void videoEncoder::resizeGrid()
 {
-    motionVectors = array2d<vect2<sbyte>>(totalTexture.size / gridStepSize);
+    sourceMotionVectors = array2d<vect3<sbyte>>(totalTexture.size);
 }

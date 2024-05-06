@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "serverData.h"
+#include "nbtSerializer.h"
 
 void serverData::serializeValue(nbtSerializer& s)
 {

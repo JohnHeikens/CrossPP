@@ -1,4 +1,5 @@
 #include "breedableMob.h"
+#include "nbtSerializer.h"
 void breedableMob::tick()
 {
 	age++;

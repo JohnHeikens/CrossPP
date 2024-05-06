@@ -2,6 +2,7 @@
 #include "soundList.h"
 #include "dimension.h"
 #include "mob.h"
+#include "nbtSerializer.h"
 bool ghastFireBallAI::shouldExecute()
 {
 	//not in the constructor

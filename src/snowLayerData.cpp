@@ -1,4 +1,6 @@
 #include "snowLayerData.h"
+#include "nbtSerializer.h"
+
 snowLayerData::snowLayerData(cfp& layerThickness)
 {
 	this->layerThickness = layerThickness;

@@ -1,5 +1,5 @@
 #pragma once
-#include "vectn.h"
+#include "vector\vectn.h"
 
 //this function moves through a grid in 2d space
 template<class compareFunction>

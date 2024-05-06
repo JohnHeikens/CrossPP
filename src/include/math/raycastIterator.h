@@ -1,4 +1,4 @@
-#include "vectn.h"
+#include "vector\vectn.h"
 #pragma once
 //http://www.cse.yorku.ca/~amana/research/grid.pdf
 

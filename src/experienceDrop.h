@@ -1,5 +1,5 @@
 #pragma once
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 struct dimension;
 struct experienceDrop
 {

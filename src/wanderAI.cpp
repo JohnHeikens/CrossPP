@@ -1,5 +1,6 @@
 #include "wanderAI.h"
 #include "mob.h"
+#include "nbtSerializer.h"
 bool wanderAI::continueExecuting()
 {
 

@@ -93,9 +93,9 @@
 #include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/random/random.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/uuid.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "inventory.h"
 #include "itemID.h"
 #include "itemStack.h"
@@ -112,6 +112,9 @@
 #include "statusEffectID.h"
 #include "treeItemTypeID.h"
 #include "woodtypeID.h"
+#include "math/graphics/brush/brushes/alphaMask.h"
+#include "nbtSerializer.h"
+#include "include/filesystem/fileFunctions.h"
 constexpr int pickUpDelayInTicks = ticksPerRealLifeSecond / 2;//2 seconds
 //std::shared_ptr<audio2d> currentWindSound;
 

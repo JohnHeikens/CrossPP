@@ -12,13 +12,13 @@
 #include "constants.h"
 #include "entity.h"
 #include "gameRenderData.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "globalFunctions.h"
 #include "math/graphics/color/color.h"
 #include "math/mathFunctions.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/uuid.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "nbtSerializer.h"
 struct chunk;
 enum class BiomeID : int;

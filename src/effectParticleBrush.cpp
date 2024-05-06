@@ -3,7 +3,8 @@
 #include "math/graphics/brush/brushes.h"
 #include "math/graphics/resolutiontexture.h"
 #include "math/mattnxn.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/graphics/brush/brushes/colorMultiplier.h"
 #include "gameRenderData.h"
 
 void effectParticleBrush::render(crectangle2& rect, const gameRenderData& targetData) const

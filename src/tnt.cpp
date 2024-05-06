@@ -28,7 +28,7 @@ void tnt::render(const gameRenderData& targetData) const
 	if (ticksUntilFuse % ticksPerRealLifeSecond < (ticksPerRealLifeSecond / 2))
 	{
 		//white
-		targetData.renderTarget.fillTransformedRectangle(rect, targetData.worldToRenderTargetTransform, brushes::white);
+		fillTransformedRectangle(targetData.renderTarget, rect, targetData.worldToRenderTargetTransform, brushes::white);
 	}
 	else
 	{

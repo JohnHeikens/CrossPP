@@ -8,6 +8,7 @@
 #include "overWorldOreList.h"
 #include "textureList.h"
 #include "gameControl.h"
+#include "math/graphics/brush/brushes/colorMaximizer.h"
 
 //https://www.researchgate.net/figure/Fitting-effect-of-wind-speed-probability-distribution_fig2_359780398
 const transition<fp> noiseValueToWindSpeed = transition<fp>(std::vector<keyFrame<fp>>({
@@ -541,7 +542,7 @@ void overWorld::renderSky(crectangle2 &blockRect, crectangle2 &drawRect,
                     math::lerp((fp) 1, (fp) 0.7, math::squared(cloudThickness))), (fp) 0, (fp) 1));
     const color airColor = color(hsv2rgb(airColorHSV));
 
-    targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(airColor));
+    fillRectangle(targetData.renderTarget, ceilRectangle(drawRect), solidColorBrush(airColor));
 
     if (settings::videoSettings::currentGraphicsMode != graphicsMode::fast) {
         //draw celestial bodies
@@ -564,7 +565,7 @@ void overWorld::renderSky(crectangle2 &blockRect, crectangle2 &drawRect,
 
             const auto &maximizer = colorMaximizer<texture, transformBrush<resolutionTexture>>(
                     targetData.renderTarget, backGroundToSun);
-            targetData.renderTarget.fillRectangle(ceilRectangle(croppedSunRect), maximizer);
+            fillRectangle(targetData.renderTarget, ceilRectangle(croppedSunRect), maximizer);
 
             if (cloudThickness > 0.7)//raining
             {

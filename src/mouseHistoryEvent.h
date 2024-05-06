@@ -1,6 +1,6 @@
 #pragma once
 #include "globalFunctions.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 enum mouseEventType{
     down,
     move,

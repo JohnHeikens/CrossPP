@@ -30,11 +30,11 @@
 #include "entity.h"
 #include "entityData.h"
 #include "entityID.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "globalFunctions.h"
 #include "math/mathFunctions.h"
 #include "math/random/random.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "levelID.h"
 #include "nbtCompound.h"
 #include "nbtData.h"
@@ -43,6 +43,9 @@
 #include "structureID.h"
 #include "server.h"
 #include "human.h"
+#include "nbtSerializer.h"
+#include "serializer/serializeColor.h"
+#include "include/filesystem/fileFunctions.h"
 
 bool chunk::inBounds(cveci2 &position) const {
     return blockIDArray.inBounds(position - worldPos);
@@ -255,7 +258,7 @@ void chunk::serializeValue(nbtSerializer &s) {
                     if (s.push<nbtDataTag::tagCompound>()) {
                         s.serializeValue(std::wstring(L"entity id"),
                                          (int &) entityList[i]->entityType);
-                        s.serializeValue(std::wstring(L"position"), entityList[i]->position);
+                        serializeNBTValue(s, std::wstring(L"position"), entityList[i]->position);
                         entityList[i]->serializeValue(s);
                         s.pop();
                     }
@@ -272,7 +275,7 @@ void chunk::serializeValue(nbtSerializer &s) {
                                                  s.converter ? &s.converter->entityIDConverter
                                                              : nullptr)) {
                         vec2 position;
-                        s.serializeValue(std::wstring(L"position"), position);
+                        serializeNBTValue(s, std::wstring(L"position"), position);
                         if (isSerializable(entityType)) {
 
                             entity *e = createEntity(entityType, dimensionIn, position);

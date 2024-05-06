@@ -3,6 +3,7 @@
 #include "idAnalysis.h"
 #include "throwable.h"
 #include "dimension.h"
+#include "serializer/serializeUUID.h"
 throwable::throwable(dimension* dimensionIn, cvec2& position, const entityID& entityType) :entity(dimensionIn, position, entityType)
 {
 }
@@ -64,7 +65,7 @@ void throwable::onCollision(const std::vector<entity*>& collidingEntities)
 
 void throwable::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"thrown from"), thrownFrom);
+	serializeNBTValue(s, std::wstring(L"thrown from"), thrownFrom);
 	s.serializeValue(std::wstring(L"left owner"), leftOwner);
 }
 

@@ -16,6 +16,7 @@
 #include "conditionDrop.h"
 #include "floatingSlot.h"
 #include "additiveDrop.h"
+#include "type/conversion.h"
 
 std::map<std::wstring, std::shared_ptr <lootTable>> chestLootTables = std::map<std::wstring, std::shared_ptr <lootTable>>();
 

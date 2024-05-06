@@ -2,6 +2,7 @@
 #include "tickableBlockContainer.h"
 #include "itemData.h"
 #include "experienceOrb.h"
+#include "nbtSerializer.h"
 furnaceData::furnaceData()
 {
 	inputSlot = new rectangularSlotContainer(cveci2(1));
@@ -24,12 +25,12 @@ bool furnaceData::tick(tickableBlockContainer* containerIn, cveci2& position)
 		//if a recipe needs to be completed
 		if (currentRecipe &&
 			//if there is something in the fuel slot
-			fuelSlot->slots[0].count && itemList[fuelSlot->slots[0].stackItemID]->burningTicks > 0 &&
+			fuelSlot->slots[0].count && itemList[fuelSlot->slots[0].stackItemID]->fuelTicks > 0 &&
 			//if there is room left
 			((outputSlot->slots[0].count == 0) || ((outputSlot->slots[0].stackItemID == currentRecipe->result.stackItemID) && (outputSlot->slots[0].count < itemList[outputSlot->slots[0].stackItemID]->maxStackSize))))
 		{
 			//throw new fuel on the fire
-			ticksFuelToBurn = itemList[fuelSlot->slots[0].stackItemID]->burningTicks;
+			ticksFuelToBurn = itemList[fuelSlot->slots[0].stackItemID]->fuelTicks;
 
 			//remove fuel from slot
 			fuelSlot->slots[0].add(-1);

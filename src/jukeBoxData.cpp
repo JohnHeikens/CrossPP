@@ -1,5 +1,6 @@
 #include "jukeBoxData.h"
 #include "musicList.h"
+#include "nbtSerializer.h"
 bool jukeBoxData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	return false;

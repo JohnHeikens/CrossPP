@@ -186,7 +186,7 @@ void enderDragon::render(const gameRenderData& targetData) const
 
 			cvec2 p0 = position + vec2::getrotatedvector(dyingBeams[i].x) * transparencyDistance;
 			cvec2 p1 = position + vec2::getrotatedvector(dyingBeams[i].x + dyingBeams[i].y) * transparencyDistance;
-			targetData.renderTarget.fillPolygon({
+			fillPolygon(targetData.renderTarget, {
 				targetData.worldToRenderTargetTransform.multPointMatrix(position),
 				targetData.worldToRenderTargetTransform.multPointMatrix(p0),
 				targetData.worldToRenderTargetTransform.multPointMatrix(p1)

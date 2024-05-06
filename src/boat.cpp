@@ -5,6 +5,7 @@
 #include "dimension.h"
 #include "math/bodypart2d.h"
 #include "block.h"
+#include "nbtSerializer.h"
 
 fp boat::getPaddleAngle(cfp& paddleRotations)
 {

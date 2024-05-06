@@ -1,5 +1,6 @@
 #pragma once
 #include "math/graphics/brush/brush.h"
+#include "math/graphics/color/colorFunctions.h"
 constexpr color dragonDyingBeamStartColor = colorPalette::white;
 constexpr color dragonDyingBeamEndColor = colorPalette::magenta;
 template<typename brush0Type>
@@ -14,9 +15,9 @@ struct dragonBeamBrush : colorBrush
 	inline color getValue(cvec2& pos) const
 	{
 		cfp distanceToDragonSquared = (pos - dragonScreenLocation).lengthSquared();
-		return color::lerpcolor(
+		return lerpColor(
 			(distanceToDragonSquared < whiteDistanceSquared) ?
-			color::lerpcolor(dragonDyingBeamStartColor, dragonDyingBeamEndColor, (distanceToDragonSquared / whiteDistanceSquared)) :
+			lerpColor(dragonDyingBeamStartColor, dragonDyingBeamEndColor, (distanceToDragonSquared / whiteDistanceSquared)) :
 			dragonDyingBeamEndColor
 			, backgroundBrush->getValue(pos), math::minimum(distanceToDragonSquared / transparencyDistanceSquared, (fp)1));
 	}

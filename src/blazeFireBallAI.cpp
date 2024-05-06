@@ -1,6 +1,7 @@
 #include "blazeFireBallAI.h"
 #include "soundList.h"
 #include "dimension.h"
+#include "nbtSerializer.h"
 bool blazeFireBallAI::shouldExecute()
 {
 	if (fireBallCoolDown == 0 || fireBallsLeft)

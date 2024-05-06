@@ -1,5 +1,7 @@
 #pragma once
 #include "generationData.h"
+#include <vector>
+#include "math/vector/vectn.h"
 struct endGenerationData :generationData
 {
 	endGenerationData() {}

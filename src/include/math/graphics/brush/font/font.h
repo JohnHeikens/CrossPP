@@ -4,8 +4,8 @@
 #include "globalFunctions.h"
 #include "fontfamily.h"
 #include "math/graphics/texture.h"
-#include "math/rectangletn.h"
-#include "math/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/vector/vectn.h"
 
 template<typename fontBrushType = solidColorBrush>
 struct font : baseFont

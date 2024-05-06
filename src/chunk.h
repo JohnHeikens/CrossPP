@@ -10,9 +10,9 @@
 #include <random>
 #include "constants.h"
 #include "dimension.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "globalFunctions.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 
 constexpr int chunkSaveTreshold = 0x10;//the amount of ticks a chunk needs to have no update for it to be saved if no chunk is saved that tick
 constexpr int chunkEntityFreezeTreshold = 0x10;//the amount of ticks a chunk needs to have no player around to only calculate block updates

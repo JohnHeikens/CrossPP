@@ -19,9 +19,10 @@
 #include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/uuid.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "levelID.h"
 #include "nbtSerializer.h"
+#include "serializer/serializeUUID.h"
 bool pistonData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	if (isPart0)
@@ -187,7 +188,7 @@ void pistonData::serializeValue(nbtSerializer& s)
 	doubleBlockData::serializeValue(s);
 	s.serializeValue(std::wstring(L"last power level behind"), lastPowerLevelBehind);
 	s.serializeValue(std::wstring(L"push progress"), pushProgress);
-	s.serializeValue(std::wstring(L"blocks moving"), blocksMoving);
+	serializeNBTValue(s, std::wstring(L"blocks moving"), blocksMoving);
 }
 void pistonData::onBlockRemove(tickableBlockContainer* containerIn, cveci2& position)
 {

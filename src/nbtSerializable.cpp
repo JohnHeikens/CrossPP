@@ -1,4 +1,5 @@
 #include "nbtSerializable.h"
+#include "nbtSerializer.h"
 void nbtSerializable::serializeValue(nbtSerializer& s)
 {
 	//don't throw an error, it could be that something just has no data to serialize

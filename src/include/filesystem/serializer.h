@@ -4,7 +4,7 @@
 #include "array/wstringFunctions.h"
 #include "serialization.h"
 #include "iserializer.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "math/uuid.h"
 
 template <typename t>

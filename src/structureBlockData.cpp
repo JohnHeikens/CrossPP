@@ -1,9 +1,11 @@
 #include "structureBlockData.h"
+#include "nbtSerializer.h"
+#include "serializer/serializeColor.h"
 void structureBlockData::serializeValue(nbtSerializer& s)
 {
 	s.serializeValue(std::wstring(L"structure name"), structureName);
-	s.serializeValue(std::wstring(L"relative structure position"), relativeStructurePosition);
-	s.serializeValue(std::wstring(L"structure size"), structureSize);
+	serializeNBTValue(s, std::wstring(L"relative structure position"), relativeStructurePosition);
+	serializeNBTValue(s, std::wstring(L"structure size"), structureSize);
 	s.serializeValue(std::wstring(L"include entities"), includeEntities);
 	s.serializeValue(std::wstring(L"mirror x"), mirrorX);
 	s.serializeValue(std::wstring(L"structure rotation"), structureRotation);

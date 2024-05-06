@@ -1,6 +1,7 @@
 #include "rectangularSlotContainer.h"
 #include "itemData.h"
 #include "lootTable.h"
+#include "nbtSerializer.h"
 rectangularSlotContainer::rectangularSlotContainer(cveci2& rowsAndColumns)
 {
 	this->rowsAndColumns = rowsAndColumns;

@@ -24,7 +24,7 @@
 #include "entity.h"
 #include "entityID.h"
 #include "idAnalysis.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "array/fastlist.h"
 #include "globalFunctions.h"
 #include "math/collisions.h"
@@ -33,10 +33,10 @@
 #include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/random/random.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/graphics/texture.h"
 #include "math/uuid.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "optimization/benchmark.h"
 #include "levelID.h"
 #include "lightLevel.h"
@@ -48,6 +48,11 @@
 #include "structureID.h"
 #include "tickableBlockContainer.h"
 #include "math/algorithm/findInCircles.h"
+#include "math/graphics/brush/brushes/bilinearInterpolator.h"
+#include "array/arraynd/arrayndFunctions.h"
+#include "nbtSerializer.h"
+#include "include/filesystem/fileFunctions.h"
+#include "serializer/serializeColor.h"
 
 color dimension::getColorMultiplier(cfp& sunLight, cfp& blockLight) const
 {
@@ -166,7 +171,7 @@ void dimension::serializeValue(nbtSerializer& s)
 			{
 				if (s.push<nbtDataTag::tagCompound>())
 				{
-					s.serializeValue(std::wstring(L"position"), portalPosition);
+					serializeNBTValue(s, std::wstring(L"position"), portalPosition);
 					s.pop();
 				}
 			}
@@ -179,7 +184,7 @@ void dimension::serializeValue(nbtSerializer& s)
 				if (s.push(positionData))
 				{
 					veci2 pos;
-					if (s.serializeValue(std::wstring(L"position"), pos))
+					if (serializeNBTValue(s, std::wstring(L"position"), pos))
 					{
 						portalPositions.push_back(pos);
 					}
@@ -198,7 +203,7 @@ void dimension::serializeValue(nbtSerializer& s)
 			{
 				if (s.push<nbtDataTag::tagCompound>())
 				{
-					s.serializeValue(std::wstring(L"chunk coordinates"), it.second->chunkCoordinates);
+					serializeNBTValue(s, std::wstring(L"chunk coordinates"), it.second->chunkCoordinates);
 					it.second->serialize(s.write);
 					s.pop();
 				}
@@ -213,7 +218,7 @@ void dimension::serializeValue(nbtSerializer& s)
 				if (s.push(chunkData))
 				{
 					veci2 chunkCoordinates;
-					s.serializeValue(std::wstring(L"chunk coordinates"), chunkCoordinates);
+					serializeNBTValue(s, std::wstring(L"chunk coordinates"), chunkCoordinates);
 					chunk* c = new chunk(this, chunkCoordinates);
 					c->generateArrays();
 					loadedChunksMap.push_back(std::pair<veci2, chunk*>(chunkCoordinates, c));
@@ -235,7 +240,7 @@ void dimension::serializeValue(nbtSerializer& s)
 			{
 				if (s.push())
 				{
-					s.serializeValue(std::wstring(L"position"), blockUpdatePositions[i]);
+					serializeNBTValue(s, std::wstring(L"position"), blockUpdatePositions[i]);
 					s.pop();
 				}
 			}
@@ -249,7 +254,7 @@ void dimension::serializeValue(nbtSerializer& s)
 			{
 				if (s.push(data))
 				{
-					s.serializeValue(std::wstring(L"position"), blockUpdatePositions[i]);
+					serializeNBTValue(s, std::wstring(L"position"), blockUpdatePositions[i]);
 					s.pop();
 				}
 				i++;

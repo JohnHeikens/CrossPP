@@ -1,9 +1,12 @@
 #include "playerData.h"
 #include "folderList.h"
 #include <filesystem/filemanager.h>
+#include "serializer/serializeUUID.h"
+#include "filesystem/fileFunctions.h"
+#include "serializer/serializeUUID.h"
 void playerData::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(L"uuid", id);
+	serializeNBTValue(s, L"uuid", id);
 	s.serializeValue(L"name", name);
 }
 

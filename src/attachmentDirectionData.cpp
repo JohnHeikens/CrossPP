@@ -1,4 +1,5 @@
 #include "attachmentDirectionData.h"
+#include "nbtSerializer.h"
 directionID attachmentDirectionData::getAttachmentDirection(tickableBlockContainer* containerIn, cveci2& position) const
 {
 	return attachmentDirection;

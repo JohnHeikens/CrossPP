@@ -5,6 +5,7 @@
 #include "collisionDataCollection.h"
 #include <set>
 #include "block.h"
+#include <list>
 struct blockContainer
 {
 	virtual bool inBounds(cveci2& position) const = 0;

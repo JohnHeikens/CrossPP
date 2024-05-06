@@ -1,6 +1,7 @@
 #include "resolutiontexture.h"
 #include "math/graphics/brush/brushes.h"
 #include "math/mathFunctions.h"
+#include "math/graphics/color/colorFunctions.h"
 //COPIES THE COLORS, NOT THE POINTER
 resolutionTexture::resolutionTexture(const texture& highestResolution, cvec2& size)
 {
@@ -75,7 +76,7 @@ texture resolutionTexture::getHalfResolution(const texture& doubleResolution)
 		for (fsize_t x = 0; x < result.size.x; x++)
 		{
 			const color* srcX = srcY + (x + x);
-			*(destY + x) = color::Average(
+			*(destY + x) = averageColor(
 				//xy
 				*srcX,											//00
 				*(srcX + 1),									//10

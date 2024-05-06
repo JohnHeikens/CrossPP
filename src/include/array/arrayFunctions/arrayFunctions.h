@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <numeric>
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include <set>
 
 template<typename First, typename ... T>

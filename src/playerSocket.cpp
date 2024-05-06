@@ -9,9 +9,9 @@
 #include "globalFunctions.h"
 #include "math/graphics/color/color.h"
 #include "math/graphics/texture.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/uuid.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "human.h"
 #include "fpng.h"
 #include <thread>
@@ -22,6 +22,9 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include "application/thread/setThreadName.h"
 #include "filesystem/serializer.h"
+#include "serializer/serializeUUID.h"
+#include "serializer/serializeColor.h"
+#include "serializer/serializeList.h"
 playerSocket::playerSocket(sf::TcpSocket *socket)
 {
 	screen = new gameControl(*this);
@@ -53,7 +56,7 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	nbtSerializer inNBTSerializer = nbtSerializer(authPacket, false);
 
 	uuid playerUUID;
-	inNBTSerializer.serializeValue(L"uuid", playerUUID);
+	serializeNBTValue(inNBTSerializer, L"uuid", playerUUID);
 	std::wstring playerName;
 	inNBTSerializer.serializeValue(L"name", playerName);
 	screen->player = player = new human(currentWorld->dimensions[(int)currentWorld->worldSpawnDimension], vec2(), *screen, playerName);
@@ -66,7 +69,7 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	}
 
 	rectanglei2 screenRect = rectanglei2();
-	inNBTSerializer.serializeValue(L"screenSize", screenRect.size);
+	serializeNBTValue(inNBTSerializer, L"screenSize", screenRect.size);
 	screen->layout(screenRect);
 
 	crectangle2 &relativeHitbox = player->calculateHitBox();
@@ -143,7 +146,7 @@ void renderAsync(playerSocket *socket)
 
 	vec3 earPosition = vec3(socket->screen->cameraPosition.x, socket->screen->cameraPosition.y, settings::soundSettings::headScreenDistance * socket->screen->visibleRange.x);
 	// vec2 earPosition = socket->screen->player->getHeadPosition();
-	outSerializer->serializeValue(L"earPosition", earPosition);
+	serializeNBTValue(*outSerializer, L"earPosition", earPosition);
 
 	if (outSerializer->push<nbtDataTag::tagList>(L"sounds"))
 	{
@@ -194,7 +197,7 @@ void renderAsync(playerSocket *socket)
 			socket->screen->mostRecentInput.serialize(currentNBTSerializer);
 
 			vect2<fsize_t> newScreenSize;
-			currentNBTSerializer.serializeValue(L"screenSize", newScreenSize);
+			serializeNBTValue(currentNBTSerializer, L"screenSize", newScreenSize);
 			if (veci2(newScreenSize) != socket->screen->rect.size)
 			{
 				socket->screen->layout(crectanglei2(veci2(), veci2(newScreenSize)));
@@ -212,7 +215,7 @@ void renderAsync(playerSocket *socket)
 		receivedPackets++;
 	}
 	socket->packetsReceivedPerSecond += receivedPackets;
-	socket->packetsSentPerSecond ++;
+	socket->packetsSentPerSecond++;
 }
 
 void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSerializer *s)
@@ -256,7 +259,7 @@ void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSeria
 	// std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
 	fpng::fpng_encode_image_to_memory(differenceTex.baseArray, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedScreen);
 
-	s->serializeList(L"compressedScreen", compressedScreen);
+	serializeNBTValue(*s, L"compressedScreen", compressedScreen);
 	socket->encoder.serializeMotionVectors(*s);
 
 	delete s;

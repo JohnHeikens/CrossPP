@@ -11,12 +11,12 @@
 #include "chunkLoadLevel.h"
 #include "constants.h"
 #include "entityID.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "array/fastlist.h"
 #include "globalFunctions.h"
 #include "math/mattnxn.h"
-#include "math/rectangletn.h"
-#include "math/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/vector/vectn.h"
 #include "itemID.h"
 #include "nbtCompound.h"
 #include "nbtData.h"
@@ -24,6 +24,8 @@
 #include "nbtSerializer.h"
 #include "entity.h"
 #include "dimension.h"
+#include "serializer/serializeColor.h"
+#include "include/filesystem/fileFunctions.h"
 
 mat3x3i structure::getBlocksToWorldTransform(cveci2 &pos00, cbool &flipX) const {
     mat3x3i structureToWorldTransform = mat3x3i::translate(pos00);
@@ -69,10 +71,10 @@ bool structure::serialize(const stdPath &path, cbool &write) {
     nbtSerializer s = nbtSerializer(*compound, write);
     //output file stream
     if (write) {
-        s.serializeValue(std::wstring(L"size"), blockIDArray.size);
+        serializeNBTValue(s, std::wstring(L"size"), blockIDArray.size);
     } else {
         veci2 size;
-        s.serializeValue(std::wstring(L"size"), size);
+        serializeNBTValue(s, std::wstring(L"size"), size);
         blockIDArray = array2d<blockID>(size, false);
         blockDataArray = array2d<blockData *>(size, true);
     }
@@ -99,7 +101,7 @@ bool structure::serialize(const stdPath &path, cbool &write) {
                     blockData *data = blockDataArray.getValueUnsafe(relativePosition);
                     if (data) {
                         if (s.push<nbtDataTag::tagCompound>()) {
-                            s.serializeValue(std::wstring(L"relative position"), relativePosition);
+                            serializeNBTValue(s, std::wstring(L"relative position"), relativePosition);
                             data->serializeValue(s);
                             s.pop();
                         }
@@ -112,7 +114,7 @@ bool structure::serialize(const stdPath &path, cbool &write) {
             for (nbtData *serializedBlockData: dataList) {
                 if (s.push(serializedBlockData)) {
                     veci2 position;
-                    s.serializeValue(std::wstring(L"relative position"), position);
+                    serializeNBTValue(s, std::wstring(L"relative position"), position);
                     blockData *data = blockDataArray.getValue(position);
                     data->serializeValue(s);
                     s.pop();
@@ -127,7 +129,7 @@ bool structure::serialize(const stdPath &path, cbool &write) {
             for (entity *e: entities) {
                 if (s.push<nbtDataTag::tagCompound>()) {
                     s.serializeValue(std::wstring(L"entity id"), (int &) e->entityType);
-                    s.serializeValue(std::wstring(L"position"), e->position);
+                    serializeNBTValue(s, std::wstring(L"position"), e->position);
                     e->serializeValue(s);
                     s.pop();
                 }
@@ -142,7 +144,7 @@ bool structure::serialize(const stdPath &path, cbool &write) {
                                                  s.converter ? &s.converter->entityIDConverter
                                                              : nullptr)) {
                         vec2 position;
-                        s.serializeValue(std::wstring(L"position"), position);
+                        serializeNBTValue(s, std::wstring(L"position"), position);
                         entity *const &e = createEntity(entityType, nullptr, position);
                         e->serializeValue(s);
                         entities.push_back(e);

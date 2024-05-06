@@ -1,5 +1,5 @@
 #pragma once
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "mob.h"
 #include "dragonPhase.h"
 #include "soundCollection.h"

@@ -3,6 +3,7 @@
 #include "mob.h"
 #include "idAnalysis.h"
 #include "math/collisions.h"
+#include "serializer/serializeUUID.h"
 bool ridableEntity::addPassenger(mob* m)
 {
 	for (uuid& seat : seats)
@@ -28,7 +29,7 @@ void ridableEntity::serializeValue(nbtSerializer& s)
 			{
 				if (s.push<nbtDataTag::tagCompound>())
 				{
-					s.serializeValue(std::wstring(L"uuid"), seat);
+					serializeNBTValue(s, std::wstring(L"uuid"), seat);
 					s.pop();
 				}
 			}
@@ -40,7 +41,7 @@ void ridableEntity::serializeValue(nbtSerializer& s)
 			{
 				if (s.push(data[i]))
 				{
-					s.serializeValue(std::wstring(L"uuid"), seats[i]);
+					serializeNBTValue(s, std::wstring(L"uuid"), seats[i]);
 					s.pop();
 				}
 			}

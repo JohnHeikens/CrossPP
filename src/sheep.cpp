@@ -5,6 +5,7 @@
 #include "taskList.h"
 #include "colors.h"
 #include "dimension.h"
+#include "math/graphics/brush/brushes/colorMultiplier.h"
 sheep::sheep(dimension* dimensionIn, cvec2& position) :fourLeggedPassiveMob(dimensionIn, position, entityID::sheep), mob(dimensionIn, position, entityID::sheep)
 {
 	((taskList*)tasks)->addTask((int)((taskList*)tasks)->tasks.size() - 1, new eatGrassAI(this));

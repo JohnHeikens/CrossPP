@@ -1,4 +1,5 @@
 #include "openData.h"
+#include "nbtSerializer.h"
 void openData::serializeValue(nbtSerializer& s)
 {
 	blockData::serializeValue(s);

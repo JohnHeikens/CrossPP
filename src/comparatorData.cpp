@@ -1,6 +1,7 @@
 #include "comparatorData.h"
 #include "tickableBlockContainer.h"
 #include "jukeBoxData.h"
+#include "nbtSerializer.h"
 void comparatorData::serializeValue(nbtSerializer& s)
 {
 	inputData::serializeValue(s);

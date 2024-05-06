@@ -1,5 +1,7 @@
 #pragma once
 #include "generationData.h"
+#include "math/vector/vectn.h"
+#include <vector>
 struct netherGenerationData :generationData
 {
 	netherGenerationData() {}

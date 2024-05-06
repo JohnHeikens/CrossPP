@@ -3,7 +3,7 @@
 #include "entityData.h"
 #include "world.h"
 #include "dimension.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "soundList.h"
 #include "human.h"
 #include "idAnalysis.h"
@@ -11,7 +11,7 @@
 #include "pressurePlateData.h"
 #include "fluidList.h"
 #include "block.h"
-#include "math/vectorrandom.h"
+#include "math/vector/vectn.h"
 #include "playerControlledAI.h"
 #include "fluidData.h"
 #include "zombifiedPiglin.h"
@@ -74,13 +74,13 @@
 #include "dimensionID.h"
 #include "entityID.h"
 #include "humanoid.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "globalFunctions.h"
 #include "math/direction.h"
 #include "math/graphics/brush/brushes.h"
 #include "math/graphics/color/color.h"
 #include "math/mathFunctions.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "nbtData.h"
 #include "nbtDataTag.h"
 #include "nbtSerializer.h"
@@ -89,6 +89,10 @@
 #include "statusEffect.h"
 #include "statusEffectID.h"
 #include "tickableBlockContainer.h"
+#include "math/vector/vectorrandom.h"
+#include "serializer/serializeColor.h"
+#include "serializer/serializeUUID.h"
+#include "serializer/serializeRectangle.h"
 
 constexpr veci2 endBlockSpawningOn = cveci2(mainEndIslandMaxRadius / 2, 0);
 constexpr vec2 endSpawningLocation = cvec2(endBlockSpawningOn.getX() + 0.5, endBlockSpawningOn.getY() + 1 + math::fpepsilon);
@@ -1100,11 +1104,11 @@ void entity::serializeValue(nbtSerializer& s)
 		s.pop();
 	}
 
-	s.serializeValue(std::wstring(L"identifier"), identifier);
+	serializeNBTValue(s, std::wstring(L"identifier"), identifier);
 	s.serializeValue(std::wstring(L"ticks standing in portal"), portalTicks);
 	s.serializeValue(std::wstring(L"portal cooldown"), portalCoolDown);
-	s.serializeValue(std::wstring(L"new position"), newPosition);
-	s.serializeValue(std::wstring(L"speed"), speed);
+	serializeNBTValue(s, std::wstring(L"new position"), newPosition);
+	serializeNBTValue(s, std::wstring(L"speed"), speed);
 	s.serializeValue(std::wstring(L"fire ticks"), fireTicks);
 	s.serializeValue(std::wstring(L"immunity frame count"), immunityFrameCount);
 	s.serializeValue(std::wstring(L"last hit damage"), lastHitDamage);
@@ -1114,7 +1118,7 @@ void entity::serializeValue(nbtSerializer& s)
 	s.serializeValue(std::wstring(L"sneaking"), sneaking);
 	s.serializeValue(std::wstring(L"onGround"), onGround);
 	s.serializeValue(std::wstring(L"collision type"), (int&)collideLevel);
-	s.serializeValue(std::wstring(L"relative hitbox"), relativeHitbox);
+	serializeNBTValue(s, std::wstring(L"relative hitbox"), relativeHitbox);
 }
 
 bool entity::compareSelector(const human& sender, const std::wstring& selectorString) const
@@ -1150,7 +1154,7 @@ void entity::renderHitboxes(const gameRenderData& targetData) const
 	renderBlockRect(calculateHitBox(), targetData);
 	cvec2 pos0 = targetData.worldToRenderTargetTransform.multPointMatrix(position);
 	cvec2 pos1 = targetData.worldToRenderTargetTransform.multPointMatrix(newPosition);
-	targetData.renderTarget.fillLine(pos0, pos1, solidColorBrush(colorPalette::blue));
+	fillLine(targetData.renderTarget, pos0, pos1, solidColorBrush(colorPalette::blue));
 }
 
 bool entity::setOnFire(cint ticksToBurn)

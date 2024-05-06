@@ -101,11 +101,11 @@
 #include "math/graphics/color/color.h"
 #include "math/mathFunctions.h"
 #include "math/mattnxn.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/graphics/resolutiontexture.h"
 #include "math/swingsynchronizer.h"
 #include "math/graphics/texture.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "levelID.h"
 #include "lightLevel.h"
 #include "mushroomColorID.h"
@@ -114,6 +114,8 @@
 #include "treeItemTypeID.h"
 #include "woodtypeID.h"
 #include "minecraftFont.h"
+#include "include/math/graphics/brush/brushes/colorMultiplier.h"
+#include "include/math/graphics/brush/brushes/solidColorBrush.h"
 
 minecraftFont *currentMinecraftFont = nullptr;
 fontFamily *currentMinecraftFontFamily = nullptr;
@@ -135,6 +137,28 @@ const std::wstring musicDiscNames[musicDiscTypeCount]{
 	std::wstring(L"11"),
 	std::wstring(L"wait"),
 	std::wstring(L"pigstep")};
+
+const std::wstring oreBlockNames[oreBlockTypeCount]{
+	std::wstring(L"coal"),
+	std::wstring(L"iron"),
+	std::wstring(L"emerald"),
+	std::wstring(L"lapis"),
+	std::wstring(L"redstone"),
+	std::wstring(L"gold"),
+	std::wstring(L"diamond"),
+	std::wstring(L"nether_quartz"),
+	std::wstring(L"nether_gold")};
+
+constexpr bool smeltable[oreBlockTypeCount]{
+	false,
+	true,
+	false,
+	false,
+	false,
+	true,
+	false,
+	false,
+	false};
 
 // PER ARMOR TYPE
 constexpr fp leatherArmorWeakness[armorTypeCount]{
@@ -205,7 +229,7 @@ idList<woodTypeData *, woodTypeID> woodTypeDataList = idList<woodTypeData *, woo
 idList<particleTypeData *, particleID> particleTypeDataList = idList<particleTypeData *, particleID>();
 idList<fireworkShapeData *, fireworkShapeID> fireworkShapeDataList = idList<fireworkShapeData *, fireworkShapeID>();
 
-resolutionTexture *loadRotatedTexture(const stdPath& path, cvec2 &defaultSize, cint &angle)
+resolutionTexture *loadRotatedTexture(const stdPath &path, cvec2 &defaultSize, cint &angle)
 {
 	resolutionTexture *originalImage = loadTextureFromResourcePack(path, false);
 	texture rotatedImage = texture(cveci2(blockTextureSize));
@@ -272,7 +296,7 @@ std::vector<stdPath> getResourceLocations(const stdPath &relativePath)
 	}
 	return foundLocations;
 }
-void loadResourcePacks()
+void loadDataLists()
 {
 	enchantmentDataList = idList<enchantmentData *, enchantmentID>(fastList<enchantmentData *>((int)enchantmentID::count));
 	int enchantmentId = 0;
@@ -353,7 +377,7 @@ void loadResourcePacks()
 	enchantmentDataList[enchantmentId] = new enchantmentData(std::wstring(L"unbreaking"), (enchantmentID)enchantmentId, 3, {{5, 61}, {13, 71}, {21, 81}}, 5);
 	enchantmentId++;
 
-	enchantmentDataList.update();
+	// enchantmentDataList.update();
 
 	noteDataList = idList<noteData *, noteTypeID>(
 		{
@@ -498,64 +522,348 @@ void loadResourcePacks()
 			new structureData(std::wstring(L"wind_mill")),
 			new structureData(std::wstring(L"floating_ship")),
 		});
-	// load textures
 
-	currentMinecraftFontFamily = new fontFamily(loadTextureFromResourcePack(guiTextureFolder / L"ascii shadow.png"));
-	currentMinecraftFont = new minecraftFont();
+	constexpr color hotBiomeColor = hexToColor(0xbfb755);
+	constexpr color oceanBiomeColor = hexToColor(0x8eb971);
+	int currentBiomeID = 0;
+	biomeDataList = idList<biomeData *, biomeID>(fastList<biomeData *>((int)biomeID::biomeCount));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ocean"), oceanBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"swamp"), hexToColor(0x6a7039));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"plains"), hexToColor(0x91bd59));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"savanna"), hotBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"desert"), hotBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"taiga"), hexToColor(0x86b783));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"forest"), hexToColor(0x79c05a));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"dark_forest"), hexToColor(0x507A32));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"jungle"), hexToColor(0x59C93C));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ice_spikes"), hexToColor(0x80B497));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mushroom_fields"), hexToColor(0x55C93F));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mountains"), hexToColor(0x8AB689));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"badlands"), hexToColor(0x90814D));
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"nether_wastes"), hotBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"crimson_forest"), hotBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"warped_forest"), hotBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"soulsand_valley"), hotBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"basalt_deltas"), hotBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"the_end"), oceanBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_void"), oceanBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_lands"), oceanBiomeColor);
+	currentBiomeID++;
 
-	mainMenuBackgroundTexture = loadTextureFromResourcePack(guiTextureFolder / L"title" / L"background" / L"2d.png");
+	int currentStatusEffectID = 0;
 
-	experienceTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"experience_orb.png"));
+	statusEffectDataList = idList<statusEffectData *, statusEffectID>(fastList<statusEffectData *>((int)statusEffectID::count));
 
-    //gui
-	widgetsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"widgets.png"));
-	iconsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"icons.png"));
-    barsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"bars.png"));
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"luck"), (statusEffectID)currentStatusEffectID, hexToColor(0x339900));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"unluck"), (statusEffectID)currentStatusEffectID, hexToColor(0xC0A44D));
+	currentStatusEffectID++;
 
-    chatButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"chat.png");
-    settingsButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"settings.png");
-    inventoryButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"inventory.png");
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"saturation"), (statusEffectID)currentStatusEffectID, hexToColor(0xF82423));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"hunger"), (statusEffectID)currentStatusEffectID, hexToColor(0x587653));
+	currentStatusEffectID++;
 
-	grassOverlay = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grass_block_side_overlay.png"));
-	woolOverlay = loadTextureFromResourcePack(entityTextureFolder / L"sheep" / L"sheep_fur.png");
-	endPortalFrameEyeTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"end_portal_frame_eye.png"));
-	endSkyTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"end_sky.png"));
-	endCrystalTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"end_crystal/end_crystal.png"));
-	endCrystalBeamTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"end_crystal/end_crystal_beam.png"));
-	fireChargeTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"fire_charge.png"));
-	dirtTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"dirt.png"));
-	potionOverlayTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"potion_overlay.png"));
-	rainTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"rain.png"));
-	snowTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"snow.png"));
-	sunTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"sun.png"));
-	moonPhasesTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"moon_phases.png"));
-	brewingStandBaseTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"brewing_stand_base.png"));
-	brewingStandTopTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"brewing_stand.png"));
-	enchantedItemTexture = loadTextureFromResourcePack(miscellaneousTextureFolder / std::wstring(L"enchanted_item_glint.png"));
-	unLitRedstoneTorchTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"redstone_torch_off.png"));
-	redstoneLampOnTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"redstone_lamp_on.png"));
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"speed"), (statusEffectID)currentStatusEffectID, hexToColor(0x7CAFC6));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"slowness"), (statusEffectID)currentStatusEffectID, hexToColor(0x5A6C81));
+	currentStatusEffectID++;
 
-	const wstringContainer &furnaceNames{std::wstring(L"furnace"), std::wstring(L"blast_furnace"), std::wstring(L"smoker")};
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"haste"), (statusEffectID)currentStatusEffectID, hexToColor(0xD9C043));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"mining_fatigue"), (statusEffectID)currentStatusEffectID, hexToColor(0x4A4217));
+	currentStatusEffectID++;
 
-	for (int i = 0; i < furnaceTypeCount; i++)
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"strength"), (statusEffectID)currentStatusEffectID, hexToColor(0x932423));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"weakness"), (statusEffectID)currentStatusEffectID, hexToColor(0x484D48));
+	currentStatusEffectID++;
+
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"regeneration"), (statusEffectID)currentStatusEffectID, hexToColor(0xCD5CAB));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"poison"), (statusEffectID)currentStatusEffectID, hexToColor(0x4E9331));
+	currentStatusEffectID++;
+
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"levitation"), (statusEffectID)currentStatusEffectID, hexToColor(0xCEFFFF));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"slow_falling"), (statusEffectID)currentStatusEffectID, hexToColor(0xCEFFFF));
+	currentStatusEffectID++;
+
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"night_vision"), (statusEffectID)currentStatusEffectID, hexToColor(0x1F1FA1));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"invisibility"), (statusEffectID)currentStatusEffectID, hexToColor(0x7F8392));
+	currentStatusEffectID++;
+
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"instant_health"), (statusEffectID)currentStatusEffectID, hexToColor(0xF82423));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"instant_damage"), (statusEffectID)currentStatusEffectID, hexToColor(0x430A09));
+	currentStatusEffectID++;
+
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"jump_boost"), (statusEffectID)currentStatusEffectID, hexToColor(0x786297));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"nausea"), (statusEffectID)currentStatusEffectID, hexToColor(0x551D4A));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"resistance"), (statusEffectID)currentStatusEffectID, hexToColor(0x99453A));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"fire_resistance"), (statusEffectID)currentStatusEffectID, hexToColor(0xE49A3A));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"water_breathing"), (statusEffectID)currentStatusEffectID, hexToColor(0x2E5299));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"blindness"), (statusEffectID)currentStatusEffectID, hexToColor(0x1F1F23));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"wither"), (statusEffectID)currentStatusEffectID, hexToColor(0x352A27));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"health_boost"), (statusEffectID)currentStatusEffectID, hexToColor(0xF87D23));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"absorption"), (statusEffectID)currentStatusEffectID, hexToColor(0x2552A5));
+	currentStatusEffectID++;
+	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"glowing"), (statusEffectID)currentStatusEffectID, hexToColor(0x94A061));
+	currentStatusEffectID++;
+
+	gameModeDataList = idList<gameModeData *, gameModeID>(fastList<gameModeData *>((int)gameModeID::gameModesCount));
+
+	int currentGameModeID = 0;
+	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"survival"), false, true);
+	currentGameModeID++;
+	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"creative"), true, false);
+	currentGameModeID++;
+	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"adventure"), false, true);
+	currentGameModeID++;
+	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"spectator"), true, false);
+	currentGameModeID++;
+}
+
+void setFoodValues()
+{
+	// add food values
+	itemList[itemID::dried_kelp]->setEatingValues(1, 0.6);
+	itemList[itemID::carrot]->setEatingValues(3, 3.6);
+
+	itemList[itemID::potato]->setEatingValues(1, 0.6);
+	itemList[itemID::bread]->setEatingValues(5, 6.0);
+
+	itemList[itemID::beetroot]->setEatingValues(1, 1.2);
+	itemList[itemID::beetroot_soup]->setEatingValues(6, 7.2);
+
+	itemList[itemID::baked_potato]->setEatingValues(5, 6.0);
+	itemList[itemID::golden_carrot]->setEatingValues(6, 14.4);
+
+	itemList[itemID::rotten_flesh]->setEatingValues(4, 0.8);
+
+	itemList[itemID::beef]->setEatingValues(3, 1.8);
+	itemList[itemID::cooked_beef]->setEatingValues(8, 12.8);
+
+	itemList[itemID::mutton]->setEatingValues(2, 1.2);
+	itemList[itemID::cooked_mutton]->setEatingValues(6, 9.6);
+
+	itemList[itemID::porkchop]->setEatingValues(3, 1.8);
+	itemList[itemID::cooked_porkchop]->setEatingValues(8, 12.8);
+
+	itemList[itemID::chicken]->setEatingValues(2, 1.2);
+	itemList[itemID::cooked_chicken]->setEatingValues(6, 7.2);
+
+	itemList[itemID::rabbit]->setEatingValues(3, 1.8);
+	itemList[itemID::cooked_rabbit]->setEatingValues(5, 6);
+
+	itemList[itemID::cod]->setEatingValues(2, 0.4);
+	itemList[itemID::cooked_cod]->setEatingValues(5, 6);
+
+	itemList[itemID::salmon]->setEatingValues(2, 0.2);
+	itemList[itemID::cooked_salmon]->setEatingValues(6, 9.6);
+
+	itemList[itemID::tropical_fish]->setEatingValues(1, 0.2);
+
+	itemList[itemID::pufferfish]->setEatingValues(1, 0.2);
+
+	itemList[itemID::spider_eye]->setEatingValues(2, 3.2);
+
+	itemList[itemID::apple]->setEatingValues(4, 2.4);
+	itemList[itemID::golden_apple]->setEatingValues(4, 9.6);
+	itemList[itemID::enchanted_golden_apple]->setEatingValues(4, 9.6);
+	itemList[itemID::mushroom_stew]->setEatingValues(6, 7.2);
+
+	itemList[itemID::chorus_fruit]->setEatingValues(4, 2.4);
+	itemList[itemID::melon_slice]->setEatingValues(2, 1.2);
+
+	itemList[itemID::poisonous_potato]->setEatingValues(1, 0.6);
+}
+
+void loadMusic()
+{
+	mainMenuBackgroundMusic = std::make_shared<musicCollection>(menuMusicFolder / std::wstring(L"menu"));
+	overWorldBackgroundMusic = std::make_shared<musicCollection>(gameMusicFolder / std::wstring(L"calm"));
+	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"hal"));
+	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"hal"));
+	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"nuance"));
+	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"piano"));
+	netherMusic = std::make_shared<musicCollection>(netherMusicFolder / std::wstring(L"nether"));
+	endMusic = std::make_shared<musicCollection>(endMusicFolder / std::wstring(L"end"));
+	bossMusic = std::make_shared<musicCollection>(endMusicFolder / std::wstring(L"boss"));
+	creditsMusic = std::make_shared<musicCollection>(endMusicFolder / std::wstring(L"credits"));
+	creativeModeMusic = std::make_shared<musicCollection>(creativeModeMusicFolder / std::wstring(L"creative"));
+	crimsonForestMusic = std::make_shared<musicCollection>(netherMusicFolder / L"crimson_forest" / L"chrysopoeia");
+	netherWastesMusic = std::make_shared<musicCollection>(netherMusicFolder / L"nether_wastes" / L"rubedo");
+	soulSandValleyMusic = std::make_shared<musicCollection>(netherMusicFolder / L"soulsand_valley" / L"so_below");
+	crimsonForestMusic->addMusic(netherMusic);
+	netherWastesMusic->addMusic(netherMusic);
+	soulSandValleyMusic->addMusic(netherMusic);
+
+	recordsMusic = std::make_shared<musicCollection>();
+	for (int i = 0; i < musicDiscTypeCount; i++)
 	{
-		furnaceOnTextures[i] = loadTextureFromResourcePack(blockTextureFolder / (furnaceNames[i] + std::wstring(L"_front_on.png")));
+		recordsMusic->addAudioFile(recordsMusicFolder / (musicDiscNames[i] + std::wstring(L".ogg")));
+	}
+	waterMusic = std::make_shared<musicCollection>(waterMusicFolder / std::wstring(L"axolotl"));
+	waterMusic->addAudioFileName(waterMusicFolder / std::wstring(L"dragon_fish"));
+	waterMusic->addAudioFileName(waterMusicFolder / std::wstring(L"shuniji"));
+}
+void loadTags()
+{
+	tagList = fastList<tag *>();
+	// load tags
+	for (const auto &folderIterator : stdFileSystem::directory_iterator(mainTagFolder))
+	{
+		const stdPath tagFolder = folderIterator.path();
+		for (const auto &fileIterator : stdFileSystem::directory_iterator(tagFolder))
+		{
+			const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+			const std::wstring &extension = fileIterator.path().extension().wstring();
+			if (extension == jsonFileExtension)
+			{
+				if (getTagListIndexByName(fileNameWithoutExtension) == std::wstring::npos)
+				{
+					// not a subtag of previously added tags
+					readTag(fileNameWithoutExtension, tagFolder);
+				}
+			}
+		}
 	}
 
-	const std::wstring stemPlantNames[stemPlantTypeCount]{
-		std::wstring(L"melon"),
-		std::wstring(L"pumpkin")};
-	for (int i = 0; i < stemPlantTypeCount; i++)
+	for (size_t i = 0; i < tagList.size; i++)
 	{
-		unAttachedStemTextures[i] = loadTextureFromResourcePack(blockTextureFolder / (stemPlantNames[i] + std::wstring(L"_stem.png")));
-		attachedStemTextures[i] = loadTextureFromResourcePack(blockTextureFolder / (std::wstring(L"attached_") + stemPlantNames[i] + std::wstring(L"_stem.png")));
+		// count comparables
+		if (tagList[i]->taggedComparables->size == 0)
+		{
+
+			delete tagList[i];
+			tagList.erase(i);
+		}
 	}
 
-	texture missingTextureGraphics = texture(cveci2(2), false);
-	missingTextureGraphics.setValueUnsafe(cvect2<size_t>(0), rgbColorValues[(int)colorID::pink]);
-	missingTextureGraphics.setValueUnsafe(cvect2<size_t>(1), rgbColorValues[(int)colorID::pink]);
-	missingTexture = new resolutionTexture(missingTextureGraphics);
+	tagList.update();
+}
 
+void loadLootTables()
+{
+	// load loot tables
+	// chest loot
+	for (const auto &fileIterator : stdFileSystem::directory_iterator(chestLootTablesFolder))
+	{
+		const stdPath &path = fileIterator.path().wstring();
+		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+		const std::wstring &extension = fileIterator.path().extension().wstring();
+		if (extension == jsonFileExtension)
+		{
+			std::shared_ptr<lootTable> table = readLootTable(path);
+			chestLootTables.insert(std::pair<std::wstring, std::shared_ptr<lootTable>>(fileNameWithoutExtension, table));
+		}
+	}
+
+	// block loot
+	for (const auto &fileIterator : stdFileSystem::directory_iterator(blockLootTablesFolder))
+	{
+		const stdPath &path = fileIterator.path().wstring();
+		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+		const std::wstring &extension = fileIterator.path().extension().wstring();
+		if (extension == jsonFileExtension)
+		{
+			const blockID &blockListIndex = blockList.getIDByName(fileNameWithoutExtension);
+			if ((int)blockListIndex != -1)
+			{
+				blockList[blockListIndex]->dropsWhenHarvested = readLootTable(path);
+			}
+		}
+	}
+	// mob loot
+	for (const auto &fileIterator : stdFileSystem::directory_iterator(entityLootTablesFolder))
+	{
+		const stdPath &path = fileIterator.path().wstring();
+		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+		const std::wstring &extension = fileIterator.path().extension().wstring();
+		if (extension == jsonFileExtension)
+		{
+			cint &entityListIndex = getEntityIDByName(fileNameWithoutExtension);
+			if (entityListIndex != -1)
+			{
+				((mobData *)entityDataList[entityListIndex])->dropsWhenKilled = readLootTable(path);
+			}
+		}
+	}
+}
+
+void loadBlockPowerProperties()
+{
+	blockList[blockID::redstone_block]->emittanceLevel[2] = maxPowerLevel;
+
+	blockList[blockID::redstone_wire]->filterStrength[2] = 1;
+
+	// for blocks that use power to do something
+	cint &deviceFilterStrength = maxPowerLevel / 0x20;
+
+	blockList[blockID::powered_rail]->filterStrength[2] = maxPowerLevel / 0x40;
+	blockList[blockID::redstone_lamp]->filterStrength[2] = deviceFilterStrength;
+	blockList[blockID::dispenser]->filterStrength[2] = deviceFilterStrength;
+	blockList[blockID::dropper]->filterStrength[2] = deviceFilterStrength;
+	blockList[blockID::iron_door]->filterStrength[2] = deviceFilterStrength;
+
+	blockList[blockID::note_block]->filterStrength[2] = deviceFilterStrength;
+	blockList[blockID::jukebox]->filterStrength[2] = deviceFilterStrength;
+
+	blockList[blockID::gold_block]->filterStrength[2] = maxPowerLevel / 0x100;
+	blockList[blockID::iron_block]->filterStrength[2] = maxPowerLevel / 0x80;
+	blockList[blockID::quartz_block]->filterStrength[2] = maxPowerLevel / 0x40;
+	blockList[blockID::glowstone]->filterStrength[2] = maxPowerLevel / 0x20;
+	blockList[blockID::water]->filterStrength[2] = maxPowerLevel / 0x10;
+	blockList[blockID::dirt]->filterStrength[2] = maxPowerLevel / 0x2;
+	blockList[blockID::farmland]->filterStrength[2] = maxPowerLevel / 0x2;
+	blockList[blockID::grass_block]->filterStrength[2] = maxPowerLevel / 0x4;
+	blockList[blockID::coal_block]->filterStrength[2] = maxPowerLevel / 0x4;
+
+	blockList[blockID::gold_ore]->filterStrength[2] = maxPowerLevel / 0x10;
+	blockList[blockID::iron_ore]->filterStrength[2] = maxPowerLevel / 0x8;
+
+	blockList[blockID::tnt]->filterStrength[2] = 1;
+
+	for (int i = 0; i < (int)sandStoneTypeID::count * (int)sandStoneColorID::count; i++)
+	{
+		blockList[(int)blockID::sandstone + i]->filterStrength[2] = maxPowerLevel / 0x4;
+	}
+	blockList[blockID::sand]->filterStrength[2] = maxPowerLevel / 0x4;
+	blockList[blockID::gravel]->filterStrength[2] = maxPowerLevel / 0x8;
+}
+
+void loadBlocks()
+{
 	std::shared_ptr<soundCollection> digGrass = std::make_shared<soundCollection>(generalSoundFolder / L"dig" / L"grass");
 	std::shared_ptr<soundCollection> stepGrass = std::make_shared<soundCollection>(generalSoundFolder / L"step" / L"grass");
 	std::shared_ptr<soundCollection> digStone = std::make_shared<soundCollection>(generalSoundFolder / L"dig" / L"stone");
@@ -616,39 +924,12 @@ void loadResourcePacks()
 	std::shared_ptr<soundCollection> stepSoulSoil = std::make_shared<soundCollection>(blockSoundFolder / L"soul_soil" / L"step");
 	std::shared_ptr<soundCollection> breakSoulSoil = std::make_shared<soundCollection>(blockSoundFolder / L"soul_soil" / L"break");
 
-	overWorldBackgroundMusic = std::make_shared<musicCollection>(gameMusicFolder / std::wstring(L"calm"));
-	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"hal"));
-	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"hal"));
-	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"nuance"));
-	overWorldBackgroundMusic->addAudioFileName(gameMusicFolder / std::wstring(L"piano"));
-	netherMusic = std::make_shared<musicCollection>(netherMusicFolder / std::wstring(L"nether"));
-	endMusic = std::make_shared<musicCollection>(endMusicFolder / std::wstring(L"end"));
-	bossMusic = std::make_shared<musicCollection>(endMusicFolder / std::wstring(L"boss"));
-	creditsMusic = std::make_shared<musicCollection>(endMusicFolder / std::wstring(L"credits"));
-	creativeModeMusic = std::make_shared<musicCollection>(creativeModeMusicFolder / std::wstring(L"creative"));
-	crimsonForestMusic = std::make_shared<musicCollection>(netherMusicFolder / L"crimson_forest" / L"chrysopoeia");
-	netherWastesMusic = std::make_shared<musicCollection>(netherMusicFolder / L"nether_wastes" / L"rubedo");
-	soulSandValleyMusic = std::make_shared<musicCollection>(netherMusicFolder / L"soulsand_valley" / L"so_below");
-	crimsonForestMusic->addMusic(netherMusic);
-	netherWastesMusic->addMusic(netherMusic);
-	soulSandValleyMusic->addMusic(netherMusic);
-
-	recordsMusic = std::make_shared<musicCollection>();
-	for (int i = 0; i < musicDiscTypeCount; i++)
-	{
-		recordsMusic->addAudioFile(recordsMusicFolder / (musicDiscNames[i] + std::wstring(L".ogg")));
-	}
-
 	noteSounds = std::make_shared<soundCollection>();
 	for (int i = 0; i < (int)noteTypeID::count; i++)
 	{
 		noteSounds->addAudioFile(noteSoundFolder / (noteDataList[i]->name + std::wstring(L".ogg")));
 	}
 
-	mainMenuBackgroundMusic = std::make_shared<musicCollection>(menuMusicFolder / std::wstring(L"menu"));
-	waterMusic = std::make_shared<musicCollection>(waterMusicFolder / std::wstring(L"axolotl"));
-	waterMusic->addAudioFileName(waterMusicFolder / std::wstring(L"dragon_fish"));
-	waterMusic->addAudioFileName(waterMusicFolder / std::wstring(L"shuniji"));
 	itemPickupSound = std::make_shared<soundCollection>(generalSoundFolder / L"random" / L"pop");
 	experienceSound = std::make_shared<soundCollection>(generalSoundFolder / L"random" / L"orb");
 	levelUpSound = std::make_shared<soundCollection>(generalSoundFolder / L"random" / L"levelup");
@@ -771,7 +1052,6 @@ void loadResourcePacks()
 
 	auto largeFernTopTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"large_fern_top.png"));
 	auto largeFernBottomTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"large_fern_top.png"));
-	auto potionTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"potion.png"));
 
 	// auto brewingStandItemTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
 	// cbool hasBottle[brewingStandPotionCapacity]
@@ -897,19 +1177,7 @@ void loadResourcePacks()
 		identifier++;
 	}
 
-	std::wstring oreBlockNames[oreBlockTypeCount]{std::wstring(L"coal"), std::wstring(L"iron"), std::wstring(L"emerald"), std::wstring(L"lapis"), std::wstring(L"redstone"), std::wstring(L"gold"), std::wstring(L"diamond"), std::wstring(L"nether_quartz"), std::wstring(L"nether_gold")};
 	constexpr harvestTierID oreBlockTiers[oreBlockTypeCount]{woodHarvestTier, stoneHarvestTier, ironHarvestTier, stoneHarvestTier, ironHarvestTier, ironHarvestTier, ironHarvestTier, woodHarvestTier, woodHarvestTier};
-
-	constexpr bool smeltable[oreBlockTypeCount]{
-		false,
-		true,
-		false,
-		false,
-		false,
-		true,
-		false,
-		false,
-		false};
 
 	constexpr int minimalOreExperience[oreBlockTypeCount]{
 		0,
@@ -1972,6 +2240,15 @@ void loadResourcePacks()
 	blockList[identifier] = new cropBlock(block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, sweetBerriesGrowthStageTextures[sweetBerryBushGrowthStageCount - 1], std::wstring(L"sweet_berry_bush"), stepGrass, stepGrass, stepGrass, breakBerryBush, placeBerryBush, lightFiltering, withHand, noHarvestTier, collisionTypeID::willNotCollide), sweetBerryBushGrowthStageCount, sweetBerriesGrowthStageTextures, (defaultTicksPerRandomTick * sweetBerryBushGrowthStageCount) / (ticksPerDay * 0.5));
 	identifier++;
 
+	const std::wstring stemPlantNames[stemPlantTypeCount]{
+		std::wstring(L"melon"),
+		std::wstring(L"pumpkin")};
+	for (int i = 0; i < stemPlantTypeCount; i++)
+	{
+		unAttachedStemTextures[i] = loadTextureFromResourcePack(blockTextureFolder / (stemPlantNames[i] + std::wstring(L"_stem.png")));
+		attachedStemTextures[i] = loadTextureFromResourcePack(blockTextureFolder / (std::wstring(L"attached_") + stemPlantNames[i] + std::wstring(L"_stem.png")));
+	}
+
 	for (int i = 0; i < stemPlantTypeCount; i++)
 	{
 		blockList[identifier] = new cropBlock(block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, unAttachedStemTextures[i], stemPlantNames[i] + std::wstring(L"_stem"), stepWood, stepWood, stepWood, breakCrop, breakCrop, noLightFilter, withAxe, noHarvestTier, collisionTypeID::willNotCollide), stemPlantGrowthStageCount[i], std::vector<resolutionTexture *>(8, unAttachedStemTextures[i]), stemPlantChanceToGrow[i]);
@@ -2117,60 +2394,13 @@ void loadResourcePacks()
 	identifier++;
 
 	blockList.update();
+	loadBlockPowerProperties();
+}
 
-	blockList[blockID::redstone_block]->emittanceLevel[2] = maxPowerLevel;
-
-	blockList[blockID::redstone_wire]->filterStrength[2] = 1;
-
-	// for blocks that use power to do something
-	cint &deviceFilterStrength = maxPowerLevel / 0x20;
-
-	blockList[blockID::powered_rail]->filterStrength[2] = maxPowerLevel / 0x40;
-	blockList[blockID::redstone_lamp]->filterStrength[2] = deviceFilterStrength;
-	blockList[blockID::dispenser]->filterStrength[2] = deviceFilterStrength;
-	blockList[blockID::dropper]->filterStrength[2] = deviceFilterStrength;
-	blockList[blockID::iron_door]->filterStrength[2] = deviceFilterStrength;
-
-	blockList[blockID::note_block]->filterStrength[2] = deviceFilterStrength;
-	blockList[blockID::jukebox]->filterStrength[2] = deviceFilterStrength;
-
-	blockList[blockID::gold_block]->filterStrength[2] = maxPowerLevel / 0x100;
-	blockList[blockID::iron_block]->filterStrength[2] = maxPowerLevel / 0x80;
-	blockList[blockID::quartz_block]->filterStrength[2] = maxPowerLevel / 0x40;
-	blockList[blockID::glowstone]->filterStrength[2] = maxPowerLevel / 0x20;
-	blockList[blockID::water]->filterStrength[2] = maxPowerLevel / 0x10;
-	blockList[blockID::dirt]->filterStrength[2] = maxPowerLevel / 0x2;
-	blockList[blockID::farmland]->filterStrength[2] = maxPowerLevel / 0x2;
-	blockList[blockID::grass_block]->filterStrength[2] = maxPowerLevel / 0x4;
-	blockList[blockID::coal_block]->filterStrength[2] = maxPowerLevel / 0x4;
-
-	blockList[blockID::gold_ore]->filterStrength[2] = maxPowerLevel / 0x10;
-	blockList[blockID::iron_ore]->filterStrength[2] = maxPowerLevel / 0x8;
-
-	blockList[blockID::tnt]->filterStrength[2] = 1;
-
-	for (int i = 0; i < (int)sandStoneTypeID::count * (int)sandStoneColorID::count; i++)
-	{
-		blockList[(int)blockID::sandstone + i]->filterStrength[2] = maxPowerLevel / 0x4;
-	}
-	blockList[blockID::sand]->filterStrength[2] = maxPowerLevel / 0x4;
-	blockList[blockID::gravel]->filterStrength[2] = maxPowerLevel / 0x8;
-
-	blockList[blockID::wheat]->tex = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"wheat.png"));
-
-	// load destroy stage textures
-	destroyStageTextures = std::vector<resolutionTexture *>();
-	for (int i = 0; i < 9; i++)
-	{
-		resolutionTexture *destroyStageTexture = loadTextureFromResourcePack(blockTextureFolder / (std::wstring(L"destroy_stage_") + std::to_wstring(i) + std::wstring(L".png")));
-		// const auto& destroyStageBrush = grayScaleToTransparency<texture>(destroyStageTexture, colorPalette::black);
-		// destroyStageBrush.invert = true;
-		// destroyStageTexture->fillRectangleUnsafe(destroyStageTexture->getClientRect(), destroyStageBrush);
-		destroyStageTextures.push_back(destroyStageTexture);
-	}
-
-	// calculate possible enchantments
-	std::vector<enchantmentID> normalEnchantments = {enchantmentID::unBreaking, enchantmentID::mending, enchantmentID::curseOfVanishing};
+void loadItems()
+{
+	// calculate possible enchantments, to use for loading the items
+	const std::vector<enchantmentID> &normalEnchantments = {enchantmentID::unBreaking, enchantmentID::mending, enchantmentID::curseOfVanishing};
 	std::vector<enchantmentID> armorEnchantments = {enchantmentID::protection, enchantmentID::fireProtection, enchantmentID::blastProtection, enchantmentID::projectileProtection, enchantmentID::thorns, enchantmentID::curseOfBinding};
 	armorEnchantments.insert(armorEnchantments.end(), normalEnchantments.begin(), normalEnchantments.end());
 	std::vector<enchantmentID> helmetEnchantments = {enchantmentID::aquaAffinity, enchantmentID::respiration};
@@ -2196,7 +2426,7 @@ void loadResourcePacks()
 	itemList = idList<itemData *, itemID>(fastList<itemData *>((int)itemID::count));
 
 	// reset identifier to add the blocks as items
-	identifier = 0;
+	int identifier = 0;
 	itemList[identifier] = new itemData((itemID)identifier, std::wstring(L"air"), nullptr, -1);
 	identifier++;
 	for (int i = 1; i < (int)blockID::count; i++)
@@ -2312,6 +2542,7 @@ void loadResourcePacks()
 	itemList[identifier] = new itemData((itemID)identifier, std::wstring(L"dragon_breath"), loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"dragon_breath.png")), -1, noHarvestTier, withHand, 1, 1, 1);
 	identifier++;
 
+	auto potionTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"potion.png"));
 	itemList[identifier] = new itemData((itemID)identifier, std::wstring(L"awkward_potion"), potionTexture, -1, noHarvestTier, withHand, 1, 1, 1);
 	identifier++;
 	itemList[identifier] = new itemData((itemID)identifier, std::wstring(L"mundane_potion"), potionTexture, -1, noHarvestTier, withHand, 1, 1, 1);
@@ -2534,6 +2765,9 @@ void loadResourcePacks()
 	wstringContainer armorTypeNames = {std::wstring(L"boots"), std::wstring(L"leggings"), std::wstring(L"chestplate"), std::wstring(L"helmet")};
 	wstringContainer armorMaterialNames = {std::wstring(L"turtle"), std::wstring(L"leather"), std::wstring(L"gold"), std::wstring(L"chainmail"), std::wstring(L"iron"), std::wstring(L"diamond"), std::wstring(L"netherite")};
 	wstringContainer armorSoundNames = {std::wstring(L"(no sound)"), std::wstring(L"leather"), std::wstring(L"gold"), std::wstring(L"chain"), std::wstring(L"iron"), std::wstring(L"diamond"), std::wstring(L"netherite")};
+
+	const color leatherColor = hexToColor(0xA06540);
+
 	for (int armorTierIndex = 0; armorTierIndex < armorTierNames.size(); armorTierIndex++)
 	{
 		std::wstring armorTierName = armorTierNames[armorTierIndex];
@@ -2567,129 +2801,10 @@ void loadResourcePacks()
 
 	// dont add any items after this
 	itemList.update();
+}
 
-	// add item data
-
-	// add burning properties
-	itemList[(int)blockID::crafting_table]->burningTicks = 300;
-	itemList[(int)itemID::coal]->burningTicks = 1600;
-	itemList[(int)blockID::torch]->burningTicks = 1700 / 4; // coal + stick = 4 torches
-	itemList[(int)blockID::ladder]->burningTicks = 300;
-	itemList[(int)itemID::lava_bucket]->burningTicks = 20000;
-	itemList[(int)blockID::note_block]->burningTicks = 300;
-	itemList[(int)blockID::jukebox]->burningTicks = 300;
-
-	for (int i = 0; i < woodTypeCount; i++)
-	{
-		itemList[(int)getTreeBlock((woodTypeID)i, treeItemTypeID::log)]->burningTicks = 300;
-		itemList[(int)getTreeBlock((woodTypeID)i, treeItemTypeID::strippedLog)]->burningTicks = 300;
-		itemList[(int)getTreeBlock((woodTypeID)i, treeItemTypeID::planks)]->burningTicks = 300;
-
-		itemList[(int)blockID::wood_door + i]->maxStackSize = 0x10;
-	}
-	for (int i = 0; i < normalTreeTypeCount; i++)
-	{
-		itemList[(int)blockID::wood_sapling + i]->burningTicks = 100;
-	}
-
-	for (int i = 0; i < (int)colorID::count; i++)
-	{
-		itemList[(int)blockID::bed + i]->maxStackSize = 1;
-	}
-	itemList[(int)blockID::kelp]->tex = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"kelp.png"));
-	// add leave textures
-	// color the texture
-	for (int i = 0; i < normalTreeTypeCount; i++)
-	{
-		const blockID &idToColor = getTreeBlock((woodTypeID)i, treeItemTypeID::leaves);
-		resolutionTexture *leavesInventoryGraphics = new resolutionTexture(texture(blockList[idToColor]->tex->scaledTextures[0]->size), cvec2(blockTextureSize));
-		fillTransformedTexture(*blockList[idToColor]->tex, *leavesInventoryGraphics);
-
-		constexpr color oakLeavesInventoryColor = color::FromHex(0x48B518);
-		multiplyRectangle(leavesInventoryGraphics->getClientRect(), oakLeavesInventoryColor, *leavesInventoryGraphics);
-		itemList[(int)idToColor]->tex = leavesInventoryGraphics;
-		loadedTextures.push_back(leavesInventoryGraphics);
-	}
-
-	/*
-	for (int i = (int)blockID::wood_fence; i < (int)blockID::wood_fence + fenceTypeCount; i++)
-	{
-		resolutionTexture* renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
-
-		cbool connect[fenceConnectionPossibilityCount]{ true, true };
-		renderFence(blockTextureRect, connect, *blockList[i]->tex, *renderedTexture);
-		itemList[i]->tex = renderedTexture;
-	}
-	for (int i = (int)blockID::wood_fence_gate; i < (int)blockID::wood_fence_gate + woodTypeCount; i++)
-	{
-		auto renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
-
-		cbool connect[fenceConnectionPossibilityCount]{ true, false };
-		renderFenceGate(blockTextureRect, connect, true, directionID::positiveX, *blockList[i]->tex, *renderedTexture);
-		itemList[i]->tex = renderedTexture;
-	}
-	for (int i = (int)blockID::wood_slab; i < (int)blockID::wood_slab + slabTypeCount; i++)
-	{
-		auto renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
-
-		cbool connect[fenceConnectionPossibilityCount]{ true, true };
-		fillTransformedBrushRectangle(crectangle2(0, 0, blockTextureSize, blockTextureSize / 2), cveci2(), *blockList[i]->tex, *renderedTexture);
-		itemList[i]->tex = renderedTexture;
-	}
-	*/
-
-	// add food values
-	itemList[itemID::dried_kelp]->setEatingValues(1, 0.6);
-	itemList[itemID::carrot]->setEatingValues(3, 3.6);
-
-	itemList[itemID::potato]->setEatingValues(1, 0.6);
-	itemList[itemID::bread]->setEatingValues(5, 6.0);
-
-	itemList[itemID::beetroot]->setEatingValues(1, 1.2);
-	itemList[itemID::beetroot_soup]->setEatingValues(6, 7.2);
-
-	itemList[itemID::baked_potato]->setEatingValues(5, 6.0);
-	itemList[itemID::golden_carrot]->setEatingValues(6, 14.4);
-
-	itemList[itemID::rotten_flesh]->setEatingValues(4, 0.8);
-
-	itemList[itemID::beef]->setEatingValues(3, 1.8);
-	itemList[itemID::cooked_beef]->setEatingValues(8, 12.8);
-
-	itemList[itemID::mutton]->setEatingValues(2, 1.2);
-	itemList[itemID::cooked_mutton]->setEatingValues(6, 9.6);
-
-	itemList[itemID::porkchop]->setEatingValues(3, 1.8);
-	itemList[itemID::cooked_porkchop]->setEatingValues(8, 12.8);
-
-	itemList[itemID::chicken]->setEatingValues(2, 1.2);
-	itemList[itemID::cooked_chicken]->setEatingValues(6, 7.2);
-
-	itemList[itemID::rabbit]->setEatingValues(3, 1.8);
-	itemList[itemID::cooked_rabbit]->setEatingValues(5, 6);
-
-	itemList[itemID::cod]->setEatingValues(2, 0.4);
-	itemList[itemID::cooked_cod]->setEatingValues(5, 6);
-
-	itemList[itemID::salmon]->setEatingValues(2, 0.2);
-	itemList[itemID::cooked_salmon]->setEatingValues(6, 9.6);
-
-	itemList[itemID::tropical_fish]->setEatingValues(1, 0.2);
-
-	itemList[itemID::pufferfish]->setEatingValues(1, 0.2);
-
-	itemList[itemID::spider_eye]->setEatingValues(2, 3.2);
-
-	itemList[itemID::apple]->setEatingValues(4, 2.4);
-	itemList[itemID::golden_apple]->setEatingValues(4, 9.6);
-	itemList[itemID::enchanted_golden_apple]->setEatingValues(4, 9.6);
-	itemList[itemID::mushroom_stew]->setEatingValues(6, 7.2);
-
-	itemList[itemID::chorus_fruit]->setEatingValues(4, 2.4);
-	itemList[itemID::melon_slice]->setEatingValues(2, 1.2);
-
-	itemList[itemID::poisonous_potato]->setEatingValues(1, 0.6);
-
+void loadEntityData()
+{
 	// add mob data
 	entityDataList = idList<entityData *, entityID>(fastList<entityData *>());
 	int currentEntityID = 0;
@@ -2823,6 +2938,151 @@ void loadResourcePacks()
 	currentEntityID++;
 
 	entityDataList.update();
+}
+
+void loadResourcePacks()
+{
+	loadDataLists();
+	loadMusic();
+	// load textures
+
+	currentMinecraftFontFamily = new fontFamily(loadTextureFromResourcePack(guiTextureFolder / L"ascii shadow.png"));
+	currentMinecraftFont = new minecraftFont();
+
+	mainMenuBackgroundTexture = loadTextureFromResourcePack(guiTextureFolder / L"title" / L"background" / L"2d.png");
+
+	experienceTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"experience_orb.png"));
+
+	// gui
+	widgetsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"widgets.png"));
+	iconsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"icons.png"));
+	barsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"bars.png"));
+
+	chatButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"chat.png");
+	settingsButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"settings.png");
+	inventoryButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"inventory.png");
+
+	grassOverlay = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grass_block_side_overlay.png"));
+	woolOverlay = loadTextureFromResourcePack(entityTextureFolder / L"sheep" / L"sheep_fur.png");
+	endPortalFrameEyeTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"end_portal_frame_eye.png"));
+	endSkyTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"end_sky.png"));
+	endCrystalTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"end_crystal/end_crystal.png"));
+	endCrystalBeamTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"end_crystal/end_crystal_beam.png"));
+	fireChargeTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"fire_charge.png"));
+	dirtTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"dirt.png"));
+	potionOverlayTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"potion_overlay.png"));
+	rainTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"rain.png"));
+	snowTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"snow.png"));
+	sunTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"sun.png"));
+	moonPhasesTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"moon_phases.png"));
+	brewingStandBaseTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"brewing_stand_base.png"));
+	brewingStandTopTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"brewing_stand.png"));
+	enchantedItemTexture = loadTextureFromResourcePack(miscellaneousTextureFolder / std::wstring(L"enchanted_item_glint.png"));
+	unLitRedstoneTorchTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"redstone_torch_off.png"));
+	redstoneLampOnTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"redstone_lamp_on.png"));
+
+	const wstringContainer &furnaceNames{std::wstring(L"furnace"), std::wstring(L"blast_furnace"), std::wstring(L"smoker")};
+
+	for (int i = 0; i < furnaceTypeCount; i++)
+	{
+		furnaceOnTextures[i] = loadTextureFromResourcePack(blockTextureFolder / (furnaceNames[i] + std::wstring(L"_front_on.png")));
+	}
+
+	texture missingTextureGraphics = texture(cveci2(2), false);
+	missingTextureGraphics.setValueUnsafe(cvect2<size_t>(0), rgbColorValues[(int)colorID::pink]);
+	missingTextureGraphics.setValueUnsafe(cvect2<size_t>(1), rgbColorValues[(int)colorID::pink]);
+	missingTexture = new resolutionTexture(missingTextureGraphics);
+
+	loadBlocks();
+
+	blockList[blockID::wheat]->tex = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"wheat.png"));
+
+	// load destroy stage textures
+	destroyStageTextures = std::vector<resolutionTexture *>();
+	for (int i = 0; i < 9; i++)
+	{
+		resolutionTexture *destroyStageTexture = loadTextureFromResourcePack(blockTextureFolder / (std::wstring(L"destroy_stage_") + std::to_wstring(i) + std::wstring(L".png")));
+		// const auto& destroyStageBrush = grayScaleToTransparency<texture>(destroyStageTexture, colorPalette::black);
+		// destroyStageBrush.invert = true;
+		// destroyStageTexture->fillRectangleUnsafe(destroyStageTexture->getClientRect(), destroyStageBrush);
+		destroyStageTextures.push_back(destroyStageTexture);
+	}
+
+	loadItems();
+
+	// add item data
+
+	// add fuel properties
+	itemList[(int)blockID::crafting_table]->fuelTicks = 300;
+	itemList[(int)itemID::coal]->fuelTicks = 1600;
+	itemList[(int)blockID::torch]->fuelTicks = 1700 / 4; // coal + stick = 4 torches
+	itemList[(int)blockID::ladder]->fuelTicks = 300;
+	itemList[(int)itemID::lava_bucket]->fuelTicks = 20000;
+	itemList[(int)blockID::note_block]->fuelTicks = 300;
+	itemList[(int)blockID::jukebox]->fuelTicks = 300;
+
+	for (int i = 0; i < woodTypeCount; i++)
+	{
+		itemList[(int)getTreeBlock((woodTypeID)i, treeItemTypeID::log)]->fuelTicks = 300;
+		itemList[(int)getTreeBlock((woodTypeID)i, treeItemTypeID::strippedLog)]->fuelTicks = 300;
+		itemList[(int)getTreeBlock((woodTypeID)i, treeItemTypeID::planks)]->fuelTicks = 300;
+
+		itemList[(int)blockID::wood_door + i]->maxStackSize = 0x10;
+	}
+	for (int i = 0; i < normalTreeTypeCount; i++)
+	{
+		itemList[(int)blockID::wood_sapling + i]->fuelTicks = 100;
+	}
+
+	for (int i = 0; i < (int)colorID::count; i++)
+	{
+		itemList[(int)blockID::bed + i]->maxStackSize = 1;
+	}
+	itemList[(int)blockID::kelp]->tex = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"kelp.png"));
+	// add leave textures
+	// color the texture
+	for (int i = 0; i < normalTreeTypeCount; i++)
+	{
+		const blockID &idToColor = getTreeBlock((woodTypeID)i, treeItemTypeID::leaves);
+		resolutionTexture *leavesInventoryGraphics = new resolutionTexture(texture(blockList[idToColor]->tex->scaledTextures[0]->size), cvec2(blockTextureSize));
+		fillTransformedTexture(*blockList[idToColor]->tex, *leavesInventoryGraphics);
+
+		constexpr color oakLeavesInventoryColor = hexToColor(0x48B518);
+		multiplyRectangle(leavesInventoryGraphics->getClientRect(), oakLeavesInventoryColor, *leavesInventoryGraphics);
+		itemList[(int)idToColor]->tex = leavesInventoryGraphics;
+		loadedTextures.push_back(leavesInventoryGraphics);
+	}
+
+	/*
+	for (int i = (int)blockID::wood_fence; i < (int)blockID::wood_fence + fenceTypeCount; i++)
+	{
+		resolutionTexture* renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
+
+		cbool connect[fenceConnectionPossibilityCount]{ true, true };
+		renderFence(blockTextureRect, connect, *blockList[i]->tex, *renderedTexture);
+		itemList[i]->tex = renderedTexture;
+	}
+	for (int i = (int)blockID::wood_fence_gate; i < (int)blockID::wood_fence_gate + woodTypeCount; i++)
+	{
+		auto renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
+
+		cbool connect[fenceConnectionPossibilityCount]{ true, false };
+		renderFenceGate(blockTextureRect, connect, true, directionID::positiveX, *blockList[i]->tex, *renderedTexture);
+		itemList[i]->tex = renderedTexture;
+	}
+	for (int i = (int)blockID::wood_slab; i < (int)blockID::wood_slab + slabTypeCount; i++)
+	{
+		auto renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
+
+		cbool connect[fenceConnectionPossibilityCount]{ true, true };
+		fillTransformedBrushRectangle(crectangle2(0, 0, blockTextureSize, blockTextureSize / 2), cveci2(), *blockList[i]->tex, *renderedTexture);
+		itemList[i]->tex = renderedTexture;
+	}
+	*/
+
+	setFoodValues();
+
+	loadEntityData();
 
 	resolutionTexture *spawnEggTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"spawn_egg.png"));
 	resolutionTexture *spawnEggOverlayTexture = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"spawn_egg_overlay.png"));
@@ -2844,83 +3104,8 @@ void loadResourcePacks()
 		itemList[(int)itemID::spawn_egg + i] = new itemData((itemID)((int)itemID::spawn_egg + i), data->name + std::wstring(L"_spawn_egg"), currentSpawnEggTexture);
 	}
 
-	tagList = fastList<tag *>();
-	// load tags
-	for (const auto &folderIterator : stdFileSystem::directory_iterator(mainTagFolder))
-	{
-		const stdPath tagFolder = folderIterator.path();
-		for (const auto &fileIterator : stdFileSystem::directory_iterator(tagFolder))
-		{
-			const std::wstring& fileNameWithoutExtension = fileIterator.path().stem().wstring();
-			const std::wstring& extension = fileIterator.path().extension().wstring();
-			if (extension == jsonFileExtension)
-			{
-				if (getTagListIndexByName(fileNameWithoutExtension) == std::wstring::npos)
-				{
-					// not a subtag of previously added tags
-					readTag(fileNameWithoutExtension, tagFolder);
-				}
-			}
-		}
-	}
-
-	for (size_t i = 0; i < tagList.size; i++)
-	{
-		// count comparables
-		if (tagList[i]->taggedComparables->size == 0)
-		{
-
-			delete tagList[i];
-			tagList.erase(i);
-		}
-	}
-
-	tagList.update();
-
-	// load loot tables
-	// chest loot
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(chestLootTablesFolder))
-	{
-		const stdPath& path = fileIterator.path().wstring();
-		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
-		const std::wstring &extension = fileIterator.path().extension().wstring();
-		if (extension == jsonFileExtension)
-		{
-			std::shared_ptr<lootTable> table = readLootTable(path);
-			chestLootTables.insert(std::pair<std::wstring, std::shared_ptr<lootTable>>(fileNameWithoutExtension, table));
-		}
-	}
-
-	// block loot
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(blockLootTablesFolder))
-	{
-		const stdPath& path = fileIterator.path().wstring();
-		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
-		const std::wstring &extension = fileIterator.path().extension().wstring();
-		if (extension == jsonFileExtension)
-		{
-			const blockID &blockListIndex = blockList.getIDByName(fileNameWithoutExtension);
-			if ((int)blockListIndex != -1)
-			{
-				blockList[blockListIndex]->dropsWhenHarvested = readLootTable(path);
-			}
-		}
-	}
-	// mob loot
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(entityLootTablesFolder))
-	{
-		const stdPath& path = fileIterator.path().wstring();
-		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
-		const std::wstring &extension = fileIterator.path().extension().wstring();
-		if (extension == jsonFileExtension)
-		{
-			cint &entityListIndex = getEntityIDByName(fileNameWithoutExtension);
-			if (entityListIndex != -1)
-			{
-				((mobData *)entityDataList[entityListIndex])->dropsWhenKilled = readLootTable(path);
-			}
-		}
-	}
+	loadTags();
+	loadLootTables();
 
 	craftingRecipes = std::vector<recipe *>();
 	furnaceRecipes = std::vector<furnaceRecipe *>();
@@ -2932,12 +3117,12 @@ void loadResourcePacks()
 		readRecipe(content);
 	}
 	// add loot tables
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(blockLootTablesFolder))
-	{
-		std::wstring path = fileIterator.path().wstring();
-		std::wstring fileNameWithExtension = fileIterator.path().filename().wstring();
-		std::wstring fileNameWithoutExtension = fileNameWithExtension.substr(0, fileNameWithExtension.find(L'.'));
-	}
+	// for (const auto &fileIterator : stdFileSystem::directory_iterator(blockLootTablesFolder))
+	//{
+	//	std::wstring path = fileIterator.path().wstring();
+	//	std::wstring fileNameWithExtension = fileIterator.path().filename().wstring();
+	//	std::wstring fileNameWithoutExtension = fileNameWithExtension.substr(0, fileNameWithExtension.find(L'.'));
+	//}
 
 	dimensionDataList = idList<dimensionData *, dimensionID>(fastList<dimensionData *>((int)dimensionID::count));
 	int currentDimensionID = 0;
@@ -2948,141 +3133,12 @@ void loadResourcePacks()
 	dimensionDataList[currentDimensionID] = new dimensionData(std::wstring(L"end"), loadTextureFromResourcePack(lightMapFolder / std::wstring(L"world1.png")));
 	currentDimensionID++;
 
-	constexpr color hotBiomeColor = color::FromHex(0xbfb755);
-	constexpr color oceanBiomeColor = color::FromHex(0x8eb971);
-	int currentBiomeID = 0;
-	biomeDataList = idList<biomeData *, biomeID>(fastList<biomeData *>((int)biomeID::biomeCount));
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ocean"), oceanBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"swamp"), color::FromHex(0x6a7039));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"plains"), color::FromHex(0x91bd59));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"savanna"), hotBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"desert"), hotBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"taiga"), color::FromHex(0x86b783));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"forest"), color::FromHex(0x79c05a));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"dark_forest"), color::FromHex(0x507A32));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"jungle"), color::FromHex(0x59C93C));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ice_spikes"), color::FromHex(0x80B497));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mushroom_fields"), color::FromHex(0x55C93F));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mountains"), color::FromHex(0x8AB689));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"badlands"), color::FromHex(0x90814D));
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"nether_wastes"), hotBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"crimson_forest"), hotBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"warped_forest"), hotBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"soulsand_valley"), hotBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"basalt_deltas"), hotBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"the_end"), oceanBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_void"), oceanBiomeColor);
-	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_lands"), oceanBiomeColor);
-	currentBiomeID++;
-
-	int currentStatusEffectID = 0;
-
-	statusEffectDataList = idList<statusEffectData *, statusEffectID>(fastList<statusEffectData *>((int)statusEffectID::count));
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"luck"), (statusEffectID)currentStatusEffectID, color::FromHex(0x339900));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"unluck"), (statusEffectID)currentStatusEffectID, color::FromHex(0xC0A44D));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"saturation"), (statusEffectID)currentStatusEffectID, color::FromHex(0xF82423));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"hunger"), (statusEffectID)currentStatusEffectID, color::FromHex(0x587653));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"speed"), (statusEffectID)currentStatusEffectID, color::FromHex(0x7CAFC6));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"slowness"), (statusEffectID)currentStatusEffectID, color::FromHex(0x5A6C81));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"haste"), (statusEffectID)currentStatusEffectID, color::FromHex(0xD9C043));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"mining_fatigue"), (statusEffectID)currentStatusEffectID, color::FromHex(0x4A4217));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"strength"), (statusEffectID)currentStatusEffectID, color::FromHex(0x932423));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"weakness"), (statusEffectID)currentStatusEffectID, color::FromHex(0x484D48));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"regeneration"), (statusEffectID)currentStatusEffectID, color::FromHex(0xCD5CAB));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"poison"), (statusEffectID)currentStatusEffectID, color::FromHex(0x4E9331));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"levitation"), (statusEffectID)currentStatusEffectID, color::FromHex(0xCEFFFF));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"slow_falling"), (statusEffectID)currentStatusEffectID, color::FromHex(0xCEFFFF));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"night_vision"), (statusEffectID)currentStatusEffectID, color::FromHex(0x1F1FA1));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"invisibility"), (statusEffectID)currentStatusEffectID, color::FromHex(0x7F8392));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"instant_health"), (statusEffectID)currentStatusEffectID, color::FromHex(0xF82423));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"instant_damage"), (statusEffectID)currentStatusEffectID, color::FromHex(0x430A09));
-	currentStatusEffectID++;
-
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"jump_boost"), (statusEffectID)currentStatusEffectID, color::FromHex(0x786297));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"nausea"), (statusEffectID)currentStatusEffectID, color::FromHex(0x551D4A));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"resistance"), (statusEffectID)currentStatusEffectID, color::FromHex(0x99453A));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"fire_resistance"), (statusEffectID)currentStatusEffectID, color::FromHex(0xE49A3A));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"water_breathing"), (statusEffectID)currentStatusEffectID, color::FromHex(0x2E5299));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"blindness"), (statusEffectID)currentStatusEffectID, color::FromHex(0x1F1F23));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"wither"), (statusEffectID)currentStatusEffectID, color::FromHex(0x352A27));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"health_boost"), (statusEffectID)currentStatusEffectID, color::FromHex(0xF87D23));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"absorption"), (statusEffectID)currentStatusEffectID, color::FromHex(0x2552A5));
-	currentStatusEffectID++;
-	statusEffectDataList[currentStatusEffectID] = new statusEffectData(std::wstring(L"glowing"), (statusEffectID)currentStatusEffectID, color::FromHex(0x94A061));
-	currentStatusEffectID++;
-
-	gameModeDataList = idList<gameModeData *, gameModeID>(fastList<gameModeData *>((int)gameModeID::gameModesCount));
-
-	int currentGameModeID = 0;
-	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"survival"), false, true);
-	currentGameModeID++;
-	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"creative"), true, false);
-	currentGameModeID++;
-	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"adventure"), false, true);
-	currentGameModeID++;
-	gameModeDataList[currentGameModeID] = new gameModeData(std::wstring(L"spectator"), true, false);
-	currentGameModeID++;
-
 	idConverter::writeIDsToFile();
 
 	structureList = std::vector<structure *>();
 	for (const auto &fileIterator : stdFileSystem::recursive_directory_iterator(structureFolder))
 	{
-		const stdPath& path = fileIterator.path().wstring();
+		const stdPath &path = fileIterator.path().wstring();
 		const std::wstring &extension = fileIterator.path().extension().wstring();
 		const stdPath folder = stdPath(path).replace_extension();
 		if (extension == nbtFileExtension)

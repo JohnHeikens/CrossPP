@@ -1,8 +1,11 @@
-#include "math/vectorrandom.h"
+#include "math/vector/vectn.h"
 #include "world.h"
 #include "end.h"
 #include "enderDragon.h"
 #include "enderDragonCirclingAI.h"
+#include "math/vector/vectorrandom.h"
+#include "nbtSerializer.h"
+#include "serializer/serializeColor.h"
 void enderDragonCirclingAI::startExecuting()
 {
 	chooseTargetPoint();
@@ -40,5 +43,5 @@ void enderDragonCirclingAI::chooseTargetPoint()
 
 void enderDragonCirclingAI::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"target point"), targetPoint);
+	serializeNBTValue(s, std::wstring(L"target point"), targetPoint);
 }

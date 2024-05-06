@@ -2,6 +2,8 @@
 #include "mob.h"
 #include "dimension.h"
 #include "human.h"
+#include "nbtSerializer.h"
+#include "serializer/serializeUUID.h"
 bool targetAI::shouldExecute()
 {
 	return targetNear();
@@ -92,6 +94,6 @@ void targetAI::updateTask()
 
 void targetAI::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"target"), target);
+	serializeNBTValue(s, std::wstring(L"target"), target);
 	//proximity will be set by the initializer and doesn't have to be serialized
 }

@@ -12,6 +12,7 @@
 #include "furnaceSlotContainer.h"
 #include "craftingTableSlotContainer.h"
 #include "soundHandler2D.h"
+#include "interface/inamable.h"
 
 //extern humanSlotContainerUI* humanSlots;
 //extern craftingTableSlotContainer* craftingTableSlots;

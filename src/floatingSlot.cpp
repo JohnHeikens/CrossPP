@@ -35,7 +35,7 @@ void floatingSlot::render(const gameRenderData& targetData) const
 			targetData.worldToRenderTargetTransform.multRectMatrix(rectangle2(position + relativeHitbox.pos0 + vec2(0, height), vec2(itemSize))))));
 	//mat3x3 itemTransform = mat3x3::combine({ mat3x3::scale(0.5 / blockTextureSize),
 	//	mat3x3::translate(position + relativeHitbox.pos0 + vec2(0, height)),targetData.worldToRenderTargetTransform });
-	//renderTarget.fillTexture(rectangle2(s->item->textureCoords, veci2(blockTextureSize)), itemTransform, *blockTextures);
+	//fillTexture(renderTarget, rectangle2(s->item->textureCoords, veci2(blockTextureSize)), itemTransform, *blockTextures);
 
 	entity::render(targetData);
 }

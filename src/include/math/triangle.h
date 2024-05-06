@@ -1,4 +1,4 @@
-#include "vectn.h"
+#include "vector\vectn.h"
 #pragma once
 struct triangle
 {

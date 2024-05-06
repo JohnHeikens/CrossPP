@@ -1,6 +1,6 @@
 #include "soundHandler.h"
 #include "math/timemath.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "filesystem/filemanager.h"
 #pragma once
 

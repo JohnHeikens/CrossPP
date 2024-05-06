@@ -1,4 +1,4 @@
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "math/mathFunctions.h"
 template <typename checkFunction>
 constexpr bool findInCircles(int maxRadius, checkFunction check, veci2 &result)

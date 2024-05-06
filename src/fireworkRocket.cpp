@@ -1,5 +1,6 @@
 #include "fireworkRocket.h"
 #include "itemData.h"
+#include "nbtSerializer.h"
 void fireworkRocket::serializeValue(nbtSerializer& s)
 {
 	s.serializeValue(std::wstring(L"ticks to exist"), ticksToExist);

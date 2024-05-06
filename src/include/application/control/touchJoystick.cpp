@@ -38,8 +38,8 @@ void touchJoystick::render(cveci2 &position, const texture &renderTarget) {
     //control::render(position, renderTarget);
     cvec2& screenPos = math::mapValue(value, range.pos0, range.pos1(), (cvec2)position, (cvec2)position + rect.size);
     const auto& currentBrush = fingerDown ? brushes::green : brushes::orange;
-    renderTarget.fillLine((vec2)rect.getCenter(), screenPos, currentBrush);
-    renderTarget.fillEllipseCentered(
+    fillLine(renderTarget, (vec2)rect.getCenter(), screenPos, currentBrush);
+    fillEllipseCentered(renderTarget, 
             screenPos,
             cvec2(rect.size * 0.2),
             currentBrush);

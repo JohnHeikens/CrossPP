@@ -16,7 +16,7 @@
 #include "enchantmentID.h"
 #include "globalFunctions.h"
 #include "math/mathFunctions.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "itemID.h"
 #include "itemStack.h"
 #include "rectangularSlotContainer.h"

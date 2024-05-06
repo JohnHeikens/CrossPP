@@ -1,4 +1,4 @@
-#include "vectn.h"
+#include "vector\vectn.h"
 #pragma once
 
 //up direction = 0 0 1

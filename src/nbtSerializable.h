@@ -1,6 +1,7 @@
 #pragma once
-#include "nbtSerializer.h"
 #include "filesystem/filemanager.h"
+#include "globalFunctions.h"
+struct nbtSerializer;
 struct nbtSerializable
 {
 	//ONLY CALL THIS FUNCTION IF YOU ARE SURE THERE ARE NOT TWO OF THOSE IN YOUR COMPOUND!

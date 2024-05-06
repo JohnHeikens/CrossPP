@@ -1,10 +1,12 @@
 #include "serverDataList.h"
 #include "folderList.h"
 #include "filesystem/filemanager.h"
+#include "include/filesystem/fileFunctions.h"
+#include "serializer/serializeList.h"
 
 void serverDataList::serializeValue(nbtSerializer& s)
 {
-	s.serializeListOfSerializables(L"servers", servers);
+	serializeListOfSerializables(s, L"servers", servers);
 }
 
 bool serverDataList::serialize(cbool& write)

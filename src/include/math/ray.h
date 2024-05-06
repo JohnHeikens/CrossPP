@@ -1,5 +1,5 @@
 #pragma once
-#include "vectn.h"
+#include "vector\vectn.h"
 #include "intersectable.h"
 struct ray
 {

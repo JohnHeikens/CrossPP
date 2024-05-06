@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 struct collisionEdgeData
 {
 	//sorted from start to end, colliding edges merged

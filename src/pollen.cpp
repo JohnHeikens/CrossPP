@@ -5,7 +5,7 @@
 
 void pollen::render(const gameRenderData& targetData) const
 {
-	targetData.renderTarget.fillEllipse(targetData.worldToRenderTargetTransform.multRectMatrix(calculateHitBox()), solidColorBrush(colorPalette::gray));
+	fillEllipse(targetData.renderTarget, targetData.worldToRenderTargetTransform.multRectMatrix(calculateHitBox()), solidColorBrush(colorPalette::gray));
 }
 
 void pollen::tick()

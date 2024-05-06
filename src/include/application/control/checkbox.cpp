@@ -33,6 +33,6 @@ void checkBox::render(cveci2& position, const texture& renderTarget)
 void checkBox::drawCheckMark(cveci2& position, const texture& renderTarget)
 {
 	//two lines
-	renderTarget.fillLine((vec2)position + (vec2)rect.size * vec2(0.2, 0.5), (vec2)position + (vec2)rect.size * vec2(0.5, 0.2), solidColorBrush(checkMarkColor));
-	renderTarget.fillLine((vec2)position + (vec2)rect.size * vec2(0.5, 0.2), (vec2)position + (vec2)rect.size * vec2(1.1, 1.1), solidColorBrush(checkMarkColor));
+	fillLine(renderTarget, (vec2)position + (vec2)rect.size * vec2(0.2, 0.5), (vec2)position + (vec2)rect.size * vec2(0.5, 0.2), solidColorBrush(checkMarkColor));
+	fillLine(renderTarget, (vec2)position + (vec2)rect.size * vec2(0.5, 0.2), (vec2)position + (vec2)rect.size * vec2(1.1, 1.1), solidColorBrush(checkMarkColor));
 }

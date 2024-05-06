@@ -1,7 +1,14 @@
 {
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "out\\build\\x64-Debug",
+      "out\\install\\x64-Debug"
+    ]
+  },
   "ExpandedNodes": [
-    ""
+    "",
+    "\\old"
   ],
-  "SelectedNode": "\\MedievalSurvival.sln",
+  "SelectedNode": "\\old\\MedievalSurvival.sln",
   "PreviewInSolutionExplorer": false
 }

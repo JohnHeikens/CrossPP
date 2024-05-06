@@ -3,7 +3,7 @@
 #include <vector>
 #include "constants.h"
 #include <random>
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "itemStack.h"
 #include "filesystem/jsonReader.h"
 #include <memory>

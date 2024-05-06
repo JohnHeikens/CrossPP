@@ -11,7 +11,6 @@
 #include <vector>
 #include <list>
 #include <set>
-#include <vector>
 #include <memory>
 #include <thread>
 #include <limits>
@@ -22,4 +21,4 @@
 #include <SFML/Window.hpp>
 #include <concepts>
 #include <cstdint>
-
+#include <type_traits>

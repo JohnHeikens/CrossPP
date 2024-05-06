@@ -24,8 +24,8 @@
 #include "math/direction.h"
 #include "math/mattnxn.h"
 #include "math/random/random.h"
-#include "math/rectangletn.h"
-#include "math/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/vector/vectn.h"
 #include "structure.h"
 #include "structurePlacementBlueprint.h"
 blockData* structureFeature::cloneBlockData(const blockID& id, blockData* data, cbool& flipX)

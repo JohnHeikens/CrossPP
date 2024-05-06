@@ -2,6 +2,8 @@
 #include "mobDamageSource.h"
 #include "dimension.h"
 #include "mob.h"
+#include "nbtSerializer.h"
+#include "serializer/serializeUUID.h"
 bool panicAI::shouldExecute()
 {
 	for (std::shared_ptr<damageSource> source : connectedEntity->lastDamageSources)
@@ -82,6 +84,6 @@ void panicAI::resetTask()
 
 void panicAI::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"uuid fleeing from"), uuidFleeingFrom);
+	serializeNBTValue(s, std::wstring(L"uuid fleeing from"), uuidFleeingFrom);
 	s.serializeValue(std::wstring(L"ticks since looking back"), ticksSinceLookingBack);
 }

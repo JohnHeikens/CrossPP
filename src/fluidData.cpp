@@ -3,6 +3,7 @@
 #include "idAnalysis.h"
 #include "soundList.h"
 #include "dropData.h"
+#include "nbtSerializer.h"
 bool fluidData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	//1 more thing to fix:

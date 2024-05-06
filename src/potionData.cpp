@@ -1,4 +1,5 @@
 #include "potionData.h"
+#include "nbtSerializer.h"
 void potionData::serializeValue(nbtSerializer& s)
 {
 	if (s.push<nbtDataTag::tagList>(std::wstring(L"active effects")))

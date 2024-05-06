@@ -78,40 +78,5 @@ struct resolutionTexture : public colorBrush
 	{
 		return scaledTextures[0]->getValue(pos * getScaleModifier());
 	}
-
-	//the rect should be relative to the default size.
-	template<typename brush0Type>
-	inline void fillRectangle(rectangle2 rect, const brush0Type& b) const
-	{
-		cfp& scaleModifier = getScaleModifier();
-		if (scaleModifier != 1) {
-			rect = rect.multiplied(scaleModifier);
-			//cheaper than inverse transform
-			cmat3x3& inverseScaleTransform = mat3x3::scale(cvec2(1.0 / scaleModifier));
-			const transformBrush<brush0Type>& brush = transformBrush<brush0Type>(inverseScaleTransform, b);
-			scaledTextures[0]->fillRectangle(rect, brush);
-		}
-		else {
-			scaledTextures[0]->fillRectangle(rect, b);
-		}
-		recalculateScaledTextures();
-	}
-
-	//the rect should be relative to the default size.
-	template<typename brush0Type>
-	inline void fillTransformedRectangle(crectangle2& brushRect, mat3x3 transform, const brush0Type& b) const
-	{
-		cfp& scaleModifier = getScaleModifier();
-		if (scaleModifier != 1) {
-			cmat3x3& scaleTransform = mat3x3::scale(cvec2(scaleModifier));
-			const transformBrush<brush0Type>& brush = transformBrush<brush0Type>(scaleTransform.inverse(), b);
-			transform = mat3x3::cross(scaleTransform, transform);
-			scaledTextures[0]->fillTransformedRectangle(brushRect, transform, brush);
-		}
-		else {
-			scaledTextures[0]->fillTransformedRectangle(brushRect, transform, b);
-		}
-		recalculateScaledTextures();
-	}
 };
 const resolutionTexture& replaceIfMissing(const resolutionTexture* const& textureToReplace);

@@ -1,7 +1,7 @@
 #pragma once
 #include "particleBrush.h"
 #include "math/graphics/resolutiontexture.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "particleID.h"
 #include "gameRenderData.h"
 struct textureParticleBrush : particleBrush

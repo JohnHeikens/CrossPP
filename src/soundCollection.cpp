@@ -11,7 +11,7 @@
 #include "array/wstringFunctions.h"
 #include "globalFunctions.h"
 #include "math/random/random.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "soundHandler2D.h"
 #include "soundPacket.h"
 #include "human.h"

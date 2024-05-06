@@ -19,6 +19,8 @@
 #include "textureParticleBrush.h"
 #include "statusEffectData.h"
 #include "effectParticleBrush.h"
+#include "serializer/serializeUUID.h"
+#include "serializer/serializeColor.h"
 
 constexpr fp verticalSwimSpeedSeconds = 1.0f;
 constexpr fp verticalSwimSpeed = verticalSwimSpeedSeconds;
@@ -554,13 +556,13 @@ void mob::serializeValue(nbtSerializer &s)
 	s.serializeValue(std::wstring(L"walking"), walking);
 	s.serializeValue(std::wstring(L"jump stamina"), jumpStamina);
 	s.serializeValue(std::wstring(L"total leg distance"), totalLegDistance);
-	s.serializeValue(std::wstring(L"uuid riding on"), UUIDRidingOn);
-	s.serializeValue(std::wstring(L"selected uuid"), selectedUUID);
-	s.serializeValue(std::wstring(L"looking at"), lookingAt);
-	s.serializeValue(std::wstring(L"selected block position"), selectedBlockPosition);
-	s.serializeValue(std::wstring(L"adjacent block position"), adjacentBlockPosition);
-	s.serializeValue(std::wstring(L"exact block intersection"), exactBlockIntersection);
-	s.serializeValue(std::wstring(L"exact entity intersection"), exactEntityIntersection);
+	serializeNBTValue(s, std::wstring(L"uuid riding on"), UUIDRidingOn);
+	serializeNBTValue(s, std::wstring(L"selected uuid"), selectedUUID);
+	serializeNBTValue(s, std::wstring(L"looking at"), lookingAt);
+	serializeNBTValue(s, std::wstring(L"selected block position"), selectedBlockPosition);
+	serializeNBTValue(s, std::wstring(L"adjacent block position"), adjacentBlockPosition);
+	serializeNBTValue(s, std::wstring(L"exact block intersection"), exactBlockIntersection);
+	serializeNBTValue(s, std::wstring(L"exact entity intersection"), exactEntityIntersection);
 	s.serializeValue(std::wstring(L"ticks since tool used"), ticksSinceToolUsed);
 }
 void mob::render(const gameRenderData &targetData) const

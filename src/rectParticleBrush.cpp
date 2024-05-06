@@ -1,7 +1,8 @@
 #include "rectParticleBrush.h"
+#include "serializer/serializeRectangle.h"
 void rectParticleBrush::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"brush rect"), brushRect);
+	serializeNBTValue(s, std::wstring(L"brush rect"), brushRect);
 }
 
 void rectParticleBrush::render(crectangle2& rect, const gameRenderData& targetData) const

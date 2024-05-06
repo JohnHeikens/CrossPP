@@ -3,6 +3,7 @@
 #include "dimension.h"
 #include "soundList.h"
 #include "structureID.h"
+#include "nbtSerializer.h"
 
 constexpr fp maxEyeVelocity = 10;
 void eyeOfEnder::tick()

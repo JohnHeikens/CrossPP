@@ -1,5 +1,6 @@
 #include "taskList.h"
 #include "type/types.h"
+#include "nbtSerializer.h"
 void taskList::execute()
 {
 	for (int i = 0; i < (int)tasks.size(); i++)

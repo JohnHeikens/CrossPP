@@ -1,5 +1,6 @@
 #include "itemParticleBrush.h"
 #include "itemData.h"
+#include "nbtSerializer.h"
 itemParticleBrush::itemParticleBrush() : rectParticleBrush(particleID::item)
 {
 }

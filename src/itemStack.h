@@ -5,7 +5,7 @@
 #include "itemTag.h"
 #include "enchantment.h"
 #include "math/graphics/texture.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/mattnxn.h"
 #include "gameRenderData.h"
 struct itemStack : IDestructable, nbtSerializable

@@ -1,6 +1,7 @@
 #include "piston.h"
 #include "movableBlockContainer.h"
 #include "block.h"
+#include "serializer/serializeColor.h"
 piston::piston(dimension* dimensionIn, cvec2& position) : entity(dimensionIn, position, entityID::piston)
 {
 }
@@ -45,7 +46,7 @@ fp piston::getGravityForce() const
 
 void piston::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"connected piston position"), connectedPistonPosition);
+	serializeNBTValue(s, std::wstring(L"connected piston position"), connectedPistonPosition);
 	if (!s.write)
 	{
 		movingBlocks = new movableBlockContainer(veci2());

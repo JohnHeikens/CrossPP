@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "math/timemath.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include <random>
 #include "math/graphics/color/color.h"
 #include "math/graphics/brush/font/font.h"
@@ -10,7 +10,8 @@
 #include "array/wstringFunctions.h"
 #include "math/direction.h"
 #include "math/mathFunctions.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
+#include "include/math/graphics/color/colorFunctions.h"
 
 
 constexpr int currentFileVersionID = 121;
@@ -391,8 +392,8 @@ constexpr rectangle2 sleepersTextureRect = crectangle2(0, 0, 0x10, 2);
 constexpr fp railsHeight = railsTextureRect.size.getY() / (fp)blockTextureSize;
 constexpr fp sleepersHeight = sleepersTextureRect.size.getY() / (fp)blockTextureSize;
 
-const color waterColor = color(color::FromHex(0x050533), color::halfMaxValue);//50 percent transparency
-const color lavaColor = color(color::FromHex(0xd16018), (colorChannel)(color::maxValue * 0.9));//10 percent transparency
+const color waterColor = color(hexToColor(0x050533), color::halfMaxValue);//50 percent transparency
+const color lavaColor = color(hexToColor(0xd16018), (colorChannel)(color::maxValue * 0.9));//10 percent transparency
 
 //https://gaming.stackexchange.com/questions/178726/what-is-the-terminal-velocity-of-a-sheep
 constexpr fp
@@ -412,7 +413,6 @@ constexpr fp maxParticleSpeed = 1 * secondsPerTick;
 constexpr fp maxBlockBreakParticleSpeed = maxFloatingSlotSpeed;
 constexpr fp maxEatingParticleSpeed = maxFloatingSlotSpeed;
 
-const color leatherColor = color::FromHex(0xA06540);
 
 
 constexpr int openDoorDrawPixels = 3;

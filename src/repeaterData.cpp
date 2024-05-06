@@ -1,5 +1,6 @@
 #include "repeaterData.h"
 #include "tickableBlockContainer.h"
+#include "nbtSerializer.h"
 bool repeaterData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	inputData::tick(containerIn, position);

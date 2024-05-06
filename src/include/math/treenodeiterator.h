@@ -29,7 +29,7 @@ struct treeNodeIterator
 					std::get<2>(it) = math::Remainder1(std::get<2>(it)) * fastestOctreenodeSize;
 				}
 
-				childIt = new treeNodeIterator(*currentNode.childNodes[it.currentPosition.getDimensionalArrayIndex(currentNode.size)], relativeChildPosition, directionNormal);
+				childIt = new treeNodeIterator(*currentNode.childNodes[singleDimensionalIndex(it.currentPosition, currentNode.size)], relativeChildPosition, directionNormal);
 			}
 		}
 	}
@@ -86,7 +86,7 @@ struct treeNodeIterator
 
 			if (currentNode.inBounds(it.currentPosition) && currentNode.hasChildNodes())
 			{
-				const auto& currentChildNode = *currentNode.childNodes[it.currentPosition.getDimensionalArrayIndex(currentNode.size)];
+				const auto& currentChildNode = *currentNode.childNodes[singleDimensionalIndex(it.currentPosition, currentNode.size)];
 				if (currentChildNode.hasChildNodes())
 				{
 					fp lastAxisCrossingT = it.nextAxisCrossingT[it.lastChangedAxis] - it.delta[it.lastChangedAxis];

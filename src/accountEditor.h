@@ -1,7 +1,7 @@
 #include "application/control/form.h"
 #include "application/control/button.h"
 #include "application/control/textBox.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #pragma once
 
 bool checkAccountName(const std::wstring& n);

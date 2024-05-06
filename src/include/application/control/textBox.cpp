@@ -16,7 +16,7 @@ void textBox::render(cveci2 &position, const texture &renderTarget)
 		checkCursorIndex();
 		rectangle2 textRect = rectangle2(position, rect.size).expanded(-borderSize);
 		vec2 cursorPosition = currentFont->MeasureStringOffset(textRect, text.substr(0, cursorIndex));
-		renderTarget.fillRectangle(crectangle2(cursorPosition, vec2(1, currentFont->fontSize)), brushes::white);
+		fillRectangle(renderTarget, crectangle2(cursorPosition, vec2(1, currentFont->fontSize)), brushes::white);
 	}
 }
 

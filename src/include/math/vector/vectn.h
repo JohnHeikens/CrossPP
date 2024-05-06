@@ -1,11 +1,11 @@
 #pragma once
 
 #include "globalFunctions.h"
-#include "axis.h"
+#include "..\axis.h"
 // #include "array/zipiterator.h"
 #include "optimization/optimization.h"
-#include "direction.h"
-#include "mathFunctions.h"
+#include "..\direction.h"
+#include "..\mathFunctions.h"
 #include <ranges>
 #include <array>
 
@@ -382,31 +382,7 @@ struct vectn
         return false;
     }
 
-    constexpr t getDimensionalArrayIndex(const vectn &size) const {
-        t index = (*this)[axisCount - 1];
-        if constexpr (axisCount == 1) {
-            return index;
-        } else {
-            for (fsize_t i = axisCount - 2;; i--) {
-                index *= size[i];
-                index += (*this)[i];
-                if (i == 0) {
-                    return index;
-                }
-            }
-            // can't come here
-            assumeInRelease(false);
-        }
-    }
 
-    constexpr bool indexInBounds(const vectn &size) const {
-        for (auto it: std::views::zip((*this), size)) {
-            if (it.template val<0>() < 0 || it.template val<0>() >= it.template val<1>()) {
-                return false;
-            }
-        }
-        return true;
-    }
 
 #define newMacro(copySize) vectn result = vectn();
 
@@ -416,41 +392,6 @@ struct vectn
 };
 
 addTemplateTypes(vec)
-
-template<typename outputType = int, typename inputType, fsize_t axisCount>
-constexpr vectn<outputType, axisCount> floorVector(const vectn<inputType, axisCount> &vec) {
-    vectn<outputType, axisCount> result = vectn<outputType, axisCount>();
-    for (fsize_t i = 0; i < axisCount; i++) {
-        result[i] = (outputType) math::floor(vec[i]);
-    }
-    return result;
-}
-
-template<typename outputType = int, typename inputType, fsize_t axisCount>
-constexpr vectn<outputType, axisCount> ceilVector(const vectn<inputType, axisCount> &vec) {
-    vectn<outputType, axisCount> result = vectn<outputType, axisCount>();
-    for (fsize_t i = 0; i < axisCount; i++) {
-        result[i] = (outputType) ceil(vec[i]);
-    }
-    return result;
-}
-
-// https://www.omnicalculator.com/math/angle-between-two-vectors
-// a and b have to be NORMALIZED
-template<typename t>
-inline fp angleBetween(const vect2<t> &a, const vect2<t> &b) {
-    return acos(vec2::dot(a, b));
-}
-
-// y is greater at the top
-template<typename t>
-constexpr bool woundClockwise(const vect2<t> &a, const vect2<t> &b, const vect2<t> &c) {
-    // counter-clockwise
-    const vect2<t> &dab = b - a;
-    const vect2<t> &dac = c - a;
-    const t &winding = dab.x * dac.y - dab.y * dac.x;
-    return winding < 0;
-}
 
 // inline constexpr static std::array<int, 2> arr = std::array<int, 2>({ 2 });
 // inline constexpr static vec2 vec2Test = vec2(1);

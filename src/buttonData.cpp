@@ -1,5 +1,6 @@
 #include "buttonData.h"
 #include "tickableBlockContainer.h"
+#include "nbtSerializer.h"
 bool buttonData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	if (!attached(containerIn, position)) {

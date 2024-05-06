@@ -1,4 +1,5 @@
 #include "angerAI.h"
+#include "nbtSerializer.h"
 bool angerAI::shouldExecute()
 {
 	return ticksAngry > 0 && targetAI::shouldExecute();

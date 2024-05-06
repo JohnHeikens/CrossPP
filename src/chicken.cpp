@@ -1,6 +1,5 @@
 #include "mobData.h"
 #include "chicken.h"
-#include <set>
 #include <string>
 #include "constants.h"
 #include "entityData.h"
@@ -9,10 +8,11 @@
 #include "globalFunctions.h"
 #include "math/bodypart2d.h"
 #include "math/random/random.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "mob.h"
 #include "nbtSerializer.h"
 #include "passiveMob.h"
+#include "nbtSerializer.h"
 
 constexpr fp chickenAirGravityForce = 0.4;
 chicken::chicken(dimension* dimensionIn, cvec2& position) :passiveMob(dimensionIn, position, entityID::chicken), mob(dimensionIn, position, entityID::chicken)
@@ -72,7 +72,7 @@ void chicken::updateBodyParts() const
 void chicken::serializeValue(nbtSerializer& s)
 {
 	mob::serializeValue(s);
-	s.serializeValue(std::wstring(L"time until next egg"), timeUntilNextEgg);
+	s.serializeValue(L"time until next egg", timeUntilNextEgg);
 }
 
 fp chicken::getGravityForce() const

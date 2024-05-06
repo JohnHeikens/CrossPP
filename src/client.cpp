@@ -19,13 +19,17 @@
 #include "math/graphics/color/color.h"
 #include "math/graphics/texture.h"
 #include "math/random/random.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "serverData.h"
 #include "soundHandler2D.h"
 #include "folderList.h"
 #include "math/timemath.h"
 #include "main.h"
 #include <filesystem/filemanager.h>
+#include "serializer/serializeColor.h"
+#include "serializer/serializeUUID.h"
+#include "include/filesystem/fileFunctions.h"
+#include "serializer/serializeList.h"
 
 miliseconds lastScreenshotTime = 0;
 
@@ -161,15 +165,15 @@ bool client::connectToServer(const serverData &server)
     serialize(
         num); // this is to distinguish between random things pinging this port and clients trying to connect
     nbtCompound authPacket = nbtCompound(L"auth");
-    nbtSerializer outNBTSerializer = nbtSerializer(authPacket, true);
-    outNBTSerializer.serializeValue(L"uuid", data.id);
-    outNBTSerializer.serializeValue(L"name", data.name);
+    nbtSerializer outSerializer = nbtSerializer(authPacket, true);
+    serializeNBTValue(outSerializer, L"uuid", data.id);
+    outSerializer.serializeValue(L"name", data.name);
     std::wstring osName = onAndroid ? L"Android" : onWindows ? L"Windows"
                                                : onMac       ? L"Mac"
                                                : onLinux     ? L"Linux"
                                                              : L"Other";
-    outNBTSerializer.serializeValue(L"OS", osName);
-    outNBTSerializer.serializeValue(L"screenSize", this->rect.size);
+    outSerializer.serializeValue(L"OS", osName);
+    serializeNBTValue(outSerializer, L"screenSize", this->rect.size);
     streamSerializer streamS = streamSerializer(s, true, std::endian::big);
     authPacket.serialize(streamS);
     s.sendPacket();
@@ -186,7 +190,7 @@ void client::sendPacket(const texture &renderTarget)
 
     currentInput.serialize(outSerializer);
     auto screenSize = renderTarget.size;
-    outSerializer.serializeValue(L"screenSize", screenSize);
+    serializeNBTValue(outSerializer, L"screenSize", screenSize);
 
     if (socketWantsClipboardInput)
     {
@@ -251,7 +255,7 @@ void client::processIncomingPackets(const texture &renderTarget)
         inSerializer->serializeValue(L"wantsClipboardInput", socketWantsClipboardInput);
         // serialize colors of the screen
         // sounds
-        inSerializer->serializeValue(L"earPosition", earPosition);
+        serializeNBTValue(*inSerializer, L"earPosition", earPosition);
         size_t soundCount;
         if (inSerializer->push<nbtDataTag::tagList>(L"sounds"))
         {
@@ -281,7 +285,7 @@ void client::processIncomingPackets(const texture &renderTarget)
         }
 
         std::vector<byte> compressedScreen;
-        if (inSerializer->serializeList(L"compressedScreen", compressedScreen))
+        if (serializeNBTValue(*inSerializer, L"compressedScreen", compressedScreen))
         {
             std::vector<byte> decompressedScreen;
             vectn<fsize_t, 2> size;
@@ -313,7 +317,7 @@ void client::processIncomingPackets(const texture &renderTarget)
                 fillTransformedTexture(crectangle2(renderTarget.getClientRect()), oldSizeTex,
                                        renderTarget);
             }
-            decoder.visualize(renderTarget);
+            //decoder.visualize(renderTarget);
         }
     }
     // while (selector.wait(sf::microseconds(1))); // pop off all packets on the chain and catch up

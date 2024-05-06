@@ -111,7 +111,7 @@ void collisionDataCollection::render(const gameRenderData& targetData) const
 		{
 			cvec2 pos0 = targetData.worldToRenderTargetTransform.multPointMatrix(hitbox.hitboxCollidingWith.pos0);
 			cvec2 pos1 = targetData.worldToRenderTargetTransform.multPointMatrix(hitbox.hitboxCollidingWith.pos0 + hitbox.speed * secondsPerTick);
-			targetData.renderTarget.fillLine(pos0, pos1, solidColorBrush(colorPalette::blue));
+			fillLine(targetData.renderTarget, pos0, pos1, solidColorBrush(colorPalette::blue));
 			//crectangle2& withSpeed = crectangle2(hitbox.hitboxCollidingWith.pos0 + hitbox.speed * secondsPerTick, hitbox.hitboxCollidingWith.size);
 			//renderBlockRect(withSpeed, targetData, colorPalette::blue);
 		}

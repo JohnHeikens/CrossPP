@@ -1,5 +1,7 @@
 #include "stemPlantData.h"
 #include "tickableBlockContainer.h"
+#include "nbtSerializer.h"
+#include "serializer/serializeColor.h"
 void stemPlantData::randomTick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	if (relativeFruitPosition == cveci2())
@@ -32,7 +34,7 @@ bool stemPlantData::tick(tickableBlockContainer* containerIn, cveci2& position)
 void stemPlantData::serializeValue(nbtSerializer& s)
 {
 	cropData::serializeValue(s);
-	s.serializeValue(std::wstring(L"relative fruit position"), relativeFruitPosition);
+	serializeNBTValue(s, std::wstring(L"relative fruit position"), relativeFruitPosition);
 }
 
 void stemPlantData::attemptToGrowFruit(tickableBlockContainer* containerIn, cveci2& position)

@@ -1,5 +1,6 @@
 #include "sapSpreadData.h"
 #include "tickableBlockContainer.h"
+#include "nbtSerializer.h"
 void sapSpreadData::serializeValue(nbtSerializer& s)
 {
 	s.serializeValue(std::wstring(L"sap level"), sapLevel);

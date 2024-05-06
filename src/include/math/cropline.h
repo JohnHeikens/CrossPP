@@ -1,5 +1,5 @@
 #pragma once
-#include "rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 //returns true if there's something left to draw
 inline bool cropLine(vec2& p0, vec2& p1, crectangle2& cropRect)
 {

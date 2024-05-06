@@ -5,10 +5,10 @@
 #include <string>
 #include "constants.h"
 #include "entity.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "mob.h"
 #include "nbtSerializer.h"
-
+#include "serializer/serializeUUID.h"
 void fireBallAI::shootFireBall(const entity* shootFireBallAt) const
 {
 	mob* connectedMob = (mob*)connectedEntity;
@@ -25,5 +25,5 @@ void fireBallAI::shootFireBall(const entity* shootFireBallAt) const
 void fireBallAI::serializeValue(nbtSerializer& s)
 {
 	s.serializeValue(std::wstring(L"fireball type"), (int&)fireBallType);
-	s.serializeValue(std::wstring(L"target"), target);
+	serializeNBTValue(s, std::wstring(L"target"), target);
 }

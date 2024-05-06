@@ -17,6 +17,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Config.hpp>
 #include "application/thread/setThreadName.h"
+#include "include/optimization/stableTickLoop.h"
+#include <list>
+#include "filesystem/fileFunctions.h"
 
 #if onWindows
 #include "windowsIncluder.h"
@@ -88,7 +91,11 @@ stdPath androidCacheDir;
 bool loadingFinished = false;
 sf::RenderWindow *window = nullptr;
 
-
+struct balloon
+{
+    sf::CircleShape shape;
+    sf::Vector2f speed;
+};
 
 void showLoadingScreen()
 {
@@ -100,9 +107,14 @@ void showLoadingScreen()
     // as it will look for data/font.otf in the assets folder.
     font.loadFromFile("data/font.otf");
 
+    stableLoop loop = stableLoop(1000000 / 60);
+
+    std::list<balloon> shapes = std::list<balloon>();
+
     // Start game loop
     while (window->isOpen())
     {
+        loop.waitTillNextLoopTime();
         // Process events
         sf::Event Event;
         while (window->pollEvent(Event))
@@ -110,20 +122,60 @@ void showLoadingScreen()
             // Close window : exit
             if (Event.type == sf::Event::Closed)
                 window->close();
+            else if (Event.type == sf::Event::Resized)
+            {
+                // update the view to the new size of the window
+                sf::FloatRect visibleArea(0, 0, Event.size.width, Event.size.height);
+                window->setView(sf::View(visibleArea));
+                // Clear the screen (fill it with black color)
+                shapes = std::list<balloon>();
+            }
         }
         if (loadingFinished)
         {
             return;
         }
 
-        // Clear the screen (fill it with black color)
         window->clear(sf::Color::Magenta);
+        auto size = window->getView().getSize();
+        const auto &minSize = math::minimum(window->getView().getSize().y, window->getView().getSize().x);
+
+        if (shapes.size() < 0x1000)
+        {
+            balloon newBalloon;
+            auto pos = getrandomPosition(currentRandom, rectangle2(vec2(size.x, size.y)));
+            newBalloon.shape.setPosition(sf::Vector2f(pos.x, pos.y));
+            newBalloon.shape.setFillColor(sf::Color(rand(currentRandom, bytemax), rand(currentRandom, bytemax), rand(currentRandom, bytemax)));
+            newBalloon.shape.setRadius(1);//it should start as a single pixel
+            shapes.push_front(newBalloon);
+        }
+        for (auto it = shapes.begin(); it != shapes.end(); )
+        {
+            auto &balloon = *it;
+            const auto &pos = balloon.shape.getPosition();
+            const auto &radius = balloon.shape.getRadius();
+            const auto& diameter = radius + radius;
+            if (pos.x < -diameter || pos.y < -diameter || pos.x > size.x || pos.y > size.y)
+            {
+                it = shapes.erase(it);
+            }
+            else
+            {
+                const auto &variance = radius / 30;
+                balloon.speed += sf::Vector2f(randFp(currentRandom, -variance, variance), randFp(currentRandom, -variance, variance));
+                balloon.speed *= 0.95f;
+                balloon.shape.setPosition(pos + balloon.speed);
+                balloon.shape.setRadius(radius * 1.001f);
+                window->draw(balloon.shape);
+                it++;
+            }
+        }
 
         sf::Text loadingText(
             "Loading medieval survival\nwhen you updated this app,\nthis might take several minutes.\nDO NOT CLOSE",
             font);
         loadingText.setFillColor(sf::Color::White);
-        loadingText.setCharacterSize(math::minimum(window->getView().getSize().y, window->getView().getSize().x) / 20);
+        loadingText.setCharacterSize(minSize / 20);
 
         // center text
         sf::FloatRect textRect = loadingText.getLocalBounds();
@@ -223,6 +275,8 @@ std::filesystem::path getCommonAppDataFolder()
 void loadResources()
 {
     setCurrentThreadName(L"resource loader");
+    
+    //std::this_thread::sleep_for(std::chrono::seconds(1000000));
     // check if the application is installed or if we're debugging
     //
     if (onAndroid || !std::filesystem::exists(L"data"))

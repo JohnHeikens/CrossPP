@@ -3,9 +3,11 @@
 #include "world.h"
 #include "folderList.h"
 #include "gameControl.h"
+
 #include "overWorld.h"
 #include "nether.h"
 #include "end.h"
+
 #include "ocean.h"
 #include "swamp.h"
 #include "plains.h"
@@ -28,9 +30,11 @@
 #include "warpedForest.h"
 #include "soulSandValley.h"
 #include "basaltDeltas.h"
+
 #include "theEnd.h"
 #include "endVoid.h"
 #include "endLands.h"
+
 #include "craftingTableSlotContainer.h"
 #include "smithingTableSlotContainer.h"
 #include "anvilSlotContainer.h"
@@ -43,6 +47,7 @@
 #include "human.h"
 #include "chunk.h"
 #include "tag.h"
+#include "serializer/serializeColor.h"
 
 bool world::serialize(cbool& write)
 {
@@ -127,7 +132,7 @@ bool world::serialize(cbool& write)
 		}
 	}
 	s.serializeValue(std::wstring(L"seed"), seed);
-	s.serializeValue(std::wstring(L"world spawnpoint"), worldSpawnPoint);
+	serializeNBTValue(s, std::wstring(L"world spawnpoint"), worldSpawnPoint);
 	s.serializeValue(std::wstring(L"world spawn dimension"), (int&)worldSpawnDimension);
 	s.serializeValue(std::wstring(L"current time"), currentTime);
 	//settings

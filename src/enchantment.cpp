@@ -1,6 +1,7 @@
 #include "enchantment.h"
 #include "idConverter.h"
 #include "enchantmentData.h"
+#include "nbtSerializer.h"
 void enchantment::serializeValue(nbtSerializer& s)
 {
 	idConverter::serializeID(s, std::wstring(L"id"), identifier, s.converter ? &s.converter->enchantmentIDConverter : nullptr);

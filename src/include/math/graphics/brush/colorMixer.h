@@ -1,6 +1,7 @@
 #pragma once
 #include "math/graphics/color/color.h"
 #include "math/graphics/brush/brush.h"
+#include "math/graphics/color/colorFunctions.h"
 template<typename brush0Type, typename brush1Type>
 struct colorMixer final : public colorBrush
 {
@@ -27,7 +28,7 @@ struct colorMixer final : public colorBrush
 		else {
 			ccolor& bottomColor = bottomBrush.getValue(pos);
 			if (topColor.a()) {
-				return color::transition(topColor, bottomColor);
+				return transitionColor(topColor, bottomColor);
 			}
 			else {
 				return bottomColor;

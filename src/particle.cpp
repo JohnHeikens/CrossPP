@@ -1,9 +1,10 @@
-#include "math/vectorrandom.h"
+#include "math/vector/vectn.h"
 #include "particleBrush.h"
 #include "particle.h"
 #include "dimension.h"
 #include "blockParticleBrush.h"
 #include "itemParticleBrush.h"
+#include "include/math/vector/vectorrandom.h"
 particle* summonParticle(tickableBlockContainer* containerIn, cvec2& position, particleBrush* linkedBrush, cfp& maxSpeed)
 {
 	particle* p = (particle*)summonEntity(entityID::particle, containerIn, position);

@@ -6,7 +6,7 @@
 #include "chunkLoadLevel.h"
 #include "constants.h"
 #include "math/direction.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "tickableBlockContainer.h"
 directionID attachedBlockData::getAttachmentDirection(tickableBlockContainer* containerIn, cveci2& position) const
 {

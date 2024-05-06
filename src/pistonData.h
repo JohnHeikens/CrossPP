@@ -5,7 +5,7 @@
 #include "globalFunctions.h"
 #include "math/direction.h"
 #include "math/uuid.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "nbtSerializer.h"
 //max power level: pushes in one tick
 constexpr size_t pistonPushLimit = 0x1000;

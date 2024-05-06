@@ -7,7 +7,7 @@
 #include "idAnalysis.h"
 #include "globalFunctions.h"
 #include "math/direction.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "nbtSerializer.h"
 veci2 getOtherPartRelativeLocation(const blockID& id, cbool& isPart0, const directionID& directionFacing)
 {

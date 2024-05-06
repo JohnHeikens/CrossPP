@@ -11,9 +11,9 @@
 #include "globalFunctions.h"
 #include "interface/idestructable.h"
 #include "math/mattnxn.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/uuid.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 struct tickableBlockContainer : blockContainer, IDestructable
 {
 	std::vector<veci2> portalPositions = std::vector<veci2>();

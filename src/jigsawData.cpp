@@ -1,4 +1,5 @@
 #include "jigsawData.h"
+#include "nbtSerializer.h"
 #include "idConverter.h"
 void jigsawData::serializeValue(nbtSerializer& s)
 {

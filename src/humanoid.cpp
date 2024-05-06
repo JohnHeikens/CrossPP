@@ -52,11 +52,11 @@
 #include "math/mathFunctions.h"
 #include "math/mattnxn.h"
 #include "math/random/random.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/graphics/resolutiontexture.h"
 #include "math/swingsynchronizer.h"
 #include "math/timemath.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "itemID.h"
 #include "itemStack.h"
 #include "mob.h"
@@ -66,6 +66,7 @@
 #include "statusEffectID.h"
 #include "toolTypeID.h"
 #include "gameControl.h"
+#include "nbtSerializer.h"
 void humanoid::resetDigProgress()
 {
 	selectedBlockDamage = 0;

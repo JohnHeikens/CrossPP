@@ -4,6 +4,8 @@
 #include "socketContainer.h"
 #include "array/arrayFunctions/arrayFunctions.h"
 #include "nbtSerializer.h"
+#include "serializer/serializeColor.h"
+#include "serializer/serializeList.h"
 
 bool clientInput::serialize(nbtSerializer &s)
 {
@@ -80,7 +82,7 @@ bool clientInput::serialize(nbtSerializer &s)
         }
         s.pop();
     }
-	s.serializeValue(L"mouse position", mousePositionPixels);
+	serializeNBTValue(s, L"mouse position", mousePositionPixels);
 	if (s.push(L"mouse buttons"))
 	{
 		s.serializeArray(L"clicked", (sbyte*)clicked, (int)sf::Mouse::ButtonCount);
@@ -92,9 +94,9 @@ bool clientInput::serialize(nbtSerializer &s)
 	// s.serialize(keyDownHistory);
 	if (s.push(L"keys"))
 	{
-		s.serializeList(L"down", keysDown);
-		s.serializeList(L"up", keysUp);
-		s.serializeList(L"holding", keysHolding);
+		serializeNBTValue(s, L"down", keysDown);
+		serializeNBTValue(s, L"up", keysUp);
+		serializeNBTValue(s, L"holding", keysHolding);
 		if (s.push(L"history"))
 		{
 			size_t size = keyDownHistory.size();

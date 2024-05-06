@@ -1,5 +1,6 @@
 #include "lastPowerLevelData.h"
 #include "tickableBlockContainer.h"
+#include "nbtSerializer.h"
 bool lastPowerLevelData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	lastPowerLevel = containerIn->getPowerLevel(position);

@@ -3,6 +3,7 @@
 #include "soundList.h"
 #include "tickableBlockContainer.h"
 #include "entity.h"
+#include "serializer/serializeUUID.h"
 void pressurePlateData::addEntityStandingOn(tickableBlockContainer* containerIn, cveci2& position, entity* const& e)
 {
 	if (lastUpdateTick < currentWorld->ticksSinceStart)
@@ -50,7 +51,7 @@ void pressurePlateData::serializeValue(nbtSerializer& s)
 				{
 					if (s.push<nbtDataTag::tagCompound>())
 					{
-						s.serializeValue(std::wstring(L"uuid"), entityStandingOn);
+						serializeNBTValue(s, std::wstring(L"uuid"), entityStandingOn);
 						s.pop();
 					}
 				}
@@ -64,7 +65,7 @@ void pressurePlateData::serializeValue(nbtSerializer& s)
 				{
 					if (s.push<nbtDataTag::tagCompound>())
 					{
-						s.serializeValue(std::wstring(L"uuid"), entitiesStandingOn[i]);
+						serializeNBTValue(s, std::wstring(L"uuid"), entitiesStandingOn[i]);
 						s.pop();
 					}
 					i++;

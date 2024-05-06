@@ -33,15 +33,15 @@
 #include "collisionTypeID.h"
 #include "constants.h"
 #include "entityID.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "globalFunctions.h"
 #include "math/axis.h"
 #include "math/collisions.h"
 #include "math/direction.h"
 #include "math/mathFunctions.h"
 #include "math/random/random.h"
-#include "math/rectangletn.h"
-#include "math/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/vector/vectn.h"
 #include "levelID.h"
 #include "lightLevel.h"
 #include "lightLevelID.h"
@@ -51,6 +51,8 @@
 #include "gameRenderData.h"
 #include "dimension.h"
 #include "renderBrush.h"
+#include "nbtSerializer.h"
+#include "serializer/serializeColor.h"
 void blockContainer::setBlockRange(cveci2& pos0, cveci2& pos1, const blockID& block, const chunkLoadLevel& minimalLoadLevel)
 {
 	cveci2 pos00 = cveci2(math::minimum(pos0.x, pos1.x), math::minimum(pos0.y, pos1.y));
@@ -845,7 +847,7 @@ void serializeBlocks(nbtSerializer& s, const array2d<blockID>& blockIDArray, con
 						if (s.push<nbtDataTag::tagCompound>())
 						{
 							veci2 position = veci2(relativeX, relativeY);
-							s.serializeValue(std::wstring(L"position"), position);
+							serializeNBTValue(s, std::wstring(L"position"), position);
 
 							(*it)->serializeValue(s);
 							s.pop();
@@ -872,7 +874,7 @@ void serializeBlocks(nbtSerializer& s, const array2d<blockID>& blockIDArray, con
 				if (s.push(data))
 				{
 					veci2 position;
-					s.serializeValue(std::wstring(L"position"), position);
+					serializeNBTValue(s,std::wstring(L"position"), position);
 					blockData* data = blockDataArray.getValue(position);
 
 					if (data)

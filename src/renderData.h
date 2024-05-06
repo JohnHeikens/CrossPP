@@ -1,9 +1,9 @@
 #pragma once
 #include "math/mattnxn.h"
-#include "math/graphics/texture.h"
 #include "globalFunctions.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 struct gameControl;
+struct texture;
 struct renderData
 {
 	mat3x3 worldToRenderTargetTransform = mat3x3();

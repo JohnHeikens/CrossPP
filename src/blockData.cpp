@@ -50,7 +50,7 @@
 #include "facingData.h"
 #include "fallingBlockData.h"
 #include "fluidData.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "lastPowerLevelData.h"
 #include "nbtSerializer.h"
 #include "pollenData.h"

@@ -1,5 +1,6 @@
 #include "block.h"
 #include "blockParticleBrush.h"
+#include "nbtSerializer.h"
 blockParticleBrush::blockParticleBrush() :rectParticleBrush(particleID::block)
 {
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "application/control/form.h"
-#include "math/rectangletn.h"
-#include "math/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/vector/vectn.h"
 #include "application/control/control.h"
 #include "math/graphics/texture.h"
 

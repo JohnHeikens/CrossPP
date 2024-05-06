@@ -7,6 +7,7 @@
 #include "folderList.h"
 #include "settings.h"
 #include "textureList.h"
+#include "nbtSerializer.h"
 end::end() :dimension(dimensionID::end)
 {
 
@@ -111,9 +112,9 @@ void end::renderSky(crectangle2& blockRect, crectangle2 & drawRect, const gameRe
 	//}
 	//else
 	//{
-	//	targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::black));
+	//	fillRectangle(targetData.renderTarget, ceilRectangle(drawRect), solidColorBrush(colorPalette::black));
 	//}
-	targetData.renderTarget.fillRectangle(ceilRectangle(drawRect), solidColorBrush(colorPalette::purple));
+	fillRectangle(targetData.renderTarget, ceilRectangle(drawRect), solidColorBrush(colorPalette::purple));
 }
 
 biomeID end::getBiome(cvec2& position) const

@@ -37,7 +37,7 @@
 #include "humanoid.h"
 #include "application/control/control.h"
 #include "application/control/form.h"
-#include "array/arraynd.h"
+#include "array/arraynd/arraynd.h"
 #include "array/fastarray.h"
 #include "globalFunctions.h"
 #include "math/axis.h"
@@ -49,9 +49,9 @@
 #include "math/LayerNoiseSimplex.h"
 #include "math/mathFunctions.h"
 #include "math/mattnxn.h"
-#include "math/rectangletn.h"
+#include "math/rectangle/rectangletn.h"
 #include "math/timemath.h"
-#include "math/vectn.h"
+#include "math/vector/vectn.h"
 #include "levelID.h"
 #include "lightLevel.h"
 #include "lightLevelID.h"
@@ -67,6 +67,10 @@
 #include "resourcePack.h"
 #include "folderList.h"
 #include <SFML/Graphics/RectangleShape.hpp>
+#include "math/graphics/brush/brushes/squareInterpolator.h"
+#include "math/graphics/brush/brushes/colorMultiplier.h"
+#include "include/math/graphics/brush/brushes/repeatingBrush.h"
+#include "include/math/graphics/brush/brushes/vignetteBrush.h"
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
@@ -191,7 +195,7 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         //player->exactMobIntersection
         //player->getHeadPosition()
     );
-    renderTarget.fillCircleCentered(screenPos, vec2(10), brushes::red);
+    fillCircleCentered(renderTarget, screenPos, vec2(10), brushes::red);
     */
 
     currentWorld->currentChat.render(renderTarget, *this);
@@ -679,7 +683,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
 
                 if (isBlack.getValueUnsafe(relativePosition))
                 {
-                    targetData.renderTarget.fillRectangle(blockScreenRect, brushes::black);
+                    fillRectangle(targetData.renderTarget, blockScreenRect, brushes::black);
                 }
                 else
                 {
@@ -701,7 +705,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                             const auto &multipier = colorMultiplier<texture, solidColorBrush>(
                                 targetData.renderTarget, solid);
 
-                            targetData.renderTarget.fillRectangle(ceilRectangle(blockScreenRect),
+                            fillRectangle(targetData.renderTarget, ceilRectangle(blockScreenRect),
                                                                   multipier);
                         }
                         else
@@ -713,7 +717,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                             const auto &multipier = colorMultiplier<texture, decltype(transform)>(
                                 targetData.renderTarget, transform);
 
-                            targetData.renderTarget.fillRectangle(ceilRectangle(blockScreenRect),
+                            fillRectangle(targetData.renderTarget, ceilRectangle(blockScreenRect),
                                                                   multipier);
                         }
                     }
@@ -795,7 +799,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                                              *widgetsTexture, targetData.renderTarget);
 
                     rectanglei2 selectorPixelRect = ceilRectangle(blockScreenRect);
-                    targetData.renderTarget.fillRectangleBorders(selectorPixelRect, 1,
+                    fillRectangleBorders(targetData.renderTarget, selectorPixelRect, 1,
                                                                  solidColorBrush(
                                                                      colorPalette::black));
 
@@ -1294,7 +1298,7 @@ void renderOptionsBackGround(crectanglei2 &rect, const texture &renderTarget)
 {
     if (settings::videoSettings::currentGraphicsMode == graphicsMode::fast)
     {
-        renderTarget.fillRectangle(rect, solidColorBrush(colorPalette::black));
+        fillRectangle(renderTarget, rect, solidColorBrush(colorPalette::black));
     }
     else
     {
@@ -1308,7 +1312,7 @@ void renderOptionsBackGround(crectanglei2 &rect, const texture &renderTarget)
             currentTransformBrush, cvec2(guiDirtTextureSize));
         const auto &brush = vignetteBrush<repeatingBrush<transformBrush<resolutionTexture>>>(
             cvec2(rect.pos0) + halfSize, 1, halfSize.length(), currentRepeatingBrush);
-        renderTarget.fillRectangle(rect, brush);
+        fillRectangle(renderTarget, rect, brush);
     }
 }
 

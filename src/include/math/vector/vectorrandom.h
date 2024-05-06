@@ -1,6 +1,6 @@
 #pragma once
-#include "random/random.h"
-#include "rectangletn.h"
+#include "math/random/random.h"
+#include "math/rectangle/rectangletn.h"
 
 inline vec2 getRandomPointOnEllipse(std::mt19937& generator, crectangle2& ellipseRect)
 {

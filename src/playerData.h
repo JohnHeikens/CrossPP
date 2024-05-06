@@ -1,5 +1,6 @@
 #pragma once
 #include "nbtSerializable.h"
+#include "math/uuid.h"
 struct playerData : nbtSerializable {
 	uuid id;
 	std::wstring name;

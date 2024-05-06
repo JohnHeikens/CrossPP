@@ -1,3 +1,4 @@
+#include "nbtSerializer.h"
 #include "bambooData.h"
 void bambooData::serializeValue(nbtSerializer& s)
 {
