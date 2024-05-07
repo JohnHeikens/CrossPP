@@ -1,5 +1,6 @@
 #pragma once
 #include "blockData.h"
+#include "math/uuid.h"
 struct pressurePlateData : blockData
 {
 	int lastUpdateTick = -1;

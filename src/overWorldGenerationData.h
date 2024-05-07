@@ -4,6 +4,7 @@
 #include "biomeID.h"
 #include "constants.h"
 #include "nbtSerializer.h"
+#include "constants/vectorConstants.h"
 struct overworldGenerationData :generationData
 {
 	int* heights = nullptr;

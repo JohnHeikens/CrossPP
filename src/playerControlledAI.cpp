@@ -10,6 +10,7 @@
 #include "dimension.h"
 #include "soundList.h"
 #include "gameForm.h"
+#include "rectangularSlotContainer.h"
 // to switch to flying or walking
 
 void playerControlledAI::execute() {

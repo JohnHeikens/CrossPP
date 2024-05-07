@@ -160,7 +160,7 @@ struct rectangletn : baseRect<t, axisCount>
 		{
 			if (toCrop.pos0[i] < pos0[i])
 			{
-				if (toCropPos1[i] < pos0[i])
+				if (toCropPos1[i] <= pos0[i])
 				{
 					return false;
 				}
@@ -171,7 +171,7 @@ struct rectangletn : baseRect<t, axisCount>
 
 			if (toCropPos1[i] > borderPos1[i])
 			{
-				if (toCrop.pos0[i] > borderPos1[i])
+				if (toCrop.pos0[i] >= borderPos1[i])
 				{
 					return false;
 				}

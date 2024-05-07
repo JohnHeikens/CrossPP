@@ -3,6 +3,7 @@
 #include "textureList.h"
 #include "math/graphics/brush/brushes/colorMultiplier.h"
 #include "nbtSerializer.h"
+#include "math/graphics/brush/brushes.h"
 
 fp getExperienceLevel(cfp& experience)
 {

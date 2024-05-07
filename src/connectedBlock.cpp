@@ -1,5 +1,7 @@
 #include "connectedBlock.h"
 #include "blockContainer.h"
+#include "math/graphics/brush/brushes.h"
+#include "gameColors.h"
 void connectedBlock::render(const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
 {
 	if (identifier == blockID::kelp)

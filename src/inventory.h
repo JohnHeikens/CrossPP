@@ -19,10 +19,7 @@ struct inventory : slotContainer, IDestructable
     std::vector<itemStack*> slotsDividingOver = std::vector<itemStack*>();
 
 	virtual void clickedOnItem(cmb& button, stackDivider& divider, uiSlotContainer* selectedSlotContainer, veci2 selectedSlot);
-	inline void drawExtraData(crectanglei2& textureRect, cveci2& offset, cmat3x3& transform, const texture& renderTarget) const {
-		fillTransparentRectangle(crectangle2(textureRect), mat3x3::cross(transform, mat3x3::translate(cvec2(offset - textureRect.pos0))), *uiTexture, renderTarget);
-
-	}
+	void drawExtraData(crectanglei2& textureRect, cveci2& offset, cmat3x3& transform, const texture& renderTarget) const;
 	virtual void drawExtraData(cmat3x3& transform, const texture& renderTarget);
 	virtual ~inventory() override;
 	virtual void mouseDown(cveci2& pixelPosition, cmb& button, stackDivider& divider);

@@ -23,8 +23,8 @@ message("sfml directory: ${SFML_DIR}")
 # set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 # Shoutout to CMake guide: https://eliasdaler.github.io/using-cmake/
 
-
-
+# increase the amount of i's to update cmakelists.txt:
+# i
 
 #set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 

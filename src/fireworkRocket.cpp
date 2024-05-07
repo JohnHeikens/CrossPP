@@ -1,6 +1,8 @@
 #include "fireworkRocket.h"
 #include "itemData.h"
 #include "nbtSerializer.h"
+#include "constants/vectorConstants.h"
+#include "include/math/graphics/brush/brushes.h"
 void fireworkRocket::serializeValue(nbtSerializer& s)
 {
 	s.serializeValue(std::wstring(L"ticks to exist"), ticksToExist);

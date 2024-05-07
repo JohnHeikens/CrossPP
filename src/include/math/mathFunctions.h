@@ -89,7 +89,7 @@ namespace math
 	}
 
 	// https://stackoverflow.com/questions/824118/why-is-floor-so-slow
-	template <typename inputType, typename outputType = int>
+	template <typename outputType = int, typename inputType>
 	constexpr outputType floor(const inputType &x)
 	{
 		if (std::is_integral_v<outputType>)
@@ -104,7 +104,7 @@ namespace math
 		}
 	}
 
-	template <typename inputType, typename outputType = int>
+	template <typename outputType = int, typename inputType>
 	constexpr outputType ceil(const inputType &x)
 	{
 		if (std::is_integral_v<outputType>)

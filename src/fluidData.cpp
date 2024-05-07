@@ -4,6 +4,12 @@
 #include "soundList.h"
 #include "dropData.h"
 #include "nbtSerializer.h"
+
+constexpr fluidLevel sideWardsWaterFlowSpeed = math::maximum((maxFluidLevel) / ticksPerRealLifeSecond, 1);
+constexpr fluidLevel sideWardsLavaFlowSpeed = math::maximum((maxFluidLevel / 2) / ticksPerRealLifeSecond, 1);
+constexpr fluidLevel minWaterFlowHeight = 1;
+constexpr fluidLevel minLavaFlowHeight = maxFluidLevel / 4;
+
 bool fluidData::tick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	//1 more thing to fix:

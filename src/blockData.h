@@ -1,5 +1,7 @@
 #pragma once
 #include "itemTag.h"
+//we might as well include it; most of the blockdata files use the vector
+#include "math/vector/vectn.h"
 struct blockData : itemTag
 {
 	bool ticked = false;

@@ -2,6 +2,8 @@
 #include "constants.h"
 #include "structureBlockLoadModeUI.h"
 #include "structureBlockSaveModeUI.h"
+constexpr int smallRightButtonSize = buttonSize.getY() * 4;
+
 struct structureBlockUI : form
 {
 	human* currentPlayableCharachter = nullptr;

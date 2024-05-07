@@ -20,6 +20,7 @@
 #include "math/uuid.h"
 #include "math/vector/vectn.h"
 #include "nbtSerializer.h"
+#include "constants/vectorConstants.h"
 struct chunk;
 enum class BiomeID : int;
 enum class structureID;

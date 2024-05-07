@@ -5,6 +5,8 @@
 #include "optimization/optimization.h"
 #include <future>
 #include <functional>
+#include "include/filesystem/serializer.h"
+
 struct tcpSerializer : streamBaseInterface
 {
 	sf::TcpSocket *socket = nullptr;

@@ -177,16 +177,16 @@ struct nbtSerializer : iSerializer
 		}
 		else
 		{
-			if (!value)
-			{
-				value = new t[count];
-			}
 			switch (data.dataTag)
 			{
 			case nbtDataTag::tagSignedInt8Array:
 			{
 				int8_t *&ptr = ((nbtDataArray<int8_t> &)data).data;
 				count = (int)((nbtDataArray<int8_t> &)data).arraySize;
+				if (!value)
+				{
+					value = new t[count];
+				}
 				// value should not be cast to int8_t* because that could possibly corrupt memory
 				copyAndCast(ptr, ptr + count, value);
 			}
@@ -195,6 +195,10 @@ struct nbtSerializer : iSerializer
 			{
 				int32_t *&ptr = ((nbtDataArray<int32_t> &)data).data;
 				count = (int)((nbtDataArray<int32_t> &)data).arraySize;
+				if (!value)
+				{
+					value = new t[count];
+				}
 				copyAndCast(ptr, ptr + count, value);
 			}
 			break;
@@ -202,6 +206,10 @@ struct nbtSerializer : iSerializer
 			{
 				int64_t *&ptr = ((nbtDataArray<int64_t> &)data).data;
 				count = (int)((nbtDataArray<int64_t> &)data).arraySize;
+				if (!value)
+				{
+					value = new t[count];
+				}
 				copyAndCast(ptr, ptr + count, value);
 			}
 			break;
@@ -313,6 +321,7 @@ struct nbtSerializer : iSerializer
 		return getOrCreateNBTData<getNBTDataTag<t>()>(memberName);
 	}
 
+	// CAUTION! value should not be an undefined pointer! either initialize it with nullptr or an existing array!
 	template <nbtType t>
 	inline bool serializeVariableArray(const std::wstring &memberName, t *&value, int &count)
 	{
@@ -388,5 +397,4 @@ struct nbtSerializer : iSerializer
 	//{
 	//	return serializeValue(memberName, (uint&)value);
 	// }
-
 };

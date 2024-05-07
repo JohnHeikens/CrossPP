@@ -2,16 +2,15 @@
 #include "humanoid.h"
 #include "gameModeID.h"
 
-#include "humanSlotContainerUI.h"
-#include "anvilSlotContainer.h"
-#include "smithingTableSlotContainer.h"
-#include "dispenserSlotContainer.h"
-#include "enchantingTableSlotContainer.h"
-#include "brewingStandSlotContainer.h"
-#include "chestSlotContainer.h"
-#include "furnaceSlotContainer.h"
-#include "craftingTableSlotContainer.h"
-#include "soundHandler2D.h"
+//#include "humanSlotContainerUI.h"
+//#include "anvilSlotContainer.h"
+//#include "smithingTableSlotContainer.h"
+//#include "dispenserSlotContainer.h"
+//#include "enchantingTableSlotContainer.h"
+//#include "brewingStandSlotContainer.h"
+//#include "chestSlotContainer.h"
+//#include "furnaceSlotContainer.h"
+//#include "craftingTableSlotContainer.h"
 #include "interface/inamable.h"
 
 //extern humanSlotContainerUI* humanSlots;
@@ -24,20 +23,18 @@
 //extern smithingTableSlotContainer* smithingTableSlots;
 //extern anvilSlotContainer* anvilSlots;
 //extern std::shared_ptr<audio2d> currentWindSound;
-struct playerSocket;
-struct gameControl;
 struct human :public humanoid, public INamable
 {
 	//containers
-	humanSlotContainerUI* humanSlots = nullptr;
-	craftingTableSlotContainer* craftingTableSlots = nullptr;
-	furnaceSlotContainer* furnaceSlots = nullptr;
-	chestSlotContainer* chestSlots = nullptr;
-	brewingStandSlotContainer* brewingStandSlots = nullptr;
-	enchantingTableSlotContainer* enchantmentSlots = nullptr;
-	dispenserSlotContainer* dispenserSlots = nullptr;
-	smithingTableSlotContainer* smithingTableSlots = nullptr;
-	anvilSlotContainer* anvilSlots = nullptr;
+	struct humanSlotContainerUI* humanSlots = nullptr;
+	struct craftingTableSlotContainer* craftingTableSlots = nullptr;
+	struct furnaceSlotContainer* furnaceSlots = nullptr;
+	struct chestSlotContainer* chestSlots = nullptr;
+	struct brewingStandSlotContainer* brewingStandSlots = nullptr;
+	struct enchantingTableSlotContainer* enchantmentSlots = nullptr;
+	struct dispenserSlotContainer* dispenserSlots = nullptr;
+	struct smithingTableSlotContainer* smithingTableSlots = nullptr;
+	struct anvilSlotContainer* anvilSlots = nullptr;
 
 	gameControl& screen;
 	rectangularSlotContainer* hotbarSlots = nullptr;

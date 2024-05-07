@@ -2,6 +2,7 @@
 #include "tickableBlockContainer.h"
 #include "nbtSerializer.h"
 #include "serializer/serializeColor.h"
+#include "constants/vectorConstants.h"
 void stemPlantData::randomTick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	if (relativeFruitPosition == cveci2())

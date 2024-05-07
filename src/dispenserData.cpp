@@ -13,6 +13,7 @@
 #include "block.h"
 #include "mobList.h"
 #include "nbtSerializer.h"
+#include "constants/vectorConstants.h"
 dispenserData::dispenserData(const directionID& directionFacing) :facingData(directionFacing)
 {
 	slots = new rectangularSlotContainer(dropperSlotContainerSize);

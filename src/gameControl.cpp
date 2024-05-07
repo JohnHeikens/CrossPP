@@ -71,6 +71,8 @@
 #include "math/graphics/brush/brushes/colorMultiplier.h"
 #include "include/math/graphics/brush/brushes/repeatingBrush.h"
 #include "include/math/graphics/brush/brushes/vignetteBrush.h"
+#include "rectangularSlotContainer.h"
+#include "humanSlotContainerUI.h"
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
@@ -658,7 +660,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                                  10); // 0 to 1
             // a value from 0 to 8, 10 options (-1 = not started digging, 9 = broken)
             size_t textureIndex =
-                (size_t)math::ceil<fp, int>(destroyStage * (destroyStageTextures.size() + 1)) -
+                math::ceil<size_t>(destroyStage * (destroyStageTextures.size() + 1)) -
                 1;
             if (textureIndex >= destroyStageTextures.size())
             {

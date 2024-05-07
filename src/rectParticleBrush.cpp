@@ -1,5 +1,6 @@
 #include "rectParticleBrush.h"
 #include "serializer/serializeRectangle.h"
+#include "math/graphics/brush/brushes.h"
 void rectParticleBrush::serializeValue(nbtSerializer& s)
 {
 	serializeNBTValue(s, std::wstring(L"brush rect"), brushRect);

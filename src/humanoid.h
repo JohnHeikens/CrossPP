@@ -2,6 +2,7 @@
 #include "mob.h"
 #include "slotContainer.h"
 #include "math/swingsynchronizer.h"
+#include "constants/vectorConstants.h"
 
 //human
 constexpr vec2 humanSkinSize = vec2(32);

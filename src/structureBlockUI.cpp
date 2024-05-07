@@ -3,6 +3,7 @@
 #include "structureBlockData.h"
 #include "dimension.h"
 #include "gameControl.h"
+#include "constants/vectorConstants.h"
 
 structureBlockUI::structureBlockUI() {
     structureBlockLabel->text = std::wstring(L"Structure Block");

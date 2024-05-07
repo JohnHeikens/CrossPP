@@ -2,6 +2,8 @@
 #include "pollen.h"
 #include "dimension.h"
 #include "idConverter.h"
+#include "math/graphics/brush/brushes/solidColorBrush.h"
+#include "include/math/graphics/graphicsFunctions.h"
 
 void pollen::render(const gameRenderData& targetData) const
 {

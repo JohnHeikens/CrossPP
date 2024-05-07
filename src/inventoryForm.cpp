@@ -7,6 +7,8 @@
 #include "settings.h"
 #include "playerSocket.h"
 #include "renderData.h"
+#include "enchantingTableSlotContainer.h"
+#include "craftableSlotContainer.h"
 
 void inventoryForm::linkUp(inventory *newInventoryToDisplay)
 {
@@ -18,10 +20,10 @@ void inventoryForm::linkUp(inventory *newInventoryToDisplay)
 void inventoryForm::unLink()
 {
     human *currentPlayer = ((gameControl *)parent)->player;
-    if ((inventoryToDisplay == currentPlayer->craftingTableSlots) ||
-        (inventoryToDisplay == currentPlayer->humanSlots) ||
-        (inventoryToDisplay == currentPlayer->smithingTableSlots) ||
-        (inventoryToDisplay == currentPlayer->anvilSlots))
+    if ((inventoryToDisplay == (inventory*)currentPlayer->craftingTableSlots) ||
+        (inventoryToDisplay == (inventory*)currentPlayer->humanSlots) ||
+        (inventoryToDisplay == (inventory*)currentPlayer->smithingTableSlots) ||
+        (inventoryToDisplay == (inventory*)currentPlayer->anvilSlots))
     {
         // drop items the crafting table holds
         for (uiSlotContainer *container : ((craftableSlotContainer *)inventoryToDisplay)->craftingInputContainers)
@@ -38,7 +40,7 @@ void inventoryForm::unLink()
         ((enchantingTableSlotContainer *)inventoryToDisplay)->lapisSlot->linkedContainer->transfer(currentPlayer, currentPlayer->dimensionIn, currentPlayer->position);
         ((enchantingTableSlotContainer *)inventoryToDisplay)->enchantmentSlot->linkedContainer->transfer(currentPlayer, currentPlayer->dimensionIn, currentPlayer->position);
     }
-    else if (inventoryToDisplay == currentPlayer->chestSlots)
+    else if (inventoryToDisplay == (inventory*)currentPlayer->chestSlots)
     {
         const blockID &blockType = currentPlayer->selectedContainerContainer->getBlockID(
             currentPlayer->selectedContainerPosition);

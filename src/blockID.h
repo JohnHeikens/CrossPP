@@ -445,10 +445,3 @@ constexpr int furnaceTypeCount = (int)blockID::smoker + 1 - (int)blockID::furnac
 constexpr int mushroomBlockTypeCount = 1 + (int)mushroomColorID::count;
 constexpr int grassBlockTypeCount = (int)blockID::warped_nylium + 1 - (int)blockID::grass_block;
 
-constexpr int stemPlantGrowthStageCount[stemPlantTypeCount]{ 8, 8 };
-//it takes one day on average
-constexpr fp stemPlantChanceToGrow[stemPlantTypeCount]
-{
-	defaultTicksPerRandomTick * stemPlantGrowthStageCount[0] / ticksPerDay,
-	defaultTicksPerRandomTick * stemPlantGrowthStageCount[1] / ticksPerDay
-};

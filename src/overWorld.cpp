@@ -315,7 +315,7 @@ generationData *overWorld::generateTerrain(chunk &generateIn) {
                 currentBiomeWeights[index] += weight;
             }
         }
-        for (int biomeIndex = 0; biomeIndex < currentBiomes.size(); biomeIndex++) {
+        for (size_t biomeIndex = 0; biomeIndex < currentBiomes.size(); biomeIndex++) {
             height +=
                     ((overWorldBiomeGenerator *) currentWorld->biomeList[(int) currentBiomes[biomeIndex]])->getHeight(
                             generateIn.worldPos.x + relativeX) * currentBiomeWeights[biomeIndex];

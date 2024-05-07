@@ -19,6 +19,7 @@ or you initialized an extern in the declaration
 compilation slow: turn 'multi procession compilation' to 'yes' in the project settings. not in the soluition settings!
 unresolved external: cpp file not added to solution?
 
+
 unresolved external symbol (linker errors) with sfml? did you check if someone #set(SFML_BUILD_AUDIO FALSE) ?
 also, 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
@@ -105,6 +106,9 @@ do NOT put code in your onedrive documents folder! once it's full, it basically 
 to fix, delete the ipch files and the installer EXE and empty the release and debug output folders
 
 debug heap (memory, access violation etc) errors: use application verifier
+
+memory error with NBT values:
+did you forget to initialize a pointer to which you are receiving with either nullptr or an existing array?
 
 how to create an installer: use inno setup. it's very simple!
 

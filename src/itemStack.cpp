@@ -15,6 +15,8 @@
 #include "include/math/graphics/brush/brushes/alphaMask.h"
 #include "include/math/graphics/brush/brushes/colorMultiplier.h"
 #include "nbtSerializer.h"
+#include "constants/vectorConstants.h"
+#include "gameColors.h"
 
 itemStack::itemStack(const itemStack &other) {
     enchantments = std::vector<enchantment *>();

@@ -49,6 +49,7 @@
 #include "structureID.h"
 #include "minecraftFont.h"
 #include <SFML/Network.hpp>
+#include "rectangularSlotContainer.h"
 
 constexpr int selectedPositionCount = 2;
 vec2 selectedPositions[selectedPositionCount]{};

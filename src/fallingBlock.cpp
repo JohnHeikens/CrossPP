@@ -5,6 +5,7 @@
 #include "block.h"
 #include "dropData.h"
 #include "idConverter.h"
+#include "include/math/graphics/brush/brushes.h"
 
 fallingBlock::fallingBlock(dimension* dimensionIn, cvec2& position, const blockID& linkedBlockID) : linkedBlockID(linkedBlockID), entity(dimensionIn, position, entityID::falling_block)
 {

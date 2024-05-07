@@ -2,6 +2,8 @@
 #include "idAnalysis.h"
 #include "pollenData.h"
 #include "tickableBlockContainer.h"
+#include "math/vector/vectorrandom.h"
+#include "include/math/rectangle/rectanglefunctions.h"
 void pollenData::randomTick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	const blockID& spreadingBlock = containerIn->getBlockID(position);

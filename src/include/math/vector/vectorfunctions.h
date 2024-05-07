@@ -6,7 +6,7 @@ constexpr vectn<outputType, axisCount> floorVector(const vectn<inputType, axisCo
     vectn<outputType, axisCount> result = vectn<outputType, axisCount>();
     for (fsize_t i = 0; i < axisCount; i++)
     {
-        result[i] = (outputType)math::floor(vec[i]);
+        result[i] = (outputType)math::floor<outputType, inputType>(vec[i]);
     }
     return result;
 }
@@ -17,7 +17,7 @@ constexpr vectn<outputType, axisCount> ceilVector(const vectn<inputType, axisCou
     vectn<outputType, axisCount> result = vectn<outputType, axisCount>();
     for (fsize_t i = 0; i < axisCount; i++)
     {
-        result[i] = (outputType)ceil(vec[i]);
+        result[i] = (outputType)math::ceil<outputType, inputType>(vec[i]);
     }
     return result;
 }

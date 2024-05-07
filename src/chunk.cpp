@@ -46,6 +46,7 @@
 #include "nbtSerializer.h"
 #include "serializer/serializeColor.h"
 #include "include/filesystem/fileFunctions.h"
+#include "rectangularSlotContainer.h"
 
 bool chunk::inBounds(cveci2 &position) const {
     return blockIDArray.inBounds(position - worldPos);

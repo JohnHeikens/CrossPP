@@ -229,7 +229,7 @@ void client::processIncomingPackets(const texture &renderTarget)
 
     // receive packets, but don't process the screen if another packet is waiting, so we can catch up
     // dividing by 4 to make the experience more smooth
-    // math::ceil<fp, size_t>(size / 4.0)
+    // math::ceil<size_t,fp>(size / 4.0)
     // size
     for (size_t amountToPopLeft = math::minimum(receivedPacketsCount, (size_t)2); amountToPopLeft; amountToPopLeft--)
     {

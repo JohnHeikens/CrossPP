@@ -1,5 +1,6 @@
 #pragma once
 #include "math/graphics/brush/brush.h"
+#include "math/graphics/brush/brushes/solidColorBrush.h"
 template<typename brush0Type, typename brush1Type>
 struct colorMultiplier final : public colorBrush
 {

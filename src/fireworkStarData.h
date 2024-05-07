@@ -1,6 +1,7 @@
 #pragma once
 #include "itemTag.h"
 #include "fireworkShapeID.h"
+#include "math/graphics/color/color.h"
 struct fireWorkStarData : itemTag
 {
 	bool flicker = false;

@@ -270,9 +270,9 @@ inline void fillPolygonShiftedUnsafe(const array2d<t> &array, const fastArray<ve
     cfsize_t sideCount = 0x2;
     fp currentX[2]{0, 0};
 
-    cfsize_t maxYCropped = (fsize_t)math::minimum(math::ceil<fp, fsize_t>(maxY), array.size.y);
+    cfsize_t& maxYCropped = math::minimum(math::ceil<fsize_t>(maxY), array.size.y);
     // initialize the first two lines by default
-    for (fsize_t currentY = (fsize_t)math::maximum((int)ceil(minY), 0); currentY < maxYCropped; currentY++)
+    for (fsize_t currentY = (fsize_t)math::maximum(math::ceil(minY), 0); currentY < maxYCropped; currentY++)
     {
         for (fsize_t side = 0; side < sideCount; side++)
         {
@@ -305,8 +305,8 @@ inline void fillPolygonShiftedUnsafe(const array2d<t> &array, const fastArray<ve
             }
         }
         // CAUTION WITH SLOPE
-        cint minX = math::maximum((int)ceil(currentX[0]), 0);
-        cint maxX = math::maximum((int)ceil(currentX[1]), 0);
+        cint& minX = math::maximum((int)ceil(currentX[0]), 0);
+        cint& maxX = math::maximum((int)ceil(currentX[1]), 0);
         // draw line
         fillRow(array, currentY, minX, maxX, b);
     }
