@@ -58,7 +58,7 @@ struct block :IDestructable
 	bool correctTool(const itemID& tool) const;
 	bool canHarvest(const itemID& tool);
 
-	std::shared_ptr <lootTable> dropsWhenHarvested = nullptr;
+	std::shared_ptr <lootTable> dropsWhenHarvested = std::make_shared<lootTable>();
 
 	fp hardness = 0;
 	fp blastResistance = 0;

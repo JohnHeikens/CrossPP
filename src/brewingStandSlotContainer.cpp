@@ -3,6 +3,7 @@
 #include "folderList.h"
 #include "human.h"
 #include "dimension.h"
+#include "stackDivider.h"
 brewingStandSlotContainer::brewingStandSlotContainer()
 {
 	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"brewing_stand.png"));

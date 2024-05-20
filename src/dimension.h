@@ -105,7 +105,7 @@ struct dimension : nbtSerializable, tickableBlockContainer
 template<typename t>
 inline array2d<t> dimension::getArrayValues(crectanglei2& rect, const arrayDataType& dataType, const chunkLoadLevel& minimalLoadLevel)
 {
-	array2d<t> values = array2d<t>(rect.size);
+	array2d<t> values(rect.size);
 
 	//array elements that are out of bounds
 

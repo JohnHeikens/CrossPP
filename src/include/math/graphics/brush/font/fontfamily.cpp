@@ -1,5 +1,5 @@
 #include "fontfamily.h"
-#include "math/graphics/graphics.h"
+#include "math/graphics/texture.h"
 #include "math/graphics/brush/brushes.h"
 #include "math/graphics/brush/transformbrush.h"
 #include "math/rectangle/rectangletn.h"

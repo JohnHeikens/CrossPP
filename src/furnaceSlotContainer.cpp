@@ -6,6 +6,7 @@
 #include "human.h"
 #include "furnaceRecipe.h"
 #include "dimension.h"
+#include "stackDivider.h"
 
 furnaceSlotContainer::furnaceSlotContainer() {
     uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"furnace.png"));

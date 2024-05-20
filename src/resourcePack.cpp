@@ -232,7 +232,7 @@ idList<fireworkShapeData *, fireworkShapeID> fireworkShapeDataList = idList<fire
 resolutionTexture *loadRotatedTexture(const stdPath &path, cvec2 &defaultSize, cint &angle)
 {
 	resolutionTexture *originalImage = loadTextureFromResourcePack(path, false);
-	texture rotatedImage = texture(cveci2(blockTextureSize));
+	texture rotatedImage(cveci2(blockTextureSize), false);
 	fillTransformedTexture(mat3x3::rotate(cvec2(blockTextureSize * 0.5), angle), *originalImage, rotatedImage);
 
 	delete originalImage;
@@ -244,7 +244,7 @@ resolutionTexture *loadRotatedTexture(const stdPath &path, cvec2 &defaultSize, c
 resolutionTexture *loadRailsTexture(const stdPath &path)
 {
 	resolutionTexture *tex = loadTextureFromResourcePack(path, false);
-	texture renderTarget = texture(cvect2<size_t>(blockTextureSize), false);
+	texture renderTarget(cvect2<size_t>(blockTextureSize), false);
 
 	constexpr rectangle2 unTransformedMiddleTextureRect = crectangle2(7, 0, 1, 0x10);
 	constexpr rectangle2 unTransformedRailsTextureRect = crectangle2(2, 0, 4, 0x10);
@@ -527,47 +527,51 @@ void loadDataLists()
 	constexpr color oceanBiomeColor = hexToColor(0x8eb971);
 	int currentBiomeID = 0;
 	biomeDataList = idList<biomeData *, biomeID>(fastList<biomeData *>((int)biomeID::biomeCount));
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ocean"), oceanBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ocean"), hexToColor(0x0000FF), oceanBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"swamp"), hexToColor(0x6a7039));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"swamp"), hexToColor(0x808000), hexToColor(0x6a7039));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"plains"), hexToColor(0x91bd59));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"plains"), hexToColor(0x00ff00), hexToColor(0x91bd59));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"savanna"), hotBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"savanna"), hexToColor(0xff8080), hotBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"desert"), hotBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"desert"), hexToColor(0xffff00), hotBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"taiga"), hexToColor(0x86b783));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"taiga"), hexToColor(0x80ff00), hexToColor(0x86b783));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"forest"), hexToColor(0x79c05a));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"forest"), hexToColor(0x404000), hexToColor(0x79c05a));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"dark_forest"), hexToColor(0x507A32));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"dark_forest"), hexToColor(0x004000), hexToColor(0x507A32));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"jungle"), hexToColor(0x59C93C));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"jungle"), hexToColor(0x406000), hexToColor(0x59C93C));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ice_spikes"), hexToColor(0x80B497));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"snowy_tundra"), hexToColor(0xffffff), hexToColor(0x80B497));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mushroom_fields"), hexToColor(0x55C93F));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"ice_spikes"), hexToColor(0x40ffff), hexToColor(0xff4000));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mountains"), hexToColor(0x8AB689));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mushroom_fields"), hexToColor(0x802020), hexToColor(0x55C93F));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"badlands"), hexToColor(0x90814D));
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"mountains"), hexToColor(0x808080), hexToColor(0x8AB689));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"nether_wastes"), hotBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"death_valley"), hexToColor(0x804000), hexToColor(0x8AB689));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"crimson_forest"), hotBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"badlands"), hexToColor(0xff8000), hexToColor(0x90814D));
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"warped_forest"), hotBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"nether_wastes"), hexToColor(0xff0000), hotBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"soulsand_valley"), hotBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"crimson_forest"), hexToColor(0x402020), hotBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"basalt_deltas"), hotBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"warped_forest"), hexToColor(0x00ffff), hotBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"the_end"), oceanBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"soulsand_valley"), hexToColor(0x804080), hotBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_void"), oceanBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"basalt_deltas"), hexToColor(0x404040), hotBiomeColor);
 	currentBiomeID++;
-	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_lands"), oceanBiomeColor);
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"the_end"), hexToColor(0xffff80), oceanBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_void"), hexToColor(0xc0c0c0), oceanBiomeColor);
+	currentBiomeID++;
+	biomeDataList[currentBiomeID] = new biomeData(std::wstring(L"end_lands"), hexToColor(0xc040ff), oceanBiomeColor);
 	currentBiomeID++;
 
 	int currentStatusEffectID = 0;
@@ -1694,6 +1698,8 @@ void loadBlocks()
 	identifier++;
 	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"coarse_dirt.png")), std::wstring(L"coarse_dirt"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier);
 	identifier++;
+	blockList[identifier] = new block((blockID)identifier, 0.5, 0.5, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"bonebed_dirt.png")), std::wstring(L"bonebed_dirt"), stepGravel, stepGravel, stepGravel, digGravel, digGravel, sunlightPermeable, withShovel, noHarvestTier);
+	identifier++;
 
 	blockList[identifier] = new block((blockID)identifier, 0.65, 0.65, standardBlockWeightPerCubicMeter, loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grass_path_side.png")), std::wstring(L"grass_path"), stepGrass, stepGrass, stepGrass, digGrass, digGrass, sunlightPermeable, withShovel, noHarvestTier);
 	identifier++;
@@ -2232,11 +2238,12 @@ void loadBlocks()
 		blockList[identifier] = new cropBlock(block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, growthStageTextures[growthStageTextureIndexes[i][0]], cropNames[i], stepSound, stepSound, stepSound, breakSound, breakSound, lightFiltering, withHand, noHarvestTier, collisionTypeID::willNotCollide), growthStageCount[i], linkedGrowthStageTextures, chanceToGrow[i]);
 		identifier++;
 	}
+	blockList[blockID::wheat]->tex = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"wheat.png"));
 
 	blockList[blockID::nether_wart]->tex = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"nether_wart.png"));
 
 	cint sweetBerryBushGrowthStageCount = 4;
-	std::vector<resolutionTexture *> sweetBerriesGrowthStageTextures = loadGrowthStageTextures(std::wstring(L"sweet_berry_bush"), {0, 1, 2, 3});
+	std::vector<resolutionTexture *> sweetBerriesGrowthStageTextures = loadGrowthStageTextures(std::wstring(L"sweet_berry_bush"), {0ULL, 1ULL, 2ULL, 3ULL});
 	blockList[identifier] = new cropBlock(block((blockID)identifier, 0, 0, standardBlockWeightPerCubicMeter, sweetBerriesGrowthStageTextures[sweetBerryBushGrowthStageCount - 1], std::wstring(L"sweet_berry_bush"), stepGrass, stepGrass, stepGrass, breakBerryBush, placeBerryBush, lightFiltering, withHand, noHarvestTier, collisionTypeID::willNotCollide), sweetBerryBushGrowthStageCount, sweetBerriesGrowthStageTextures, (defaultTicksPerRandomTick * sweetBerryBushGrowthStageCount) / (ticksPerDay * 0.5));
 	identifier++;
 
@@ -2739,10 +2746,10 @@ void loadItems()
 	std::vector<fp> baseAttackDamageList = {4, 2, 0, 2.5, 0};
 	std::vector<fp> axeAttackDamageList = {7, 7, 9, 9, 9, 10};
 	std::vector<fp> tierAttackDamageList = {0, 0, 1, 2, 3, 4};
-	for (int toolTierIndex = 0; toolTierIndex < toolTierNames.size(); toolTierIndex++)
+	for (size_t toolTierIndex = 0; toolTierIndex < toolTierNames.size(); toolTierIndex++)
 	{
 		std::wstring toolTierName = toolTierNames[toolTierIndex];
-		for (int toolTypeIndex = 0; toolTypeIndex < toolTypeNames.size(); toolTypeIndex++)
+		for (size_t toolTypeIndex = 0; toolTypeIndex < toolTypeNames.size(); toolTypeIndex++)
 		{
 			std::wstring toolTypeName = toolTypeNames[toolTypeIndex];
 			cfp attackSpeed = toolTypeIndex == (withHoe - 1) ? hoeAttackSpeeds[toolTierIndex] : toolTypeIndex == (withAxe - 1) ? axeAttackSpeeds[toolTierIndex]
@@ -2750,7 +2757,7 @@ void loadItems()
 			cfp attackDamage = toolTypeIndex == (withHoe - 1) ? 1 : toolTypeIndex == (withAxe - 1) ? axeAttackDamageList[toolTierIndex]
 																								   : baseAttackDamageList[toolTypeIndex] + tierAttackDamageList[toolTierIndex];
 			std::wstring toolName = toolTierName + toolTypeName;
-			itemList[identifier] = new itemData((itemID)identifier, toolName, loadTextureFromResourcePack(itemTextureFolder / (toolName + std::wstring(L".png"))), toolTierIndex == (int)woodHarvestTier ? 200 : 50, (harvestTierID)(toolTierIndex + 1), harvestTypeID(toolTypeIndex + 1), attackDamage, attackSpeed, 1, true, noArmorTier, noArmorType, std::vector<enchantmentID>(toolTypeEnchantments[toolTypeIndex]), toolEnchantability[toolTierIndex]);
+			itemList[identifier] = new itemData((itemID)identifier, toolName, loadTextureFromResourcePack(itemTextureFolder / (toolName + std::wstring(L".png"))), toolTierIndex == (size_t)woodHarvestTier ? 200 : 50, (harvestTierID)(toolTierIndex + 1), harvestTypeID(toolTypeIndex + 1), attackDamage, attackSpeed, 1, true, noArmorTier, noArmorType, std::vector<enchantmentID>(toolTypeEnchantments[toolTypeIndex]), toolEnchantability[toolTierIndex]);
 			identifier++;
 		}
 	}
@@ -2768,10 +2775,10 @@ void loadItems()
 
 	const color leatherColor = hexToColor(0xA06540);
 
-	for (int armorTierIndex = 0; armorTierIndex < armorTierNames.size(); armorTierIndex++)
+	for (size_t armorTierIndex = 0; armorTierIndex < armorTierNames.size(); armorTierIndex++)
 	{
 		std::wstring armorTierName = armorTierNames[armorTierIndex];
-		for (int armorTypeIndex = 0; armorTypeIndex < armorTypeNames.size(); armorTypeIndex++)
+		for (size_t armorTypeIndex = 0; armorTypeIndex < armorTypeNames.size(); armorTypeIndex++)
 		{
 			if (armorTierIndex > 0 || armorTypeIndex == helmetArmorType - bootsArmorType)
 			{
@@ -2946,14 +2953,19 @@ void loadResourcePacks()
 	loadMusic();
 	// load textures
 
+	// non-resource pack:
+	// world gen
+	biomeTexture = loadTexture(dataPacksFolder / L"default" / L"biomes" / L"overworld" / L"map.png");
+	tempMapTexture = loadTexture(dataPacksFolder / L"default" / L"biomes" / L"overworld" / L"temperatures.png");
+
+	experienceTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"experience_orb.png"));
+
+	// gui
 	currentMinecraftFontFamily = new fontFamily(loadTextureFromResourcePack(guiTextureFolder / L"ascii shadow.png"));
 	currentMinecraftFont = new minecraftFont();
 
 	mainMenuBackgroundTexture = loadTextureFromResourcePack(guiTextureFolder / L"title" / L"background" / L"2d.png");
 
-	experienceTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"experience_orb.png"));
-
-	// gui
 	widgetsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"widgets.png"));
 	iconsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"icons.png"));
 	barsTexture = loadTextureFromResourcePack(guiTextureFolder / std::wstring(L"bars.png"));
@@ -2988,14 +3000,12 @@ void loadResourcePacks()
 		furnaceOnTextures[i] = loadTextureFromResourcePack(blockTextureFolder / (furnaceNames[i] + std::wstring(L"_front_on.png")));
 	}
 
-	texture missingTextureGraphics = texture(cveci2(2), false);
+	texture missingTextureGraphics(cveci2(2), false);
 	missingTextureGraphics.setValueUnsafe(cvect2<size_t>(0), rgbColorValues[(int)colorID::pink]);
 	missingTextureGraphics.setValueUnsafe(cvect2<size_t>(1), rgbColorValues[(int)colorID::pink]);
 	missingTexture = new resolutionTexture(missingTextureGraphics);
 
 	loadBlocks();
-
-	blockList[blockID::wheat]->tex = loadTextureFromResourcePack(itemTextureFolder / std::wstring(L"wheat.png"));
 
 	// load destroy stage textures
 	destroyStageTextures = std::vector<resolutionTexture *>();
@@ -3154,13 +3164,13 @@ void loadResourcePacks()
 	creditsText = stringToWString(readAllText(minecraftAssetsFolder / L"texts" / L"end.txt"));
 	creditsText = replace(creditsText, std::wstring(L"PLAYERNAME"), std::wstring(L"Me"));
 }
-std::vector<resolutionTexture *> loadGrowthStageTextures(const std::wstring &blockName, std::vector<int> growthStageIndexes)
+std::vector<resolutionTexture *> loadGrowthStageTextures(const std::wstring &blockName, std::vector<size_t> growthStageIndexes)
 {
 	auto loadedTextures = std::vector<resolutionTexture *>();
 	auto indexedTextures = std::vector<resolutionTexture *>(growthStageIndexes.size());
 	for (size_t i = 0; i < growthStageIndexes.size(); i++)
 	{
-		cint index = growthStageIndexes[i];
+		csize_t &index = growthStageIndexes[i];
 		if (index >= loadedTextures.size())
 		{
 			loadedTextures.push_back(loadTextureFromResourcePack(blockTextureFolder / (blockName + std::wstring(L"_stage") + std::to_wstring(index) + std::wstring(L".png"))));

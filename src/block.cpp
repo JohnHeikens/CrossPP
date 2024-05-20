@@ -66,56 +66,51 @@
 #include "include/math/graphics/brush/brushes/colorMultiplier.h"
 #include "gameColors.h"
 
-block::block(blockID identifier, fp hardness, fp blastResistance, cfp& weightPerCubicMeter, resolutionTexture* tex, std::wstring name, std::shared_ptr<soundCollection> fallSound, std::shared_ptr<soundCollection> stepSound, std::shared_ptr<soundCollection> hitSound, std::shared_ptr<soundCollection> breakSound, std::shared_ptr<soundCollection> placeSound, cint(&filterStrength)[(size_t)levelID::count], harvestTypeID bestTool, harvestTierID itemTier, collisionTypeID collisiontype, cint& fireEncouragement, cint& flammability, cbool& canCatchFireFromLava, cbool& canReplaceBlock, cint(&emittanceLevel)[(size_t)levelID::count], const experienceDrop& experienceWhenBroken, std::shared_ptr<soundCollection> ambientSound) :
-	hardness(hardness), blastResistance(blastResistance), tex(tex), name(name), bestTool(bestTool), itemTier(itemTier),
-	fallSound(fallSound),
-	stepSound(stepSound),
-	hitSound(hitSound),
-	breakSound(breakSound),
-	placeSound(placeSound),
-	identifier(identifier),
-	blockCollisionType(collisiontype),
-	canReplaceBlock(canReplaceBlock),
-	experienceWhenBroken(experienceWhenBroken),
-	fireEncouragement(fireEncouragement),
-	flammability(flammability),
-	canCatchFireFromLava(canCatchFireFromLava),
-	ambientSound(ambientSound),
-	weightPerCubicMeter(weightPerCubicMeter)
+block::block(blockID identifier, fp hardness, fp blastResistance, cfp &weightPerCubicMeter, resolutionTexture *tex, std::wstring name, std::shared_ptr<soundCollection> fallSound, std::shared_ptr<soundCollection> stepSound, std::shared_ptr<soundCollection> hitSound, std::shared_ptr<soundCollection> breakSound, std::shared_ptr<soundCollection> placeSound, cint (&filterStrength)[(size_t)levelID::count], harvestTypeID bestTool, harvestTierID itemTier, collisionTypeID collisiontype, cint &fireEncouragement, cint &flammability, cbool &canCatchFireFromLava, cbool &canReplaceBlock, cint (&emittanceLevel)[(size_t)levelID::count], const experienceDrop &experienceWhenBroken, std::shared_ptr<soundCollection> ambientSound) : hardness(hardness), blastResistance(blastResistance), tex(tex), name(name), bestTool(bestTool), itemTier(itemTier),
+																																																																																																																																																																																				  fallSound(fallSound),
+																																																																																																																																																																																				  stepSound(stepSound),
+																																																																																																																																																																																				  hitSound(hitSound),
+																																																																																																																																																																																				  breakSound(breakSound),
+																																																																																																																																																																																				  placeSound(placeSound),
+																																																																																																																																																																																				  identifier(identifier),
+																																																																																																																																																																																				  blockCollisionType(collisiontype),
+																																																																																																																																																																																				  canReplaceBlock(canReplaceBlock),
+																																																																																																																																																																																				  experienceWhenBroken(experienceWhenBroken),
+																																																																																																																																																																																				  fireEncouragement(fireEncouragement),
+																																																																																																																																																																																				  flammability(flammability),
+																																																																																																																																																																																				  canCatchFireFromLava(canCatchFireFromLava),
+																																																																																																																																																																																				  ambientSound(ambientSound),
+																																																																																																																																																																																				  weightPerCubicMeter(weightPerCubicMeter)
 {
 	std::copy(filterStrength, filterStrength + (size_t)levelID::count, this->filterStrength);
 	std::copy(emittanceLevel, emittanceLevel + (size_t)levelID::count, this->emittanceLevel);
 }
-bool block::correctTool(const itemID& tool) const
+bool block::correctTool(const itemID &tool) const
 {
 	return bestTool == withHand || ((int)tool && bestTool == itemList[(int)tool]->harvestType);
 }
 
-bool block::canHarvest(const itemID& tool)
+bool block::canHarvest(const itemID &tool)
 {
-	return (int)tool ?
-		itemTier <= itemList[(int)tool]->harvestTier && (itemTier == noHarvestTier || correctTool(tool)) :
-		itemTier == noHarvestTier;
+	return (int)tool ? itemTier <= itemList[(int)tool]->harvestTier && (itemTier == noHarvestTier || correctTool(tool)) : itemTier == noHarvestTier;
 }
-bool block::canPlace(tickableBlockContainer* containerIn, cveci2 position)
+bool block::canPlace(tickableBlockContainer *containerIn, cveci2 position)
 {
 	if (identifier == blockID::structure_void)
 	{
 		return true;
 	}
-	//find solid block adjacent
+	// find solid block adjacent
 	cint checkPositionCount = 0x4;
-	cveci2 relativeCheckpositions[checkPositionCount]
-	{
-		cveci2(-1,0),
-		cveci2(1,0),
-		cveci2(0,-1),
-		cveci2(0,1)
-	};
+	cveci2 relativeCheckpositions[checkPositionCount]{
+		cveci2(-1, 0),
+		cveci2(1, 0),
+		cveci2(0, -1),
+		cveci2(0, 1)};
 	if (identifier == blockID::cactus)
 	{
 		const blockID below = containerIn->getBlockID(position + cveci2(0, -1));
-		return  below == blockID::sand || below == blockID::cactus;
+		return below == blockID::sand || below == blockID::cactus;
 	}
 	else if (identifier == blockID::sugar_cane)
 	{
@@ -134,7 +129,7 @@ bool block::canPlace(tickableBlockContainer* containerIn, cveci2 position)
 	}
 	for (int i = 0; i < checkPositionCount; i++)
 	{
-		const blockID& adjacentBlock = containerIn->getBlockID(position + relativeCheckpositions[i]);
+		const blockID &adjacentBlock = containerIn->getBlockID(position + relativeCheckpositions[i]);
 		if ((!blockList[adjacentBlock]->canReplaceBlock) || (adjacentBlock == blockID::structure_void))
 		{
 			return true;
@@ -147,15 +142,15 @@ void block::use()
 {
 }
 
-void block::render(const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cveci2& blockPosition) const
+void block::render(const gameRenderData &targetData, blockData *const data, blockContainer *containerIn, cveci2 &blockPosition) const
 {
 	if (identifier == blockID::air)
 	{
-		//do nothing
+		// do nothing
 	}
 	else if (isFluid(identifier))
 	{
-		fluidData* currentData = ((fluidData*)data);
+		fluidData *currentData = ((fluidData *)data);
 		const fluidLevel valueLeft = fluidData::getFluidLevel(containerIn, blockPosition + cveci2(-1, 0), identifier);
 		const fluidLevel valueRight = fluidData::getFluidLevel(containerIn, blockPosition + cveci2(1, 0), identifier);
 		const fluidLevel valueTop = fluidData::getFluidLevel(containerIn, blockPosition + cveci2(0, 1), identifier);
@@ -171,16 +166,16 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 
 		const solidColorBrush b = solidColorBrush(color(c, (colorChannel)(c.a() * transparencyMultiplier)));
 		const auto m = colorMixer<solidColorBrush, texture>(b, targetData.renderTarget);
-		if (drawHeightLeft == drawHeightRight) {
+		if (drawHeightLeft == drawHeightRight)
+		{
 			fillTransformedRectangle(targetData.renderTarget, crectangle2(cvec2(blockPosition), cvec2(1, drawHeightLeft)), targetData.worldToRenderTargetTransform, m);
 		}
-		else {
-			fastArray<vec2> positions({
-				cvec2(),
-				cvec2(0,drawHeightLeft),
-				cvec2(1,drawHeightRight),
-				cvec2(1, 0)
-				});
+		else
+		{
+			fastArray<vec2> positions({cvec2(),
+									   cvec2(0, drawHeightLeft),
+									   cvec2(1, drawHeightRight),
+									   cvec2(1, 0)});
 			for (int i = 0; i < 4; i++)
 			{
 				positions[i] = targetData.worldToRenderTargetTransform.multPointMatrix(positions[i] + blockPosition);
@@ -191,9 +186,8 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 	}
 	else if (isTorch(identifier))
 	{
-		attachmentDirectionData* toAttachmentDirectionData = dynamic_cast<attachmentDirectionData*>(data);
-		const resolutionTexture& textureToUse = ((identifier == blockID::redstone_torch) && (dynamic_cast<redstoneTorchData*>(data)->lastAttachedBlockPowerLevel > 0)) ?
-			*unLitRedstoneTorchTexture : *tex;
+		attachmentDirectionData *toAttachmentDirectionData = dynamic_cast<attachmentDirectionData *>(data);
+		const resolutionTexture &textureToUse = ((identifier == blockID::redstone_torch) && (dynamic_cast<redstoneTorchData *>(data)->lastAttachedBlockPowerLevel > 0)) ? *unLitRedstoneTorchTexture : *tex;
 
 		if (toAttachmentDirectionData->attachmentDirection == directionID::negativeY)
 		{
@@ -211,11 +205,10 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 				renderTorch(blockPosition, cvec2(1, attachmentHeight), -30 * math::degreesToRadians, textureToUse, targetData);
 			}
 		}
-
 	}
 	else if (isDispenser(identifier))
 	{
-		const directionID& directionFacing = dynamic_cast<facingData*>(data)->directionFacing;
+		const directionID &directionFacing = dynamic_cast<facingData *>(data)->directionFacing;
 		if (getAxis(directionFacing) == axisID::x)
 		{
 			mat3x3 transform = block::getTextureToWorldTransform(tex->defaultSize, targetData.worldToRenderTargetTransform, blockPosition);
@@ -228,39 +221,39 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 		else
 		{
 			render(*verticalDispenserTextures[(int)identifier - (int)blockID::dispenser], crectangle2(tex->getClientRect()), crectangle2(cvec2(blockPosition), cvec2(1)), targetData, data, containerIn);
-			//renderTexture(drawRect, false, directionFacing, false, *verticalDispenserTextures[(int)identifier - (int)blockID::dispenser], targetData.renderTarget);
+			// renderTexture(drawRect, false, directionFacing, false, *verticalDispenserTextures[(int)identifier - (int)blockID::dispenser], targetData.renderTarget);
 		}
 	}
 	else if (isRail(identifier))
 	{
 		cvecb2 topConnection = containerIn->railTopConnection(blockPosition);
 
-		//stretch out and rotate the rails
+		// stretch out and rotate the rails
 		if (topConnection[0])
 		{
-			//from top x0 to bottom x1
+			// from top x0 to bottom x1
 			cmat3x3 transform = mat3x3::cross(getTextureToWorldTransform(tex->defaultSize, targetData.worldToRenderTargetTransform, blockPosition),
-				mat3x3::cross(mat3x3::rotate(cvec2(blockTextureSize * math::sqrt2, 0), math::PI2 / 8.0),
-					mat3x3::scale(cvec2(math::sqrt2, 1))));
+											  mat3x3::cross(mat3x3::rotate(cvec2(blockTextureSize * math::sqrt2, 0), math::PI2 / 8.0),
+															mat3x3::scale(cvec2(math::sqrt2, 1))));
 
 			fillTransparentRectangle(crectangle2(tex->getClientRect()), transform, *tex, targetData.renderTarget);
 		}
 		else if (topConnection[1])
 		{
-			//from bottom x0 to top x1
-			//because of the stretching, the rails is now at another point
+			// from bottom x0 to top x1
+			// because of the stretching, the rails is now at another point
 			cmat3x3 transform = mat3x3::cross(
 				getTextureToWorldTransform(tex->defaultSize, targetData.worldToRenderTargetTransform, blockPosition),
 				mat3x3::cross(mat3x3::rotate(cvec2(), math::PI2 / -8.0),
-					mat3x3::scale(cvec2(math::sqrt2, 1))));
+							  mat3x3::scale(cvec2(math::sqrt2, 1))));
 
 			fillTransparentRectangle(crectangle2(tex->getClientRect()), transform, *tex, targetData.renderTarget);
-		}//else: render normally
+		} // else: render normally
 	}
 	else if (identifier == blockID::brewing_stand)
 	{
 		bool hasBottle[brewingStandPotionCapacity]{};
-		brewingstandData* toBrewingStandData = (brewingstandData*)data;
+		brewingstandData *toBrewingStandData = (brewingstandData *)data;
 		for (int i = 0; i < brewingStandPotionCapacity; i++)
 		{
 			hasBottle[i] = toBrewingStandData->potionSlots[i]->slots[0].count;
@@ -272,7 +265,7 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 	{
 		constexpr fp relativeMiddle = 0.5;
 
-		cint directionX = directionVectors2D[(int) dynamic_cast<facingData*>(data)->directionFacing].x;
+		cint directionX = directionVectors2D[(int)dynamic_cast<facingData *>(data)->directionFacing].x;
 
 		constexpr fp cutSlabPart = 1.0 / 8;
 		constexpr rectangle2 cutSlabRelativeRect = crectangle2(0, 0, 1, cutSlabPart);
@@ -284,9 +277,9 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 
 		if (identifier == blockID::repeater)
 		{
-			repeaterData* toRepeaterData = dynamic_cast<repeaterData*>(data);
+			repeaterData *toRepeaterData = dynamic_cast<repeaterData *>(data);
 
-			//todo: check if it had to be emittanceLevel[2]
+			// todo: check if it had to be emittanceLevel[2]
 			renderTorch(blockPosition, cvec2(relativeMiddle + (directionX * 0.25), normalTorchDepth), 0, outputLevel ? *blockList[blockID::redstone_torch]->tex : *unLitRedstoneTorchTexture, targetData);
 
 			cfp torchOffset = relativeMiddle + (directionX * (0.25 - torchSize.x - (((toRepeaterData->delayArrayIndex) / (fp)delayArraySize) * 0.5)));
@@ -297,14 +290,14 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 			}
 			else
 			{
-				//render a small blockage instead of the torch
+				// render a small blockage instead of the torch
 				crectangle2 relativeRect = crectangle2(torchOffset - torchSize.x * 0.5, cutSlabPart, torchSize.x, torchSize.x);
 				fillTransformedBrushRectangle(getAbsoluteRect(crectangle2(tex->getClientRect()), relativeRect), getTextureToWorldTransform(tex->defaultSize, targetData.renderTargetToWorldTransform, cvec2(blockPosition)), *blockList[blockID::bedrock]->tex, targetData.renderTarget);
 			}
 		}
 		else
 		{
-			comparatorData* toComparatorData = dynamic_cast<comparatorData*>(data);
+			comparatorData *toComparatorData = dynamic_cast<comparatorData *>(data);
 
 			renderTorch(blockPosition, cvec2(relativeMiddle + (directionX * 0.25), deepTorchDepth), 0, toComparatorData->substractionMode ? *blockList[blockID::redstone_torch]->tex : *unLitRedstoneTorchTexture, targetData);
 			renderTorch(blockPosition, cvec2(relativeMiddle + (directionX * -0.25), normalTorchDepth), 0, outputLevel ? *blockList[blockID::redstone_torch]->tex : *unLitRedstoneTorchTexture, targetData);
@@ -313,39 +306,41 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 	}
 	else if (identifier == blockID::end_portal)
 	{
-		//render a static texture
+		// render a static texture
 		fillUnTransformedRepeatingTexture(crectangle2(cvec2(blockPosition), cvec2(1)), targetData.worldToRenderTargetTransform, *tex, cvec2(tex->defaultSize), targetData.renderTarget);
 	}
 	else if (identifier == blockID::end_portal_frame)
 	{
-		endPortalFrameData* toEndPortalFrameData = dynamic_cast<endPortalFrameData*>(data);
-		//direction does not matter
+		endPortalFrameData *toEndPortalFrameData = dynamic_cast<endPortalFrameData *>(data);
+		// direction does not matter
 		fillTransformedBrushRectangle(getAbsoluteRect(tex->getClientRect(), endPortalBlockRect), getTextureToWorldTransform(tex->defaultSize, targetData.worldToRenderTargetTransform, blockPosition), *tex, targetData.renderTarget);
 
 		if (toEndPortalFrameData->hasEye)
 		{
-			//render eye
+			// render eye
 			fillTransformedBrushRectangle(getAbsoluteRect(tex->getClientRect(), endPortalFrameEyeBlockRect), getTextureToWorldTransform(tex->defaultSize, targetData.worldToRenderTargetTransform, blockPosition), *endPortalFrameEyeTexture, targetData.renderTarget);
 		}
 	}
 	else if (identifier == blockID::end_rod)
 	{
-		//TODO: pre-render end rod texture correctly, so this complex transformation doensn't have to be done every time
-		const directionID& attachmentDirection = dynamic_cast<attachmentDirectionData*>(data)->attachmentDirection;
-		cmat3x3& rotationTransform =
+		// TODO: pre-render end rod texture correctly, so this complex transformation doensn't have to be done every time
+		const directionID &attachmentDirection = dynamic_cast<attachmentDirectionData *>(data)->attachmentDirection;
+		cmat3x3 &rotationTransform =
 			mat3x3::rotateDegrees(cvec2(blockPosition) + cvec2(0.5), getAngle2DDegrees(flipDirection(attachmentDirection)));
-		crectangle2& endRodBaseTextureRect = crectangle2(endRodBaseTextureRelativeRect.pos0 * (fp)tex->defaultSize.x, endRodBaseTextureRelativeRect.size * (fp)tex->defaultSize.x);
-		crectangle2& endRodPoleTextureRect = crectangle2(endRodPoleTextureRelativeRect.pos0 * (fp)tex->defaultSize.x, endRodPoleTextureRelativeRect.size * (fp)tex->defaultSize.x);
+		crectangle2 &endRodBaseTextureRect = crectangle2(endRodBaseTextureRelativeRect.pos0 * (fp)tex->defaultSize.x, endRodBaseTextureRelativeRect.size * (fp)tex->defaultSize.x);
+		crectangle2 &endRodPoleTextureRect = crectangle2(endRodPoleTextureRelativeRect.pos0 * (fp)tex->defaultSize.x, endRodPoleTextureRelativeRect.size * (fp)tex->defaultSize.x);
 		fillTransformedBrushRectangle(crectangle2(endRodBaseTextureRect),
-			mat3x3::cross(targetData.worldToRenderTargetTransform,
-				mat3x3::cross(rotationTransform,
-					mat3x3::fromRectToRect(crectangle2(endRodBaseTextureRect), getAbsoluteRect(crectangle2(cvec2(blockPosition), cvec2(1)),
-						endRodBaseRelativeRect)))), *tex, targetData.renderTarget);
+									  mat3x3::cross(targetData.worldToRenderTargetTransform,
+													mat3x3::cross(rotationTransform,
+																  mat3x3::fromRectToRect(crectangle2(endRodBaseTextureRect), getAbsoluteRect(crectangle2(cvec2(blockPosition), cvec2(1)),
+																																			 endRodBaseRelativeRect)))),
+									  *tex, targetData.renderTarget);
 		fillTransformedBrushRectangle(crectangle2(endRodPoleTextureRect),
-			mat3x3::cross(targetData.worldToRenderTargetTransform,
-				mat3x3::cross(rotationTransform,
-					mat3x3::fromRectToRect(crectangle2(endRodPoleTextureRect), getAbsoluteRect(crectangle2(cvec2(blockPosition), cvec2(1)),
-						endRodPoleRelativeRect)))), *tex, targetData.renderTarget);
+									  mat3x3::cross(targetData.worldToRenderTargetTransform,
+													mat3x3::cross(rotationTransform,
+																  mat3x3::fromRectToRect(crectangle2(endRodPoleTextureRect), getAbsoluteRect(crectangle2(cvec2(blockPosition), cvec2(1)),
+																																			 endRodPoleRelativeRect)))),
+									  *tex, targetData.renderTarget);
 	}
 	else if ((identifier == blockID::redstone_lamp) && containerIn->getEmittanceLevel(blockPosition, (levelID)((int)levelID::light + (int)lightLevelID::blockLight)))
 	{
@@ -353,47 +348,46 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 	}
 	else if (isFurnace(identifier) && containerIn->getEmittanceLevel(blockPosition, (levelID)((int)levelID::light + (int)lightLevelID::blockLight)))
 	{
-		resolutionTexture* textureToUse = furnaceOnTextures[(size_t)identifier - (size_t)blockID::furnace];
+		resolutionTexture *textureToUse = furnaceOnTextures[(size_t)identifier - (size_t)blockID::furnace];
 		render(*textureToUse, crectangle2(textureToUse->getClientRect()), crectangle2(cvec2(blockPosition), cvec2(1)), targetData, data, containerIn, true);
 	}
 	else if (isSlab(identifier) || isButton(identifier) || isPressurePlate(identifier) || isFence(identifier) || isFenceGate(identifier) || isWall(identifier) || isStairs(identifier) || isTrapDoor(identifier) || isChest(identifier) ||
-		is_in(identifier, blockID::chorus_plant, blockID::chorus_flower, blockID::iron_bars, blockID::snow, blockID::enchanting_table))
+			 is_in(identifier, blockID::chorus_plant, blockID::chorus_flower, blockID::iron_bars, blockID::snow, blockID::enchanting_table))
 	{
 		renderCollisionData(containerIn, blockPosition, targetData);
 	}
 	else if (isPiston(identifier))
 	{
-		pistonData* toPistonData = dynamic_cast<pistonData*>(data);
+		pistonData *toPistonData = dynamic_cast<pistonData *>(data);
 
 		if (toPistonData->isPart0)
 		{
 			cfp pushProgress0To1 = std::ranges::clamp(toPistonData->pushProgress + toPistonData->getPushDistancePerTick() * targetData.tickPartOffset, (fp)0, (fp)1);
 
-			crectangle2& relativeRect = crectangle2(0, 0, 1, 1 - pistonTopSize);
-			//bottom
+			crectangle2 &relativeRect = crectangle2(0, 0, 1, 1 - pistonTopSize);
+			// bottom
 			render(*tex, getAbsoluteRect(blockTextureRect, relativeRect), crectangle2(cvec2(blockPosition), relativeRect.size), targetData, data, containerIn, false);
 
 			if (pushProgress0To1 > 0)
 			{
-				//arm
-				crectangle2& relativePushRect = crectangle2((1 - pistonTopSize) * 0.5, (2 - pistonTopSize) - pushProgress0To1, pistonTopSize, pushProgress0To1);
+				// arm
+				crectangle2 &relativePushRect = crectangle2((1 - pistonTopSize) * 0.5, (2 - pistonTopSize) - pushProgress0To1, pistonTopSize, pushProgress0To1);
 
 				render(*tex, getAbsoluteRect(blockTextureRect, relativePushRect), crectangle2((fp)blockPosition.x + relativePushRect.x, (fp)blockPosition.y + (1 - pistonTopSize), relativePushRect.w, relativePushRect.h), targetData, data, containerIn, false);
 			}
-			//top
+			// top
 			render(*tex, crectangle2(0, blockTextureSize * 2 - pistonTopPixelSize, blockTextureSize, pistonTopPixelSize), crectangle2((fp)blockPosition.x + 0, (fp)blockPosition.y + (1 - pistonTopSize) + pushProgress0To1, 1, pistonTopSize), targetData, data, containerIn, false, cvec2(blockPosition) + vec2(0.5));
-
 		}
 	}
 	else if (identifier == blockID::redstone_wire)
 	{
-		const solidColorBrush& wireColor = solidColorBrush(color(colorf(0, 0, math::lerp((fp)0.5, (fp)1, containerIn->getPowerLevel(blockPosition) / (fp)maxPowerLevel))));
-		const auto& mult = colorMultiplier<resolutionTexture, solidColorBrush>(*tex, wireColor);
+		const solidColorBrush &wireColor = solidColorBrush(color(colorf(0, 0, math::lerp((fp)0.5, (fp)1, containerIn->getPowerLevel(blockPosition) / (fp)maxPowerLevel))));
+		const auto &mult = colorMultiplier<resolutionTexture, solidColorBrush>(*tex, wireColor);
 		render(mult, crectangle2(tex->getClientRect()), crectangle2((vec2)blockPosition, cvec2(1)), targetData, data, containerIn, false);
 	}
 	else
 	{
-		//if (multiplyByBiomeColor(identifier))
+		// if (multiplyByBiomeColor(identifier))
 		//{
 		//	if (tickableBlockContainer* c = dynamic_cast<tickableBlockContainer*>(containerIn)) {
 		//
@@ -416,38 +410,38 @@ void block::render(const gameRenderData& targetData, blockData* const data, bloc
 		//		}
 		//	}
 		//
-		//}
+		// }
 		render(*tex, crectangle2(tex->getClientRect()), crectangle2((vec2)blockPosition, cvec2(1)), targetData, data, containerIn, true);
 
-		//render afterwards
+		// render afterwards
 		if (identifier == blockID::spawner)
 		{
-			const entityID& entityIDToRender = dynamic_cast<spawnerData*>(containerIn->getBlockData(blockPosition))->entityToSpawn;
+			const entityID &entityIDToRender = dynamic_cast<spawnerData *>(containerIn->getBlockData(blockPosition))->entityToSpawn;
 			const auto it = std::find(mobList, mobList + mobTypeCount, entityIDToRender);
 			if (it != mobList + mobTypeCount)
 			{
-				const auto& spawnEggTex = *itemList[(int)itemID::spawn_egg + (int)(it - mobList)]->tex;
-				//render spawn egg
-				crectangle2& relativeRect = crectangle2(vec2(0.5), vec2()).expanded(0.4);
-				crectangle2& clientRect = getAbsoluteRect(crectangle2(spawnEggTex.getClientRect()), relativeRect);
-				crectangle2& blockRect = crectangle2(cvec2(blockPosition) + relativeRect.pos0, relativeRect.size);
+				const auto &spawnEggTex = *itemList[(int)itemID::spawn_egg + (int)(it - mobList)]->tex;
+				// render spawn egg
+				crectangle2 &relativeRect = crectangle2(vec2(0.5), vec2()).expanded(0.4);
+				crectangle2 &clientRect = getAbsoluteRect(crectangle2(spawnEggTex.getClientRect()), relativeRect);
+				crectangle2 &blockRect = crectangle2(cvec2(blockPosition) + relativeRect.pos0, relativeRect.size);
 				render(spawnEggTex, clientRect, blockRect, targetData, data, containerIn);
 			}
 		}
 	}
 }
 
-mat3x3 block::getTextureToWorldTransform(cveci2& textureSize, cmat3x3& blockToRenderTargetTransform, cvec2& blockPosition)
+mat3x3 block::getTextureToWorldTransform(cveci2 &textureSize, cmat3x3 &blockToRenderTargetTransform, cvec2 &blockPosition)
 {
 	return getBrushRectToWorldTransform(crectangle2(cvec2(), cvec2(textureSize)), blockToRenderTargetTransform, blockPosition);
 }
 
-mat3x3 block::getBrushRectToWorldTransform(crectangle2& brushRect, cmat3x3& blockToRenderTargetTransform, cvec2& blockPosition)
+mat3x3 block::getBrushRectToWorldTransform(crectangle2 &brushRect, cmat3x3 &blockToRenderTargetTransform, cvec2 &blockPosition)
 {
 	return mat3x3::cross(blockToRenderTargetTransform, mat3x3::fromRectToRect(brushRect, crectangle2(blockPosition, cvec2(1))));
 }
 
-collisionDataCollection block::getCollisionData(blockContainer* containerIn, cveci2& position) const
+collisionDataCollection block::getCollisionData(blockContainer *containerIn, cveci2 &position) const
 {
 	collisionDataCollection collisionCollection = collisionDataCollection();
 
@@ -472,7 +466,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	}
 	else if (isStairs(identifier))
 	{
-		stairsData* data = dynamic_cast<stairsData*>(containerIn->getBlockData(position));
+		stairsData *data = dynamic_cast<stairsData *>(containerIn->getBlockData(position));
 		collisionData broadCollision = collisionData(rectangle2(position.x, position.y, 1, 0.5), blockCollisionType);
 		collisionData narrowCollision = collisionData(rectangle2(position.x, position.y, 0.5, 0.5), blockCollisionType);
 		if (data->upsideDown)
@@ -493,7 +487,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	}
 	else if (isFence(identifier) || isFenceGate(identifier) || isWall(identifier) || identifier == blockID::iron_bars)
 	{
-		const blockData* const data = containerIn->getBlockData(position);
+		const blockData *const data = containerIn->getBlockData(position);
 		bool connect[fenceConnectionPossibilityCount]{};
 		for (size_t connectionIndex = 0; connectionIndex < fenceConnectionPossibilityCount; connectionIndex++)
 		{
@@ -505,7 +499,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 			collisionTypeID poleCollisionType = collisionTypeID::willCollideTop;
 			if (isFenceGate(identifier))
 			{
-				const fenceGateData* toFenceGateData = dynamic_cast<const fenceGateData*>(data);
+				const fenceGateData *toFenceGateData = dynamic_cast<const fenceGateData *>(data);
 
 				if (toFenceGateData->isOpen)
 				{
@@ -539,8 +533,6 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 					}
 				}
 			}
-
-
 		}
 		else if (isWall(identifier))
 		{
@@ -554,7 +546,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 				}
 			}
 
-			//render pole
+			// render pole
 			crectangle2 poleBlockRect = crectangle2(wallPoleX, 0, wallPoleWidth, 1);
 
 			collisionCollection.hitboxes.push_back(collisionData(crectangle2(poleBlockRect.pos0 + cvec2(position), poleBlockRect.size), collisionTypeID::willCollideTop));
@@ -582,7 +574,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	}
 	else if (identifier == blockID::chorus_plant || identifier == blockID::chorus_flower)
 	{
-		//blob-like middle hitbox
+		// blob-like middle hitbox
 		constexpr fp chorusPlantMiddleHitboxOffset = 3.0 / 0x10;
 		constexpr fp chorusPlantMiddleHitboxSize = 1 - (chorusPlantMiddleHitboxOffset * 2);
 
@@ -596,7 +588,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 
 		collisionCollection.hitboxes.push_back(collisionData(crectangle2(cvec2(position) + currentMiddleHitboxOffset, cvec2(currentMiddleHitboxSize)), collisionTypeID::willCollideTop));
 
-		//add 4 exstensions
+		// add 4 exstensions
 		for (fsize_t i = 0; i < directionCount2D; i++)
 		{
 			blockID connectingBlock = containerIn->getBlockID(position + directionVectors2D[i]);
@@ -618,7 +610,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	}
 	else if (identifier == blockID::end_rod)
 	{
-		directionID attachmentDirection = dynamic_cast<attachmentDirectionData*>(containerIn->getBlockData(position))->attachmentDirection;
+		directionID attachmentDirection = dynamic_cast<attachmentDirectionData *>(containerIn->getBlockData(position))->attachmentDirection;
 		directionID directionFacing = flipDirection(attachmentDirection);
 		crectangle2 baseRelativeHitbox = endRodBaseRelativeRect.rotatedInRectangle(crectangle2(0, 0, 1, 1), directionFacing);
 		crectangle2 poleRelativeHitbox = endRodPoleRelativeRect.rotatedInRectangle(crectangle2(0, 0, 1, 1), directionFacing);
@@ -630,14 +622,14 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 
 	if (isDoor(identifier))
 	{
-		const openData* toOpenData = dynamic_cast<openData*>(containerIn->getBlockData(position));
+		const openData *toOpenData = dynamic_cast<openData *>(containerIn->getBlockData(position));
 		if (toOpenData->isOpen)
 		{
 			collision.type = collisionTypeID::willCollideTop;
 		}
 		else
 		{
-			const facingData* toFacingData = dynamic_cast<facingData*>(containerIn->getBlockData(position));
+			const facingData *toFacingData = dynamic_cast<facingData *>(containerIn->getBlockData(position));
 			collision.hitboxCollidingWith = rectangle2(position.x, position.y, openDoorBlockSize, 1);
 			if (toFacingData->directionFacing == directionID::positiveX)
 			{
@@ -648,7 +640,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	}
 	else if (isButton(identifier))
 	{
-		buttonData* data = dynamic_cast<buttonData*>(containerIn->getBlockData(position));
+		buttonData *data = dynamic_cast<buttonData *>(containerIn->getBlockData(position));
 		cfp buttonHeight = data->ticksToPress > 0 ? pressedButtonHeight : unPressedButtonHeight;
 		//+y connection
 		rectangle2 relativeHitbox = rectangle2(0.5 - (buttonWidth * 0.5), 0, buttonWidth, buttonHeight);
@@ -658,7 +650,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	}
 	else if (isTrapDoor(identifier))
 	{
-		const trapDoorData* toTrapDoorData = dynamic_cast<trapDoorData*>(containerIn->getBlockData(position));
+		const trapDoorData *toTrapDoorData = dynamic_cast<trapDoorData *>(containerIn->getBlockData(position));
 		if (toTrapDoorData->isOpen)
 		{
 			collision.hitboxCollidingWith.w = openDoorBlockSize;
@@ -678,7 +670,7 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	}
 	else if (isSlab(identifier))
 	{
-		const slabData* data = dynamic_cast<slabData*>(containerIn->getBlockData(position));
+		const slabData *data = dynamic_cast<slabData *>(containerIn->getBlockData(position));
 		if (data->type == slabType::topSlab)
 		{
 			collision.hitboxCollidingWith = crectangle2(position.x, position.y + 0.5, 1, 0.5);
@@ -696,12 +688,13 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	{
 		collision.hitboxCollidingWith = getAbsoluteRect(collision.hitboxCollidingWith, chestBlockRect);
 	}
-	else if (isBed(identifier)) {
+	else if (isBed(identifier))
+	{
 		collision.hitboxCollidingWith.h = bedHitboxHeight;
 	}
 	else if (identifier == blockID::snow)
 	{
-		collision.hitboxCollidingWith.h = dynamic_cast<snowLayerData*>(containerIn->getBlockData(position))->layerThickness;
+		collision.hitboxCollidingWith.h = dynamic_cast<snowLayerData *>(containerIn->getBlockData(position))->layerThickness;
 	}
 	else if (identifier == blockID::soul_sand)
 	{
@@ -723,9 +716,8 @@ collisionDataCollection block::getCollisionData(blockContainer* containerIn, cve
 	return collisionCollection;
 }
 
-
-template<typename brush0Type>
-void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectangle2& blockRect, const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation, const std::optional<vec2>& rotationCentre) const
+template <typename brush0Type>
+void block::render(const brush0Type &currentBrush, rectangle2 brushRect, crectangle2 &blockRect, const gameRenderData &targetData, blockData *const data, blockContainer *containerIn, cbool &renderAnimation, const std::optional<vec2> &rotationCentre) const
 {
 	mat3x3 transform;
 	if (renderAnimation)
@@ -738,55 +730,67 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 	}
 	transform = mat3x3::cross(targetData.worldToRenderTargetTransform, transform);
 
-	//rotation centre on screen because then all other transformations, like animation etc, are done already
-	cvec2& rotationCentreOnScreen = targetData.worldToRenderTargetTransform.multPointMatrix(rotationCentre ? rotationCentre.value() : floorVector<fp>(blockRect.pos0) + cvec2(0.5));
+	// rotation centre on screen because then all other transformations, like animation etc, are done already
+	cvec2 &rotationCentreOnScreen = targetData.worldToRenderTargetTransform.multPointMatrix(rotationCentre ? rotationCentre.value() : floorVector<fp>(blockRect.pos0) + cvec2(0.5));
 
-	if (multiplyByBiomeColor(identifier))
+	if (settings::videoSettings::multiplyBiomeColors && multiplyByBiomeColor(identifier))
 	{
-		if (tickableBlockContainer* c = dynamic_cast<tickableBlockContainer*>(containerIn)) {
-			cvec2& rootPosition = c->containerToRootTransform.multPointMatrix(blockRect.getCenter());
-			//multiply by the biome color
+		if (tickableBlockContainer *c = dynamic_cast<tickableBlockContainer *>(containerIn))
+		{
+			cvec2 &rootPosition = c->containerToRootTransform.multPointMatrix(blockRect.getCenter());
+			// multiply by the biome color
 			const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition.x)]->grassColor);
-			//const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->getBiome(blockRect.getCenter().x)]->grassColor);
+			// const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->getBiome(blockRect.getCenter().x)]->grassColor);
 
 			constexpr bool mipmap = std::is_same<brush0Type, resolutionTexture>::value;
 			using finalBrushType = std::conditional<mipmap, texture, brush0Type>::type;
 
-			auto mipmapfunc = [&currentBrush, &transform, &brushRect]() -> const finalBrushType& {
+			auto mipmapfunc = [&currentBrush, &transform, &brushRect]() -> const finalBrushType &
+			{
 				if constexpr (mipmap)
 				{
-					//modify transform and change brush
-					//rectangle2 mipmappedRect = brushRect;
-					return (const finalBrushType&)(((const resolutionTexture&)currentBrush).mipmap(transform, brushRect));
-					//renderBrush(mipmappedRect, transform, rotationCentreOnScreen, true, facingDirection, tex, targetData.renderTarget, renderAnimation);
+					// modify transform and change brush
+					// rectangle2 mipmappedRect = brushRect;
+					return (const finalBrushType &)(((const resolutionTexture &)currentBrush).mipmap(transform, brushRect));
+					// renderBrush(mipmappedRect, transform, rotationCentreOnScreen, true, facingDirection, tex, targetData.renderTarget, renderAnimation);
 				}
-				else {
-					return (const finalBrushType&)currentBrush;
+				else
+				{
+					return (const finalBrushType &)currentBrush;
 				}
-				};
-			const finalBrushType& finalBrush = mipmapfunc();
-			const auto& mult = colorMultiplier<finalBrushType, solidColorBrush>(finalBrush, biomeColorBrush);
-			//if constexpr (std::is_same<brush0Type, resolutionTexture>::value)
+			};
+
+			// if constexpr (std::is_same<brush0Type, resolutionTexture>::value)
 			//{
 			//	//modify transform and change brush
 			//	rectangle2 mipmappedRect = brushRect;
 			//	const texture& tex = ((const resolutionTexture&)currentBrush).mipmap(transform, mipmappedRect);
 			//	renderBrush(mipmappedRect, transform, rotationCentreOnScreen, true, facingDirection, tex, targetData.renderTarget, renderAnimation);
-			//}
-			//else {
+			// }
+			// else {
 			//	renderBrush(brushRect, transform, rotationCentreOnScreen, true, facingDirection, currentBrush, targetData.renderTarget, renderAnimation);
-			//}
+			// }
 
 			if (identifier == blockID::grass_block)
 			{
-				//fill back texture
-				fillTransformedBrushRectangle(brushRect, transform, finalBrush, targetData.renderTarget);
+				mat3x3 overlayTransform = transform;
+				rectangle2 overlayBrushRect = brushRect;
 
-				//transparent overlay
-				fillTransparentRectangle(crectangle2(grassOverlay->getClientRect()), transform, colorMultiplier<resolutionTexture, solidColorBrush>(*grassOverlay, biomeColorBrush), targetData.renderTarget);
+				const finalBrushType &finalBrush = mipmapfunc();
+				// fill back texture
+				fillTransformedBrushRectangle(brushRect, transform, finalBrush, targetData.renderTarget);
+				// renderBrush(brushRect, transform, rotationCentreOnScreen, true, standardUpFacingBlockDirection, mult, targetData.renderTarget, true);
+				const texture &overlayTex = grassOverlay->mipmap(overlayTransform, overlayBrushRect);
+				const auto &mult = colorMultiplier<texture, solidColorBrush>(overlayTex, biomeColorBrush);
+
+				// transparent overlay
+				fillTransparentRectangle(overlayBrushRect, overlayTransform, mult, targetData.renderTarget);
+				return;
 			}
 			else
 			{
+				const finalBrushType &finalBrush = mipmapfunc();
+				const auto &mult = colorMultiplier<finalBrushType, solidColorBrush>(finalBrush, biomeColorBrush);
 				renderBrush(brushRect, transform, rotationCentreOnScreen, true, standardUpFacingBlockDirection, mult, targetData.renderTarget, true);
 				return;
 			}
@@ -796,7 +800,7 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 	directionID facingDirection = standardUpFacingBlockDirection;
 	if (hasFacingData(identifier))
 	{
-		facingData* toFacingData = dynamic_cast<facingData*>(data);
+		facingData *toFacingData = dynamic_cast<facingData *>(data);
 		if (canFaceUp(identifier))
 		{
 			facingDirection = toFacingData->directionFacing;
@@ -807,10 +811,9 @@ void block::render(const brush0Type& currentBrush, rectangle2 brushRect, crectan
 		}
 	}
 	renderBrush(brushRect, transform, rotationCentreOnScreen, true, facingDirection, currentBrush, targetData.renderTarget, renderAnimation);
-
 }
 
-void renderTorch(cveci2& blockPosition, cvec2& relativeRotationCentre, cfp& angle, const resolutionTexture& tex, const gameRenderData& targetData)
+void renderTorch(cveci2 &blockPosition, cvec2 &relativeRotationCentre, cfp &angle, const resolutionTexture &tex, const gameRenderData &targetData)
 {
 	mat3x3 transform = mat3x3::fromRectToRect(crectangle2(torchTextureRect), crectangle2(cvec2(blockPosition) + relativeRotationCentre + cvec2(torchSize.x * -0.5, 0), torchSize));
 	if (angle != 0)
@@ -820,24 +823,23 @@ void renderTorch(cveci2& blockPosition, cvec2& relativeRotationCentre, cfp& angl
 	fillTransparentRectangle(crectangle2(torchTextureRect), mat3x3::cross(targetData.worldToRenderTargetTransform, transform), tex, targetData.renderTarget);
 }
 
-
-void renderTexture(crectangle2& rectangleToTransform, cmat3x3& transform, cbool& hasTransparency, const directionID& directionFacing, const resolutionTexture& tex, const texture& renderTarget, cbool& renderAnimation)
+void renderTexture(crectangle2 &rectangleToTransform, cmat3x3 &transform, cbool &hasTransparency, const directionID &directionFacing, const resolutionTexture &tex, const texture &renderTarget, cbool &renderAnimation)
 {
 	mat3x3 finalTransform = mat3x3::cross(transform, mat3x3::fromRectToRect(crectangle2(0, 0, tex.defaultSize.x, tex.defaultSize.x), rectangleToTransform));
 	rectangle2 brushRect = crectangle2(0, 0, tex.defaultSize.x, tex.defaultSize.y);
-	const texture& appropriateTexture = tex.mipmap(finalTransform, brushRect);
+	const texture &appropriateTexture = tex.mipmap(finalTransform, brushRect);
 	renderBrush(brushRect, finalTransform, transform.multPointMatrix(rectangleToTransform.getCenter()), hasTransparency, directionFacing, appropriateTexture, renderTarget, renderAnimation);
 }
-void renderTexture(crectangle2& drawRect, cbool& hasTransparency, const directionID& directionFacing, const resolutionTexture& tex, const texture& renderTarget, cbool& renderAnimation)
+void renderTexture(crectangle2 &drawRect, cbool &hasTransparency, const directionID &directionFacing, const resolutionTexture &tex, const texture &renderTarget, cbool &renderAnimation)
 {
-	const texture& appropriateTexture = tex.getMipmapTexture(drawRect.size.x);
+	const texture &appropriateTexture = tex.getMipmapTexture(drawRect.size.x);
 	renderBrush(crectangle2(appropriateTexture.getClientRect()), drawRect, hasTransparency, directionFacing, appropriateTexture, renderTarget, renderAnimation);
 }
-void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData)
+void renderBlockRect(crectangle2 &blockRect, const gameRenderData &targetData)
 {
 	renderBlockRect(blockRect, targetData, colorPalette::white);
 }
-void renderBlockRect(crectangle2& blockRect, const gameRenderData& targetData, const color& c)
+void renderBlockRect(crectangle2 &blockRect, const gameRenderData &targetData, const color &c)
 {
 	fillRectangleBorders(targetData.renderTarget, ceilRectangle(targetData.worldToRenderTargetTransform.multRectMatrix(blockRect)), (int)(settings::videoSettings::guiScale * 2), solidColorBrush(c));
 }

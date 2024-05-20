@@ -1,5 +1,6 @@
 #include "inventory.h"
 #include "human.h"
+#include "stackDivider.h"
 
 void inventory::clickedOnItem(cmb &button, stackDivider &divider,
                               uiSlotContainer *selectedSlotContainer, veci2 selectedSlot)
@@ -115,16 +116,19 @@ uiSlotContainer *inventory::getSlotContainer(cveci2 &mousePositionPixels, veci2 
 
 void inventory::mouseMove(cveci2 &pixelPosition, cmb &button, stackDivider &divider)
 {
-    veci2 selectedItemPosition;
-    uiSlotContainer *selectedSlotContainer = getSlotContainer(pixelPosition, selectedItemPosition);
-    if (selectedSlotContainer)
+    if (!divider.pickingUp)
     {
-        itemStack *s = selectedSlotContainer->getSlot(selectedItemPosition);
-        if (s && std::find(divider.divideOver.begin(), divider.divideOver.end(), s) ==
-                     divider.divideOver.end())
+        veci2 selectedItemPosition;
+        uiSlotContainer *selectedSlotContainer = getSlotContainer(pixelPosition, selectedItemPosition);
+        if (selectedSlotContainer)
         {
-            // new stack to potentially add
-            clickedOnItem(button, divider, selectedSlotContainer, selectedItemPosition);
+            itemStack *s = selectedSlotContainer->getSlot(selectedItemPosition);
+            if (s && std::find(divider.divideOver.begin(), divider.divideOver.end(), s) ==
+                         divider.divideOver.end())
+            {
+                // new stack to potentially add
+                clickedOnItem(button, divider, selectedSlotContainer, selectedItemPosition);
+            }
         }
     }
 }

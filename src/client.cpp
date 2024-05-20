@@ -30,6 +30,8 @@
 #include "serializer/serializeUUID.h"
 #include "include/filesystem/fileFunctions.h"
 #include "serializer/serializeList.h"
+#include "include/application/thread/setThreadName.h"
+#include "musicManager.h"
 
 miliseconds lastScreenshotTime = 0;
 
@@ -142,8 +144,8 @@ bool client::connectToServer(const serverData &server)
     currentApplication->listener.hook(&client::addEvent, this);
 
     s.socket = new sf::TcpSocket();
-    sf::Socket::Status status = s.socket->connect(server.serverIPAddress, server.serverPort,
-                                                  sf::seconds(5));
+    status = s.socket->connect(server.serverIPAddress, server.serverPort,
+                               sf::seconds(5));
     if (status != sf::Socket::Done)
     {
         if (status == sf::Socket::Error)
@@ -177,6 +179,8 @@ bool client::connectToServer(const serverData &server)
     streamSerializer streamS = streamSerializer(s, true, std::endian::big);
     authPacket.serialize(streamS);
     s.sendPacket();
+    //reset
+    //selector.clear();
     selector.add(*s.socket);
     std::thread receiveThread = std::thread(std::bind(&client::retrievePacketsAsync, this));
     receiveThread.detach();
@@ -218,20 +222,24 @@ void client::processIncomingPackets(const texture &renderTarget)
     size_t receivedPacketsCount = receivedPackets.size();
     receivedPacketsMutex.unlock();
 
-    if (!receivedPacketsCount)
+    if (!receivedPacketsCount && !status)
     {
         // copy the shared_ptr so it will stay alive, even when it is replaced in the list
         auto copy = packetWaiter;
         // wait till a packet is received
         copy->get_future().get();
-        receivedPacketsCount = 1;
+        receivedPacketsMutex.lock();
+        receivedPacketsCount = receivedPackets.size();
+        receivedPacketsMutex.unlock();
     }
 
     // receive packets, but don't process the screen if another packet is waiting, so we can catch up
     // dividing by 4 to make the experience more smooth
     // math::ceil<size_t,fp>(size / 4.0)
     // size
-    for (size_t amountToPopLeft = math::minimum(receivedPacketsCount, (size_t)2); amountToPopLeft; amountToPopLeft--)
+    for (size_t amountToPopLeft = math::minimum(receivedPacketsCount,
+                                                (size_t)2);
+         amountToPopLeft; amountToPopLeft--)
     {
         receivedPacketsMutex.lock();
         auto packet = receivedPackets.front();
@@ -272,53 +280,76 @@ void client::processIncomingPackets(const texture &renderTarget)
                         inSerializer->pop();
                         break;
                     }
-                    // globalSoundCollectionList[packet.soundCollectionID]->playSound()
 
-                    // std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(
-                    //     globalSoundCollectionList[packet.soundCollectionID]->audioToChooseFrom[packet.soundIndex].get(),
-                    //     packet.position, packet.volume, packet.pitch, true);
-                    // handler->playAudio(soundToPlay);
+                    if (globalSoundCollectionList.contains(sp.key))
+                    {
+                        // we assume that the sound is a soundCollection, not a musicCollection
+                        const soundCollection *collection = (soundCollection *)globalSoundCollectionList[sp.key];
+                        // make sure that the sound index is in the right range.
+                        // we might have added or removed sounds in the mean time
+                        // by using %, we make every sound that sounds the same for other clients also sound the same for this client
+                        sp.soundIndex = sp.soundIndex % collection->audioToChooseFrom.size();
+
+                        const auto buffer = collection->audioToChooseFrom[sp.soundIndex];
+                        if (!buffer)
+                        {
+                            handleError(L"audio not loaded properly");
+                        }
+                        std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(
+                            buffer,
+                            sp.position, sp.volume, sp.pitch, true);
+                        handler->playAudio(soundToPlay);
+                    }
+
                     inSerializer->pop();
                 }
             }
             inSerializer->pop();
         }
-
-        std::vector<byte> compressedScreen;
-        if (serializeNBTValue(*inSerializer, L"compressedScreen", compressedScreen))
+        if (inSerializer->push(L"music"))
         {
-            std::vector<byte> decompressedScreen;
-            vectn<fsize_t, 2> size;
-            uint32_t channelCount;
-            fpng::fpng_decode_memory((const char *)&(*compressedScreen.begin()),
-                                     (uint32_t)compressedScreen.size(), decompressedScreen, size.x,
-                                     size.y, channelCount, rgbColorChannelCount);
-
-            textureRGB tex = textureRGB(size, (colorRGB *)&*decompressedScreen.begin());
-            decoder.addFrameDiff(tex, *inSerializer);
-
-            // tex will safely go out of scope, as it doesn't hurt to delete a null pointer
-            tex.baseArray = nullptr;
-
-            if (size == renderTarget.size)
+            std::wstring newMusicKey;
+            if (inSerializer->serializeValue(L"replace", newMusicKey))
             {
-                copyAndCast(decoder.totalTexture.begin(), decoder.totalTexture.end(),
-                            renderTarget.baseArray);
-                // std::copy(decompressedScreen.begin(), decompressedScreen.end(),
-                //           (byte *)renderTarget.baseArray);
+                const musicCollection *collection = (musicCollection *)globalSoundCollectionList[newMusicKey];
+                replaceMusic(collection);
             }
-            else
-            {
-                texture oldSizeTex = texture(size, false);
-                copyAndCast(decoder.totalTexture.begin(), decoder.totalTexture.end(),
-                            oldSizeTex.baseArray);
-                // std::copy(decompressedScreen.begin(), decompressedScreen.end(),
-                //           (byte *)oldSizeTex.baseArray);
-                fillTransformedTexture(crectangle2(renderTarget.getClientRect()), oldSizeTex,
-                                       renderTarget);
+            else if(inSerializer->serializeValue(L"prefer", newMusicKey)){
+                const musicCollection *collection = (musicCollection *)globalSoundCollectionList[newMusicKey];
+                updateMusic(collection);
             }
-            //decoder.visualize(renderTarget);
         }
+
+        decoder.addFrameDiff(*inSerializer);
+
+        if (decoder.totalTexture.size == renderTarget.size)
+        {
+            copyAndCast(decoder.totalTexture.begin(), decoder.totalTexture.end(),
+                        renderTarget.baseArray);
+            // std::copy(decompressedScreen.begin(), decompressedScreen.end(),
+            //           (byte *)renderTarget.baseArray);
+        }
+        else
+        {
+            texture oldSizeTex(decoder.totalTexture.size, false);
+            copyAndCast(decoder.totalTexture.begin(), decoder.totalTexture.end(),
+                        oldSizeTex.baseArray);
+            // std::copy(decompressedScreen.begin(), decompressedScreen.end(),
+            //           (byte *)oldSizeTex.baseArray);
+            fillTransformedTexture(crectangle2(renderTarget.getClientRect()), oldSizeTex,
+                                   renderTarget);
+        }
+
+        constexpr bool debugMotionVectors = false;
+        // for video compression debugging
+        if constexpr (debugMotionVectors)
+        {
+            if (currentServer->clients[0])
+            {
+                currentServer->clients[0]->encoder.visualize(renderTarget);
+            }
+        }
+        // decoder.visualize(renderTarget);
     }
     // while (selector.wait(sf::microseconds(1))); // pop off all packets on the chain and catch up
     if (status != sf::TcpSocket::Status::Done)
@@ -326,9 +357,10 @@ void client::processIncomingPackets(const texture &renderTarget)
         auto f = std::bind(&client::addEvent, this, std::placeholders::_1);
         // std::function{f}.target_type();
         currentApplication->listener.unhook(&client::addEvent, this);
+        //VERY IMPORTANT: FIRST REMOVE THE SOCKET, THEN DISCONNECT!
+        selector.remove(*s.socket);
         // disconnect, in case of any error
         s.socket->disconnect();
-        selector.remove(*s.socket);
         parent->switchVisibleChild(currentMainMenu);
         if (currentServer)
         {
@@ -348,14 +380,23 @@ void client::addEvent(const sf::Event &e)
 
 void client::retrievePacketsAsync()
 {
-    while (status == sf::Socket::Done && selector.wait())
+    setCurrentThreadName(L"packet retriever");
+    auto resetPacketWaiter = [this]()
+    {
+        packetWaiter->set_value();
+        packetWaiter = std::make_shared<std::promise<void>>();
+    };
+    while (selector.wait())
     {
         std::shared_ptr<compressedPacket> newPacket = std::make_shared<compressedPacket>();
-        status = s.socket->receive(*newPacket);
+        if ((status = s.socket->receive(*newPacket)))
+        {
+            resetPacketWaiter();
+            break;
+        }
         receivedPacketsMutex.lock();
         receivedPackets.push(newPacket);
         receivedPacketsMutex.unlock();
-        packetWaiter->set_value();
-        packetWaiter = std::make_shared<std::promise<void>>();
+        resetPacketWaiter();
     }
 }

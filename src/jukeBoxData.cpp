@@ -21,7 +21,7 @@ void jukeBoxData::serializeValue(nbtSerializer& s)
 	if (recordSlot->slots[0].count)
 	{
         //not microseconds, because the bit length of microseconds may change
-		int64_t playProgress;
+		int64_t playProgress = 0;
 		if (s.write)
 		{
 			if (musicPlaying)

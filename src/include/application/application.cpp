@@ -1,7 +1,7 @@
 #include "application.h"
 #include "math/timemath.h"
 #include "interaction.h"
-#include "math/graphics/graphics.h"
+#include "math/graphics/texture.h"
 #include "optimization/stableTickLoop.h"
 #include "control/control.h"
 #include "math/graphics/texture.h"
@@ -240,6 +240,6 @@ sf::RenderWindow *application::createWindow(const std::wstring &name)
     auto screenSize = sf::VideoMode::getDesktopMode();
 
     veci2 size = veci2(screenSize.width / pixelMultiplier, screenSize.height / pixelMultiplier);
-    return new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name),
-                                sf::Style::Close | sf::Style::Resize, settings);
+    return new sf::RenderWindow(sf::VideoMode(size.x, size.y), WStringToString(name), onAndroid? sf::Style::Fullscreen :
+                                (sf::Style::Close | sf::Style::Resize), settings);
 }

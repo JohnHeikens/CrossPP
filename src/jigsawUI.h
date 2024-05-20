@@ -4,7 +4,7 @@
 #include "application/control/textBox.h"
 #include "application/control/label.h"
 #include "constants.h"
-#include "application/control/form.h"
+#include "application/control/form/form.h"
 struct jigsawUI : form
 {
 	jigsawData* temporaryJigsawData = nullptr;

@@ -125,17 +125,6 @@ bool blockContainer::blockRangeContainsOnly(cveci2& pos00, cveci2& pos11, const 
 
 void blockContainer::removeBlock(cveci2& position, const blockID& oldBlockID, blockData* const& oldData, const chunkLoadLevel& minimalLoadLevel)
 {
-	//if (currentPlayableCharachter && currentPlayableCharachter->entityType == entityID::human)
-	//{
-	//	human* currentHuman = (human*)currentPlayableCharachter;
-	//	if (position == currentHuman->selectedContainerPosition)
-	//	{
-	//		if (this == currentHuman->selectedContainerContainer)
-	//		{
-	//			currentHuman->closeBlockGUI();
-	//		}
-	//	}
-	//}
 
 	//remove the current block before calling setblockid for the other part
 	setArrayValue<blockID>(position, blockID::air, arrayDataType::blockIDType, minimalLoadLevel);

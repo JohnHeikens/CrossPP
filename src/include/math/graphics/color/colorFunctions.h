@@ -10,6 +10,7 @@ inline static constexpr colortn<t, channelCount> interpolateColor(const colortn<
         result.g() += (colorsToInterpolate[i].g() * weight[i]);
         result.b() += (colorsToInterpolate[i].b() * weight[i]);
     }
+    result.a() = 1;
     return result;
 }
 
@@ -109,5 +110,10 @@ inline static constexpr colortn<t, channelCount> transitionColor(const colortn<t
         bottomcolor.g() + colortn<t, channelCount>::multiplyColorChannels(topcolor.a(), topcolor.g() - bottomcolor.g()),
         bottomcolor.b() + colortn<t, channelCount>::multiplyColorChannels(topcolor.a(), topcolor.b() - bottomcolor.b()));
 }
+
+constexpr uint getUint(const color& c){
+    return static_cast<uint>(c.axis[0]) + static_cast<uint>(c.axis[1]) * 0x100 + static_cast<uint>(c.axis[2]) * 0x10000 + static_cast<uint>(c.axis[3]) * 0x1000000;
+}
+
 colorf rgb2hsv(const colorf &in);
 colorf hsv2rgb(const colorf &in);

@@ -41,8 +41,8 @@ constexpr bool woundClockwise(const vect2<t> &a, const vect2<t> &b, const vect2<
     return winding < 0;
 }
 
-template <typename t, fsize_t n>
-constexpr t singleDimensionalIndex(const vectn<t, n> &index, const vectn<t, n> &size)
+template <typename indexT, typename sizeT, fsize_t n, typename returnIndexType = std::conditional_t<1 < n && sizeof(indexT) < 4, fsize_t, indexT>>
+constexpr std::enable_if_t<std::is_integral_v<indexT>, returnIndexType> singleDimensionalIndex(const vectn<indexT, n> &index, const vectn<sizeT, n> &size)
 {
     if constexpr (n == 1)
     {
@@ -54,8 +54,8 @@ constexpr t singleDimensionalIndex(const vectn<t, n> &index, const vectn<t, n> &
     }
     else
     {
-        t sdIndex = index[n - 1];
-        for (fsize_t i = n - 2; ; i--)
+        returnIndexType sdIndex = index[n - 1];
+        for (fsize_t i = n - 2;; i--)
         {
             index *= size.axis[i];
             index += index.axis[i];
@@ -65,7 +65,7 @@ constexpr t singleDimensionalIndex(const vectn<t, n> &index, const vectn<t, n> &
             }
         }
         // can't come here
-        //assumeInRelease(false);
+        // assumeInRelease(false);
     }
 }
 

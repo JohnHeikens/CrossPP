@@ -27,7 +27,7 @@ inline bool serializeNBTValue(nbtSerializer &s, const std::wstring &memberName, 
             {
                 value.resize(((nbtDataArray<signedT> *)currentChild)->arraySize);
             }
-            int count = value.size();
+            size_t count = value.size();
             signedT *ptr = (signedT *)&value[0]; // ptr will not get modified because it's not null
             return s.serializeVariableArray(*currentChild, ptr, count);
         }

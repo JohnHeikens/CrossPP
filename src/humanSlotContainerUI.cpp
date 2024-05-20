@@ -4,6 +4,7 @@
 #include "human.h"
 #include "idAnalysis.h"
 #include "dimension.h"
+#include "stackDivider.h"
 humanSlotContainerUI::humanSlotContainerUI() : craftingGridSlotContainer(new uiSlotContainer(cveci2(98, 113), new rectangularSlotContainer(cveci2(2))))
 {
 	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"inventory.png"));

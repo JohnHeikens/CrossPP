@@ -448,7 +448,7 @@ bool dimension::meetsSpawningConditions(entity* const& e)
 				return false;
 			}
 		}
-		else if (isPassiveMob(e->entityType))
+		else if (isPassiveMob(e->entityType) || e->entityType == entityID::wolf)
 		{
 			if (visibleSunLightLevel <= hostileMobSpawnTreshold
 				)

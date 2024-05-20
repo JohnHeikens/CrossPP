@@ -2,27 +2,30 @@
 #include "math/timemath.h"
 #include <thread>
 struct stableLoop {
-	microseconds microSecondsPerIteration = 0;
+	std::chrono::microseconds microSecondsPerIteration = std::chrono::microseconds();
+	//caution! we are calling std::chrono::duration(int64_t) here
 	stableLoop(microseconds microSecondsPerIteration) : microSecondsPerIteration(microSecondsPerIteration) {}
-	microseconds nextMicroSeconds = 0;
+	std::chrono::steady_clock::time_point nextLoopTime = std::chrono::steady_clock::now();
 	inline void waitTillNextLoopTime() {
-		cmicroseconds& currentMicroSeconds = getmicroseconds();
-		nextMicroSeconds = nextMicroSeconds ? nextMicroSeconds : currentMicroSeconds;
-		cmicroseconds& timeRemaining = nextMicroSeconds - currentMicroSeconds;
-		if (timeRemaining > 0)
+		std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
+		//cmicroseconds& currentMicroSeconds = getmicroseconds();
+		//nextMicroSeconds = nextMicroSeconds ? nextMicroSeconds : currentMicroSeconds;
+		//cmicroseconds& timeRemaining = nextMicroSeconds - currentMicroSeconds;
+		if (nextLoopTime > currentTime)
 		{
-			std::this_thread::sleep_for(std::chrono::microseconds(timeRemaining));
+			std::this_thread::sleep_until(nextLoopTime);
 			//miliseconds milisecondsToSleep = getMiliseconds(timeRemaining) - 1;
 			//if (milisecondsToSleep > 0)
 			//{
 			//	Sleep((DWORD)milisecondsToSleep);
 			//}
 			//while (getmicroseconds() < timeRemaining) {};
-			nextMicroSeconds += microSecondsPerIteration;
+			nextLoopTime += microSecondsPerIteration;
+			//nextMicroSeconds += microSecondsPerIteration;
 		}
 		else//lag
 		{
-			nextMicroSeconds += (((currentMicroSeconds - nextMicroSeconds) / microSecondsPerIteration) + 1) * microSecondsPerIteration;
+			nextLoopTime += (((currentTime - nextLoopTime) / microSecondsPerIteration) + 1) * microSecondsPerIteration;
 			/*
 			optimizing:
 			while (nextFrameTime < currentMicroSeconds)

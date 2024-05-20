@@ -7,21 +7,22 @@
 #include "filesystem/filemanager.h"
 #include "folderList.h"
 #include "mainMenu.h"
+#include "include/application/control/form/messageBox.h"
 gameSelector::gameSelector() : form()
 {
-	//add gamelistcontrol first, so it will be at the bottom of the controls
-	addChildren({ gameListControl, openButton, newButton, deleteButton, refreshButton });
-    //addEventHandler(&gameSelector::onClick,openButton->onClick);
-    addEventHandlers(&gameSelector::onClick,openButton->onClick, newButton->onClick, deleteButton->onClick, refreshButton->onClick);
-    //addEventHandlers(&gameSelector::onClick,openButton->onClick);
-    //openButton->onClick.hook(&gameSelector::onClick, this);
+	// add gamelistcontrol first, so it will be at the bottom of the controls
+	addChildren({gameListControl, openButton, newButton, deleteButton, refreshButton});
+	// addEventHandler(&gameSelector::onClick,openButton->onClick);
+	addEventHandlers(&gameSelector::onClick, openButton->onClick, newButton->onClick, deleteButton->onClick, refreshButton->onClick);
+	// addEventHandlers(&gameSelector::onClick,openButton->onClick);
+	// openButton->onClick.hook(&gameSelector::onClick, this);
 }
 
-void gameSelector::onClick(const controlEventArgs& args)
+void gameSelector::onClick(const controlEventArgs &args)
 {
 	if (&args.sender == openButton)
 	{
-		//open the selected world
+		// open the selected world
 		if (gameListControl->selectedChild)
 		{
 			openGame(gameListControl->selectedChild);
@@ -29,7 +30,7 @@ void gameSelector::onClick(const controlEventArgs& args)
 	}
 	else if (&args.sender == newButton)
 	{
-		//create a new world
+		// create a new world
 		visible = false;
 		addGame();
 	}
@@ -39,17 +40,23 @@ void gameSelector::onClick(const controlEventArgs& args)
 	}
 	else if (&args.sender == deleteButton)
 	{
-		//delete the selected world
+		// delete the selected world
 		if (gameListControl->selectedChild)
 		{
-			//ask for confirmation
-			//TODO: make a new messagebox function
-			//const std::wstring& messageString = L"Are You Sure You Want To Delete This " + gameTypeName + L"?";
-			//if (MessageBox(NULL, messageString.c_str(), gameName.c_str(), MB_OKCANCEL | MB_ICONWARNING) == IDOK)
+			// ask for confirmation
+			// TODO: make a new messagebox function
+			showMessageBox(L"Are You Sure You Want To Delete This " + gameTypeName + L"?", {L"Yes", L"Cancel"}, this, [this](const messageBoxEventArgs &args)
+						   {
+							if(args.buttonIndex == 0){	
+								deleteGame(gameListControl->selectedChild);
+								refresh();
+								} });
+			// const std::wstring& messageString = L"Are You Sure You Want To Delete This " + gameTypeName + L"?";
+			// if (MessageBox(NULL, messageString.c_str(), gameName.c_str(), MB_OKCANCEL | MB_ICONWARNING) == IDOK)
 			//{
 			//	deleteGame(c);
 			//	refresh();
-			//}
+			// }
 		}
 	}
 }
@@ -58,7 +65,7 @@ void gameSelector::refresh()
 {
 	for (size_t i = 0; i < gameListControl->children.size; i++)
 	{
-		control* c = gameListControl->children[i];
+		control *c = gameListControl->children[i];
 		if (c != gameListControl->sideSlider)
 		{
 			delete c;
@@ -68,12 +75,13 @@ void gameSelector::refresh()
 	addGameControls();
 	gameListControl->children.update();
 	gameListControl->focusedChild = nullptr;
-	if (hasBeenLayout()) {
+	if (hasBeenLayout())
+	{
 		gameListControl->reOrganizeChildControls();
 	}
 }
 
-void gameSelector::keyDown(cvk& key)
+void gameSelector::keyDown(cvk &key)
 {
 	if (key == (vk)keyID::escape)
 	{
@@ -83,7 +91,7 @@ void gameSelector::keyDown(cvk& key)
 	}
 }
 
-void gameSelector::layout(crectanglei2& newRect)
+void gameSelector::layout(crectanglei2 &newRect)
 {
 	form::layout(newRect);
 	openButton->layout(crectanglei2(0, 0, rect.w / 2, (int)defaultTheme().font->fontSize + defaultTheme().borderSize * 2));
@@ -98,7 +106,7 @@ void gameSelector::layout(crectanglei2& newRect)
 	gameListControl->layout(saveFolderListControlRect);
 }
 
-void gameSelector::render(cveci2& position, const texture& renderTarget)
+void gameSelector::render(cveci2 &position, const texture &renderTarget)
 {
 	renderOptionsBackGround(crectanglei2(position, rect.size), renderTarget);
 	renderChildren(position, renderTarget);

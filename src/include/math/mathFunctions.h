@@ -290,7 +290,7 @@ namespace math
 	}
 	inline fp Remainder1(cfp &value)
 	{
-		return value - std::floor(value);
+		return value - floor(value);
 	}
 	template <typename t>
 	inline int sign(const t &value)

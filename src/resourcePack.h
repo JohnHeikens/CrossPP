@@ -12,7 +12,7 @@ resolutionTexture* loadChestTexture(const stdPath& path);
 void loadResourcePacks();
 std::vector<stdPath> getResourceLocations(const stdPath& relativePath);
 
-std::vector<resolutionTexture*> loadGrowthStageTextures(const std::wstring& blockName, std::vector<int> growthStageIndexes);
+std::vector<resolutionTexture*> loadGrowthStageTextures(const std::wstring& blockName, std::vector<size_t> growthStageIndexes);
 resolutionTexture* loadRotatedTexture(const stdPath& path, cvec2& defaultSize, cint& angle);
 resolutionTexture* loadRailsTexture(const stdPath& path);
 

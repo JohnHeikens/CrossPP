@@ -42,7 +42,7 @@ void taiga::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std::
 {
 	constexpr fp carrotsTreshold = 0.6;
 	constexpr fp pumpkinTreshold = 0.6;
-	cbool snowy = dimensionIn->identifier == dimensionID::overworld && ((overWorld*)dimensionIn)->biomeTemperatureNoise->evaluate(vec1(pos.x)) < snowTemperatureTreshold;
+	cbool snowy = dimensionIn->identifier == dimensionID::overworld && ((overWorld*)dimensionIn)->getTemperature(pos.x) < snowTemperatureTreshold;
 	if (dimensionIn->getBlockID(pos + cveci2(0, -1)) == blockID::stone)
 	{
 		generateTopping(dimensionIn, pos, { blockID::stone }, blockID::dirt);
@@ -82,7 +82,7 @@ void taiga::attemptgenerateStructures(dimension* dimensionIn, cveci2& pos, std::
 		}
 		else
 		{
-			if (dimensionIn->identifier == dimensionID::overworld && ((overWorld*)dimensionIn)->biomeTemperatureNoise->evaluate(vec1(pos.x)) < snowTemperatureTreshold)
+			if (dimensionIn->identifier == dimensionID::overworld && ((overWorld*)dimensionIn)->getTemperature(pos.x) < snowTemperatureTreshold)
 			{
 				dimensionIn->replaceBlock(pos, blockID::snow, { blockID::air });
 				dimensionIn->replaceBlock(pos + cveci2(0, -1), blockID::podzol, { blockID::dirt });

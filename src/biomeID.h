@@ -14,11 +14,13 @@ enum class biomeID : int
 	dark_forest,
 	jungle,
 
+	snowy_tundra,
 	ice_spikes,
 	mushroom_fields,
 
 
 	mountains,
+	death_valley,
 	badlands,
 
 	nether_wastes,

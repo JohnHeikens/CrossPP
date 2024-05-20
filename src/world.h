@@ -35,7 +35,7 @@ struct world :IDestructable, nbtSerializable
 
 	fp dayNightCycleSpeed = 0;
 
-	veci2 worldSpawnPoint = veci2();
+	vec2 worldSpawnPoint = veci2();
 	dimensionID worldSpawnDimension = dimensionID();
 
 	std::wstring name = std::wstring(L"");

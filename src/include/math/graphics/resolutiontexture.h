@@ -12,7 +12,7 @@ struct resolutionTexture : public colorBrush
 	vec2 defaultSize = vec2();
 
 	resolutionTexture(const texture& highestResolution, cvec2& size = cvec2(1));
-	virtual ~resolutionTexture() override;
+	~resolutionTexture();
 
 	void recalculateScaledTextures() const;
 

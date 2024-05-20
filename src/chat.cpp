@@ -225,7 +225,7 @@ void chat::say(human& sender, std::wstring line)
 				{
 					if (getWord(lines, 0) == std::wstring(L"setworldspawn"))
 					{
-						currentWorld->worldSpawnPoint = veci2((int)floor(sender.position.x), (int)floor(sender.position.y));
+						currentWorld->worldSpawnPoint = sender.position;
 						currentWorld->worldSpawnDimension = sender.dimensionIn->identifier;
 					}
 					else if (getWord(lines, 0) == std::wstring(L"kill"))

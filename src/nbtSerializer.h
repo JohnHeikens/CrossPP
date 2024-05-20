@@ -165,9 +165,26 @@ struct nbtSerializer : iSerializer
 		}
 		return true;
 	}
+	template <typename tFrom, nbtListElemType tTo>
+	inline void copyArray(nbtDataArray<tFrom> &data, tTo *&dest, size_t &count) const
+	{
+		tFrom *&ptr = ((nbtDataArray<tFrom> &)data).data;
+		if (dest)
+		{
+			//we cannot surpass the bounds of the array if it is created already
+			count = math::minimum(count, ((nbtDataArray<tFrom> &)data).arraySize);
+		}
+		if (!dest)
+		{
+            count = ((nbtDataArray<tFrom> &)data).arraySize;
+			dest = new tTo[count];
+		}
+		// value should not be cast to int8_t* because that could possibly corrupt memory
+		copyAndCast(ptr, ptr + count, dest);
+	}
 
 	template <nbtListElemType t>
-	inline bool serializeVariableArray(nbtData &data, t *&value, int &count) const
+	inline bool serializeVariableArray(nbtData &data, t *&value, size_t &count) const
 	{
 		if (write)
 		{
@@ -181,36 +198,25 @@ struct nbtSerializer : iSerializer
 			{
 			case nbtDataTag::tagSignedInt8Array:
 			{
-				int8_t *&ptr = ((nbtDataArray<int8_t> &)data).data;
-				count = (int)((nbtDataArray<int8_t> &)data).arraySize;
-				if (!value)
-				{
-					value = new t[count];
-				}
-				// value should not be cast to int8_t* because that could possibly corrupt memory
-				copyAndCast(ptr, ptr + count, value);
+				copyArray((nbtDataArray<int8_t> &)data, value, count);
+				// int8_t *&ptr = ((nbtDataArray<int8_t> &)data).data;
+				// count = ((nbtDataArray<int8_t> &)data).arraySize;
+				// if (!value)
+				//{
+				//	value = new t[count];
+				// }
+				//// value should not be cast to int8_t* because that could possibly corrupt memory
+				// copyAndCast(ptr, ptr + count, value);
 			}
 			break;
 			case nbtDataTag::tagSignedInt32Array:
 			{
-				int32_t *&ptr = ((nbtDataArray<int32_t> &)data).data;
-				count = (int)((nbtDataArray<int32_t> &)data).arraySize;
-				if (!value)
-				{
-					value = new t[count];
-				}
-				copyAndCast(ptr, ptr + count, value);
+				copyArray((nbtDataArray<int32_t> &)data, value, count);
 			}
 			break;
 			case nbtDataTag::tagSignedInt64Array:
 			{
-				int64_t *&ptr = ((nbtDataArray<int64_t> &)data).data;
-				count = (int)((nbtDataArray<int64_t> &)data).arraySize;
-				if (!value)
-				{
-					value = new t[count];
-				}
-				copyAndCast(ptr, ptr + count, value);
+				copyArray((nbtDataArray<int64_t> &)data, value, count);
 			}
 			break;
 			default:
@@ -221,7 +227,7 @@ struct nbtSerializer : iSerializer
 	}
 
 	template <nbtListElemType t>
-	inline bool serializeArray(nbtData *data, t *value, int count = 1) const
+	inline bool serializeArray(nbtData *data, t *value, size_t count = 1) const
 	{
 		return serializeVariableArray<t>(data, value, count);
 	}
@@ -323,7 +329,7 @@ struct nbtSerializer : iSerializer
 
 	// CAUTION! value should not be an undefined pointer! either initialize it with nullptr or an existing array!
 	template <nbtType t>
-	inline bool serializeVariableArray(const std::wstring &memberName, t *&value, int &count)
+	inline bool serializeVariableArray(const std::wstring &memberName, t *&value, size_t &count)
 	{
 		if (nbtData *currentChild = getOrCreateNBTData<t *>(memberName))
 		{
@@ -333,6 +339,12 @@ struct nbtSerializer : iSerializer
 		{
 			return false;
 		}
+	}
+
+	template <typename t, typename = std::enable_if_t<std::is_unsigned_v<t>>>
+	inline bool serializeVariableArray(const std::wstring &memberName, t *&value, size_t &count)
+	{
+		return serializeVariableArray(memberName, (std::make_signed_t<t> *&)value, count);
 	}
 	template <nbtType t>
 	inline bool serializeValue(const std::wstring &memberName, t &value)
@@ -348,7 +360,12 @@ struct nbtSerializer : iSerializer
 	}
 
 	template <typename t>
-	inline bool serializeArray(const std::wstring &memberName, t *value, int count)
+	inline bool serializeArray(const std::wstring &memberName, t *value, size_t count)
+	{
+		return serializeVariableArray(memberName, value, count);
+	}
+	template <typename t, size_t count>
+	inline bool serializeArray(const std::wstring &memberName, t (&value)[count])
 	{
 		return serializeVariableArray(memberName, value, count);
 	}

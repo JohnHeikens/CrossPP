@@ -14,6 +14,7 @@ struct tcpSerializer : streamBaseInterface
 	compressedPacket *sendingPacket = new compressedPacket();
 	const char *receivingPacketPos = nullptr;
 	const char *receivingPacketEndPos = nullptr;
+	std::thread *packetSender = nullptr;
 
 	inline bool write(const char *const &value, const size_t &size) override
 	{
@@ -35,16 +36,19 @@ struct tcpSerializer : streamBaseInterface
 		sendingPacket = new compressedPacket();
 		// std::swap(packetCopy, sendingPacket);
 		// sendingPacket;
-
-		std::thread([this, packetCopy]
-					{
+		if (packetSender)
+		{
+			packetSender->join();
+			delete packetSender;
+		}
+		packetSender = new std::thread([this, packetCopy]
+									   {
 					if (packetCopy->getDataSize() == 0)
-						{
-							throw "sending empty packet!!";
-						}
+					{
+						throw "sending empty packet!!";
+					}
 					const sf::Socket::Status &status = socket->send(*packetCopy);
-					delete packetCopy; })
-			.detach();
+					delete packetCopy; });
 
 		return sf::Socket::Done;
 	}

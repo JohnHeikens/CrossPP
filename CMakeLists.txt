@@ -24,7 +24,7 @@ message("sfml directory: ${SFML_DIR}")
 # Shoutout to CMake guide: https://eliasdaler.github.io/using-cmake/
 
 # increase the amount of i's to update cmakelists.txt:
-# i
+# iiiii
 
 #set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
@@ -132,6 +132,16 @@ ELSE()
     add_executable(${PROJECT_NAME} ${SOURCES})
 ENDIF()
 
+#treat all warnings as errors
+set_property(TARGET ${PROJECT_NAME} PROPERTY COMPILE_WARNING_AS_ERROR ON)
+
+# For files
+set_source_files_properties(
+  ${list_of_your_files}
+  PROPERTIES
+  COMPILE_FLAGS "..."
+)
+
 # Add compiler flags for generating debugging information
 #add_compile_options(-lefence)
 #target_compile_options(${PROJECT_NAME} PRIVATE /Zi)
@@ -145,11 +155,16 @@ target_precompile_headers(${PROJECT_NAME} PUBLIC
 src/stdafx.h)
 ENDIF()
 
+target_compile_options(${PROJECT_NAME} PRIVATE -Wno-type-limits)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+-static-libgcc -static-libstdc++)
+endif()
+
 #find_package(SFML 2.6.1 COMPONENTS audio network graphics system window REQUIRED)
 IF(SFML_STATIC_LIBRARIES)
     set(CMAKE_EXE_LINKER_FLAGS " -static")
-    target_link_libraries(${PROJECT_NAME} PUBLIC 
-    -static-libgcc -static-libstdc++)
 
     set(ZLIB_USE_STATIC_LIBS "ON")
 ENDIF()

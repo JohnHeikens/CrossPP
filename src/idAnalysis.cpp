@@ -3,14 +3,6 @@
 #include "recipe.h"
 #include "block.h"
 
-bool multiplyByBiomeColor(const blockID& identifier)
-{
-	return settings::videoSettings::multiplyBiomeColors &&
-		(isGrass(identifier) ||
-			(isTreeType(identifier) && ((int)getWoodType(identifier) < normalTreeTypeCount) && getTreeItemType(identifier) == treeItemTypeID::leaves) ||
-			(identifier == blockID::vine)
-			);
-}
 bool canBeDestroyedByFluids(const blockID& identifier)
 {
 	return identifier == blockID::air || (identifier != blockID::kelp && blockList[(int)identifier]->hardness == 0) || (identifier == blockID::snow) || (identifier == blockID::vine);

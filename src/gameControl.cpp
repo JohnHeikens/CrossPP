@@ -36,7 +36,7 @@
 #include "graphicsMode.h"
 #include "humanoid.h"
 #include "application/control/control.h"
-#include "application/control/form.h"
+#include "application/control/form/form.h"
 #include "array/arraynd/arraynd.h"
 #include "array/fastarray.h"
 #include "globalFunctions.h"
@@ -73,6 +73,7 @@
 #include "include/math/graphics/brush/brushes/vignetteBrush.h"
 #include "rectangularSlotContainer.h"
 #include "humanSlotContainerUI.h"
+#include "end.h"
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
@@ -82,7 +83,6 @@ seconds lastRenderTime;
 
 void gameControl::render(cveci2 &position, const texture &renderTarget)
 {
-    updateMusic();
 
     // update transform and stuff
 
@@ -91,7 +91,7 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         startCredits = false;
         currentCredits->visible = true;
         currentCredits->timeStartedReading = getmicroseconds();
-        replaceMusic(creditsMusic);
+        replaceMusic(creditsMusic.get());
         focusChild(currentCredits);
     }
     else
@@ -143,9 +143,10 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         if (player->dimensionIn->identifier == dimensionID::overworld)
         {
             overWorld *currentOverWorld = (overWorld *)player->dimensionIn;
-            text += std::wstring(L"noise values:\televation:") + std::to_wstring(currentOverWorld->biomeElevationNoise->evaluate(vec1(player->position.x))) +
-                    std::wstring(L"\ttemperature:") + std::to_wstring(currentOverWorld->biomeTemperatureNoise->evaluate(vec1(player->position.x))) +
-                    std::wstring(L"\thumidity:\t") + std::to_wstring(currentOverWorld->biomeHumidityNoise->evaluate(vec1(player->position.x))) +
+            cvec2 &coords = currentOverWorld->getBiomeTextureCoords(player->position.x);
+            text += std::wstring(L"noise values:\tbiome texture coords:\tx:") + std::to_wstring(coords.x) +
+                    std::wstring(L"\ty:") + std::to_wstring(coords.y) +
+                    std::wstring(L"\ttemp:") + std::to_wstring(currentOverWorld->getTemperature(player->position.x)) +
                     std::wstring(L"\tcloudiness:\t") + std::to_wstring(currentOverWorld->cloudThicknessNoise->evaluate(vec1(currentWorld->currentTime))) + std::wstring(L"\n");
         }
 
@@ -216,11 +217,66 @@ void gameControl::processInput()
     // form::mouseMove(mousePositionPixels, (mb) -1);
     for (const sf::Event &e : mostRecentInput.eventHistory)
     {
-        if (e.type == sf::Event::KeyPressed && e.key.control && e.key.code == sf::Keyboard::V)
+        // process keys
+        if (e.type == sf::Event::KeyPressed)
+        {
+            cbool &worldFocus = getWorldFocus();
+            if (e.key.code == (vk)keyID::escape)
+            {
+                if (focusedChild == nullptr)
+                {
+                    options->visible = true;
+                    focusChild(options);
+                }
+                else if (focusedChild != videoOptions ||
+                         videoOptions->focusedChild == nullptr)
+                {
+                    focusedChild->visible = false;
+                    focusChild(nullptr);
+                }
+            }
+            else if (e.key.code == (vk)keyID::inventory)
+            {
+                if (inventoryUI->visible ^ worldFocus)
+                {
+                    switchInventoryGUI();
+                }
+            }
+            else if (worldFocus)
+            {
+                if (((e.key.code == (vk)keyID::commandLine) || (e.key.code == (vk)keyID::text)) &&
+                    focusedChild == nullptr)
+                {
+                    commandLineTextbox->visible = true;
+                    focusChild(commandLineTextbox);
+
+                    if (e.key.code == (vk)keyID::text)
+                    {
+                        // avoid typing the text keybind
+                        return;
+                    }
+                }
+
+                if (e.key.code == (vk)keyID::renderHitboxes && settings::renderDebugData)
+                {
+                    settings::renderHitboxes = !settings::renderHitboxes;
+                }
+                else if (e.key.code == (vk)keyID::debug)
+                {
+                    settings::renderDebugData = !settings::renderDebugData;
+                }
+                else if (e.key.code == (vk)keyID::headUpDisplay)
+                {
+                    settings::renderHUD = !settings::renderHUD;
+                }
+            }
+        }
+        if (focusedChild == commandLineTextbox && e.type == sf::Event::KeyPressed && e.key.control && e.key.code == sf::Keyboard::V)
         {
             wantsClipboardInput = true;
         }
-        else{
+        else
+        {
             processEvent(e);
         }
     }
@@ -262,98 +318,10 @@ void gameControl::processInput()
         }
         std::copy(clicked, clicked + mb::ButtonCount, clickedFocused);
     }
-
-    if (focusedChild != commandLineTextbox)
-    {
-
-        // process keys
-        for (const keyHistoryEvent &e : mostRecentInput.keyDownHistory)
-        {
-            if (e.down)
-            {
-                if (e.key == (vk)keyID::inventory)
-                {
-                    switchInventoryGUI();
-                }
-                if (((e.key == (vk)keyID::commandLine) || (e.key == (vk)keyID::text)) &&
-                    focusedChild == nullptr)
-                {
-                    commandLineTextbox->visible = true;
-                    focusChild(commandLineTextbox);
-
-                    if (e.key == (vk)keyID::text)
-                    {
-                        // avoid typing the text keybind
-                        return;
-                    }
-                }
-                if (e.key == (vk)keyID::escape)
-                {
-                    if (focusedChild == nullptr)
-                    {
-                        options->visible = true;
-                        focusChild(options);
-                    }
-                    else if (focusedChild != videoOptions ||
-                             videoOptions->focusedChild == nullptr)
-                    {
-                        focusedChild->visible = false;
-                        focusChild(nullptr);
-                    }
-                }
-                else if (focusedChild == nullptr)
-                {
-                    if (e.key == (vk)keyID::renderHitboxes && settings::renderDebugData)
-                    {
-                        settings::renderHitboxes = !settings::renderHitboxes;
-                    }
-                    else if (e.key == (vk)keyID::debug)
-                    {
-                        settings::renderDebugData = !settings::renderDebugData;
-                    }
-                    else if (e.key == (vk)keyID::headUpDisplay)
-                    {
-                        settings::renderHUD = !settings::renderHUD;
-                    }
-                }
-                else
-                {
-                    form::keyDown(e.key);
-                }
-            }
-            else
-            {
-                form::keyUp(e.key);
-            }
-        }
-        for (const auto c : mostRecentInput.textEntered)
-        {
-            form::enterText(c);
-        }
-    }
 }
 
-void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cbool &renderHUD)
+void gameControl::updateTransforms(cvec2 &headPosition)
 {
-    // start drawing
-
-    cfp &secondsBetweenTickAndRender = currentFrameStartSeconds - lastTickTime;
-    // draw the chunk
-    // the amount of pixels each block occupies on the screen
-    cfp &pixelsPerBlock = rect.size.x / (visibleRange.x * 2);
-    visibleRange.y = (fp)rect.size.y / rect.size.x * visibleRange.x;
-    cfp &hudScale = getHUDScale();
-
-    vec2 headPosition;
-
-    player->updateBodyParts();
-    headPosition = player->getHeadPosition();
-    if (player->dimensionIn == player->newDimension)
-    {
-        headPosition += (player->newPosition - player->position) *
-                        math::minimum(secondsBetweenTickAndRender, secondsPerTick) *
-                        ticksPerRealLifeSecond;
-    }
 
     // update the mouse position according to the transform
     // mousePositionPixels = newMousePositionPixels;
@@ -361,6 +329,9 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
 
     // if (currentGame->focusedChild == nullptr)
     //{
+
+    // the amount of pixels each block occupies on the screen
+    cfp &pixelsPerBlock = rect.size.x / (visibleRange.x * 2);
     if (touchInput)
     {
         cameraPosition = headPosition;
@@ -374,18 +345,27 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
     }
 
     worldToRenderTargetTransform = getWorldToScreenTransform(cameraPosition, pixelsPerBlock);
-    cmat3x3 renderTargetToWorldTransform = worldToRenderTargetTransform.inverse();
-    if (!touchInput)
-    {
-        currentMousePositionWorld = renderTargetToWorldTransform.multPointMatrix(
-            cvec2(unFocusedMousePosition));
-    }
-    else
-    {
-        currentMousePositionWorld = player->getHeadPosition() + interactJoystick->value;
-    }
+}
 
-    player->lookingAt = currentMousePositionWorld;
+void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cbool &renderHUD)
+{
+    // start drawing
+
+    cfp &secondsBetweenTickAndRender = currentFrameStartSeconds - lastTickTime;
+    player->updateBodyParts();
+    vec2 headPosition = player->getHeadPosition();
+    if (player->dimensionIn == player->newDimension)
+    {
+        headPosition += (player->newPosition - player->position) *
+                        math::minimum(secondsBetweenTickAndRender, secondsPerTick) *
+                        ticksPerRealLifeSecond;
+    }
+    updateTransforms(headPosition);
+
+    // draw the chunk
+    visibleRange.y = (fp)rect.size.y / rect.size.x * visibleRange.x;
+    cfp &hudScale = getHUDScale();
+
     //}
 
     // already update the selectedblockpos so it is drawn correctly
@@ -708,7 +688,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                                 targetData.renderTarget, solid);
 
                             fillRectangle(targetData.renderTarget, ceilRectangle(blockScreenRect),
-                                                                  multipier);
+                                          multipier);
                         }
                         else
                         {
@@ -720,7 +700,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                                 targetData.renderTarget, transform);
 
                             fillRectangle(targetData.renderTarget, ceilRectangle(blockScreenRect),
-                                                                  multipier);
+                                          multipier);
                         }
                     }
                 }
@@ -756,226 +736,225 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
             currentYrowOffset, hotbarTextureRect.size.x * hudScale,
             hotbarTextureRect.h * hudScale);
 
-        if (isMob(player->entityType))
+        // draw crosshair
+        cvec2 &offsetLookingAt = player->lookingAt + player->getRenderOffset(targetData);
+
+        // todo: somehow update lookingat each render frame
+        // this is hard because some functions update body
+        crectangle2 &unreachableCrosshairDrawRect = crectangle2(
+                                                        targetData.worldToRenderTargetTransform.multPointMatrix(
+                                                            offsetLookingAt),
+                                                        cvec2())
+                                                        .expanded(
+                                                            crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
+
+        auto mult = colorMultiplier<resolutionTexture, solidColorBrush>(*iconsTexture,
+                                                                        brushes::red);
+
+        fillTransparentRectangle(crectangle2(crosshairTextureRect),
+                                 unreachableCrosshairDrawRect, mult, targetData.renderTarget);
+
+        cvec2 &offsetExactIntersection = (player->selectedUUID
+                                              ? player->exactEntityIntersection
+                                              : player->exactBlockIntersection) +
+                                         player->getRenderOffset(targetData);
+
+        crectangle2 &crosshairDrawRect = crectangle2(
+                                             targetData.worldToRenderTargetTransform.multPointMatrix(offsetExactIntersection),
+                                             cvec2())
+                                             .expanded(
+                                                 crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
+
+        fillTransparentRectangle(crectangle2(crosshairTextureRect), crosshairDrawRect,
+                                 *iconsTexture, targetData.renderTarget);
+
+        if (isHumanoid(player->entityType))
         {
-            mob *currentMob = (mob *)player;
+            human *currentHumanoid = (human *)player;
 
-            // draw crosshair
-
-            crectangle2 &unreachableCrosshairDrawRect = crectangle2(
-                                                            targetData.worldToRenderTargetTransform.multPointMatrix(
-                                                                currentMousePositionWorld),
-                                                            cvec2())
-                                                            .expanded(
-                                                                crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
-
-            auto mult = colorMultiplier<resolutionTexture, solidColorBrush>(*iconsTexture,
-                                                                            brushes::red);
-
-            fillTransparentRectangle(crectangle2(crosshairTextureRect),
-                                     unreachableCrosshairDrawRect, mult, targetData.renderTarget);
-
-            cvec2 &exactIntersection = currentMob->selectedUUID
-                                           ? currentMob->exactEntityIntersection
-                                           : currentMob->exactBlockIntersection;
-
-            crectangle2 &crosshairDrawRect = crectangle2(
-                                                 targetData.worldToRenderTargetTransform.multPointMatrix(exactIntersection),
-                                                 cvec2())
-                                                 .expanded(
-                                                     crosshairTextureRect.size.x * 0.5 * settings::videoSettings::guiScale);
-
-            fillTransparentRectangle(crectangle2(crosshairTextureRect), crosshairDrawRect,
-                                     *iconsTexture, targetData.renderTarget);
-
-            if (isHumanoid(player->entityType))
+            if (player->entityType == entityID::human)
             {
-                human *currentHumanoid = (human *)player;
+                human *currentHuman = (human *)player;
 
-                if (player->entityType == entityID::human)
+                // draw hotbar
+                fillTransparentRectangle(crectangle2(hotbarTextureRect), hotbarDrawRect,
+                                         *widgetsTexture, targetData.renderTarget);
+
+                rectanglei2 selectorPixelRect = ceilRectangle(blockScreenRect);
+                fillRectangleBorders(targetData.renderTarget, selectorPixelRect, 1,
+                                     solidColorBrush(
+                                         colorPalette::black));
+
+                // draw selector
+                crectangle2 selectorDrawRect = crectangle2(hotbarDrawRect.pos0 +
+                                                               vec2(currentHuman->rightHandSlotIndex *
+                                                                        hotbarSpacing * hudScale,
+                                                                    0),
+                                                           vec2(hotbarSpacing * hudScale));
+                fillTransparentRectangle((crectangle2)selectorTextureRect, selectorDrawRect,
+                                         *widgetsTexture, targetData.renderTarget);
+
+                currentHuman->hotbarSlots->render(targetData, hotbarDrawRect.pos0 + (hotbarSpacing - hotbarItemDisplaySize) / 2 * hudScale,
+                                                  hotbarSpacing * hudScale,
+                                                  hotbarItemDisplaySize * hudScale);
+
+                currentYrowOffset += (hotbarDrawRect.y + hotbarDrawRect.h);
+
+                attackIndicatorOffset = currentYrowOffset;
+
+                if (currentHuman->experience)
                 {
-                    human *currentHuman = (human *)player;
+                    // draw experience
+                    constexpr rectangle2 expBarbackGroundTextureRect = crectangle2(0, 167, 182,
+                                                                                   5);
 
-                    // draw hotbar
-                    fillTransparentRectangle(crectangle2(hotbarTextureRect), hotbarDrawRect,
-                                             *widgetsTexture, targetData.renderTarget);
-
-                    rectanglei2 selectorPixelRect = ceilRectangle(blockScreenRect);
-                    fillRectangleBorders(targetData.renderTarget, selectorPixelRect, 1,
-                                                                 solidColorBrush(
-                                                                     colorPalette::black));
-
-                    // draw selector
-                    crectangle2 selectorDrawRect = crectangle2(hotbarDrawRect.pos0 +
-                                                                   vec2(currentHuman->rightHandSlotIndex *
-                                                                            hotbarSpacing * hudScale,
-                                                                        0),
-                                                               vec2(hotbarSpacing * hudScale));
-                    fillTransparentRectangle((crectangle2)selectorTextureRect, selectorDrawRect,
-                                             *widgetsTexture, targetData.renderTarget);
-
-                    currentHuman->hotbarSlots->render(targetData, hotbarDrawRect.pos0 + (hotbarSpacing - hotbarItemDisplaySize) / 2 * hudScale,
-                                                      hotbarSpacing * hudScale,
-                                                      hotbarItemDisplaySize * hudScale);
-
-                    currentYrowOffset += (hotbarDrawRect.y + hotbarDrawRect.h);
-
-                    attackIndicatorOffset = currentYrowOffset;
-
-                    if (currentHuman->experience)
-                    {
-                        // draw experience
-                        constexpr rectangle2 expBarbackGroundTextureRect = crectangle2(0, 167, 182,
-                                                                                       5);
-
-                        cvec2 &expBarSize = expBarbackGroundTextureRect.size * hudScale;
-                        crectangle2 &expBarBackGroundDrawRect = crectangle2(
-                            (rect.size.x - expBarSize.x) / 2, currentYrowOffset, expBarSize.x,
-                            expBarSize.y);
-                        fillTransparentRectangle((crectangle2)expBarbackGroundTextureRect,
-                                                 expBarBackGroundDrawRect, *iconsTexture,
-                                                 targetData.renderTarget);
-
-                        cfp &power = getExperienceLevel(currentHuman->experience);
-                        cint &currentLevel = math::floor(power);
-                        cfp &progressToNextLevel = power - currentLevel;
-                        crectangle2 &expBarforeGroundTextureRect = crectangle2(0, 162, 182 * progressToNextLevel,
-                                                                               5);
-                        crectangle2 &expBarforeGroundDrawRect = crectangle2(
-                            expBarBackGroundDrawRect.x, expBarBackGroundDrawRect.y,
-                            expBarBackGroundDrawRect.w * progressToNextLevel,
-                            expBarBackGroundDrawRect.h);
-                        fillTransparentRectangle((crectangle2)expBarforeGroundTextureRect,
-                                                 expBarforeGroundDrawRect, *iconsTexture,
-                                                 targetData.renderTarget);
-
-                        if (currentLevel)
-                        {
-                            const minecraftFont f = minecraftFont(iconSize * hudScale);
-                            // std::wstring() to make it concatenate the string and not do other stuff
-                            std::wstring str = std::wstring() + colorCodeChar + L"a" +
-                                               std::to_wstring(currentLevel);
-                            cvec2 &size = f.fontSize * vec2(1, (fp)str.length());
-                            f.DrawString(str, crectangle2((rect.w - size.x) * 0.5, currentYrowOffset + expBarSize.y - scaledBarOffset, size.x, size.y),
-                                         targetData.renderTarget);
-                            attackIndicatorOffset += iconSize * hudScale + scaledBarOffset;
-                        }
-                        currentYrowOffset += expBarSize.y + scaledBarOffset;
-                        attackIndicatorOffset += expBarSize.y + scaledBarOffset;
-                    }
-                }
-            }
-
-            cbool &canTakeDamage = (player->entityType != entityID::human) ||
-                                   (gameModeDataList[((human *)player)->currentGameMode]->canTakeDamage);
-
-            if (canTakeDamage)
-            {
-                std::vector<fp> healthAmounts = std::vector<fp>(
-                    {math::maximum(player->health, (fp)1.0) * 0.5});
-                if (player->absorptionHealth > 0)
-                {
-                    healthAmounts.push_back(
-                        math::maximum(player->absorptionHealth, (fp)1.0) * 0.5);
-                }
-
-                constexpr int iconTextureSize = 18;
-
-                constexpr rectangle2 fullHeartTextureRect = crectangle2(52, 247, 9, 9);
-                constexpr rectangle2 halfHeartTextureRect = crectangle2(61, 247, 9, 9);
-
-                constexpr rectangle2 fullAbsorptionHeartTextureRect = crectangle2(160, 247, 9, 9);
-                constexpr rectangle2 halfAbsorptionHeartTextureRect = crectangle2(169, 247, 9, 9);
-
-                // draw hearts
-                // draw background
-                crectangle2 firstHeartDrawRect = crectangle2(hotbarDrawRect.x, currentYrowOffset,
-                                                             iconSize * hudScale,
-                                                             iconSize * hudScale);
-                renderIcons(
-                    {math::maximum(player->getMaxHealth() * 0.5, getSum<fp>(healthAmounts))},
-                    {crectangle2(52, 238, 8, 8)}, {crectangle2(52, 238, 8, 8)},
-                    firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
-                // minimal half a heart to display
-                renderIcons(healthAmounts, {fullHeartTextureRect, fullAbsorptionHeartTextureRect},
-                            {halfHeartTextureRect, halfAbsorptionHeartTextureRect},
-                            firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
-
-                if (player->entityType == entityID::human)
-                {
-                    human *currentHuman = (human *)player;
-                    crectangle2 firstDrumstickDrawRect = crectangle2(
-                        hotbarDrawRect.x + hotbarDrawRect.w - iconSize * hudScale,
-                        currentYrowOffset, iconSize * hudScale, iconSize * hudScale);
-                    renderIcons({maxhumanfoodlevel * 0.5}, {crectangle2(16, 220, 8, 8)},
-                                {crectangle2(16, 220, 8, 8)}, firstDrumstickDrawRect,
-                                -firstDrumstickDrawRect.w, targetData.renderTarget);
-                    renderIcons({currentHuman->foodlevel * 0.5}, {crectangle2(52, 220, 8, 8)},
-                                {crectangle2(61, 220, 8, 8)}, firstDrumstickDrawRect,
-                                -firstDrumstickDrawRect.w, targetData.renderTarget);
-                }
-                currentYrowOffset += iconSize * hudScale + scaledBarOffset;
-            }
-            // draw attack cooldown indicator
-            cfp totalCoolDownTime = currentMob->getTotalCoolDownTime();
-
-            if (currentMob->ticksSinceToolUsed < totalCoolDownTime)
-            {
-                cfp progress = currentMob->ticksSinceToolUsed / totalCoolDownTime; // 0 to 1
-
-                constexpr rectangle2 fullCoolDownPixelRect = crectangle2(68, 154, 0x10, 0x8);
-                cvec2 scaledCoolDownIndicatorSize = cvec2(fullCoolDownPixelRect.size * hudScale);
-                crectangle2 coolDownDrawRect = crectangle2(
-                    (rect.w - scaledCoolDownIndicatorSize.x) * 0.5, attackIndicatorOffset,
-                    scaledCoolDownIndicatorSize.x, scaledCoolDownIndicatorSize.y);
-                if (progress > cooldownTreshold)
-                {
-                    fillTransparentRectangle((crectangle2)fullCoolDownPixelRect, coolDownDrawRect,
-                                             *iconsTexture, targetData.renderTarget);
-                }
-                else
-                {
-                    constexpr rectangle2 cooldownBackgroundPixelRect = crectangle2(36, 154, 0x10,
-                                                                                   0x8);
-                    fillTransparentRectangle((crectangle2)cooldownBackgroundPixelRect,
-                                             coolDownDrawRect, *iconsTexture,
+                    cvec2 &expBarSize = expBarbackGroundTextureRect.size * hudScale;
+                    crectangle2 &expBarBackGroundDrawRect = crectangle2(
+                        (rect.size.x - expBarSize.x) / 2, currentYrowOffset, expBarSize.x,
+                        expBarSize.y);
+                    fillTransparentRectangle((crectangle2)expBarbackGroundTextureRect,
+                                             expBarBackGroundDrawRect, *iconsTexture,
                                              targetData.renderTarget);
 
-                    constexpr rectangle2 coolDownForeGroundPixelRect = crectangle2(52, 154, 0x10,
-                                                                                   0x8);
-                    cvec2 scaledCoolDownPartSize = cvec2(
-                        coolDownForeGroundPixelRect.w * hudScale * progress,
-                        coolDownForeGroundPixelRect.h * hudScale);
+                    cfp &power = getExperienceLevel(currentHuman->experience);
+                    cint &currentLevel = math::floor(power);
+                    cfp &progressToNextLevel = power - currentLevel;
+                    crectangle2 &expBarforeGroundTextureRect = crectangle2(0, 162, 182 * progressToNextLevel,
+                                                                           5);
+                    crectangle2 &expBarforeGroundDrawRect = crectangle2(
+                        expBarBackGroundDrawRect.x, expBarBackGroundDrawRect.y,
+                        expBarBackGroundDrawRect.w * progressToNextLevel,
+                        expBarBackGroundDrawRect.h);
+                    fillTransparentRectangle((crectangle2)expBarforeGroundTextureRect,
+                                             expBarforeGroundDrawRect, *iconsTexture,
+                                             targetData.renderTarget);
 
-                    fillTransparentRectangle(
-                        crectangle2(coolDownForeGroundPixelRect.x,
-                                    coolDownForeGroundPixelRect.y,
-                                    coolDownForeGroundPixelRect.w * progress,
-                                    coolDownForeGroundPixelRect.h),
-                        crectangle2(coolDownDrawRect.x, coolDownDrawRect.y,
-                                    scaledCoolDownPartSize.x, scaledCoolDownPartSize.y),
-                        *iconsTexture, targetData.renderTarget);
+                    if (currentLevel)
+                    {
+                        const minecraftFont f = minecraftFont(iconSize * hudScale);
+                        // std::wstring() to make it concatenate the string and not do other stuff
+                        std::wstring str = std::wstring() + colorCodeChar + L"a" +
+                                           std::to_wstring(currentLevel);
+                        cvec2 &size = f.fontSize * vec2(1, (fp)str.length());
+                        f.DrawString(str, crectangle2((rect.w - size.x) * 0.5, currentYrowOffset + expBarSize.y - scaledBarOffset, size.x, size.y),
+                                     targetData.renderTarget);
+                        attackIndicatorOffset += iconSize * hudScale + scaledBarOffset;
+                    }
+                    currentYrowOffset += expBarSize.y + scaledBarOffset;
+                    attackIndicatorOffset += expBarSize.y + scaledBarOffset;
                 }
             }
-            if (canTakeDamage)
-            {
+        }
 
-                cfp defenceValue = currentMob->getDefencePoints();
-                if (defenceValue > 0)
-                {
-                    crectangle2 firstChestplateDrawRect = crectangle2(hotbarDrawRect.x,
-                                                                      currentYrowOffset,
-                                                                      iconSize * hudScale,
-                                                                      iconSize * hudScale);
-                    renderIcons({maxArmor * 0.5}, {crectangle2(16, 238, 8, 8)},
-                                {crectangle2(16, 238, 8, 8)}, firstChestplateDrawRect,
-                                firstChestplateDrawRect.w, targetData.renderTarget);
-                    renderIcons({defenceValue * 0.5}, {crectangle2(34, 238, 8, 8)},
-                                {crectangle2(25, 238, 8, 8)}, firstChestplateDrawRect,
-                                firstChestplateDrawRect.w, targetData.renderTarget);
-                    // renderIcons({ maxArmor * 0.5 }, { crectangle2(33, 477, 16, 16) }, { crectangle2(33, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
-                    // renderIcons({ defenceValue * 0.5 }, { crectangle2(69, 477, 16, 16) }, { crectangle2(51, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
-                }
+        cbool &canTakeDamage = (player->entityType != entityID::human) ||
+                               (gameModeDataList[((human *)player)->currentGameMode]->canTakeDamage);
+
+        if (canTakeDamage)
+        {
+            std::vector<fp> healthAmounts = std::vector<fp>(
+                {math::maximum(player->health, (fp)1.0) * 0.5});
+            if (player->absorptionHealth > 0)
+            {
+                healthAmounts.push_back(
+                    math::maximum(player->absorptionHealth, (fp)1.0) * 0.5);
+            }
+
+            constexpr int iconTextureSize = 18;
+
+            constexpr rectangle2 fullHeartTextureRect = crectangle2(52, 247, 9, 9);
+            constexpr rectangle2 halfHeartTextureRect = crectangle2(61, 247, 9, 9);
+
+            constexpr rectangle2 fullAbsorptionHeartTextureRect = crectangle2(160, 247, 9, 9);
+            constexpr rectangle2 halfAbsorptionHeartTextureRect = crectangle2(169, 247, 9, 9);
+
+            // draw hearts
+            // draw background
+            crectangle2 firstHeartDrawRect = crectangle2(hotbarDrawRect.x, currentYrowOffset,
+                                                         iconSize * hudScale,
+                                                         iconSize * hudScale);
+            renderIcons(
+                {math::maximum(player->getMaxHealth() * 0.5, getSum<fp>(healthAmounts))},
+                {crectangle2(52, 238, 8, 8)}, {crectangle2(52, 238, 8, 8)},
+                firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
+            // minimal half a heart to display
+            renderIcons(healthAmounts, {fullHeartTextureRect, fullAbsorptionHeartTextureRect},
+                        {halfHeartTextureRect, halfAbsorptionHeartTextureRect},
+                        firstHeartDrawRect, firstHeartDrawRect.w, targetData.renderTarget);
+
+            if (player->entityType == entityID::human)
+            {
+                human *currentHuman = (human *)player;
+                crectangle2 firstDrumstickDrawRect = crectangle2(
+                    hotbarDrawRect.x + hotbarDrawRect.w - iconSize * hudScale,
+                    currentYrowOffset, iconSize * hudScale, iconSize * hudScale);
+                renderIcons({maxhumanfoodlevel * 0.5}, {crectangle2(16, 220, 8, 8)},
+                            {crectangle2(16, 220, 8, 8)}, firstDrumstickDrawRect,
+                            -firstDrumstickDrawRect.w, targetData.renderTarget);
+                renderIcons({currentHuman->foodlevel * 0.5}, {crectangle2(52, 220, 8, 8)},
+                            {crectangle2(61, 220, 8, 8)}, firstDrumstickDrawRect,
+                            -firstDrumstickDrawRect.w, targetData.renderTarget);
+            }
+            currentYrowOffset += iconSize * hudScale + scaledBarOffset;
+        }
+        // draw attack cooldown indicator
+        cfp totalCoolDownTime = player->getTotalCoolDownTime();
+
+        if (player->ticksSinceToolUsed < totalCoolDownTime)
+        {
+            cfp progress = player->ticksSinceToolUsed / totalCoolDownTime; // 0 to 1
+
+            constexpr rectangle2 fullCoolDownPixelRect = crectangle2(68, 154, 0x10, 0x8);
+            cvec2 scaledCoolDownIndicatorSize = cvec2(fullCoolDownPixelRect.size * hudScale);
+            crectangle2 coolDownDrawRect = crectangle2(
+                (rect.w - scaledCoolDownIndicatorSize.x) * 0.5, attackIndicatorOffset,
+                scaledCoolDownIndicatorSize.x, scaledCoolDownIndicatorSize.y);
+            if (progress > cooldownTreshold)
+            {
+                fillTransparentRectangle((crectangle2)fullCoolDownPixelRect, coolDownDrawRect,
+                                         *iconsTexture, targetData.renderTarget);
+            }
+            else
+            {
+                constexpr rectangle2 cooldownBackgroundPixelRect = crectangle2(36, 154, 0x10,
+                                                                               0x8);
+                fillTransparentRectangle((crectangle2)cooldownBackgroundPixelRect,
+                                         coolDownDrawRect, *iconsTexture,
+                                         targetData.renderTarget);
+
+                constexpr rectangle2 coolDownForeGroundPixelRect = crectangle2(52, 154, 0x10,
+                                                                               0x8);
+                cvec2 scaledCoolDownPartSize = cvec2(
+                    coolDownForeGroundPixelRect.w * hudScale * progress,
+                    coolDownForeGroundPixelRect.h * hudScale);
+
+                fillTransparentRectangle(
+                    crectangle2(coolDownForeGroundPixelRect.x,
+                                coolDownForeGroundPixelRect.y,
+                                coolDownForeGroundPixelRect.w * progress,
+                                coolDownForeGroundPixelRect.h),
+                    crectangle2(coolDownDrawRect.x, coolDownDrawRect.y,
+                                scaledCoolDownPartSize.x, scaledCoolDownPartSize.y),
+                    *iconsTexture, targetData.renderTarget);
+            }
+        }
+        if (canTakeDamage)
+        {
+
+            cfp defenceValue = player->getDefencePoints();
+            if (defenceValue > 0)
+            {
+                crectangle2 firstChestplateDrawRect = crectangle2(hotbarDrawRect.x,
+                                                                  currentYrowOffset,
+                                                                  iconSize * hudScale,
+                                                                  iconSize * hudScale);
+                renderIcons({maxArmor * 0.5}, {crectangle2(16, 238, 8, 8)},
+                            {crectangle2(16, 238, 8, 8)}, firstChestplateDrawRect,
+                            firstChestplateDrawRect.w, targetData.renderTarget);
+                renderIcons({defenceValue * 0.5}, {crectangle2(34, 238, 8, 8)},
+                            {crectangle2(25, 238, 8, 8)}, firstChestplateDrawRect,
+                            firstChestplateDrawRect.w, targetData.renderTarget);
+                // renderIcons({ maxArmor * 0.5 }, { crectangle2(33, 477, 16, 16) }, { crectangle2(33, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
+                // renderIcons({ defenceValue * 0.5 }, { crectangle2(69, 477, 16, 16) }, { crectangle2(51, 477, 16, 16) }, firstChestplateDrawRect, firstChestplateDrawRect.w, targetData.renderTarget);
             }
         }
     }
@@ -1095,6 +1074,18 @@ mat3x3 gameControl::getWorldToScreenTransform(cvec2 &middleWorldPosition, cfp &p
         mat3x3::translate(vec2(-middleWorldPosition + visibleRange)));
 }
 
+bool gameControl::getWorldFocus() const
+{
+    return !inventoryUI->visible &&
+                   touchInput
+               ? is_in(
+                     focusedChild,
+                     moveJoystick,
+                     interactJoystick,
+                     nullptr)
+               : !(focusedChild);
+}
+
 void renderIcons(const std::vector<fp> &values, const std::vector<rectangle2> &iconFullTextureRects,
                  const std::vector<rectangle2> &iconHalfTextureRects, crectangle2 &firstIconRect,
                  cfp &xOffset, const texture &renderTarget)
@@ -1211,7 +1202,7 @@ void gameControl::addTouchInput()
     touchInput = true;
     // from -2 to 2
     moveJoystick = new touchJoystick(rectangle2(vec2(-2), vec2(4)));
-    constexpr fp armRangePlusMargin = armRange + 1;
+    constexpr fp armRangePlusMargin = humanArmRange + 1;
     // from -1
     interactJoystick = new touchJoystick(
         rectangle2(vec2(-armRangePlusMargin), vec2(armRangePlusMargin * 2)));
@@ -1330,6 +1321,69 @@ void gameControl::commandLineKeyPressed(const keyEventArgs &e)
         commandLineTextbox->visible = false;
         commandLineTextbox->text = std::wstring(L"");
         commandLineTextbox->cursorIndex = 0;
+    }
+}
+
+void gameControl::serializeMusicPreference(nbtSerializer &serializer)
+{
+    if (serializer.push(L"music"))
+    {
+        const auto &prefer = [&serializer](std::shared_ptr<musicCollection> music)
+        {
+            serializer.serializeValue(L"prefer", music->key);
+        };
+        bool boatInWater;
+        entity *entityRidingOn = player->dimensionIn->findUUID(player->position, ridingEntitySearchRadius, player->UUIDRidingOn);
+        if (entityRidingOn && entityRidingOn->entityType == entityID::boat && (entityRidingOn->getFluidArea(entityRidingOn->calculateHitBox(), {blockID::water}) > 0))
+        {
+            boatInWater = true;
+        }
+        else
+        {
+            // did not find the boat
+            boatInWater = false;
+        }
+
+        cbool inEnd = player->dimensionIn->identifier == dimensionID::end;
+        if (inEnd && ((end *)currentWorld->dimensions[(int)dimensionID::end])->dragonAlive)
+        {
+            serializer.serializeValue(L"replace", bossMusic->key);
+            // replaceMusic(bossMusic);
+        }
+        else
+        {
+            const biomeID biomeIn = player->dimensionIn->getBiome(player->position);
+            cbool inNether = player->dimensionIn->identifier == dimensionID::nether;
+            if (inNether)
+            {
+                if (biomeIn == biomeID::soulsand_valley)
+                {
+                    prefer(soulSandValleyMusic);
+                }
+                else if (biomeIn == biomeID::nether_wastes)
+                {
+                    prefer(netherWastesMusic);
+                }
+                else if (biomeIn == biomeID::warped_forest)
+                {
+                    // prefer nothing
+                }
+                else if (biomeIn != biomeID::warped_forest)
+                {
+                    prefer(netherMusic);
+                }
+            }
+            else
+            {
+                cbool inWater = (player->getFluidArea(player->calculateHitBox(), {blockID::water}) > 0);
+                cbool inOcean = player->dimensionIn->getBiome(player->position) == biomeID::ocean;
+                cbool inCreative = (player->entityType == entityID::human) && ((human *)player)->currentGameMode == gameModeID::creative;
+                prefer(inNether ? netherMusic : inEnd                               ? endMusic
+                                            : ((boatInWater || inWater) && inOcean) ? waterMusic
+                                            : inCreative                            ? creativeModeMusic
+                                                                                    : overWorldBackgroundMusic);
+            }
+        }
     }
 }
 

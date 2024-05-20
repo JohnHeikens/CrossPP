@@ -33,7 +33,7 @@ fp mobData::getSpawnWeight(dimension* dimensionIn, cveci2& position)
 			}
 		}
 
-		if ((biomeIn == biomeID::taiga) || (biomeIn == biomeID::ice_spikes))
+		if ((biomeIn == biomeID::taiga) || (biomeIn == biomeID::ice_spikes) || (biomeIn == biomeID::snowy_tundra))
 		{
 			if (identifier == entityID::stray)
 			{

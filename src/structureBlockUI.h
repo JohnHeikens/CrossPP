@@ -6,7 +6,6 @@ constexpr int smallRightButtonSize = buttonSize.getY() * 4;
 
 struct structureBlockUI : form
 {
-	human* currentPlayableCharachter = nullptr;
 	structureBlockData* temporaryStructureBlockData = nullptr;
 	label* structureBlockLabel = new label();
 	label* nameLabel = new label();

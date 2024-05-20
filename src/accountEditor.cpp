@@ -13,7 +13,7 @@ accountEditor::accountEditor()
 void accountEditor::layout(crectanglei2& newRect)
 {
 	form::layout(newRect);
-	layoutTableCentered(children);
+	layoutTableCentered(newRect, children);
 	//rectanglei2 r = newRect.rectCentered(buttonSize);
 	//saveButton->layout(r);
 	//r.y += buttonSize.y + buttonMargin;

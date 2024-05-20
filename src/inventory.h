@@ -3,7 +3,7 @@
 #include "slotContainer.h"
 #include "interface/idestructable.h"
 #include "uiSlotContainer.h"
-#include "stackDivider.h"
+struct stackDivider;
 
 constexpr rectanglei2 defaultUIRectangle = crectanglei2(0, 90, 176, 166);
 struct inventory : slotContainer, IDestructable

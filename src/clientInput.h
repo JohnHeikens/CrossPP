@@ -11,9 +11,9 @@ struct clientInput {
 
 	int scrollDelta = 0;
 
-	bool clicked[(byte)sf::Mouse::ButtonCount]{};
-	bool clickReleased[(byte)sf::Mouse::ButtonCount]{};
-	bool holding[(byte)sf::Mouse::ButtonCount]{};
+	bool clicked[sf::Mouse::ButtonCount]{};
+	bool clickReleased[sf::Mouse::ButtonCount]{};
+	bool holding[sf::Mouse::ButtonCount]{};
     std::vector<mouseHistoryEvent> mouseHistory = std::vector<mouseHistoryEvent>();
 
 	//the keys which were pressed (0 = start)

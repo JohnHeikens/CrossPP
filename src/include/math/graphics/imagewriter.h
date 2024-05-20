@@ -228,13 +228,13 @@ STBIWDEF void stbi_flip_vertically_on_write(int flag)
     stbi__flip_vertically_on_write = flag;
 }
 
-typedef struct
+struct stbi__write_context
 {
-    stbi_write_func* func;
-    void* context;
-    unsigned char buffer[64];
-    int buf_used;
-} stbi__write_context;
+    stbi_write_func* func = nullptr;
+    void* context = nullptr;
+    unsigned char buffer[64]{};
+    int buf_used = 0;
+};
 
 // initialize a callback-based context
 static void stbi__start_write_callbacks(stbi__write_context* s, stbi_write_func* c, void* context)

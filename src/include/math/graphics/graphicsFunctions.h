@@ -207,7 +207,7 @@ inline void fillEllipse(const array2d<t> &array, crectangle2 &rect, const brush0
 template <typename t, typename brush0Type>
 inline void fillEllipseCentered(const array2d<t> &array, cvec2 &pos, cvec2 &size, const brush0Type &b)
 {
-    fillEllipse(array, crectangle2(pos - array.size * 0.5, array.size), b);
+    fillEllipse(array, crectangle2(pos - size * 0.5, size), b);
 }
 
 // draw a line from p0 to p1

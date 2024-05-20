@@ -226,7 +226,7 @@ void enderDragon::render(const gameRenderData& targetData) const
 void enderDragon::tick()
 {
 	mob::tick();
-	if (enderDragonInnerWingSynchronizer.maximumBetween(microsectosec(lastTickTimeMicroseconds), microsectosec(lastTickTimeMicroseconds) + secondsPerTick))
+	if (enderDragonInnerWingSynchronizer.maximumBetween(milisectosec(currentWorld->ticksSinceStart), milisectosec(currentWorld->ticksSinceStart + 1)))
 	{
 		enderDragonWingsSound->playRandomSound(dimensionIn, position);
 	}
@@ -346,8 +346,8 @@ void enderDragon::updateBodyParts() const
 
 	//0 = start, 1 = end
 
-	cfp innerWingAngle = enderDragonInnerWingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart / (fp)ticksPerRealLifeSecond);
-	cfp outerWingAngle = enderDragonOuterWingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart / (fp)ticksPerRealLifeSecond);
+	cfp innerWingAngle = enderDragonInnerWingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart * secondsPerTick);
+	cfp outerWingAngle = enderDragonOuterWingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart * secondsPerTick);
 
 	cfp innerWingTopSize = sin(innerWingAngle) * (enderDragonInnerWingTopSize.y);
 	fp outerWingTopSize = sin(outerWingAngle) * (enderDragonOuterWingTopSize.y);

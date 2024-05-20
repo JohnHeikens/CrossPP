@@ -43,7 +43,7 @@ void particle::serializeValue(nbtSerializer& s)
 	}
 	else
 	{
-		particleID particleType;
+		particleID particleType = (particleID)0;
 		if (s.serializeValue(std::wstring(L"particle type"), (int&)particleType))
 		{
 			switch (particleType)

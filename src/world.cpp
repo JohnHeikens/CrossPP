@@ -19,10 +19,12 @@
 #include "darkForest.h"
 #include "jungle.h"
 
+#include "snowyTundra.h"
 #include "iceSpikes.h"
 #include "mushroomFields.h"
 
 #include "badLands.h"
+#include "deathValley.h"
 #include "mountains.h"
 
 #include "netherWastes.h"
@@ -86,7 +88,7 @@ bool world::serialize(cbool& write)
 		//cveci2 screenSize = currentScreenSize;
 		//as small as possible to increase refresh() performance
 		//cveci2 screenShotsize = cveci2(0x40, 0x40);
-		//texture screenShot = texture(screenShotsize);
+		//texture screenShot(screenShotsize);
 		//currentScreenSize = screenShotsize;
 		//
 		//renderGame(crectanglei2(screenShot.getClientRect()), screenShot, settings::renderHUD);
@@ -235,17 +237,20 @@ void world::initialize()
 		new darkForest(),
 		new jungle(),
 
+		new snowyTundra(),
 		new iceSpikes(),
 		new mushroomFields(),
 
-		new badlands(),
 		new mountains(),
+		new deathValley(),
+		new badlands(),
 
 		new netherWastes(),
 		new crimsonForest(),
 		new warpedForest(),
 		new soulSandValley(),
 		new basaltDeltas(),
+		
 		new theEnd(),
 		new endVoid(),
 		new endLands()
@@ -255,8 +260,6 @@ void world::initialize()
 
 void world::finish()
 {
-	//at least one tick
-	lastTickTimeMicroseconds = getmicroseconds() - microSecondsPerTick;
 }
 
 void world::tick()
@@ -397,14 +400,15 @@ reRollSpawnPoint:
 
 	cint spawnSeekRadius = 0x10;
 
-	currentWorld->worldSpawnPoint.x = rand(worldRandom,
+	veci2 spawnBlock;
+	spawnBlock.x = rand(worldRandom,
 		(int)(spawnBiomeLocation.x > 0x10 ? spawnBiomeLocation.x : spawnBiomeLocation.x - 0x10),
 		(int)(spawnBiomeLocation.x < -0x10 ? spawnBiomeLocation.x : spawnBiomeLocation.x + 0x10));
 
 	//top to bottom
-	for (currentWorld->worldSpawnPoint.y = (int)chunkSize.y - 1; currentWorld->worldSpawnPoint.y >= 0; currentWorld->worldSpawnPoint.y--)
+	for (spawnBlock.y = (int)chunkSize.y - 1; spawnBlock.y >= 0; spawnBlock.y--)
 	{
-		blockID b = currentWorld->dimensions[(int)currentWorld->worldSpawnDimension]->getBlockID(currentWorld->worldSpawnPoint, chunkLoadLevel::updateLoaded);
+		blockID b = currentWorld->dimensions[(int)currentWorld->worldSpawnDimension]->getBlockID(spawnBlock, chunkLoadLevel::updateLoaded);
 		if (blockList[(int)b]->blockCollisionType == collisionTypeID::willCollide)
 		{
 			if (spawnTag->compare((itemID)b) || spawnTries == 0)
@@ -417,7 +421,8 @@ reRollSpawnPoint:
 			}
 		}
 	}
-	currentWorld->worldSpawnPoint.y++;//to spawn on top of the block
+	currentWorld->worldSpawnPoint = cvec2((fp)spawnBlock.x + (fp)0.5, (fp)spawnBlock.y + 1 + math::fpepsilon);
+	//currentWorld->worldSpawnPoint.y++;//to spawn on top of the block
 	//to spawn in the middle of the block
 	currentWorld->finish();
 }

@@ -41,6 +41,8 @@ resolutionTexture* armorLegTextures[armorTierCount]{};
 resolutionTexture* chatButtonTexture = nullptr;
 resolutionTexture* settingsButtonTexture = nullptr;
 resolutionTexture* inventoryButtonTexture = nullptr;
+resolutionTexture* biomeTexture = nullptr;
+resolutionTexture* tempMapTexture = nullptr;
 
 resolutionTexture* boatTextures[normalTreeTypeCount];
 std::vector<resolutionTexture* > destroyStageTextures = std::vector<resolutionTexture* >();

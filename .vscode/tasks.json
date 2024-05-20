@@ -10,7 +10,8 @@
             "label": "make",
             "type": "shell",
             "windows": {
-                "command": "ninja.exe -j12"
+                //spare one processor for usage so we can keep coding while compiling
+                "command": "ninja.exe -j11"
             },
             "linux": {
                 "command": "make -j$((`nproc`))"

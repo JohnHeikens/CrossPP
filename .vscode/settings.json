@@ -1,6 +1,6 @@
 {
     //this has to match perfectly! either Release or Debug
-    "buildType": "Debug",
+    "buildType": "Release",
     "C_Cpp.errorSquiggles": "enabled",
     //"dotnet.defaultSolution": "disable"
     "cmake.generator": "Ninja",
@@ -98,7 +98,9 @@
         "stack": "cpp",
         "unordered_set": "cpp",
         "cfenv": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "__memory": "cpp",
+        "typeindex": "cpp"
     },
     
     //"cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe"

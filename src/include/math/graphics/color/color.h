@@ -35,9 +35,8 @@ struct colortn : public vectn<t, channelCount>
 	constexpr colortn(const colortn &other) = default;
 	constexpr colortn &operator=(const colortn &other) = default;
 
-	constexpr colortn(ccolort &c, const t &a) : vectn<t, channelCount>(c)
+	constexpr colortn(ccolort &c, const t &a) : vectn<t, channelCount>(c.axis[0], c.axis[1], c.axis[2], a)
 	{
-		this->a() = a;
 	}
 	constexpr colortn(const t &a, const t &r, const t &g, const t &b)
 	{

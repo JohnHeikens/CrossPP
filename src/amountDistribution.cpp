@@ -2,6 +2,7 @@
 #include "constantAmountDistribution.h"
 #include "uniformAmountDistribution.h"
 #include "binomialAmountDistribution.h"
+#include "filesystem/jsonReader.h"
 amountDistribution* parseMinimumAndMaximum(const jsonContainer& container)
 {
 	cint typeIndex = container.getChildIndex(std::wstring(L"type"));

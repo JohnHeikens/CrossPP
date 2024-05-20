@@ -19,13 +19,13 @@
 #include "filesystem/fileio.h"
 #include "filesystem/textfile.h"
 #include "filesystem/sfmlInputStream.h"
+#include "folderList.h"
+#include <regex>
 
-std::vector<soundCollection *> globalSoundCollectionList = std::vector<soundCollection *>();
+std::unordered_map<std::wstring, audioCollection *> globalSoundCollectionList = std::unordered_map<std::wstring, audioCollection *>();
 
 soundCollection::soundCollection()
 {
-	soundCollectionID = (int)globalSoundCollectionList.size();
-	globalSoundCollectionList.push_back(this);
 	audioToChooseFrom = std::vector<std::shared_ptr<sf::SoundBuffer>>();
 }
 
@@ -41,6 +41,12 @@ void soundCollection::addSoundCollection(const soundCollection &collection)
 
 void audioCollection::addAudioFileName(const stdPath &path)
 {
+	key = path.lexically_relative(generalSoundFolder).wstring(); // - generalSoundFolder;
+
+	key = std::regex_replace(key, std::wregex(L"\\/|\\\\"), L".");
+	//key.replace(key.begin(), key.end(), stdPath::preferred_separator, L'.');
+
+	globalSoundCollectionList[key] = this;
 	bool loaded = false;
 	stdPath defaultPath = path;
 	defaultPath += L".ogg";
@@ -76,23 +82,22 @@ void audioCollection::addAudioFile(const stdPath &path)
 
 void soundCollection::addAudioFile(const stdPath &path)
 {
-    const auto buffer = std::make_shared<sf::SoundBuffer>();
-    //this way, even on android we can read from an actual file instead of the internal APK storage
-    auto stream = sfmlInputStream(std::make_shared<std::ifstream>(path, getOpenMode(false)));
+	const auto buffer = std::make_shared<sf::SoundBuffer>();
+	// this way, even on android we can read from an actual file instead of the internal APK storage
+	auto stream = sfmlInputStream(std::make_shared<std::ifstream>(path, getOpenMode(false)));
 
-    //std::string data = readAllText(path);
+	// std::string data = readAllText(path);
 
-    //std::ifstream s(path, getOpenMode(false));
+	// std::ifstream s(path, getOpenMode(false));
 
-    //s.write(text.c_str(), (std::streamsize)text.size());
-    //s.close();
-    //str = std::ifstream(path,fileOpenMode::read)
-    //sf::FileInputStream str;
-    //str.open(path);
+	// s.write(text.c_str(), (std::streamsize)text.size());
+	// s.close();
+	// str = std::ifstream(path,fileOpenMode::read)
+	// sf::FileInputStream str;
+	// str.open(path);
 
-
-    //sf::InputStream str
-    buffer->loadFromStream(stream);
+	// sf::InputStream str
+	buffer->loadFromStream(stream);
 	audioToChooseFrom.push_back(buffer);
 }
 
@@ -111,24 +116,18 @@ std::shared_ptr<sound2d> soundCollection::playSound(csize_t &index, tickableBloc
 	const dimension *soundDimension = containerIn->rootDimension;
 	cvec2 &soundPosition = containerIn->containerToRootTransform.multPointMatrix(position);
 	const auto &players = currentServer->getPlayersInRadius(soundDimension, soundPosition, soundLoadRange);
-	soundPacket packet = soundPacket(position, soundCollectionID, (int)index, volume, pitch);
+	soundPacket packet = soundPacket(position, key, (int)index, volume, pitch);
 	for (const auto &p : players)
 	{
 		p->screen.dataToSend.push_back(packet);
 	}
 
-	// if (containerIn->rootDimension == currentPlayableCharachter->newDimension)
-	//{
-	//	std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(audioToChooseFrom[index].get(), position, volume, pitch, true);
-	//	handler->playAudio(soundToPlay);
-	//	return soundToPlay;
-	// }
 	return nullptr;
 }
 
 std::shared_ptr<sound2d> soundCollection::playSound(csize_t &index, cfp &volume, cfp &pitch)
 {
-	std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(audioToChooseFrom[index].get(), cvec2(), volume, pitch, false);
+	std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(audioToChooseFrom[index], cvec2(), volume, pitch, false);
 	handler->playAudio(soundToPlay);
 	return soundToPlay;
 }

@@ -3,7 +3,7 @@
 #include "array/arraynd/arraynd.h"
 #include "math/graphics/color/colorPalette.h"
 
-struct texture : public virtual colorBrushSizeT, public array2d<colortn<colorChannel, bgraColorChannelCount>>
+struct texture : public colorBrushSizeT, public array2d<colortn<colorChannel, bgraColorChannelCount>>
 {
 public:
 	typedef array2d<colortn<colorChannel, bgraColorChannelCount>> base;
@@ -69,9 +69,11 @@ public:
 
 	void Fade(cfp &weight, const color &fadeto) const;
 
-	virtual ~texture() override
-	{
-	}
+	//textures should also get deleted
+
+	//virtual ~texture() override
+	//{
+	//}
 };
 
 veci2 getImageSize(const stdPath &path);

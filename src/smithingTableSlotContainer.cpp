@@ -5,6 +5,8 @@
 #include "human.h"
 #include "soundList.h"
 #include "dimension.h"
+#include "stackDivider.h"
+
 smithingTableSlotContainer::smithingTableSlotContainer()
 {
 	uiTexture = loadTextureFromResourcePack(containerTextureFolder / std::wstring(L"smithing.png"));

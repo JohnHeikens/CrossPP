@@ -10,8 +10,7 @@ struct alphaMask final :public colorBrush
 	inline color getValue(cvec2& pos) const
 	{
 		const color c = baseBrush.getValue(pos);
-		const colorChannel& alpha = alphaTex.getValue(pos).a();
-		return color(c, alpha);
+		return color(c, alphaTex.getValue(pos).a());
 	}
 
 };

@@ -85,9 +85,9 @@ bool clientInput::serialize(nbtSerializer &s)
 	serializeNBTValue(s, L"mouse position", mousePositionPixels);
 	if (s.push(L"mouse buttons"))
 	{
-		s.serializeArray(L"clicked", (sbyte*)clicked, (int)sf::Mouse::ButtonCount);
-		s.serializeArray(L"released", (sbyte*)clickReleased, (int)sf::Mouse::ButtonCount);
-		s.serializeArray(L"holding", (sbyte*)holding, (int)sf::Mouse::ButtonCount);
+		s.serializeArray(L"clicked", (sbyte*)clicked, (size_t)sf::Mouse::ButtonCount);
+		s.serializeArray(L"released", (sbyte*)clickReleased, (size_t)sf::Mouse::ButtonCount);
+		s.serializeArray(L"holding", (sbyte*)holding, (size_t)sf::Mouse::ButtonCount);
 		s.serializeValue(L"scrolldelta", scrollDelta);
 		s.pop();
 	}

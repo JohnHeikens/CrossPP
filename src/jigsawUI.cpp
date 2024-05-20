@@ -47,7 +47,7 @@ void jigsawUI::render(cveci2& position, const texture& renderTarget)
 }
 void jigsawUI::mouseDown(cveci2& position, cmb& button)
 {
-	human* currentHuman = ((gameControl*)parent)->socket.player;
+	human* currentHuman = ((gameControl*)parent)->player;
 	control* highestChild = getHighestChild(position);
 	if (highestChild == jointTypeButton)
 	{

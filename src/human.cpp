@@ -120,9 +120,14 @@ constexpr int pickUpDelayInTicks = ticksPerRealLifeSecond / 2;//2 seconds
 
 void human::tick()
 {
+	//clear decisions
+	wantsToStartUsing = false;
+	wantsToKeepUsing = false;
+	wantsToStopUsing = false;
 	humanoid::tick();
 	updateSelection();
-	entity* selectedEntity = selectedUUID ? dimensionIn->findUUID(position, armRange + mobSizeMargin, selectedUUID) : nullptr;
+
+	entity* selectedEntity = selectedUUID ? dimensionIn->findUUID(position, humanArmRange + mobSizeMargin, selectedUUID) : nullptr;
 	if (currentGameMode != gameModeID::spectator) {
 		pickUpFloatingSlots();
 	}
@@ -299,10 +304,11 @@ void human::tick()
 						{
 							sleeping = true;
 							cvec2 middlePosition = cvec2(selectedBlockPosition.x + getOtherPartRelativeLocation(selectedBlockID, data->isPart0, data->directionFacing).x * 0.5 + 0.5, selectedBlockPosition.y + bedHitboxHeight + math::fpepsilon);
+							cvec2& absolute = selectedBlockContainer->containerToRootTransform.multPointMatrix(middlePosition);
 							//set respawn point
-							currentWorld->worldSpawnPoint = middlePosition;
+							currentWorld->worldSpawnPoint = absolute;
 							currentWorld->worldSpawnDimension = dimensionIn->identifier;
-							teleportTo(dimensionIn, selectedBlockContainer->containerToRootTransform.multPointMatrix(middlePosition), false);
+							teleportTo(dimensionIn, absolute, false);
 							goto rightClickUsed;
 						}
 					}
@@ -751,7 +757,9 @@ void human::onItemRightClick(itemStack& stackIn)
 		//check if the selected block is a log
 		if (isTreeType(selectedBlock) && getTreeItemType(selectedBlock) == treeItemTypeID::log)
 		{
-			selectedBlockContainer->setBlockID(selectedBlockPosition, (blockID)((int)selectedBlock + 1), chunkLoadLevel::updateLoaded);;
+			//caution! data will be deleted once we setBlockWithData
+			facingData* data = dynamic_cast<facingData*>(selectedBlockContainer->getBlockData(selectedBlockPosition));
+			selectedBlockContainer->setBlockWithData(selectedBlockPosition, (blockID)((int)selectedBlock + 1), new facingData(data->directionFacing), chunkLoadLevel::updateLoaded);;
 			stripLogSound->playRandomSound(selectedBlockContainer, exactBlockIntersection);
 
 			decreaseDurability(stackIn, 1, exactBlockIntersection);
@@ -909,7 +917,7 @@ void human::onItemRightClick(itemStack& stackIn)
 				entity* summonedEntity = summonEntity(mobToSpawn, selectedBlockContainer, exactBlockIntersection);
 				if (selectedUUID)
 				{
-					entity* e = selectedBlockContainer->findUUID(position, armRange + mobSizeMargin, selectedUUID);
+					entity* e = selectedBlockContainer->findUUID(position, humanArmRange + mobSizeMargin, selectedUUID);
 					if (e && isRidable(e->entityType))
 					{
 						ridableEntity* selectedRidable = (ridableEntity*)e;

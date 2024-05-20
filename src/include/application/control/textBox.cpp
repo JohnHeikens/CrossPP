@@ -23,7 +23,8 @@ void textBox::render(cveci2 &position, const texture &renderTarget)
 void textBox::enterText(cuint &uniCode)
 {
 	checkCursorIndex();
-	if (multiLine || !is_in((wchar_t)uniCode, L'\n', L'\r', L'\b'))
+	if (!is_in((wchar_t)uniCode, L'\b') &&
+		(multiLine || !is_in((wchar_t)uniCode, L'\n', L'\r')))
 	{
 		text.insert(cursorIndex, 1, (wchar_t)uniCode);
 		cursorIndex++;

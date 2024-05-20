@@ -7,13 +7,19 @@
 #include "math/vector/vectn.h"
 #include "math/uuid.h"
 
-template <typename t>
-struct membuf : std::basic_streambuf<t>
+struct membuf : std::streambuf 
 {
-	inline membuf(t *const &begin, t *const &end)
-	{
-		this->setg(begin, begin, end);
-	}
+    membuf(char const* base, size_t size) {
+        char* p(const_cast<char*>(base));
+        this->setg(p, p, p + size);
+    }
+};
+
+struct imemstream: virtual membuf, std::istream {
+    imemstream(char const* base, size_t size)
+        : membuf(base, size)
+        , std::istream(static_cast<std::streambuf*>(this)) {
+    }
 };
 
 struct streamBaseInterface

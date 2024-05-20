@@ -1,5 +1,5 @@
 #pragma once
-#include "application/control/form.h"
+#include "application/control/form/form.h"
 #include "application/control/button.h"
 #include "application/control/pictureBox.h"
 #include "application/control/label.h"

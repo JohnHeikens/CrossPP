@@ -20,7 +20,7 @@
 #include "constants.h"
 #include "application/application.h"
 #include "application/control/control.h"
-#include "application/control/form.h"
+#include "application/control/form/form.h"
 #include "globalFunctions.h"
 #include "math/graphics/texture.h"
 #include "math/random/random.h"
@@ -57,8 +57,6 @@ std::vector<furnaceRecipe*> furnaceRecipes = std::vector<furnaceRecipe*>();
 
 soundHandler2d* handler;
 
-//entity* currentPlayableCharachter = nullptr;
-
 constexpr int normalSmeltingTime = 10 * ticksPerRealLifeSecond;
 
 world* currentWorld = nullptr;
@@ -68,7 +66,7 @@ std::mt19937 currentRandom;
 
 gameForm::~gameForm()
 {
-
+	server::closeAllPorts();
 	for (size_t i = 0; i < craftingRecipes.size(); i++)
 	{
 		delete craftingRecipes[i];
@@ -169,9 +167,9 @@ gameForm::gameForm() :form()
 void gameForm::render(cveci2& position, const texture& renderTarget)
 {
 	//the game will update music for itself, depending on the situation
-	if (focusedChild != currentClient)
+	if (!currentClient->visible)
 	{
-		updateMusic(mainMenuBackgroundMusic);
+		updateMusic(mainMenuBackgroundMusic.get());
 	}
 	handler->update(currentClient->earPosition, hearingRange, settings::soundSettings::volume);
 

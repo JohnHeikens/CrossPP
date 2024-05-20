@@ -1,6 +1,7 @@
 #pragma once
 #include "EntityAI.h"
 #include "taskAI.h"
+//a list of tasks. task 0 is the most important
 struct taskList : entityAI
 {
 	int executingTaskIndex = -1;

@@ -1,5 +1,5 @@
 #pragma once
-#include "math/graphics/graphics.h"
+#include "math/graphics/texture.h"
 #include "transformbrush.h"
 #include "math/graphics/resolutiontexture.h"
 #include "math/graphics/color/color.h"

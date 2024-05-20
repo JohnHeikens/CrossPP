@@ -43,7 +43,7 @@ void stemPlantData::attemptToGrowFruit(tickableBlockContainer* containerIn, cvec
 	cint stemPlantType = (int)containerIn->getBlockID(position) - (int)blockID::melon_stem;
 	//grow a block on the stem
 	std::vector<veci2> possibilities = std::vector<veci2>();
-	for (int i = 0; i < directionCount1D; i++)
+	for (fsize_t i = 0; i < directionCount1D; i++)
 	{
 		cveci2& absoluteCheckPosition = position + directionVectors2D[i];
 		if (containerIn->getBlockID(absoluteCheckPosition) == blockID::air)

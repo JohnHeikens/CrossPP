@@ -13,7 +13,6 @@
 #include "math/uuid.h"
 #include "math/vector/vectn.h"
 #include "human.h"
-#include "fpng.h"
 #include <thread>
 #include <vector>
 #include <SFML/Network/SocketSelector.hpp>
@@ -66,7 +65,10 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 	if (clientOSName == L"Android")
 	{
 		screen->addTouchInput();
+		encoder.shouldCompress = socket->getRemoteAddress() != sf::IpAddress::LocalHost;
 	}
+	//enable to debug compression
+	//encoder.shouldCompress = true;
 
 	rectanglei2 screenRect = rectanglei2();
 	serializeNBTValue(inNBTSerializer, L"screenSize", screenRect.size);
@@ -74,7 +76,7 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 
 	crectangle2 &relativeHitbox = player->calculateHitBox();
 
-	player->position = cvec2(currentWorld->worldSpawnPoint.x + 0.5, currentWorld->worldSpawnPoint.y) - relativeHitbox.pos0 + cvec2(relativeHitbox.size.x * -0.5, 0);
+	player->position = currentWorld->worldSpawnPoint;
 	player->newPosition = player->position;
 
 	player->identifier = playerUUID;
@@ -111,7 +113,9 @@ void renderAsync(playerSocket *socket)
 		{
 			delete currentRenderTarget;
 		}
-		currentRenderTarget = new texture(socket->screen->rect.size);
+		currentRenderTarget = new texture(socket->screen->rect.size, false);
+		//this way it will not be transparent
+		currentRenderTarget->fill(colorPalette::black);
 	}
 	// we don't have to set the new render texture to active because its context is active already
 	// newRenderResult.setActive(true);
@@ -160,6 +164,8 @@ void renderAsync(playerSocket *socket)
 		}
 		outSerializer->pop();
 	}
+	
+	socket->screen->serializeMusicPreference(*outSerializer);
 
 	socket->screen->dataToSend.clear();
 
@@ -220,6 +226,7 @@ void renderAsync(playerSocket *socket)
 
 void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSerializer *s)
 {
+	socket->sending = true;
 	setCurrentThreadName(L"screen compresser for " + socket->player->name);
 	// sf::Context &currentContext = socket->contexts[thread1DoubleBufferIndex];
 	texture *&currentRenderResult = socket->buffer[1];
@@ -245,22 +252,17 @@ void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSeria
 
 	// uint pixelCount = i.getSize().x * i.getSize().y;
 
-	const textureRGB &texWithoutAlpha = textureRGB(currentRenderResult->size);
-	const colorRGB c = colorRGB();
-	colorRGB *ptr = texWithoutAlpha.baseArray;
-	// color *imagePtr = (color *)i.getPixelsPtr();
-	for (const color &c : *currentRenderResult)
-	{
-		*ptr++ = colorRGB(c);
-	}
-	const textureRGB &differenceTex = socket->encoder.addFrame(texWithoutAlpha);
+	//const textureRGB &texWithoutAlpha = textureRGB(currentRenderResult->size);
+	//const colorRGB c = colorRGB();
+	//colorRGB *ptr = texWithoutAlpha.baseArray;
+	//// color *imagePtr = (color *)i.getPixelsPtr();
+	//for (const color &c : *currentRenderResult)
+	//{
+	//	*ptr++ = colorRGB(c);
+	//}
+	socket->encoder.addFrame(*currentRenderResult, *s);
 
-	std::vector<byte> compressedScreen;
-	// std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
-	fpng::fpng_encode_image_to_memory(differenceTex.baseArray, currentRenderResult->size.x, currentRenderResult->size.y, rgbColorChannelCount, compressedScreen);
 
-	serializeNBTValue(*s, L"compressedScreen", compressedScreen);
-	socket->encoder.serializeMotionVectors(*s);
 
 	delete s;
 	// TODO: video streaming
@@ -283,6 +285,7 @@ void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSeria
 	
 	delete compound;
 	socket->s.sendPacket(); });
+	socket->sending = false;
 }
 
 // void sendPacketAsync(playerSocket* socket) {

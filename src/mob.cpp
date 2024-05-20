@@ -34,7 +34,7 @@ constexpr fp swimSpeed = 5.612f;
 
 entity *mob::getSelectedEntity()
 {
-	return selectedUUID ? dimensionIn->findUUID(position, armRange + mobSizeMargin, selectedUUID) : nullptr;
+	return selectedUUID ? dimensionIn->findUUID(position, getArmRange() + mobSizeMargin, selectedUUID) : nullptr;
 }
 
 int mob::getDefencePoints() const
@@ -103,7 +103,7 @@ void mob::tick()
 	{
 		if (selectedUUID)
 		{
-			entity *entityToAttack = dimensionIn->findUUID(position, armRange + mobSizeMargin, selectedUUID);
+			entity *entityToAttack = dimensionIn->findUUID(position, getArmRange() + mobSizeMargin, selectedUUID);
 			if (entityToAttack)
 			{
 				// cooldown
@@ -153,8 +153,8 @@ void mob::tick()
 							case toolTypeID::axe:
 							case toolTypeID::shovel:
 								durabilityDecrease *= 2;
-                                default:
-                                    break;
+							default:
+								break;
 							}
 						}
 						if (isHumanoid(entityType))
@@ -284,7 +284,7 @@ void mob::tick()
 			(entityType == entityID::human && ((human *)this)->currentGameMode == gameModeID::spectator)
 				? ((human *)this)->spectatorSpeed
 				: ((mobData *)entityDataList[entityType])->flyingSpeed;
-				
+
 		if (wantsToSprint)
 		{
 			MovementSpeed *= 2;
@@ -402,7 +402,7 @@ void mob::tick()
 		currentHuman->addExhaustion(exhaustionIncrease);
 	}
 
-	entity *selectedEntity = selectedUUID ? dimensionIn->findUUID(position, armRange + mobSizeMargin, selectedUUID) : nullptr;
+	entity *selectedEntity = selectedUUID ? dimensionIn->findUUID(position, getArmRange() + mobSizeMargin, selectedUUID) : nullptr;
 	if (UUIDRidingOn)
 	{
 		entity *entityRidingOn = dimensionIn->findUUID(position, ridingEntitySearchRadius, UUIDRidingOn);
@@ -462,7 +462,6 @@ void mob::onDeath()
 			mobDamageSource *source = (mobDamageSource *)it->get();
 
 			if (entity *entityFrom = dimensionIn->findUUID(position, 0x40, source->uuidFrom))
-			// if (source->uuidFrom == currentPlayableCharachter->identifier)
 			{
 				if (entityFrom->entityType == entityID::human)
 				{
@@ -687,13 +686,27 @@ void mob::updateHeadAngle() const
 	}
 	head->changed = true;
 }
+fp mob::getArmRange() const
+{
+	constexpr fp mobArmRange = 3.5;
+	switch (entityType)
+	{
+	case entityID::human:
+		return humanArmRange;
+		break;
+	default:
+		return mobArmRange;
+		break;
+	}
+	return mobArmRange;
+}
 void mob::updateSelection()
 {
 	updateBodyParts();
 	cvec2 eyePosition = getHeadPosition();
 	cvec2 relative = lookingAt - eyePosition;
 	cvec2 relativeNormalized = relative.normalized();
-	cfp distance = math::minimum(relative.length(), armRange);
+	cfp distance = math::minimum(relative.length(), getArmRange());
 	cvec2 lookingAtShortened = eyePosition + relativeNormalized * distance;
 	if (!dimensionIn->findRaycastRecursive(eyePosition, lookingAtShortened, selectedBlockPosition, adjacentBlockPosition, exactBlockIntersection, selectedBlockContainer))
 	{
@@ -714,7 +727,7 @@ void mob::updateSelection()
 
 	cfp marginRange = (fp)chunkSize.x; // for if the 'position' is their feet and you want to hit their head
 
-	std::vector<entity *> nearEntities = dimensionIn->findNearEntities(position, armRange + marginRange);
+	std::vector<entity *> nearEntities = dimensionIn->findNearEntities(position, getArmRange() + marginRange);
 	for (entity *e : nearEntities)
 	{
 		if (canHit(e->entityType))

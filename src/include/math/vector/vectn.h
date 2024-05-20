@@ -74,6 +74,21 @@ public:
 
     baseVecConstructor(2)
 };
+template<typename t>
+struct baseVec<t, 4> {
+public:
+    union {
+        std::array<t, 4> axis;
+        struct {
+            t x;
+            t y;
+        };
+        //for bitwise comparisons etc
+        uint uintValue;
+    };
+
+    baseVecConstructor(4)
+};
 
 template<typename t, fsize_t n>
 // alignment is already a power of two
@@ -382,13 +397,14 @@ struct vectn
         return false;
     }
 
-
+#pragma optimize ("", on)
 
 #define newMacro(copySize) vectn result = vectn();
 
     addOperators(newMacro, vectn, constexpr)
 
 #undef newMacro
+#pragma optimize ("", off)
 };
 
 addTemplateTypes(vec)

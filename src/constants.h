@@ -1,13 +1,12 @@
 #pragma once
 #include <string>
-#include "math/timemath.h"
 #include <random>
 #include "globalFunctions.h"
 #include "array/wstringFunctions.h"
 #include "math/direction.h"
 #include "math/mathFunctions.h"
 
-constexpr int currentFileVersionID = 121;
+constexpr int currentFileVersionID = 122;
 void handleError(const std::wstring& message);
 
 //forward declarations
@@ -264,7 +263,8 @@ constexpr fp fenceGateCollisionHeight = JumpHeight + 0.1;
 
 constexpr fp collisionCheckMargin = fenceGateCollisionHeight - 1;
 
-constexpr fp snowTemperatureTreshold = 0.35f;//there will be snow in humid cold areas
+//below 0 it starts freezing
+constexpr fp snowTemperatureTreshold = 0;//there will be snow in humid cold areas
 constexpr fp snowHeight = 0x20;//there will be snow higher than this
 
 
@@ -332,11 +332,11 @@ constexpr fp maxEatingParticleSpeed = maxFloatingSlotSpeed;
 constexpr int openDoorDrawPixels = 3;
 constexpr fp openDoorBlockSize = openDoorDrawPixels / (fp)blockTextureSize;
 
-constexpr fp armRange = 4;//4 blocks range
+constexpr fp humanArmRange = 4;//4 blocks range
 constexpr fp mobSizeMargin = 0x10;//extra range for the arm to check
 
 constexpr fp ridingEntitySearchRadius = 0x8 + mobSizeMargin;
-constexpr fp selectedEntitySearchRadius = armRange + mobSizeMargin;
+constexpr fp selectedEntitySearchRadius = humanArmRange + mobSizeMargin;
 constexpr fp fleeingSearchRadius = 0x10 + mobSizeMargin;
 
 constexpr fp brewingStandBaseHeight = 0x4 / (fp)blockTextureSize;
@@ -375,8 +375,8 @@ const std::wstring jsonFileExtension = std::wstring(L".json");
 
 extern std::mt19937 worldRandom;
 extern std::mt19937 currentRandom;
-extern microseconds lastTickTimeMicroseconds;
-extern seconds lastTickTime;
+//extern microseconds lastTickTimeMicroseconds;
+//extern seconds lastTickTime;
 
 //template<typename t>
 //std::wstring getClassName(const t& instance);

@@ -1,6 +1,6 @@
 #pragma once
 #include "itemStack.h"
-#include "application/control/form.h"
+#include "application/control/form/form.h"
 #include "stackDivider.h"
 
 struct inventory;

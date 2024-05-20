@@ -2,6 +2,7 @@
 #include "recipe.h"
 #include "human.h"
 #include "dimension.h"
+#include "stackDivider.h"
 void craftableSlotContainer::substractCraftingIngredients()
 {
 	for (uiSlotContainer* container : craftingInputContainers)

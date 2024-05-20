@@ -1,5 +1,5 @@
 #include "math/rectangle/rectangletn.h"
-#include "graphics/graphics.h"
+#include "graphics/texture.h"
 #include "graphics/brush/brushes.h"
 #pragma once
 struct bodyPart2D : IDestructable

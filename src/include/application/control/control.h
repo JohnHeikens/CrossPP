@@ -109,12 +109,12 @@ public:
 	void addChildren(std::initializer_list<control*> children);
 
 	template<typename childListType>
-	void layoutTableCentered(const childListType& children, cveci2& childSize = buttonSize, cint& margin = buttonMargin) {
+	static void layoutTableCentered(crectanglei2& rect, const childListType& controls, cveci2& childSize = buttonSize, cint& margin = buttonMargin) {
 		cint& offsetStep = childSize.y + margin;
 		//using end - begin instead of size() because fastlist doesn't have size()
-		cveci2& tablePos = rect.rectPos0Centered(cveci2(childSize.x, childSize.y + offsetStep * ((int)(children.end() - children.begin()) - 1)));
+		cveci2& tablePos = rect.rectPos0Centered(cveci2(childSize.x, childSize.y + offsetStep * ((int)(controls.end() - controls.begin()) - 1)));
 		rectanglei2 currentChildRect = rectanglei2(tablePos, childSize);
-		for (auto c : children) {
+		for (auto c : controls) {
 			c->layout(currentChildRect);
 			currentChildRect.y += offsetStep;
 		}

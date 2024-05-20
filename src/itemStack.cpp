@@ -176,27 +176,33 @@ void itemStack::renderSingleItem(const gameRenderData &targetData) const {
         crectangle2 textureRect = crectangle2(textureToUse.getClientRect());
 
         if (enchantments.size() || (stackItemID == itemID::enchanted_golden_apple)) {
+            //repeat the enchanted item texture
             const auto &repeater = repeatingBrush<resolutionTexture>(*enchantedItemTexture);
+            //move the enchantment glint over time; one texture size up every 5 seconds
             const auto &transformer = transformBrush<repeatingBrush<resolutionTexture>>(
                     mat3x3::translate(cvec2(0, (currentWorld->ticksSinceStart /
                                                 ((fp) ticksPerRealLifeSecond * 5)) *
                                                enchantedItemTexture->defaultSize.y)), repeater);
             //keep this apart, so the reference is not destroyed
+
+            //make the glint transparent (set alpha channel)
             const auto &transparencyBrush = solidColorBrush(
                     color((colorChannel) (color::maxValue * 0.4), 0));
-            const auto &transparencyMask = alphaMask<solidColorBrush, decltype(transformer)>(
+            const auto &glintMask = alphaMask<solidColorBrush, decltype(transformer)>(
                     transparencyBrush, transformer);
 
-            const auto &mixer = colorMixer<decltype(transparencyMask), resolutionTexture>(
-                    transparencyMask, textureToUse);
+            //now mix this color with the item texture
+            const auto &mixer = colorMixer<decltype(glintMask), resolutionTexture>(
+                    glintMask, textureToUse);
 
-            const auto &screenMask = alphaMask<resolutionTexture, decltype(mixer)>(textureToUse,
+            //'cut out' the final product based on the original item texture
+            const auto &textureMask = alphaMask<resolutionTexture, decltype(mixer)>(textureToUse,
                                                                                    mixer);
 
             fillTransparentRectangle(textureRect, targetData.worldToRenderTargetTransform,
-                                     screenMask, targetData.renderTarget);
+                                     textureMask, targetData.renderTarget);
         } else {
-            if (isBlockItem(stackItemID) && !isDoubleBlock((blockID) stackItemID)) {
+            if (renderAsBlock(stackItemID)) {
                 //transform from block container to texture
                 cmat3x3 &matrix = mat3x3::cross(targetData.worldToRenderTargetTransform,
                                                 mat3x3::fromRectToRect(crectangle2(0, 0, 1, 1),

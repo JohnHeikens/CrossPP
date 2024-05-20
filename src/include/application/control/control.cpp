@@ -288,7 +288,7 @@ void control::processEvent(const sf::Event &event) {
                 cveci2(event.mouseButton.x, event.mouseButton.y),
                 (mb) event.mouseButton.button);
     } else if (event.type == sf::Event::MouseWheelScrolled) {
-        scroll(cveci2(event.mouseButton.x, event.mouseButton.y),
+        scroll(cveci2(event.mouseWheelScroll.x, event.mouseWheelScroll.y),
                          (int) event.mouseWheelScroll.delta);
     } else if (event.type == sf::Event::Resized) {
         layout(rectanglei2(cveci2(), cveci2(event.size.width,

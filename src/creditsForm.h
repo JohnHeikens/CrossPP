@@ -1,6 +1,6 @@
 #pragma once
 #include "math/timemath.h"
-#include "application/control/form.h"
+#include "application/control/form/form.h"
 struct creditsForm : form
 {
 	microseconds timeStartedReading = 0;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/control/form.h"
+#include "application/control/form/form.h"
 #include "structureBlockUI.h"
 #include "jigsawUI.h"
 #include "inventoryForm.h"
@@ -50,12 +50,12 @@ struct gameControl : form, clientInput {
     bool wantsClipboardInput = false;
 
     //rendering
+    //only use the camera position for rendering!
     vec2 cameraPosition = vec2();
 
     vec2 visibleRange = vec2(defaultVisibleRangeXWalk);
 
     veci2 unFocusedMousePosition = veci2();
-    vec2 currentMousePositionWorld = vec2();
     //veci2 mousePositionPixels = veci2();
 
     //veci2 newMousePositionPixels = veci2();
@@ -101,19 +101,21 @@ struct gameControl : form, clientInput {
 
     void processInput();
 
+    void updateTransforms(cvec2& headPosition);
+
     void renderGame(crectanglei2 &rect, const texture &renderTarget, cbool &renderHUD);
 
     void commandLineKeyPressed(const keyEventArgs& e);
 
+    void serializeMusicPreference(nbtSerializer& serializer);
+
     gameRenderData getRenderData(const texture &renderTarget, cfp &secondsOffset = 0);
 
     mat3x3 getWorldToScreenTransform(cvec2 &middleWorldPosition, cfp &pixelsPerBlock);
-
+    bool getWorldFocus() const;
 };
 
 extern std::mt19937 currentRandom;
-
-extern std::shared_ptr<musicCollection> currentlyPlayingCollection;
 
 void renderIcons(const std::vector<fp> &values, const std::vector<rectangle2> &iconFullTextureRects,
                  const std::vector<rectangle2> &iconHalfTextureRects, crectangle2 &firstIconRect,

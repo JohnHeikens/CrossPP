@@ -221,6 +221,7 @@ enum class blockID :int
 	clay,
 	dirt,
 	coarse_dirt,
+	bonebed_dirt,
 
 	grass_path,
 	grass_block,

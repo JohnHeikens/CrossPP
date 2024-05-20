@@ -66,7 +66,7 @@ const texture& resolutionTexture::mipmap(mat3x3& transform, rectangle2& textureR
 
 texture resolutionTexture::getHalfResolution(const texture& doubleResolution)
 {
-	texture result = texture(doubleResolution.size / 2);
+	texture result(doubleResolution.size / 2);
 
 	//average colors
 	for (fsize_t y = 0; y < result.size.y; y++)
@@ -90,7 +90,7 @@ texture resolutionTexture::getHalfResolution(const texture& doubleResolution)
 
 texture resolutionTexture::getDoubleResolution(const texture& halfResolution)
 {
-	texture result = texture(halfResolution.size * 2);
+	texture result(halfResolution.size * 2);
 	fillTransformedTexture(crectangle2(result.getClientRect()), halfResolution, result);
-	return result;
+	return std::move(result);
 }

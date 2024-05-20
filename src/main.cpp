@@ -20,6 +20,8 @@
 #include "include/optimization/stableTickLoop.h"
 #include <list>
 #include "filesystem/fileFunctions.h"
+#include "include/math/random/shufflerandom.h"
+#include <bitset>
 
 #if onWindows
 #include "windowsIncluder.h"
@@ -146,15 +148,15 @@ void showLoadingScreen()
             auto pos = getrandomPosition(currentRandom, rectangle2(vec2(size.x, size.y)));
             newBalloon.shape.setPosition(sf::Vector2f(pos.x, pos.y));
             newBalloon.shape.setFillColor(sf::Color(rand(currentRandom, bytemax), rand(currentRandom, bytemax), rand(currentRandom, bytemax)));
-            newBalloon.shape.setRadius(1);//it should start as a single pixel
+            newBalloon.shape.setRadius(1); // it should start as a single pixel
             shapes.push_front(newBalloon);
         }
-        for (auto it = shapes.begin(); it != shapes.end(); )
+        for (auto it = shapes.begin(); it != shapes.end();)
         {
             auto &balloon = *it;
             const auto &pos = balloon.shape.getPosition();
             const auto &radius = balloon.shape.getRadius();
-            const auto& diameter = radius + radius;
+            const auto &diameter = radius + radius;
             if (pos.x < -diameter || pos.y < -diameter || pos.x > size.x || pos.y > size.y)
             {
                 it = shapes.erase(it);
@@ -274,10 +276,11 @@ std::filesystem::path getCommonAppDataFolder()
 
 void loadResources()
 {
+
     setCurrentThreadName(L"resource loader");
-    
-    //std::this_thread::sleep_for(std::chrono::seconds(1000000));
-    // check if the application is installed or if we're debugging
+
+    // std::this_thread::sleep_for(std::chrono::seconds(1000000));
+    //  check if the application is installed or if we're debugging
     //
     if (onAndroid || !std::filesystem::exists(L"data"))
     { // this application is not deployed
@@ -325,6 +328,28 @@ bool mainRunning = false;
 
 int main(int argc, char *argv[])
 {
+    //typedef ushort testType;
+    //shuffleRandom<testType> testRandom(42);
+    //constexpr size_t bucketCount = 1 << (shuffleRandom<testType>::bitCount - 8);
+    //int buckets[bucketCount]{};
+    //int highBitBuckets[(1 << shuffleRandom<testType>::bitCount) / bucketCount]{};
+//
+    //for (testType i = 0; i < 0x1000; i++)
+    //{
+    //    const testType &shuffeled = testRandom.shuffle(i);
+    //    buckets[shuffeled % bucketCount]++;
+    //    highBitBuckets[shuffeled / bucketCount]++;
+    //    const testType &shuffeledback = testRandom.reverseShuffle(shuffeled);
+    //    if (shuffeledback != i)
+    //        throw;
+    //    //std::cout << i << "\t:" << shuffeled << "\t(" << std::bitset<shuffleRandom<testType>::bitCount>(shuffeled) << ")\n";
+    //}
+    //std::cout << "buckets:\n";
+    //for(size_t i = 0; i < bucketCount; i++){
+    //    std::cout << i << ":\tlow:\t" << buckets[i] << "\thigh:\t" << highBitBuckets[i] << "\n";
+    //}
+    //return 0;
+
     if (mainRunning)
     {
         std::cout

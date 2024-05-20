@@ -32,8 +32,7 @@ struct baseRect
 		pos0.~vectn<t, axisCount>();                                                                   \
 		size.~vectn<t, axisCount>();                                                                   \
 	}
-	rectConstructor(axisCount)
-    constexpr baseRect(const t &x, const t &y, const t &w, const t &h) : pos0(vect2<t>(x, y)), size( vect2<t>(w, h))
+	rectConstructor(axisCount) constexpr baseRect(const t &x, const t &y, const t &w, const t &h) : pos0(vect2<t>(x, y)), size(vect2<t>(w, h))
 	{
 	}
 };
@@ -47,7 +46,7 @@ struct baseRect<t, 0>
 			vectn<t, 1> pos0;
 			vectn<t, 1> size;
 		};
-        //no need to declare the empty struct, it'd just issue a warning
+		// no need to declare the empty struct, it'd just issue a warning
 	};
 	rectConstructor(0)
 	// constexpr baseRect() = default;
@@ -347,34 +346,36 @@ struct rectangletn : baseRect<t, axisCount>
 
 addTemplateTypes(rectangle)
 
-// An iterator over a vector of vectors.
+	// An iterator over a vector of vectors.
 
-// https://stackoverflow.com/questions/1784573/iterator-for-2d-vector
+	// https://stackoverflow.com/questions/1784573/iterator-for-2d-vector
 
-template <typename t, fsize_t axisCount>
-struct rectIteratortn
+	template <typename t, fsize_t axisCount>
+	struct rectIteratortn
 {
 public:
 	vectn<t, axisCount> pos = vectn<t, axisCount>();
-	rectangletn<t, axisCount> rect = rectangletn<t, axisCount>();
+	//rectangletn<t, axisCount> rect = rectangletn<t, axisCount>();
+	vectn<t, axisCount> pos0 = vectn<t, axisCount>();
+	vectn<t, axisCount> pos1 = vectn<t, axisCount>();
 
 	constexpr rectIteratortn() = default;
 
-	constexpr rectIteratortn(crectangletn<t, axisCount> &rect, cvectn<t, axisCount> &pos) : rect(rect), pos(pos) {}
+	constexpr rectIteratortn(crectangletn<t, axisCount> &rect, cvectn<t, axisCount> &pos) : pos0(rect.pos0), pos1(rect.pos1()), pos(pos) {}
 
 	// ++prefix operator
 	constexpr rectIteratortn &operator++()
 	{
 		for (size_t i = 0; i < axisCount; i++)
 		{
-			if ((pos[i] + 1) < (rect.pos0[i] + rect.size[i]) || (i == (axisCount - 1)))
+			if ((pos[i] + 1) < pos1[i] || (i == (axisCount - 1)))
 			{
 				++pos[i];
 				return *this;
 			}
 			else
 			{
-				pos[i] = rect.pos0[i];
+				pos[i] = pos0[i];
 			}
 		}
 		throw "";
@@ -385,7 +386,7 @@ public:
 		for (size_t i = 0; i < axisCount; i++)
 		{
 			// If we haven't reached the end of this sub-vector.
-			if ((pos[i] > rect.pos0[i]) || (i == (axisCount - 1)))
+			if ((pos[i] > pos0[i]) || (i == (axisCount - 1)))
 			{
 				// Go to the next element.
 				--pos[i];
@@ -393,7 +394,7 @@ public:
 			}
 			else
 			{
-				pos[i] = rect.pos0[i] + (rect.size[i] - 1);
+				pos[i] = pos1[i] - 1;
 			}
 		}
 	}
@@ -414,17 +415,19 @@ public:
 	}
 	constexpr bool operator==(const rectIteratortn &other) const
 	{
-		return (other.rect == rect) && (other.pos == pos);
+		return other.pos == pos;
 	}
+	// this operator is used for checking if the end is reached, so it has to be fast
+	// we shouldn't detect if we're iterating over the same rectangle
 	constexpr bool operator!=(const rectIteratortn &other) const
 	{
-		return !operator==(other);
+		return other.pos != pos;
 	}
 	constexpr const vectn<t, axisCount> &operator*() const
 	{
 		if constexpr (isDebugging)
 		{
-			if (pos[axisCount - 1] == rect.pos1()[axisCount - 1])
+			if (pos[axisCount - 1] == pos1[axisCount - 1])
 			{
 				throw "out of rectangle";
 			}

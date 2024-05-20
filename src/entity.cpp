@@ -61,16 +61,16 @@ constexpr vec2 endSpawningLocation = cvec2(endBlockSpawningOn.getX() + 0.5, endB
 constexpr int endPlatformRadius = 0x2;
 constexpr int endPlatformSpaceHeight = 0x4;
 
-extern idList<block*, blockID> blockList;
+extern idList<block *, blockID> blockList;
 
 rectangle2 entity::calculateHitBox() const
 {
 	return calculateHitBox(position);
 }
-int entity::getEffectLevel(const statusEffectID& id) const
+int entity::getEffectLevel(const statusEffectID &id) const
 {
 	int highestPotency = 0;
-	for (const statusEffect& effect : activeEffects)
+	for (const statusEffect &effect : activeEffects)
 	{
 		if (effect.identifier == id)
 		{
@@ -79,25 +79,25 @@ int entity::getEffectLevel(const statusEffectID& id) const
 	}
 	return highestPotency;
 }
-vec2 entity::getRenderOffset(const gameRenderData& targetData) const
+vec2 entity::getRenderOffset(const gameRenderData &targetData) const
 {
-	//when traveling to another dimension, don't interpolate positions
-	return dimensionIn == newDimension ? targetData.getRenderOffset(position, newPosition) : position;
+	// when traveling to another dimension, don't interpolate positions
+	return dimensionIn == newDimension ? targetData.getRenderOffset(position, newPosition) : vec2();
 }
-void entity::addSpeed(cvec2& additionalSpeed)
+void entity::addSpeed(cvec2 &additionalSpeed)
 {
 	speed += additionalSpeed;
 }
-vec2 entity::handleCollision(cvec2& otherSpeed, cfp& otherMass)
+vec2 entity::handleCollision(cvec2 &otherSpeed, cfp &otherMass)
 {
-	cfp& weight = getWeight();
-	//should collide directly ?
-	//not a reference
+	cfp &weight = getWeight();
+	// should collide directly ?
+	// not a reference
 	cvec2 oldSpeed = speed;
 	speed = getSpeedAfterCollision(cvect2<vec2>(oldSpeed, otherSpeed), vec2(weight, otherMass));
 	return getSpeedAfterCollision(cvect2<vec2>(otherSpeed, oldSpeed), vec2(otherMass, weight));
 }
-entity::entity(dimension* dimensionIn, cvec2& position, const entityID& entityType)
+entity::entity(dimension *dimensionIn, cvec2 &position, const entityID &entityType)
 {
 	this->entityType = entityType;
 	this->dimensionIn = dimensionIn;
@@ -105,14 +105,14 @@ entity::entity(dimension* dimensionIn, cvec2& position, const entityID& entityTy
 	newDimension = dimensionIn;
 	newPosition = position;
 
-	entityData* data = entityDataList[(int)entityType];
+	entityData *data = entityDataList[(int)entityType];
 
 	health = getMaxHealth();
 	relativeHitbox = data->initialRelativeHitbox;
 }
 void entity::tick()
 {
-	//remove old damage sources
+	// remove old damage sources
 	constexpr int damageRememberTime = 100;
 	for (auto it = lastDamageSources.begin(); it != lastDamageSources.end(); it++)
 	{
@@ -128,12 +128,12 @@ void entity::tick()
 
 	for (size_t i = 0; i < activeEffects.size(); i++)
 	{
-		statusEffect& effect = activeEffects[i];
+		statusEffect &effect = activeEffects[i];
 		applyStatusEffect(effect);
 		effect.ticksDuration--;
 		if (effect.ticksDuration <= 0)
 		{
-			//remove
+			// remove
 			if (effect.identifier == statusEffectID::absorption)
 			{
 				activeEffects.erase(activeEffects.begin() + i);
@@ -168,16 +168,15 @@ void entity::tick()
 
 	if (entityDataList[(int)entityType]->canGoThroughPortals)
 	{
-		if (hitboxContainsOnly(currentHitbox, { blockID::portal }))
+		if (hitboxContainsOnly(currentHitbox, {blockID::portal}))
 		{
 			if (portalCoolDown == 0)
 			{
 				if (portalTicks > 80)
 				{
-					//travel to other dimension
-					dimension* newDimension = dimensionIn->identifier == dimensionID::overworld ?
-						currentWorld->dimensions[(int)dimensionID::nether] : currentWorld->dimensions[(int)dimensionID::overworld];
-					//seek nether portal
+					// travel to other dimension
+					dimension *newDimension = dimensionIn->identifier == dimensionID::overworld ? currentWorld->dimensions[(int)dimensionID::nether] : currentWorld->dimensions[(int)dimensionID::overworld];
+					// seek nether portal
 					veci2 dimensionPosition;
 					switch (newDimension->identifier)
 					{
@@ -191,10 +190,11 @@ void entity::tick()
 						dimensionPosition = floorVector(floorVector(position / netherToOverWorldScale));
 					}
 					break;
-                        default: break;
+					default:
+						break;
 					}
-					cveci2& portalBlockPosition = newDimension->searchPortal(dimensionPosition);
-					cvec2& teleportPosition = cvec2(portalBlockPosition) + cvec2(0.5, math::fpepsilon);
+					cveci2 &portalBlockPosition = newDimension->searchPortal(dimensionPosition);
+					cvec2 &teleportPosition = cvec2(portalBlockPosition) + cvec2(0.5, math::fpepsilon);
 
 					teleportTo(newDimension, teleportPosition, false);
 					portalArriveSound->playRandomSound(newDimension, teleportPosition);
@@ -210,13 +210,13 @@ void entity::tick()
 				}
 			}
 		}
-		else if (hitboxContains(currentHitbox, { blockID::end_portal }))
+		else if (hitboxContains(currentHitbox, {blockID::end_portal}))
 		{
 			if (newDimension->identifier == dimensionID::overworld)
 			{
-				//teleporting to the end
+				// teleporting to the end
 				teleportTo(currentWorld->dimensions[(int)dimensionID::end], endSpawningLocation, false);
-				//generate obsidian platform
+				// generate obsidian platform
 				newDimension->setBlockRange(endBlockSpawningOn + cveci2(-endPlatformRadius, 0), endBlockSpawningOn + cveci2(endPlatformRadius, 0), blockID::obsidian, chunkLoadLevel::entityLoaded);
 				newDimension->setBlockRange(endBlockSpawningOn + cveci2(-endPlatformRadius, 1), endBlockSpawningOn + cveci2(endPlatformRadius, endPlatformSpaceHeight), blockID::air, chunkLoadLevel::entityLoaded);
 
@@ -225,13 +225,14 @@ void entity::tick()
 			else
 			{
 				teleportTo(currentWorld->dimensions[(size_t)currentWorld->worldSpawnDimension], currentWorld->worldSpawnPoint, false);
-				if (entityType == entityID::human && (!((human*)this)->seenCredits))
+				if (entityType == entityID::human && (!((human *)this)->seenCredits))
 				{
-					human* h = (human*)this;
+					human *h = (human *)this;
 					h->screen.startCredits = true;
 					h->seenCredits = true;
 				}
-				else {
+				else
+				{
 					portalArriveSound->playRandomSound(newDimension, newPosition);
 				}
 			}
@@ -243,24 +244,24 @@ void entity::tick()
 	}
 	if (inBlocks())
 	{
-		//suffocate
+		// suffocate
 		addDamageSource(1, std::make_shared<damageSource>(suffocationDamage));
 	}
 
 	bool addFireTicks = false;
 	bool doubleDamage = false;
-	if (hitboxContains(calculateHitBox(position), { blockID::soul_fire }))
+	if (hitboxContains(calculateHitBox(position), {blockID::soul_fire}))
 	{
 		addFireTicks = true;
 		doubleDamage = true;
 	}
-	else if (hitboxContains(calculateHitBox(position), { blockID::fire }))
+	else if (hitboxContains(calculateHitBox(position), {blockID::fire}))
 	{
 		addFireTicks = true;
 	}
 	if (isUndeadMob(entityType) && (getVisibleSunLightLevel(dimensionIn->getInternalSunLightLevel(floorVector(position + cvec2(relativeHitbox.getCenter().x, relativeHitbox.pos01().y)))) == maxLightLevel) && (fluidArea == 0))
 	{
-		if (!isHumanoid(entityType) || ((humanoid*)this)->armorSlots->slots[helmetArmorType - bootsArmorType].count == 0)
+		if (!isHumanoid(entityType) || ((humanoid *)this)->armorSlots->slots[helmetArmorType - bootsArmorType].count == 0)
 		{
 			addFireTicks = true;
 		}
@@ -270,7 +271,7 @@ void entity::tick()
 	{
 		if (!isImmuneToFire(entityType))
 		{
-			if (getFluidArea(calculateHitBox(position), { blockID::lava }) > 0)
+			if (getFluidArea(calculateHitBox(position), {blockID::lava}) > 0)
 			{
 				addDamageSource(4, std::make_shared<damageSource>(fireDamage));
 				cint initialLavaBurningTickCount = 300;
@@ -281,8 +282,8 @@ void entity::tick()
 				addFireTicks = true;
 			}
 		}
-		//dont add fire ticks when in water, but get damage from the lava
-		if (getFluidArea(calculateHitBox(position), { blockID::water }) > 0)
+		// dont add fire ticks when in water, but get damage from the lava
+		if (getFluidArea(calculateHitBox(position), {blockID::water}) > 0)
 		{
 			if (fireTicks)
 			{
@@ -301,12 +302,12 @@ void entity::tick()
 	}
 	if (fireTicks)
 	{
-		//each second
+		// each second
 		if (currentWorld->ticksSinceStart % ticksPerRealLifeSecond == 0)
 		{
 			addDamageSource(doubleDamage ? 2 : 1, std::make_shared<damageSource>(fireDamage));
 		}
-		//for if a player respawned
+		// for if a player respawned
 		fireTicks = math::maximum(fireTicks - 1, 0);
 	}
 	if (immunityFrameCount)
@@ -325,7 +326,7 @@ void entity::onDeath()
 void entity::physics()
 {
 	bool newOnGround = false;
-	cbool& oldOnGround = onGround;
+	cbool &oldOnGround = onGround;
 	vec2 positionAfterCollisions = newPosition;
 	axisCollided = vect2<bool>();
 	if (collideLevel != collisionTypeID::willNotCollide)
@@ -333,17 +334,18 @@ void entity::physics()
 		cvec2 oldSpeed = speed;
 
 		fp secondsToCalculateLeft = secondsPerTick;
-		do {
-			//newOnGround = false;
-			//check hitbox
-			//relative to speed on collision axis?
+		do
+		{
+			// newOnGround = false;
+			// check hitbox
+			// relative to speed on collision axis?
 
 			crectangle2 hitboxAfterCollisions = calculateHitBox(positionAfterCollisions);
-			//cvec2 distanceTillEndOfTick = speed * secondsToCalculateLeft;
+			// cvec2 distanceTillEndOfTick = speed * secondsToCalculateLeft;
 			collisionDataCollection data = dimensionIn->getRecursiveHitboxCollisionData(hitboxAfterCollisions, speed);
 			data.evaluate(hitboxAfterCollisions, speed, secondsToCalculateLeft);
 
-			//get real values
+			// get real values
 			constexpr fp maxStepHeight = 0.625;
 
 			if (collideLevel == collisionTypeID::willCollideTop)
@@ -353,19 +355,19 @@ void entity::physics()
 					size_t index = std::wstring::npos;
 					fp firstCollisionTime = INFINITY;
 
-					//check if another hitbox collided
+					// check if another hitbox collided
 					const fp hitbox00 = positionAfterCollisions.y + relativeHitbox.y;
 
 					for (size_t stepIndex = 0; stepIndex < data.hitboxes.size(); stepIndex++)
 					{
-						const collisionData& checkData = data.hitboxes[stepIndex];
+						const collisionData &checkData = data.hitboxes[stepIndex];
 						if ((checkData.collisionTime > math::fpepsilon) && (checkData.collisionTime < firstCollisionTime))
 						{
 							cfp collisionTop = checkData.hitboxCollidingWith.y + checkData.hitboxCollidingWith.h;
 							if ((checkData.type != collisionTypeID::willNotCollide) && (checkData.collisionTime > 0) && (checkData.collisionTime < secondsToCalculateLeft) && (collisionTop > hitbox00) && (collisionTop <= (hitbox00 + maxStepHeight)))
 							{
-								//check if covered
-								collisionEdgeData edgeToCheck = collisionEdgeData({ cvec2(checkData.hitboxCollidingWith.x,checkData.hitboxCollidingWith.w) });
+								// check if covered
+								collisionEdgeData edgeToCheck = collisionEdgeData({cvec2(checkData.hitboxCollidingWith.x, checkData.hitboxCollidingWith.w)});
 								edgeToCheck = edgeToCheck.substractCoveringEdges(data.getEdges(collisionTop, directionID::positiveY));
 
 								if (edgeToCheck.edgeInRange(cvec2((speed.x > checkData.speed.x) ? checkData.hitboxCollidingWith.x : ((checkData.hitboxCollidingWith.x + checkData.hitboxCollidingWith.w) - math::fpepsilon), math::fpepsilon)))
@@ -376,17 +378,15 @@ void entity::physics()
 							}
 						}
 					}
-					cbool allowStepCollisionType[(size_t)collisionTypeID::count]
-					{
-						false, true, true
-					};
+					cbool allowStepCollisionType[(size_t)collisionTypeID::count]{
+						false, true, true};
 					if (index != std::wstring::npos)
 					{
 						collisionData stepCollision = data.hitboxes[index];
-						//step up block
+						// step up block
 						cfp hitboxHeight = stepCollision.hitboxCollidingWith.y + stepCollision.hitboxCollidingWith.h;
 
-						//stepped up position should be positionaftercollisions
+						// stepped up position should be positionaftercollisions
 
 						cvec2 steppedUpPosition = cvec2(speed.x < stepCollision.speed.x ? (stepCollision.hitboxCollidingWith.pos1() - relativeHitbox.pos0) : (stepCollision.hitboxCollidingWith.pos01()) - relativeHitbox.pos10()) + cvec2(0, math::fpepsilon);
 
@@ -400,18 +400,16 @@ void entity::physics()
 							newOnGround = true;
 							positionAfterCollisions = steppedUpPosition;
 							secondsToCalculateLeft -= stepCollision.collisionTime;
-							continue;//don't change tickpartleft and evaluate the rest of the time at this new elevation
+							continue; // don't change tickpartleft and evaluate the rest of the time at this new elevation
 						}
 					}
 				}
 			}
 
-			cbool allowCollisionType[(size_t)collisionTypeID::count]
-			{
+			cbool allowCollisionType[(size_t)collisionTypeID::count]{
 				false,
 				false,
-				true
-			};
+				true};
 			collisionData firstCollision = data.getFirstCollision(allowCollisionType);
 
 			if (firstCollision.collisionTime < secondsToCalculateLeft)
@@ -425,7 +423,7 @@ void entity::physics()
 			if (collideLevel == collisionTypeID::willCollideTop)
 			{
 				const std::vector<collisionData> validCollisions = data.getCollisions(collisionTypeID::willCollideTop);
-				for (const collisionData& collision : validCollisions)
+				for (const collisionData &collision : validCollisions)
 				{
 					if ((speed.y < collision.speed.y) && (collision.collisionTime < firstCollision.collisionTime && collision.collisionTime < secondsToCalculateLeft) &&
 						((collision.hitboxCollidingWith.pos0.y + collision.hitboxCollidingWith.h) < positionAfterCollisions.y))
@@ -434,8 +432,8 @@ void entity::physics()
 							collision.hitboxCollidingWith.x,
 							collision.hitboxCollidingWith.y + collision.hitboxCollidingWith.h,
 							collision.hitboxCollidingWith.w, 0);
-						//check if the border is not covered up by other blocks
-						for (const collisionData& coverData : validCollisions)
+						// check if the border is not covered up by other blocks
+						for (const collisionData &coverData : validCollisions)
 						{
 							crectangle2 coverHitbox = coverData.hitboxCollidingWith;
 							/*covers partially:
@@ -444,12 +442,11 @@ void entity::physics()
 								coverHitbox.y <= collisionTopBorder.y &&
 								coverHitbox.y + coverHitbox.h > collisionTopBorder.y
 							*/
-							//must cover completely
+							// must cover completely
 							if (coverHitbox.x <= collisionTopBorder.x &&
 								coverHitbox.x + coverHitbox.w >= collisionTopBorder.x + collisionTopBorder.w &&
 								coverHitbox.y <= collisionTopBorder.y &&
-								coverHitbox.y + coverHitbox.h > collisionTopBorder.y
-								)
+								coverHitbox.y + coverHitbox.h > collisionTopBorder.y)
 							{
 								goto coveredUp;
 							}
@@ -457,7 +454,6 @@ void entity::physics()
 						firstCollision = collision;
 						newOnGround = true;
 						axisCollided.y = true;
-
 					}
 				coveredUp:;
 				}
@@ -467,11 +463,11 @@ void entity::physics()
 			{
 				if (firstCollision.collisionTime < secondsToCalculateLeft)
 				{
-					cvec2& noCollisionPosition = newPosition + speed * secondsToCalculateLeft;
-					//check if walking on a cactus
-									//todo: better method than measuring the entire block height while keeping accuracy
-					crectangle2& topHitbox = calculateHitBox(vec2(positionAfterCollisions.x, positionAfterCollisions.y));
-					crectangle2& bottomHitbox = calculateHitBox(vec2(positionAfterCollisions.x, noCollisionPosition.y));
+					cvec2 &noCollisionPosition = newPosition + speed * secondsToCalculateLeft;
+					// check if walking on a cactus
+					// todo: better method than measuring the entire block height while keeping accuracy
+					crectangle2 &topHitbox = calculateHitBox(vec2(positionAfterCollisions.x, positionAfterCollisions.y));
+					crectangle2 &bottomHitbox = calculateHitBox(vec2(positionAfterCollisions.x, noCollisionPosition.y));
 
 					cint left = (int)floor(topHitbox.x);
 					cint right = (int)floor(topHitbox.x + topHitbox.w);
@@ -486,7 +482,7 @@ void entity::physics()
 					{
 						for (int checkX = left; checkX <= right; checkX++)
 						{
-							cveci2& checkPosition = cveci2(checkX, checkYLevel);
+							cveci2 &checkPosition = cveci2(checkX, checkYLevel);
 
 							collisionDataCollection collection = dimensionIn->getBlockCollisionData(checkPosition);
 							collection.evaluate(hitboxAfterCollisions, speed, secondsToCalculateLeft);
@@ -494,17 +490,17 @@ void entity::physics()
 							for (size_t hitboxIndex = 0; hitboxIndex < collection.hitboxes.size(); hitboxIndex++)
 							{
 								const collisionData currentData = collection.hitboxes[hitboxIndex];
-								//stuck in a magma_block block will also damage you
+								// stuck in a magma_block block will also damage you
 								if ((currentData.collisionTime < (firstCollision.collisionTime + math::fpepsilon)) && ((currentData.type == collisionTypeID::willCollide) || (currentData.collisionTime > 0)))
 								{
-									collisionEdgeData edgeData = collisionEdgeData({ vec2(currentData.hitboxCollidingWith.x, currentData.hitboxCollidingWith.w) });
+									collisionEdgeData edgeData = collisionEdgeData({vec2(currentData.hitboxCollidingWith.x, currentData.hitboxCollidingWith.w)});
 									edgeData = edgeData.substractCoveringEdges(data.getEdges(currentData.hitboxCollidingWith.pos01().y, directionID::positiveY));
 
 									if (edgeData.edges.size())
 									{
-										const blockID& blockBottom = dimensionIn->getBlockID(checkPosition);
+										const blockID &blockBottom = dimensionIn->getBlockID(checkPosition);
 
-										//collides
+										// collides
 										if (blockBottom == blockID::cactus)
 										{
 											addDamageSource(1, std::make_shared<damageSource>(cactusDamage));
@@ -517,7 +513,7 @@ void entity::physics()
 										{
 											if (isMob(entityType) || (!isStonePressurePlate(blockBottom)))
 											{
-												((pressurePlateData*)(dimensionIn->getBlockData(checkPosition)))->addEntityStandingOn(dimensionIn, checkPosition, this);
+												((pressurePlateData *)(dimensionIn->getBlockData(checkPosition)))->addEntityStandingOn(dimensionIn, checkPosition, this);
 											}
 										}
 										break;
@@ -530,28 +526,28 @@ void entity::physics()
 			}
 			if (!newOnGround && sneaking && oldOnGround)
 			{
-				speed = vec2();//prevent from going off the edge
+				speed = vec2(); // prevent from going off the edge
 				positionAfterCollisions = newPosition;
 				newOnGround = true;
-				//continue, maybe a piston is pushing the sneaking person?
+				// continue, maybe a piston is pushing the sneaking person?
 			}
-			else if (firstCollision.collisionTime < secondsToCalculateLeft) {
+			else if (firstCollision.collisionTime < secondsToCalculateLeft)
+			{
 				size_t axesImmediatelyCollided = 0;
-
 
 				if (!oldOnGround && newOnGround)
 				{
 					onCollisionWithGround(speed.y - firstCollision.speed.y);
 				}
 				positionAfterCollisions += speed * firstCollision.collisionTime;
-				//multiply by friction
+				// multiply by friction
 				for (size_t axisIndex = 0; axisIndex < 2; axisIndex++)
 				{
 					if (firstCollision.axisCollided[axisIndex])
 					{
 						if (firstCollision.collisionTime > 0)
 						{
-							//to avoid floating point errors
+							// to avoid floating point errors
 							if (speed[axisIndex] < firstCollision.speed[axisIndex])
 							{
 								positionAfterCollisions[axisIndex] += math::fpepsilon;
@@ -574,15 +570,16 @@ void entity::physics()
 					break;
 				}
 			}
-			else {
+			else
+			{
 				positionAfterCollisions += speed * secondsToCalculateLeft;
 				break;
 			}
 
-			//if ((firstCollision.collisionTime >= secondsToCalculateLeft) || (secondsToCalculateLeft == 0) || (axesImmediatelyCollided == 2))
+			// if ((firstCollision.collisionTime >= secondsToCalculateLeft) || (secondsToCalculateLeft == 0) || (axesImmediatelyCollided == 2))
 			//{
 			//	break;
-			//}
+			// }
 		} while (true);
 	}
 	else
@@ -594,15 +591,15 @@ void entity::physics()
 	onGround = newOnGround;
 
 	inCobweb = dimensionIn->blockRangeContains(cveci2((int)floor(blockCheckHitbox.x), (int)floor(blockCheckHitbox.y)),
-		cveci2((int)floor(blockCheckHitbox.x + blockCheckHitbox.w), (int)floor(blockCheckHitbox.y + blockCheckHitbox.h)),
-		{ blockID::cobweb });
+											   cveci2((int)floor(blockCheckHitbox.x + blockCheckHitbox.w), (int)floor(blockCheckHitbox.y + blockCheckHitbox.h)),
+											   {blockID::cobweb});
 
-	//check for fluids at the new position, BEFORE friction is applied, so you can jump out of low water streams with ease
+	// check for fluids at the new position, BEFORE friction is applied, so you can jump out of low water streams with ease
 	fluidArea = getFluidArea(blockCheckHitbox, std::vector<blockID>(fluidList, fluidList + fluidCount));
 
 	speed.y -= getGravityForce();
 
-	//if (fluidArea > 0)
+	// if (fluidArea > 0)
 	//{
 	//	cfp& fluidVolume = (fluidArea / blockCheckHitbox.size.volume()) * getVolume();
 	//
@@ -613,23 +610,23 @@ void entity::physics()
 	//
 	//
 	//	speed = getSpeedAfterFriction(cvect2<vec2>(speed, cvec2(0, gravityForce)), cvec2(getWeight(), fluidDisplaceWeight));
-	//}
+	// }
 
-	const std::vector<vec3>& frictions = getFrictions();
+	const std::vector<vec3> &frictions = getFrictions();
 
 	for (vec3 fric : frictions)
 	{
-		speed = math::lerp(cvec2(fric), speed, fric.z); //getSpeedAfterFriction(cvect2<vec2>(speed, cvec2(fric)), cvec2(getWeight(), fric.z));
+		speed = math::lerp(cvec2(fric), speed, fric.z); // getSpeedAfterFriction(cvect2<vec2>(speed, cvec2(fric)), cvec2(getWeight(), fric.z));
 	}
 }
-bool entity::canTeleportTo(cvec2& position) const
+bool entity::canTeleportTo(cvec2 &position) const
 {
 	cfp maxFallDistance = 0x3;
 	crectangle2 hitboxToTest = calculateHitBox(position);
 	cvec2 distanceToTest = vec2(0, -maxFallDistance);
 	collisionDataCollection data = dimensionIn->getHitboxCollisionData(hitboxToTest, distanceToTest);
 	data.evaluate(hitboxToTest, distanceToTest, 1);
-	constexpr bool allowCollisionType[(size_t)collisionTypeID::count]{ false, false, true };
+	constexpr bool allowCollisionType[(size_t)collisionTypeID::count]{false, false, true};
 	collisionData firstCollision = data.getFirstCollision(allowCollisionType);
 	if (firstCollision.type != collisionTypeID::willCollide)
 	{
@@ -656,27 +653,13 @@ void entity::teleportRandomly()
 	}
 }
 
-//void entity::setAsPlayableCharachter()
-//{
-//	tasks = new playerControlledAI(this);
-//	currentPlayableCharachter = this;
-//	currentWorld->playableCharachterUUID = identifier;
-//}
-
 void entity::respawn()
 {
-	activeEffects = { statusEffect(statusEffectID::resistance,3 * ticksPerRealLifeSecond, 5) };
+	activeEffects = {statusEffect(statusEffectID::resistance, 3 * ticksPerRealLifeSecond, 5)};
 	teleportTo(currentWorld->dimensions[(int)currentWorld->worldSpawnDimension], currentWorld->worldSpawnPoint, false);
 	health = getMaxHealth();
 	fireTicks = 0;
 
-	
-	//currentPlayableCharachter-addStatusEffects();
-	//currentPlayableCharachter->tasks = tasks;
-	//currentPlayableCharachter->tasks->connectedEntity = currentPlayableCharachter;
-	//currentPlayableCharachter->identifier = identifier;
-	//tasks = nullptr;
-	//return currentPlayableCharachter;
 }
 
 entity::~entity()
@@ -686,9 +669,9 @@ entity::~entity()
 		delete tasks;
 	}
 }
-void entity::render(const gameRenderData& targetData) const
+void entity::render(const gameRenderData &targetData) const
 {
-	//render fire
+	// render fire
 	if (fireTicks)
 	{
 		crectangle2 hitboxRect = calculateHitBox(position);
@@ -697,18 +680,18 @@ void entity::render(const gameRenderData& targetData) const
 	}
 }
 
-void entity::onCollisionWithGround(cfp& verticalSpeed)
+void entity::onCollisionWithGround(cfp &verticalSpeed)
 {
 }
 
-fp entity::getFluidArea(crectangle2& box, const std::vector<blockID>& fluids) const
+fp entity::getFluidArea(crectangle2 &box, const std::vector<blockID> &fluids) const
 {
-	cveci2& pos0 = floorVector(box.pos0);
-	crectanglei2& checkRect = crectanglei2(pos0, (floorVector(box.pos1()) - pos0) + 1);
+	cveci2 &pos0 = floorVector(box.pos0);
+	crectanglei2 &checkRect = crectanglei2(pos0, (floorVector(box.pos1()) - pos0) + 1);
 
 	fp fluidArea = 0;
 
-	for (cveci2& checkPos : checkRect)
+	for (cveci2 &checkPos : checkRect)
 	{
 		blockID block = dimensionIn->getBlockID(checkPos);
 		blockID fluid = block == blockID::kelp ? blockID::water : block;
@@ -717,7 +700,7 @@ fp entity::getFluidArea(crectangle2& box, const std::vector<blockID>& fluids) co
 			rectangle2 fluidRect;
 			if (block == fluid && checkPos.y == checkRect.y)
 			{
-				fluidLevel level = ((fluidData*)dimensionIn->getBlockData(checkPos))->currentFluidLevel;
+				fluidLevel level = ((fluidData *)dimensionIn->getBlockData(checkPos))->currentFluidLevel;
 
 				fluidRect = crectangle2(cvec2(checkPos), cvec2(1, level / (fp)maxFluidLevel));
 			}
@@ -731,14 +714,14 @@ fp entity::getFluidArea(crectangle2& box, const std::vector<blockID>& fluids) co
 	return fluidArea;
 }
 
-bool entity::hitboxContains(crectangle2& box, const std::vector<blockID>& blockIDArray)
+bool entity::hitboxContains(crectangle2 &box, const std::vector<blockID> &blockIDArray)
 {
 	cint fromX = (int)floor(box.x);
 	cint fromY = (int)floor(box.y);
 	cvec2 topRight = box.pos1();
 	cint toX = (int)floor(topRight.x);
 	cint toY = (int)floor(topRight.y);
-	//check hitbox for water
+	// check hitbox for water
 	veci2 checkPos = cveci2();
 	for (checkPos.y = fromY; checkPos.y <= toY; checkPos.y++)
 	{
@@ -753,14 +736,14 @@ bool entity::hitboxContains(crectangle2& box, const std::vector<blockID>& blockI
 	}
 	return false;
 }
-bool entity::hitboxContainsOnly(crectangle2& box, const std::vector<blockID>& blockIDArray)
+bool entity::hitboxContainsOnly(crectangle2 &box, const std::vector<blockID> &blockIDArray)
 {
 	cint fromX = (int)floor(box.x);
 	cint fromY = (int)floor(box.y);
 	cvec2 topRight = box.pos1();
 	cint toX = (int)floor(topRight.x);
 	cint toY = (int)floor(topRight.y);
-	//check hitbox for water
+	// check hitbox for water
 	veci2 checkPos = cveci2();
 	for (checkPos.y = fromY; checkPos.y <= toY; checkPos.y++)
 	{
@@ -776,15 +759,15 @@ bool entity::hitboxContainsOnly(crectangle2& box, const std::vector<blockID>& bl
 	return true;
 }
 
-entity* summonEntity(const entityID& entityType, tickableBlockContainer* containerIn, cvec2& position)
+entity *summonEntity(const entityID &entityType, tickableBlockContainer *containerIn, cvec2 &position)
 {
-	entity* const& e = createEntity(entityType, containerIn->rootDimension, containerIn->containerToRootTransform.multPointMatrix(position));
+	entity *const &e = createEntity(entityType, containerIn->rootDimension, containerIn->containerToRootTransform.multPointMatrix(position));
 	e->addToWorld();
 	return e;
 }
-entity* trySummonEntity(const entityID& entityType, tickableBlockContainer* containerIn, cvec2& position)
+entity *trySummonEntity(const entityID &entityType, tickableBlockContainer *containerIn, cvec2 &position)
 {
-	entity* e = createEntity(entityType, containerIn->rootDimension, position);
+	entity *e = createEntity(entityType, containerIn->rootDimension, position);
 
 	if (containerIn->rootDimension->meetsSpawningConditions(e))
 	{
@@ -798,8 +781,8 @@ entity* trySummonEntity(const entityID& entityType, tickableBlockContainer* cont
 		return nullptr;
 	}
 }
-//https://minecraft.gamepedia.com/Damage
-bool entity::addDamageSource(cfp& damage, std::shared_ptr<damageSource> source)
+// https://minecraft.gamepedia.com/Damage
+bool entity::addDamageSource(cfp &damage, std::shared_ptr<damageSource> source)
 {
 	if (source.get()->type == damageType::fireDamage)
 	{
@@ -811,11 +794,10 @@ bool entity::addDamageSource(cfp& damage, std::shared_ptr<damageSource> source)
 
 	cfp reducedDamageByEffects = damage * (1 - (getEffectLevel(statusEffectID::resistance) * 0.2));
 
+	// can take damage while in invincibility frames, if it is higher
+	// the highest damage source applies.
 
-	//can take damage while in invincibility frames, if it is higher
-	//the highest damage source applies.
-
-	cfp& totalHealth = health + absorptionHealth;
+	cfp &totalHealth = health + absorptionHealth;
 	fp oldTotalHealth = totalHealth;
 
 	if (immunityFrameCount)
@@ -830,14 +812,14 @@ bool entity::addDamageSource(cfp& damage, std::shared_ptr<damageSource> source)
 	lastHitDamage = reducedDamageByEffects;
 	immunityFrameCount = immunityTime;
 
-	cfp& newTotalHealth = oldTotalHealth - reducedDamageByEffects;
+	cfp &newTotalHealth = oldTotalHealth - reducedDamageByEffects;
 	absorptionHealth = math::maximum(absorptionHealth - reducedDamageByEffects, (fp)0);
 	health = math::minimum(newTotalHealth, health);
 	lastDamageSources.push_back(source);
 	return true;
 }
 
-void entity::applyStatusEffect(const statusEffect& effect)
+void entity::applyStatusEffect(const statusEffect &effect)
 {
 	if (effect.identifier == statusEffectID::poison)
 	{
@@ -860,14 +842,14 @@ void entity::applyStatusEffect(const statusEffect& effect)
 	}
 }
 
-void entity::addStatusEffects(const std::vector<statusEffect>& effectsToAdd)
+void entity::addStatusEffects(const std::vector<statusEffect> &effectsToAdd)
 {
 	for (size_t i = 0; i < effectsToAdd.size(); i++)
 	{
-		const statusEffect& effect = effectsToAdd[i];
+		const statusEffect &effect = effectsToAdd[i];
 		if (effect.identifier == statusEffectID::instantHealth)
 		{
-			cfp& amount = 2 * pow(2, effect.potency);
+			cfp &amount = 2 * pow(2, effect.potency);
 			if (isUndeadMob(entityType))
 			{
 				addDamageSource(amount, std::make_shared<damageSource>(potionDamage));
@@ -879,7 +861,7 @@ void entity::addStatusEffects(const std::vector<statusEffect>& effectsToAdd)
 		}
 		else if (effect.identifier == statusEffectID::instantDamage)
 		{
-			cfp& amount = 3 * pow(2, effect.potency);
+			cfp &amount = 3 * pow(2, effect.potency);
 			if (isUndeadMob(entityType))
 			{
 				heal(amount);
@@ -893,10 +875,10 @@ void entity::addStatusEffects(const std::vector<statusEffect>& effectsToAdd)
 		{
 			if (effect.identifier == statusEffectID::absorption)
 			{
-				cfp& newAbsorptionHealth = (fp)4 * effect.potency;
+				cfp &newAbsorptionHealth = (fp)4 * effect.potency;
 				if (newAbsorptionHealth > absorptionHealth)
 				{
-					cfp& difference = newAbsorptionHealth - absorptionHealth;
+					cfp &difference = newAbsorptionHealth - absorptionHealth;
 					absorptionHealth = newAbsorptionHealth;
 				}
 			}
@@ -905,26 +887,25 @@ void entity::addStatusEffects(const std::vector<statusEffect>& effectsToAdd)
 	}
 }
 
-void entity::heal(cfp& health)
+void entity::heal(cfp &health)
 {
 	this->health = math::minimum(this->health + health, entityDataList[(int)entityType]->maxHealth);
 }
-rectangle2 entity::calculateHitBox(const cvec2& pos) const
+rectangle2 entity::calculateHitBox(const cvec2 &pos) const
 {
 	return crectangle2(relativeHitbox.pos0 + pos, relativeHitbox.size);
 }
 
-void entity::serializeValue(nbtSerializer& s)
+void entity::serializeValue(nbtSerializer &s)
 {
-	//writing *this to the stream would be too risky
-	//dont write despawn, type and position to the stream
+	// writing *this to the stream would be too risky
+	// dont write despawn, type and position to the stream
 
 	if (dimensionIn)
 	{
-		dimensionID newDimensionID;
+		dimensionID newDimensionID = newDimension->identifier;
 		if (s.write)
 		{
-			newDimensionID = newDimension->identifier;
 			s.serializeValue(std::wstring(L"new dimension"), newDimensionID);
 		}
 		else
@@ -951,10 +932,10 @@ void entity::serializeValue(nbtSerializer& s)
 		}
 		else
 		{
-			std::vector<nbtData*> serializedEffectList = s.getChildren();
+			std::vector<nbtData *> serializedEffectList = s.getChildren();
 			activeEffects.clear();
 			int i = 0;
-			for (nbtData* serializedEffect : serializedEffectList)
+			for (nbtData *serializedEffect : serializedEffectList)
 			{
 				if (s.push(serializedEffect))
 				{
@@ -987,11 +968,11 @@ void entity::serializeValue(nbtSerializer& s)
 	s.serializeValue(std::wstring(L"in cobweb"), inCobweb);
 	s.serializeValue(std::wstring(L"sneaking"), sneaking);
 	s.serializeValue(std::wstring(L"onGround"), onGround);
-	s.serializeValue(std::wstring(L"collision type"), (int&)collideLevel);
+	s.serializeValue(std::wstring(L"collision type"), (int &)collideLevel);
 	serializeNBTValue(s, std::wstring(L"relative hitbox"), relativeHitbox);
 }
 
-bool entity::compareSelector(const human& sender, const std::wstring& selectorString) const
+bool entity::compareSelector(const human &sender, const std::wstring &selectorString) const
 {
 	if (selectorString == std::wstring(L"@e"))
 	{
@@ -1000,16 +981,16 @@ bool entity::compareSelector(const human& sender, const std::wstring& selectorSt
 	return false;
 }
 
-void entity::teleportTo(dimension* newDimension, cvec2& newPosition, cbool& playTeleportSounds, cvec2& speedAfterTeleportation)
+void entity::teleportTo(dimension *newDimension, cvec2 &newPosition, cbool &playTeleportSounds, cvec2 &speedAfterTeleportation)
 {
 	this->newDimension = newDimension;
 	this->newPosition = newPosition;
-	//to avoid collisions
+	// to avoid collisions
 	speed = speedAfterTeleportation;
 	if (dimensionIn != newDimension)
 	{
 		cveci2 newChunkCoordinates = getChunkCoordinates(newPosition);
-		//load the chunk moved to
+		// load the chunk moved to
 		newDimension->loadChunkIfNotLoaded(newChunkCoordinates, chunkLoadLevel::entityLoaded);
 	}
 	if (playTeleportSounds)
@@ -1019,7 +1000,7 @@ void entity::teleportTo(dimension* newDimension, cvec2& newPosition, cbool& play
 	}
 }
 
-void entity::renderHitboxes(const gameRenderData& targetData) const
+void entity::renderHitboxes(const gameRenderData &targetData) const
 {
 	renderBlockRect(calculateHitBox(), targetData);
 	cvec2 pos0 = targetData.worldToRenderTargetTransform.multPointMatrix(position);
@@ -1045,13 +1026,13 @@ fp entity::getMaxHealth() const
 	return entityDataList[entityType]->maxHealth;
 }
 
-void entity::addToWorld(const uuid& identifier)
+void entity::addToWorld(const uuid &identifier)
 {
-	//when serializing an entity, uuids will be wasted, but whatever.
-	chunk* chunkToAddTo = dimensionIn->loadChunkIfNotLoaded(getChunkCoordinates(position), chunkLoadLevel::worldGenerationLoaded);
+	// when serializing an entity, uuids will be wasted, but whatever.
+	chunk *chunkToAddTo = dimensionIn->loadChunkIfNotLoaded(getChunkCoordinates(position), chunkLoadLevel::worldGenerationLoaded);
 
 	chunkToAddTo->entityList.push_back(this);
-	//allowed, the fastlist is only used for moving entities efficiently
+	// allowed, the fastlist is only used for moving entities efficiently
 	chunkToAddTo->entityList.update();
 	this->identifier = identifier;
 }
@@ -1064,8 +1045,8 @@ fp entity::getGravityForce() const
 std::vector<vec3> entity::getFrictions() const
 {
 	std::vector<vec3> frictions = std::vector<vec3>();
-	cfp& windArea = calculateHitBox().size.volume();
-	cfp& windWeight = blockList[blockID::air]->weightPerCubicMeter * windArea;
+	cfp &windArea = calculateHitBox().size.volume();
+	cfp &windWeight = blockList[blockID::air]->weightPerCubicMeter * windArea;
 
 	if (collideLevel == collisionTypeID::willNotCollide)
 	{
@@ -1089,16 +1070,13 @@ std::vector<vec3> entity::getFrictions() const
 			frictions.push_back(getGroundFriction());
 		}
 
-		cvec2& windSpeed = dimensionIn->getWindSpeed(calculateHitBox().getCenter());
+		cvec2 &windSpeed = dimensionIn->getWindSpeed(calculateHitBox().getCenter());
 
-		cfp& bodyWeight = getWeight();
+		cfp &bodyWeight = getWeight();
 		if (bodyWeight != INFINITY)
 		{
 			frictions.push_back(cvec3(windSpeed,
-				bodyWeight == 0 ?
-				bodyWeight :
-				(bodyWeight / (windWeight + bodyWeight))
-			));
+									  bodyWeight == 0 ? bodyWeight : (bodyWeight / (windWeight + bodyWeight))));
 		}
 	}
 	return frictions;
@@ -1106,7 +1084,7 @@ std::vector<vec3> entity::getFrictions() const
 
 vec3 entity::getGroundFriction() const
 {
-	return cvec3(cvec2(), groundFrictionMultiplier);//cvec3(cvec2(), frictionPerBlock * getLengthTouchingGround());
+	return cvec3(cvec2(), groundFrictionMultiplier); // cvec3(cvec2(), frictionPerBlock * getLengthTouchingGround());
 }
 
 vec3 entity::getFluidFriction() const
@@ -1132,9 +1110,9 @@ fp entity::getVolume() const
 bool entity::inBlocks() const
 {
 	return collideLevel != collisionTypeID::willNotCollide &&
-		dimensionIn->getHitboxCollisionType(calculateHitBox(position)) == collisionTypeID::willCollide;
+		   dimensionIn->getHitboxCollisionType(calculateHitBox(position)) == collisionTypeID::willCollide;
 }
-int getEntityIDByName(const std::wstring& name)
+int getEntityIDByName(const std::wstring &name)
 {
 	for (int i = 0; i < (int)entityID::count; i++)
 	{
@@ -1146,7 +1124,7 @@ int getEntityIDByName(const std::wstring& name)
 	return -1;
 }
 
-bool collidesThisTick(const entity& e1, const entity& e2)
+bool collidesThisTick(const entity &e1, const entity &e2)
 {
 	vect2<bool> axisCollided = vect2<bool>();
 	collideTime2d(e1.calculateHitBox(), e2.calculateHitBox(), (e2.speed - e1.speed) * secondsPerTick, axisCollided);

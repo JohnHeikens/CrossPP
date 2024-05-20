@@ -144,19 +144,19 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 					std::vector<structurePlacementBlueprint*> possibleStructures = {};
 					std::vector<fp> possibleStructureWeights = {};
 
-					for (int checkStructureIndex = 0; checkStructureIndex < checkStructures.size(); checkStructureIndex++)
+					for (size_t checkStructureIndex = 0; checkStructureIndex < checkStructures.size(); checkStructureIndex++)
 					{
 						structure* checkStructure = checkStructures[checkStructureIndex];
 						std::vector<veci2> connectedStructureJigsawPositions = checkStructure->findBlocks(blockID::jigsaw);
 
-						std::vector<int> possibleConnectingJigsawIndexes = {  };
+						std::vector<size_t> possibleConnectingJigsawIndexes = {  };
 						std::vector<structurePlacementBlueprint*> possibleConnectingJigsawIndexData = {};
 
 						//check all jigsaw positions
 
 						bool foundJigsawWithName = false;
 
-						for (int jigsawPositionIndex = 0; jigsawPositionIndex < connectedStructureJigsawPositions.size(); jigsawPositionIndex++)
+						for (size_t jigsawPositionIndex = 0; jigsawPositionIndex < connectedStructureJigsawPositions.size(); jigsawPositionIndex++)
 						{
 							//find target block to connect to
 							cveci2 connectedJigsawStructurePos = connectedStructureJigsawPositions[jigsawPositionIndex];

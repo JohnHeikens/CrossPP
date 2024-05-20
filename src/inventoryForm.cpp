@@ -83,6 +83,7 @@ void inventoryForm::mouseUp(cveci2 &position, cmb &button)
     if (divider.stackHolding.count)
     {
         divider.originalStack.count = divider.stackHolding.count;
+        divider.pickingUp = false;
     }
     else
     {

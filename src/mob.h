@@ -80,6 +80,7 @@ struct mob :public entity
 	virtual bool goToPosition(cvec2& destination);
 	//look at 'lookingat'. CALL THIS ONCE YOU UPDATED ALL OTHER BODY PARTS
 	void updateHeadAngle()  const;
+	fp getArmRange() const;
 };
 template<typename brush0Type>
 inline void mob::renderBodyPart(bodyPart2D* const& b, cmat3x3& transform, const brush0Type& skin, const gameRenderData& targetData) const

@@ -1,6 +1,6 @@
 #pragma once
-#include "control/form.h"
-#include "math/graphics/graphics.h"
+#include "control/form/form.h"
+#include "math/graphics/texture.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -25,7 +25,6 @@ struct application: INamable, IDestructable
 	//data
 	//std::wstring windowCaption = std::wstring(L"");
 	//colorb* windowColorPtr = nullptr;
-	//graphicsObject graphics = graphicsObject();
 
 	doubleBuffer buffer = doubleBuffer();
 	form* mainForm;

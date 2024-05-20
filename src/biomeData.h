@@ -6,8 +6,9 @@
 
 struct biomeData
 {
-	biomeData(const std::wstring& name, const color& grassColor = colorPalette::magenta) : name(name), grassColor(grassColor) {}
 	color grassColor = color();
+	color biomeColor;
 	std::wstring name;
+	biomeData(const std::wstring& name, const color& biomeColor, const color& grassColor) : name(name), biomeColor(biomeColor), grassColor(grassColor) {}
 };
 extern idList<biomeData*, biomeID> biomeDataList;
