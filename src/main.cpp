@@ -127,7 +127,7 @@ void showLoadingScreen()
             else if (Event.type == sf::Event::Resized)
             {
                 // update the view to the new size of the window
-                sf::FloatRect visibleArea(0, 0, Event.size.width, Event.size.height);
+                sf::FloatRect visibleArea(0.0f, 0.0f, (float)Event.size.width, (float)Event.size.height);
                 window->setView(sf::View(visibleArea));
                 // Clear the screen (fill it with black color)
                 shapes = std::list<balloon>();
@@ -146,7 +146,7 @@ void showLoadingScreen()
         {
             balloon newBalloon;
             auto pos = getrandomPosition(currentRandom, rectangle2(vec2(size.x, size.y)));
-            newBalloon.shape.setPosition(sf::Vector2f(pos.x, pos.y));
+            newBalloon.shape.setPosition(sf::Vector2f((float)pos.x, (float)pos.y));
             newBalloon.shape.setFillColor(sf::Color(rand(currentRandom, bytemax), rand(currentRandom, bytemax), rand(currentRandom, bytemax)));
             newBalloon.shape.setRadius(1); // it should start as a single pixel
             shapes.push_front(newBalloon);
@@ -177,7 +177,7 @@ void showLoadingScreen()
             "Loading medieval survival\nwhen you updated this app,\nthis might take several minutes.\nDO NOT CLOSE",
             font);
         loadingText.setFillColor(sf::Color::White);
-        loadingText.setCharacterSize(minSize / 20);
+        loadingText.setCharacterSize((int)(minSize / 20.0f));
 
         // center text
         sf::FloatRect textRect = loadingText.getLocalBounds();

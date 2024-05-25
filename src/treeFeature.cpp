@@ -25,7 +25,7 @@ bool treeFeature::canPlace(const structurePlacementBlueprint& bluePrint, tickabl
 
 	cmat3x3i& structureToWorldTransform = bluePrint.placedStructure->getBlocksToWorldTransform(bluePrint.structurePos00, bluePrint.flipX);
 
-	crectanglei2& structureRect = crectanglei2(cveci2(), bluePrint.placedStructure->blockIDArray.size);
+	crectanglei2& structureRect = crectanglei2((veci2)bluePrint.placedStructure->blockIDArray.size);
 
 	for (cveci2& structurePos : structureRect)
 	{

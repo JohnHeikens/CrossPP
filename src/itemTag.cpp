@@ -11,7 +11,7 @@ itemTag* createItemTag(const itemID& id)
 	{
 		return new bucketData();
 	}
-	else if (id == itemID::potion)
+	else if (isPotion(id))
 	{
 		return new potionData();
 	}

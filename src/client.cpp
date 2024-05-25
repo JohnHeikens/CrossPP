@@ -102,7 +102,7 @@ void client::scroll(cveci2 &position, cint &scrollDelta)
 
 void client::enterText(cuint &keyCode)
 {
-    currentInput.textEntered += keyCode;
+    currentInput.textEntered += (wchar_t)keyCode;
 }
 
 void client::mouseMove(cveci2 &position, cmb &button)
@@ -288,7 +288,7 @@ void client::processIncomingPackets(const texture &renderTarget)
                         // make sure that the sound index is in the right range.
                         // we might have added or removed sounds in the mean time
                         // by using %, we make every sound that sounds the same for other clients also sound the same for this client
-                        sp.soundIndex = sp.soundIndex % collection->audioToChooseFrom.size();
+                        sp.soundIndex = sp.soundIndex % (int)collection->audioToChooseFrom.size();
 
                         const auto buffer = collection->audioToChooseFrom[sp.soundIndex];
                         if (!buffer)

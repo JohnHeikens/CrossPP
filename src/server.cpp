@@ -36,7 +36,7 @@ void server::execute()
 	{
 		listenerSelector.add(*listener);
 
-		stableLoop loop = stableLoop(1000000 / defaultFPS);
+		stableLoop loop = stableLoop(1000000 / (microseconds)defaultFPS);
 		// connectionManagerThread = new std::thread(listenForIncomingConnections);
 
 		std::future<playerSocket *> newPlayerSocket = std::async(&listenForIncomingConnections);
@@ -234,6 +234,17 @@ void server::updateToTime()
 		lastTickTimeMicroseconds += msPerTick();
 		lastTickTime = microsectosec(lastTickTimeMicroseconds);
 		tickCount++;
+	}
+	// auto save here
+	// save the world, so if the world crashes before the first save, we still have it
+	if ((currentWorld->ticksSinceStart - currentWorld->lastAutoSaveTick) > (5 * ticksPerRealLifeMinute) || currentWorld->lastAutoSaveTick == 0) // save every 5 minutes and upon world creation
+	{
+		currentWorld->lastAutoSaveTick = currentWorld->ticksSinceStart;
+		currentWorld->serialize(true);
+		for(playerSocket* p : clients){
+			//save players
+			p->player->serialize(true);
+		}
 	}
 }
 

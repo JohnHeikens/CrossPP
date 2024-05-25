@@ -9,7 +9,7 @@ struct colorMultiplier final : public colorBrush
 	colorMultiplier(const brush0Type& baseBrush, const brush1Type& multColors) : baseBrush(baseBrush), multColors(multColors) {}
 	inline color getValue(cvec2& pos) const
 	{
-		const color& original = baseBrush.getValue(pos);
+		const color& original = baseBrush.getValue((typename brush0Type::inputType)pos);
 		const color& multiplyWith = multColors.getValue(pos);
 		color multiplied = color::muliplyColors(original, multiplyWith);
 		multiplied.a() = color::multiplyColorChannels(original.a(), multiplyWith.a());

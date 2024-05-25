@@ -2,6 +2,7 @@
 #pragma warning(push, 0)
 #pragma gcc diagnostics push
 //define to get rid of the deprecation errors
+#pragma GCC diagnostic ignored "-Wconversion"
 
 #define __STDC_LIB_EXT1__
 #define STB_IMAGE_STATIC

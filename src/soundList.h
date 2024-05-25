@@ -2,7 +2,7 @@
 #include "soundCollection.h"
 #include "armorTier.h"
 
-extern std::shared_ptr<soundCollection> itemPickupSound;
+extern std::shared_ptr<soundCollection> popSound;
 extern std::shared_ptr<soundCollection> experienceSound;
 extern std::shared_ptr<soundCollection> levelUpSound;
 extern std::shared_ptr<soundCollection> chestOpenSound;

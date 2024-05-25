@@ -122,12 +122,12 @@ struct colortn : public vectn<t, channelCount>
 		{
 			if constexpr (std::is_integral<t2>::value)
 			{
-				return toDivide / maxValue;
+				return (t)(toDivide / maxValue);
 			}
 			else
 			{
 				constexpr fp inverseMaxValue = 1.0 / maxValue;
-				return toDivide * inverseMaxValue;
+				return (t)(toDivide * inverseMaxValue);
 			}
 		}
 	}

@@ -133,5 +133,5 @@ void anvilSlotContainer::substractCraftingIngredients()
 	human* currentHuman =  (human*)linkedPlayer;
 	craftingInputContainers[0]->linkedContainer->slots[0].add(-1);
 	craftingInputContainers[1]->linkedContainer->slots[0].add(-itemsUsed);
-	anvilUseSound->playRandomSound(currentHuman->selectedContainerContainer, currentHuman->selectedContainerPosition + cvec2(0.5, 1));
+	anvilUseSound->playRandomSound(currentHuman->selectedContainerContainer, vec2(currentHuman->selectedContainerPosition) + vec2(0.5, 1));
 }

@@ -67,6 +67,7 @@
 #include "toolTypeID.h"
 #include "gameControl.h"
 #include "nbtSerializer.h"
+#include "world.h"
 void humanoid::resetDigProgress()
 {
 	selectedBlockDamage = 0;
@@ -120,15 +121,17 @@ void humanoid::updateBodyParts() const
 	fp rightArmWalkingAngle;
 	if ((entityType != entityID::human || !((human*)this)->flying) && (!walking && onGround && (abs(speed.x) > legBrakeSpeed.x)) || (abs(speed.y) > legBrakeSpeed.y))
 	{
-		cfp legBrakeAngle = -20 * math::degreesToRadians;
+		constexpr fp legBrakeAngle = -20 * math::degreesToRadians;
 		//brakes animation
 		rightLeg->angle = legBrakeAngle;
 		leftLeg->angle = legBrakeAngle;
 
-		cfp wavingStrength = 20;//the angle in degrees of the maximum difference between the hands while waving
-		cfp waveSpeed = 0.5;//the time in seconds until the hands have the same position and speed again
+		constexpr fp wavingStrength = 20;//the angle in degrees of the maximum difference between the hands while waving
+		constexpr fp waveSpeed = 0.5;//the time in seconds until the hands have the same position and speed again
 		//arms waving in the air
-		cfp armAngleOffset = sin(microsectosec(getmicroseconds()) * math::PI2 / waveSpeed) * wavingStrength * 0.5 * math::degreesToRadians;
+		constexpr swingSynchronizer armWavingSynchronizer = swingSynchronizer(waveSpeed, wavingStrength * -0.5 * math::degreesToRadians, wavingStrength * -0.5 * math::degreesToRadians);
+		cfp& armAngleOffset = armWavingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart * secondsPerTick);
+		//cfp armAngleOffset = sin(microsectosec(getmicroseconds()) * math::PI2 / waveSpeed) * wavingStrength * 0.5 * math::degreesToRadians;
 		rightArmWalkingAngle = math::PI + legBrakeAngle + armAngleOffset;
 		leftArm->angle = math::PI + legBrakeAngle - armAngleOffset;
 	}
@@ -149,7 +152,8 @@ void humanoid::updateBodyParts() const
 
 	cfp angleIfHoldingItem = math::degreesToRadians * -30;
 
-	rightArm->angle = digging ? getRightArmAngleIfDigging(getmicroseconds()) : (!walking && itemHolding && (int)itemHolding->stackItemID) ? angleIfHoldingItem : rightArmWalkingAngle;
+	cfp& armAngleOffset = armSwingSynchronizer.getSwingAngle(currentWorld->ticksSinceStart * secondsPerTick);
+	rightArm->angle = digging ? armAngleOffset : (!walking && itemHolding && (int)itemHolding->stackItemID) ? angleIfHoldingItem : rightArmWalkingAngle;
 
 	if (sleeping)
 	{
@@ -473,10 +477,6 @@ void humanoid::initializeBodyParts(crectangle2& headTextureRect, crectangle2& bo
 	mainBodyPart->children.push_back(rightLeg);
 	mainBodyPart->children.push_back(rightArm);
 }
-fp humanoid::getRightArmAngleIfDigging(const microseconds& timePoint)
-{
-	return armSwingSynchronizer.getSwingAngle(microsectosec(timePoint));
-}
 fp humanoid::getGravityForce() const
 {
 	return (climbing ? 0 : mob::getGravityForce());
@@ -677,10 +677,9 @@ void humanoid::tick()
 						else
 						{
 							//play digging sound if the arm is on its furthest point
-							cfp furthestPoint = 0.5;
-							cfp currentSwingPart = (microsectosec(getmicroseconds()) * swingsPerSecond) + furthestPoint;
-							cfp nextSwingPart = ((microsectosec(getmicroseconds()) - 1.0 / ticksPerRealLifeSecond) * swingsPerSecond) + furthestPoint;
-							if (std::floor(currentSwingPart) != std::floor(nextSwingPart))
+							//cfp furthestPoint = 0.5;
+							
+							if (armSwingSynchronizer.maximumBetween(currentWorld->ticksSinceStart * secondsPerTick, (currentWorld->ticksSinceStart + 1) * secondsPerTick))
 							{
 								//start playing the sound just before 'hitting'
 								b->hitSound->playRandomSound(dimensionIn, exactBlockIntersection);

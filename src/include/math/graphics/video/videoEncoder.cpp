@@ -45,7 +45,7 @@ int marginPerColor = 0x10; // the full colors may differ more than
 constexpr color motionToColor(const compressedSourceMotionVector &vector)
 {
     // return vector.axis[0] > 0 ? vector.axis[1] > 0 ? colorPalette::red : colorPalette::yellow : vector.axis[1] > 0 ? colorPalette::
-    return color(vector.axis[0] + 0x80, vector.axis[1] + 0x80, 0);
+    return color((colorChannel)(vector.axis[0] + 0x80), (colorChannel)(vector.axis[1] + 0x80), 0);
 }
 
 inline constexpr int getByteDifference(cbyte &b1, cbyte &b2)
@@ -99,7 +99,7 @@ inline bool cropCheckRect(rectanglei2 bounds, rectanglei2 &rect, cveci2 &movemen
 // compares the pixels of the moved location in the old frame to
 // the pixels of the current location in the new frame
 // (moves the old frame 'over' the new frame)
-inline fp getMovementCostUnsafe(const texture &oldFrame, const texture &newFrame, rectanglei2 rectToCheck, cveci2 &sourceMovementVector, cfp &checkInterval, cfp &maxError)
+inline fp getMovementCostUnsafe(const texture &oldFrame, const texture &newFrame, rectanglei2 rectToCheck, cveci2 &sourceMovementVector, cint &checkInterval, cfp &maxError)
 {
     cfp &originalRectPixelCount = rectToCheck.size.volume();
     // check one pixel of every #x# where # = checkInterval
@@ -374,7 +374,7 @@ void videoEncoder::addFrame(const texture &frame, nbtSerializer &serializer)
                     if (error < leastError)
                     {
                         leastError = error;
-                        leastErrorPos = relativePosition;
+                        leastErrorPos = (compressedSourceMotionVector)relativePosition;
                         return !error;
                     }
                 }
@@ -458,7 +458,7 @@ void videoEncoder::addFrame(const texture &frame, nbtSerializer &serializer)
 void videoEncoder::serializeMotionVectors(nbtSerializer &serializer)
 {
     byte *unCompressedRectBytes = nullptr;
-    int rectCount;
+    size_t rectCount;
 
     // serialize the motion vectors as one big char array
 
@@ -513,10 +513,10 @@ void videoEncoder::serializeMotionVectors(nbtSerializer &serializer)
     {
         for (const auto &rect : builder.finishedRectangles)
         {
-            *rectXPtr++ = rect->rect.x;
-            *rectYPtr++ = rect->rect.y;
-            *rectWPtr++ = rect->rect.w;
-            *rectHPtr++ = rect->rect.h;
+            *rectXPtr++ = (posType)rect->rect.x;
+            *rectYPtr++ = (posType)rect->rect.y;
+            *rectWPtr++ = (sizeType)rect->rect.w;
+            *rectHPtr++ = (sizeType)rect->rect.h;
             *sourcePtr++ = rect->value;
         }
         std::string compressedVectors = gzip::compress((char *)unCompressedRectBytes, rectCount * stride, Z_HUFFMAN_ONLY);
@@ -539,7 +539,7 @@ void videoEncoder::serializeMotionVectors(nbtSerializer &serializer)
             //     throw;
             // }
             const compressedSourceMotionVector &vec = *sourcePtr++;
-            for (cveci2 &pos : rect)
+            for (cvect2<fsize_t> &pos : rect)
             {
                 // if (otherEncoder->sourceMotionVectors.getValueUnsafe(pos) != vec)
                 //     throw;
@@ -578,14 +578,14 @@ void videoEncoder::visualize(const texture &screen)
     {
         const array2d<veci2> &arrayToVisualize = motionBlockVectors[i];
         cint &currentMotionBlockSize = motionBlockSize[i];
-        crectanglei2 &blocksRect = rectanglei2(arrayToVisualize.size);
+        crectanglei2 &blocksRect = arrayToVisualize.getClientRect();
         for (cveci2 &blockPos : blocksRect)
         {
             crectanglei2 &rectToMove = rectanglei2(blockPos * currentMotionBlockSize, cveci2(currentMotionBlockSize));
             cveci2 &vec = arrayToVisualize.getValueUnsafe(blockPos);
             if (vec != veci2())
             {
-                const color &motionColor = motionToColor(vec);
+                const color &motionColor = motionToColor((compressedSourceMotionVector)vec);
                 fillRectangleBorders(screen, rectToMove, 1, solidColorBrush(motionColor));
                 constexpr int motionMult = 30;
                 fillLine(screen, rectToMove.pos0, rectToMove.pos0 + vec * motionMult, brushes::green);
@@ -627,7 +627,7 @@ void videoEncoder::addMotionVectors() const
     {
         if (vector != compressedSourceMotionVector())
         {
-            cint &pixelIndex = (&vector - sourceMotionVectors.begin());
+            csize_t &pixelIndex = (&vector - sourceMotionVectors.begin());
             totalTexture.baseArray[pixelIndex] = oldTexture.baseArray[pixelIndex + (vector.x + (vector.y * oldTexture.size.x))];
         }
     }

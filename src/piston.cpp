@@ -22,7 +22,7 @@ void piston::render(const gameRenderData& targetData) const
 	crectangle2& blockRect = screenToBlocks.multRectMatrix(crectangle2(targetData.renderTarget.getClientRect()));
 	cveci2& unCroppedPos00 = floorVector(blockRect.pos0);
 	crectanglei2& flooredBlockRect = crectanglei2(unCroppedPos00, floorVector((blockRect.pos1()) + 1) - unCroppedPos00);
-	crectanglei2& croppedBlockRect = crectanglei2(movingBlocks->arrayPos00Offset, movingBlocks->blockIDArray.size).cropClientRectUnsafe(flooredBlockRect);
+	crectanglei2& croppedBlockRect = crectanglei2(movingBlocks->arrayPos00Offset, veci2(movingBlocks->blockIDArray.size)).cropClientRectUnsafe(flooredBlockRect);
 	cveci2& pos11 = croppedBlockRect.pos1();
 	const gameRenderData& incrementedRenderData = gameRenderData(multipliedTransform, targetData.renderTarget, targetData.screen, targetData.secondsOffset);
 	for (veci2 currentPosition = croppedBlockRect.pos0; currentPosition.y < pos11.y; currentPosition.y++)

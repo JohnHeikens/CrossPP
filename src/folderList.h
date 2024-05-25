@@ -18,7 +18,15 @@ const stdPath screenshotsFolder = playerDataFolder / L"screenshots";
 const stdPath resourcePackFolder = dataFolder / L"resourcepacks";
 
 const stdPath assetsFolder = stdPath(L"assets") / L"minecraft";
+
+//optifine
 const stdPath optifineFolder = assetsFolder / L"optifine";
+const stdPath lightMapFolder = optifineFolder / L"lightmap";
+
+//texts
+const stdPath textFolder = assetsFolder / L"texts";
+
+//textures
 const stdPath particleDataFolder = assetsFolder / L"particles";
 const stdPath generalTextureFolder = assetsFolder / L"textures";
 const stdPath particleTexturesFolder = generalTextureFolder / L"particle";
@@ -31,11 +39,13 @@ const stdPath entityTextureFolder = generalTextureFolder / L"entity";
 const stdPath itemTextureFolder = generalTextureFolder / L"item";
 const stdPath armorTextureFolder = generalTextureFolder / L"models" / L"armor";
 const stdPath miscellaneousTextureFolder = generalTextureFolder / L"misc";
-const stdPath lightMapFolder = optifineFolder / L"lightmap";
 const stdPath particleTextureFolder = generalTextureFolder / L"particle";
 
-const stdPath generalSoundFolder = dataFolder / L"sounds" / L"1.16" / L"minecraft" / L"sounds";
+//sounds
+const stdPath generalSoundFolder = assetsFolder / L"sounds";
 const stdPath blockSoundFolder = generalSoundFolder / L"block";
+const stdPath ambientSoundFolder = generalSoundFolder / L"ambient";
+const stdPath weatherSoundFolder = ambientSoundFolder / L"weather";
 const stdPath tileSoundFolder = generalSoundFolder / L"tile";
 const stdPath itemSoundFolder = generalSoundFolder / L"item";
 const stdPath entitySoundFolder = generalSoundFolder / L"entity";
@@ -50,7 +60,24 @@ const stdPath netherMusicFolder = gameMusicFolder / L"nether";
 const stdPath endMusicFolder = gameMusicFolder / L"end";
 const stdPath recordsMusicFolder = generalSoundFolder / L"records";
 const stdPath noteSoundFolder = generalSoundFolder / L"note";
-const stdPath extraSoundFolder = dataFolder / L"sounds" / L"extra";
+
+//'data packs'
+const stdPath resourcePackDataFolder = stdPath(L"data");
+
+//minecraft namespace datapack folders
+const stdPath minecraftDataFolder = resourcePackDataFolder / L"minecraft";
+const stdPath mainTagFolder = minecraftDataFolder / L"tags";
+const stdPath recipeFolder = minecraftDataFolder / L"recipes";
+
+//medieval survival namespace datapack folders
+const stdPath msNameSpaceDataFolder = resourcePackDataFolder / L"medieval survival";
+const stdPath structureFolder = msNameSpaceDataFolder / L"structures";
+const stdPath overworldDataFolder = msNameSpaceDataFolder / L"overworld";
+
+const stdPath lootTablesFolder = minecraftDataFolder / L"loot_tables";
+const stdPath blockLootTablesFolder = lootTablesFolder / L"blocks";
+const stdPath chestLootTablesFolder = lootTablesFolder / L"chests";
+const stdPath entityLootTablesFolder = lootTablesFolder / L"entities";
 
 const stdPath savesFolder = dataFolder / L"saves";
 const stdPath serversFolder = dataFolder / L"servers";
@@ -60,15 +87,5 @@ const stdPath saveFolderScreenShot = stdPath(L"screenshot.png");
 const stdPath saveFolderWorldData = stdPath(L"world data" + nbtFileExtension);
 
 const stdPath minecraftVersionFolder = dataFolder / L"version" / L"1.16.2";
-const stdPath minecraftDataFolder = minecraftVersionFolder / L"data" / L"minecraft";
-const stdPath minecraftAssetsFolder = minecraftVersionFolder / L"assets" / L"minecraft";
-const stdPath mainTagFolder = minecraftDataFolder / L"tags";
-const stdPath recipeFolder = minecraftDataFolder / L"recipes";
-const stdPath dataPacksFolder = dataFolder / L"datapacks";
-const stdPath lootTablesFolder = minecraftDataFolder / L"loot_tables";
-const stdPath blockLootTablesFolder = lootTablesFolder / L"blocks";
-const stdPath chestLootTablesFolder = lootTablesFolder / L"chests";
-const stdPath entityLootTablesFolder = lootTablesFolder / L"entities";
-const stdPath structureFolder = dataFolder / L"structures";
-const stdPath textFolder = minecraftAssetsFolder / L"texts";
+//const stdPath dataPackFolder = dataFolder / L"datapacks";
 extern stdPath workingDirectory;

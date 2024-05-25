@@ -24,7 +24,7 @@ struct minecart : public hollowRidableEntity
 	virtual void tick() override;
 	virtual void onDeath() override;
 	virtual vec3 getGroundFriction() const override;
-	virtual vec2 getRelativeSeatPosition(cint& seatIndex) const override;
+	virtual vec2 getRelativeSeatPosition(csize_t& seatIndex) const override;
 	const vect2<blockID> getBlockWheelsOn() const;
 	const vect2<veci2> getwheelPositions() const;
 	virtual fp getLengthTouchingGround() const override;

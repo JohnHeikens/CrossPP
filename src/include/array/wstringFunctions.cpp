@@ -50,7 +50,7 @@ void convertToLowerCase(std::wstring& s)
 }
 letter convertToLowerCase(const letter& s)
 {
-	return std::tolower(s);
+	return (letter)std::tolower(s);
 }
 
 //https://stackoverflow.com/questions/17386766/how-do-i-get-a-char-obtained-by-holding-shift

@@ -10,7 +10,7 @@
 #include <future>
 struct client : control, socketContainer {
 	serverData currentServerData = serverData();
-	vec3 earPosition = vec2();
+	vec3 earPosition = vec3();
     bool socketWantsTextInput = false;
 	bool socketWantsClipboardInput = false;
 

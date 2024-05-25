@@ -4,7 +4,7 @@
 void spawnerData::randomTick(tickableBlockContainer* containerIn, cveci2& position)
 {
 	//spawn mobs
-	constexpr int spawnBoxSize = 4;
+	constexpr fp spawnBoxSize = 4;
 	trySummonEntity(entityToSpawn, containerIn, cvec2(position) + vec2(randFp(currentRandom, -spawnBoxSize, spawnBoxSize), randFp(currentRandom, -spawnBoxSize, spawnBoxSize)));
 }
 

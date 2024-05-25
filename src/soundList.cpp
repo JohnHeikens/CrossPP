@@ -1,7 +1,7 @@
 #include <memory>
 #include "soundCollection.h"
 #include "armorTier.h"
-std::shared_ptr<soundCollection> itemPickupSound = std::shared_ptr<soundCollection>();
+std::shared_ptr<soundCollection> popSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> experienceSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> levelUpSound = std::shared_ptr<soundCollection>();
 std::shared_ptr<soundCollection> chestOpenSound = std::shared_ptr<soundCollection>();

@@ -77,7 +77,7 @@ struct human :public humanoid, public INamable
 
 
 	//drop the itemstack as if the player dropped it
-	void drop(itemStack& s);
+	void drop(itemStack& s, cint& amount = 0);
 	vec2 getDropPosition();
 
 	void pickUpFloatingSlots();

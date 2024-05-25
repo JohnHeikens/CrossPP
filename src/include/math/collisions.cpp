@@ -9,6 +9,7 @@ bool collides1d(cfp& x0, cfp& w0, cfp& x1, cfp& w1)
 }
 
 //returns wether a rectangle intersects with another rectangle
+//doesn't collide when the edges touch each other exactly
 bool collides2d(crectangle2& r1, crectangle2& r2)
 {
 	return r1.pos0.x + r1.size.x > r2.pos0.x && r1.pos0.x < r2.pos0.x + r2.size.x &&//x

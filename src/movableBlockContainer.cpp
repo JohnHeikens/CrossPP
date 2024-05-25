@@ -75,7 +75,7 @@ bool movableBlockContainer::inBounds(cveci2& position) const
 
 rectanglei2 movableBlockContainer::getCurrentArrayRect() const
 {
-	return rectanglei2(arrayPos00Offset, blockIDArray.size);
+	return rectanglei2(arrayPos00Offset, (veci2)blockIDArray.size);
 }
 
 collisionDataCollection movableBlockContainer::getHitboxCollisionData(crectangle2& box)
@@ -92,7 +92,7 @@ void movableBlockContainer::serializeValue(nbtSerializer& s)
 {
 	serializeNBTValue(s, std::wstring(L"relative attachment position"), relativeAttachmentPosition);
 	serializeNBTValue(s, std::wstring(L"pos00 offset"), arrayPos00Offset);
-	veci2 size = blockIDArray.size;
+	veci2 size = veci2(blockIDArray.size);
 	if (serializeNBTValue(s, std::wstring(L"size"), size)) {
 		if (size.volume()) {
 			if (!s.write)

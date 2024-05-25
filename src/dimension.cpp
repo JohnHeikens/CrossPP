@@ -59,7 +59,7 @@ color dimension::getColorMultiplier(cfp& sunLight, cfp& blockLight) const
 	const texture& lightMapTexture = *dimensionDataList[identifier]->lightMapTexture->scaledTextures[0];
 	cfp preciseSunlightLevel = (timeToLightLevel.getValue(currentWorld->getTimeOfDay()) / maxLightLevel) * (fp)(lightMapTexture.size.x - 2);//-2 for thunder
 
-	csize_t& quarter = lightMapTexture.size.y / 4;
+	cfsize_t& quarter = lightMapTexture.size.y / 4;
 
 	cfp sunLightYRow = lightMapTexture.size.y - (sunLight / maxLightLevel) * (quarter - 1) - 1;
 	cfp blockLightYRow = (lightMapTexture.size.y - quarter) - ((blockLight / maxLightLevel) * (quarter - 1) + 1);

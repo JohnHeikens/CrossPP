@@ -6,9 +6,9 @@
 struct gameControl;
 struct gameRenderData : public renderData {
 	const gameControl& screen;
-	seconds secondsOffset;
+	fp secondsOffset;
 	fp tickPartOffset;
-	gameRenderData(cmat3x3& worldToRenderTargetTransform, const texture& renderTarget, const gameControl& screen, cfp& secondsOffset = 0) :
+	gameRenderData(cmat3x3& worldToRenderTargetTransform, const texture& renderTarget, const gameControl& screen, const fp& secondsOffset = 0) :
 		renderData(worldToRenderTargetTransform, renderTarget),
 		secondsOffset(secondsOffset), tickPartOffset(secondsOffset* ticksPerRealLifeSecond), screen(screen) {}
 

@@ -23,7 +23,7 @@ generationData* nether::generateTerrain(chunk& generateIn)
 		}));
 
 
-	crectanglei2& rect = crectanglei2(generateIn.worldPos, chunkSize);
+	crectanglei2& rect = crectanglei2(generateIn.worldPos, (veci2)chunkSize);
 	for (cveci2& pos : rect)
 	{
 		cfp thickness = thicknessAt.getValue(pos.y);
@@ -63,7 +63,7 @@ void nether::generateStructures(chunk& generateIn)
 
 	std::vector<veci2> ceilingPositions = std::vector<veci2>();
 
-	crectanglei2& chunkRect = crectanglei2(generateIn.worldPos, chunkSize);
+	crectanglei2& chunkRect = crectanglei2(generateIn.worldPos, (veci2)chunkSize);
 	for (cveci2& pos : chunkRect)
 	{
 		if (getBlockID(pos) == blockID::netherrack)

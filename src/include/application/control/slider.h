@@ -15,7 +15,6 @@ struct slider :public control
 	button* decreaseButton = new button();
 	button* increaseButton = new button();
 	button* dragButton = new button();
-	void (*onDragCompleted)() = nullptr;
 
     valueEventHandler onValueChanged = valueEventHandler();
 

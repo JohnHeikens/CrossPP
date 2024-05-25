@@ -1,7 +1,6 @@
 #pragma once
 #include "nbtSerializable.h"
 #include "tickableBlockContainer.h"
-#include "generationData.h"
 #include "dimensionID.h"
 #include <utility>
 #include <vector>
@@ -55,7 +54,7 @@ struct dimension : nbtSerializable, tickableBlockContainer
 	bool serialize(cbool& write);
 	void tick() override;
 
-	virtual generationData* generateTerrain(chunk& generateIn) = 0;
+	virtual struct generationData* generateTerrain(chunk& generateIn) = 0;
 	virtual void serializeValue(nbtSerializer& s) override;
 	virtual void generateStructures(chunk& generateIn);
 	virtual biomeID getBiome(cvec2& position) const = 0;
@@ -112,8 +111,8 @@ inline array2d<t> dimension::getArrayValues(crectanglei2& rect, const arrayDataT
 
 	cveci2& pos1 = rect.pos1();
 
-	veci2 firstChunkCoordinates = getChunkCoordinates(rect.pos0);
-	veci2 lastChunkCoordinates = getChunkCoordinates(pos1);
+	veci2 firstChunkCoordinates = getChunkCoordinates(vec2(rect.pos0));
+	veci2 lastChunkCoordinates = getChunkCoordinates(vec2(pos1));
 
 	for (size_t i = 0; i < 2; i++)
 	{
@@ -128,7 +127,7 @@ inline array2d<t> dimension::getArrayValues(crectanglei2& rect, const arrayDataT
 	{
 		for (currentChunkCoordinates.x = firstChunkCoordinates.x; currentChunkCoordinates.x < lastChunkCoordinates.x; currentChunkCoordinates.x++)
 		{
-			cveci2 currentChunkWorldPos = currentChunkCoordinates * chunkSize;
+			cveci2 currentChunkWorldPos = currentChunkCoordinates * veci2(chunkSize);
 
 			veci2 from, to;
 

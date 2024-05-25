@@ -11,7 +11,7 @@ struct world :IDestructable, nbtSerializable
 	void initialize();
 	void finish();
 	void tick();
-	//save or load function. this will modify the world!
+	//save or load world including dimensions and chunks
 	bool serialize(cbool& write);
 
 	std::vector<biomeGenerator*> biomeList = std::vector<biomeGenerator*>();
@@ -35,7 +35,7 @@ struct world :IDestructable, nbtSerializable
 
 	fp dayNightCycleSpeed = 0;
 
-	vec2 worldSpawnPoint = veci2();
+	vec2 worldSpawnPoint = vec2();
 	dimensionID worldSpawnDimension = dimensionID();
 
 	std::wstring name = std::wstring(L"");

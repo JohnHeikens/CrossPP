@@ -93,7 +93,7 @@ void boat::serializeValue(nbtSerializer& s)
 	s.serializeValue(std::wstring(L"boat type"), (int&)boatType);
 }
 
-vec2 boat::getRelativeSeatPosition(cint& seatIndex) const
+vec2 boat::getRelativeSeatPosition(csize_t& seatIndex) const
 {
 	bool flipped = speed.x < 0;
 

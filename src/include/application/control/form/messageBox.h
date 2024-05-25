@@ -4,7 +4,7 @@
 
 struct messageBoxEventArgs : controlEventArgs{
     size_t buttonIndex = 0;
-    messageBoxEventArgs(control& sender, cint& buttonIndex) : controlEventArgs(sender), buttonIndex(buttonIndex){}
+    messageBoxEventArgs(control& sender, csize_t& buttonIndex) : controlEventArgs(sender), buttonIndex(buttonIndex){}
 };
 
 typedef eventHandler<messageBoxEventArgs> messageBoxEventHandler;

@@ -76,7 +76,7 @@ vec3 minecart::getGroundFriction() const
 	return hasRail ? vec3(cvec2(), railsFrictionPerBlock * getLengthTouchingGround()) : entity::getGroundFriction();
 }
 
-vec2 minecart::getRelativeSeatPosition(cint& seatIndex) const
+vec2 minecart::getRelativeSeatPosition(csize_t& seatIndex) const
 {
 	return cvec2(0, minecartHitboxSize.y * 0.5);
 }

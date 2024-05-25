@@ -1,4 +1,7 @@
 #include "furnaceRecipe.h"
+
+std::vector<furnaceRecipe*> furnaceRecipes = std::vector<furnaceRecipe*>();
+
 itemID getCookedItem(const itemID& identifier)
 {
 	//find recipe

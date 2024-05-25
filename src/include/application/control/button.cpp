@@ -10,7 +10,7 @@ button::button(const std::wstring& text) :control()
 void button::render(cveci2& position, const texture& renderTarget)
 {
 	miliseconds currentTime = getMiliseconds();
-	fp part = (currentTime - lastClickTime) / 500.0;//500ms effect
+	fp part = (fp)(currentTime - lastClickTime) / 500.0;//500ms effect
 
 	color c;
 	if (part < 1) 

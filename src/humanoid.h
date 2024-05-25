@@ -83,8 +83,6 @@ struct humanoid : public mob, public slotContainer
 
 	//sound synchronisation:
 	//hand swings + block break sounds
-	static fp getRightArmAngleIfDigging(const microseconds& timePoint);
-
 	virtual ~humanoid() override;
 	virtual void serializeValue(nbtSerializer& s) override;
 

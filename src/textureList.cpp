@@ -43,6 +43,7 @@ resolutionTexture* settingsButtonTexture = nullptr;
 resolutionTexture* inventoryButtonTexture = nullptr;
 resolutionTexture* biomeTexture = nullptr;
 resolutionTexture* tempMapTexture = nullptr;
+resolutionTexture* snowyGrassBlockTexture = nullptr;
 
 resolutionTexture* boatTextures[normalTreeTypeCount];
 std::vector<resolutionTexture* > destroyStageTextures = std::vector<resolutionTexture* >();

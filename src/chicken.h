@@ -1,7 +1,7 @@
 #pragma once
 #include "passiveMob.h"
 
-//chicken
+// chicken
 constexpr rectangle2 chickenBodyTextureRect = crectangle2(12, 9, 6, 8);
 constexpr rectangle2 chickenUpperLegTextureRect = crectangle2(36, 24, 1, 5);
 constexpr rectangle2 chickenLowerLegTextureRect = crectangle2(33, 29, 1, 3);
@@ -37,19 +37,22 @@ constexpr vec2 chickenBeakRotationCentre = cvec2(0, chickenBeakSize.getY() * 0.5
 constexpr vec2 chickenWattlesSize = cvec2(chickenWattlesTextureRect.size) * chickenTextureScale;
 constexpr vec2 chickenWattlesRotationCentre = cvec2(0, chickenWattlesSize.getY());
 
-
 struct chicken : public passiveMob
 {
 	int timeUntilNextEgg = 0;
-	chicken(dimension* dimensionIn, cvec2& position);
-	bodyPart2D* leftWing = nullptr;
-	bodyPart2D* rightWing = nullptr;
-	bodyPart2D* leftUpperLeg = nullptr;
-	bodyPart2D* rightUpperLeg = nullptr;
-	bodyPart2D* leftLowerLeg = nullptr;
-	bodyPart2D* rightLowerLeg = nullptr;
+	chicken(dimension *dimensionIn, cvec2 &position);
+	bodyPart2D *leftWing = nullptr;
+	bodyPart2D *rightWing = nullptr;
+	bodyPart2D *leftUpperLeg = nullptr;
+	bodyPart2D *rightUpperLeg = nullptr;
+	bodyPart2D *leftLowerLeg = nullptr;
+	bodyPart2D *rightLowerLeg = nullptr;
 	virtual void updateBodyParts() const override;
-	virtual void serializeValue(nbtSerializer& s) override;
+	virtual void serializeValue(nbtSerializer &s) override;
 	virtual fp getGravityForce() const override;
-	virtual bool goToPosition(cvec2& destination) override;
+	virtual bool goToPosition(cvec2 &destination) override;
+	virtual void tick() override;
+	bool addDamageSource(cfp &damage, std::shared_ptr<damageSource> source) override;
+
+		void resetEggLayTime();
 };

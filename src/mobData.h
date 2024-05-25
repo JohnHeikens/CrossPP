@@ -15,7 +15,7 @@ struct mobData : public entityData
 	std::shared_ptr<soundCollection> stepSound = std::shared_ptr<soundCollection>();
 	fp walkingSpeed = 0;
 	fp flyingSpeed = 0;
-	std::shared_ptr <lootTable> dropsWhenKilled = nullptr;
+	std::shared_ptr <lootTable> dropsWhenKilled = std::make_shared<lootTable>();
 	resolutionTexture* skin;
 	fp attackSpeed = 0;
 	experienceDrop* experienceWhenKilled = nullptr;

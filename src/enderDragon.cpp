@@ -226,7 +226,7 @@ void enderDragon::render(const gameRenderData& targetData) const
 void enderDragon::tick()
 {
 	mob::tick();
-	if (enderDragonInnerWingSynchronizer.maximumBetween(milisectosec(currentWorld->ticksSinceStart), milisectosec(currentWorld->ticksSinceStart + 1)))
+	if (enderDragonInnerWingSynchronizer.maximumBetween(currentWorld->ticksSinceStart * secondsPerTick, (currentWorld->ticksSinceStart + 1) * secondsPerTick))
 	{
 		enderDragonWingsSound->playRandomSound(dimensionIn, position);
 	}
@@ -298,7 +298,7 @@ void enderDragon::onDeath()
 				currentEnd->dragonAlive = false;
 
 				//add end portal and egg
-				const structure* endExitPortalStructure = getStructureByPath(structureFolder / std::wstring(L"the_end/exit_portal"));
+				const structure* endExitPortalStructure = getStructureByPath(L"the_end/exit_portal");
 				cveci2 dragonEggPosition = currentEnd->exitPortalLevel + cveci2(0, (int)endExitPortalStructure->blockIDArray.size.y);
 				dimensionIn->setBlockID(dragonEggPosition, blockID::dragon_egg);
 
@@ -315,7 +315,8 @@ void enderDragon::onDeath()
 		{
 			experienceOrb* orb = (experienceOrb*)summonEntity(entityID::experience_orb, dimensionIn, position);
 			orb->value = i ? 960 : 2400;
-			orb->speed = vec2::getrotatedvector(randFp(math::PI2)) * randFp(enderDragonExperienceDropSpeed);
+			//drop experience in all directions with a speed of 10m/s
+			orb->speed = vec2::getrotatedvector(randFp(math::PI2)) * randFp((fp)10);
 		}
 	}
 	currentPhase = dragonPhase::flyingToPortalToDie;

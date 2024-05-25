@@ -4,23 +4,23 @@
 #include "math/vector/vectorfunctions.h"
 #include "../blockID.h"
 
-constexpr vect2<size_t> chunkSize = cvect2<size_t>(0x100, 0x100);
+constexpr vect2<fsize_t> chunkSize = cvect2<fsize_t>(0x100, 0x100);
 //functions
 constexpr veci2 getChunkCoordinates(cvec2& worldPos) noexcept {
 	return floorVector<int>(worldPos / cvec2(chunkSize));
 }
 
-constexpr vect2<size_t> halfChunkSize = chunkSize / 2;
+constexpr vect2<fsize_t> halfChunkSize = chunkSize / 2;
 
-constexpr size_t chunkArraySize = chunkSize.volume();
+constexpr fsize_t chunkArraySize = chunkSize.volume();
 
 //chunk blocks to 2d: 0x10000
-constexpr vect3<size_t> minecraftChunkSize = vect3<size_t>(0x10, 0x100, 0x10);
-constexpr size_t minecraftChunkLayerSize = minecraftChunkSize.getX() * minecraftChunkSize.getX();
-constexpr size_t minecraftChunkArraySize = minecraftChunkSize.getY() * minecraftChunkLayerSize;
+constexpr vect3<fsize_t> minecraftChunkSize = vect3<fsize_t>(0x10, 0x100, 0x10);
+constexpr fsize_t minecraftChunkLayerSize = minecraftChunkSize.getX() * minecraftChunkSize.getX();
+constexpr fsize_t minecraftChunkArraySize = minecraftChunkSize.getY() * minecraftChunkLayerSize;
 
 constexpr int averageMinecraftHeight = 0x40;
-constexpr size_t minecraftSubChunkHeight = minecraftChunkSize.getX();
+constexpr fsize_t minecraftSubChunkHeight = minecraftChunkSize.getX();
 constexpr int vanillaChunkBlockCount = minecraftChunkLayerSize * averageMinecraftHeight;
 constexpr int averageChunkBlockCountUnderGround = chunkArraySize;//in an endless world, the average amount of blocks underground = filled
 constexpr int spawnRate = (int)chunkSize.volume() / 0x1000;

@@ -29,14 +29,14 @@ void furnaceSlotContainer::drawExtraData(cmat3x3 &transform, const texture &rend
         fp burnProgress =
                 selectedFurnaceData->ticksFuelBurned / (fp) selectedFurnaceData->ticksFuelToBurn;
         inventory::drawExtraData(crectanglei2(176, 242, 15, (int) (14 * (1.0 - burnProgress))),
-                                 vec2(56, 116), transform, renderTarget);
+                                 veci2(56, 116), transform, renderTarget);
     }
     //draw progress bar
     if (selectedFurnaceData->ticksCooked) {
         fp cookProgress = selectedFurnaceData->ticksCooked /
                           (fp) selectedFurnaceData->currentRecipe->cookingTime;
         inventory::drawExtraData(crectanglei2(176, 224, (int) (24 * cookProgress), 18),
-                                 vec2(79, 114), transform, renderTarget);
+                                 veci2(79, 114), transform, renderTarget);
     }
 }
 

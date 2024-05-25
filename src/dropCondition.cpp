@@ -74,9 +74,9 @@ dropCondition* readCondition(const jsonContainer& container)
 
 		const jsonContainer& predicateContainer = container[std::wstring(L"predicate")];
 
-		cint enchantmentsIndex = predicateContainer.getChildIndex(std::wstring(L"enchantments"));
+		csize_t& enchantmentsIndex = predicateContainer.getChildIndex(std::wstring(L"enchantments"));
 
-		if (enchantmentsIndex != -1)
+		if (enchantmentsIndex != std::wstring::npos)
 		{
 			const std::vector<jsonContainer> enchantmentContainers = predicateContainer.children[enchantmentsIndex].children;
 			for (const jsonContainer& enchantmentContainer : enchantmentContainers)
@@ -95,8 +95,8 @@ dropCondition* readCondition(const jsonContainer& container)
 			}
 		}
 
-		cint itemIndex = predicateContainer.getChildIndex(std::wstring(L"item"));
-		if (itemIndex != -1)
+		csize_t& itemIndex = predicateContainer.getChildIndex(std::wstring(L"item"));
+		if (itemIndex != std::wstring::npos)
 		{
 			const std::wstring requiredItemName = predicateContainer.children[itemIndex].children[0].value;
 			const itemID& requiredItemID = itemList.getIDByName(requiredItemName);

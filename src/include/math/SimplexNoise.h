@@ -155,7 +155,7 @@ public:
 	{
 		const int32_t& h = hash & 0x0F;  // Convert low 4 bits of hash code
 
-		fp grad = 1.0f + (h & 0b111);    // Gradient value 1.0, 2.0, ..., 8.0
+		fp grad = (fp)1.0 + (fp)(h & 0b111);    // Gradient value 1.0, 2.0, ..., 8.0
 
 		if ((h & 8) != 0) grad = -grad; // Set a random sign for the gradient
 

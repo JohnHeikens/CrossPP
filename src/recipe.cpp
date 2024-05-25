@@ -5,6 +5,9 @@
 #include "shapeLessRecipe.h"
 #include "furnaceRecipe.h"
 #include "itemData.h"
+
+std::vector<recipe*> craftingRecipes = std::vector<recipe*>();
+
 void readRecipe(const jsonContainer& recipeDescription)
 {
 	std::wstring recipeType = recipeDescription.children[0].children[0].value;
@@ -72,8 +75,8 @@ void readRecipe(const jsonContainer& recipeDescription)
 			for (int i = 0; i < patternSize.x; i++)
 			{
 				letter currentSymbol = patternContainer.children[j].value[i];
-				int keyIndex = keysContainer.getChildIndex(std::wstring(1, currentSymbol));
-				if (keyIndex != -1)
+				size_t keyIndex = keysContainer.getChildIndex(std::wstring(1, currentSymbol));
+				if (keyIndex != std::wstring::npos)
 				{
 					//flip recipes vertically
 					currentRecipe->requiredPattern->setValue(cveci2(i, patternSize.y - j - 1), (*keyList)[keyIndex]);

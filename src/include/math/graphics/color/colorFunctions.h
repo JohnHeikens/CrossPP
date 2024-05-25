@@ -41,11 +41,14 @@ inline static constexpr colorType hexToColor(cuint &hex)
     if constexpr (colorType::maxValue != bytemax)
     {
         constexpr fp multiplier = colorType::maxValue / bytemax;
-        return colorType((hex / 0x10000) * multiplier, ((hex / 0x100) & 0xff) * multiplier, (hex & 0xff) * multiplier);
+        return colorType(
+            (typename colorType::channelType)((hex / 0x10000) * multiplier),
+            (typename colorType::channelType)(((hex / 0x100) & 0xff) * multiplier),
+            (typename colorType::channelType)((hex & 0xff) * multiplier));
     }
     else
     {
-        return colorType((hex / 0x10000), ((hex / 0x100) & 0xff), (hex & 0xff));
+        return colorType((typename colorType::channelType)(hex / 0x10000), (typename colorType::channelType)((hex / 0x100) & 0xff), (typename colorType::channelType)(hex & 0xff));
     }
 }
 template <typename colorType = color>
@@ -84,10 +87,10 @@ inline static colortn<t, channelCount> averageColor(const colortn<t, channelCoun
     else
     {
         return colortn<t, channelCount>(
-            (c1.a() + c2.a() + c3.a() + c4.a()) / 4,
-            (c1.r() * c1.a() + c2.r() * c2.a() + c3.r() * c3.a() + c4.r() * c4.a()) / totalA,
-            (c1.g() * c1.a() + c2.g() * c2.a() + c3.g() * c3.a() + c4.g() * c4.a()) / totalA,
-            (c1.b() * c1.a() + c2.b() * c2.a() + c3.b() * c3.a() + c4.b() * c4.a()) / totalA);
+            (t)((c1.a() + c2.a() + c3.a() + c4.a()) / 4),
+            (t)((c1.r() * c1.a() + c2.r() * c2.a() + c3.r() * c3.a() + c4.r() * c4.a()) / totalA),
+            (t)((c1.g() * c1.a() + c2.g() * c2.a() + c3.g() * c3.a() + c4.g() * c4.a()) / totalA),
+            (t)((c1.b() * c1.a() + c2.b() * c2.a() + c3.b() * c3.a() + c4.b() * c4.a()) / totalA));
     }
 }
 
@@ -111,7 +114,8 @@ inline static constexpr colortn<t, channelCount> transitionColor(const colortn<t
         bottomcolor.b() + colortn<t, channelCount>::multiplyColorChannels(topcolor.a(), topcolor.b() - bottomcolor.b()));
 }
 
-constexpr uint getUint(const color& c){
+constexpr uint getUint(const color &c)
+{
     return static_cast<uint>(c.axis[0]) + static_cast<uint>(c.axis[1]) * 0x100 + static_cast<uint>(c.axis[2]) * 0x10000 + static_cast<uint>(c.axis[3]) * 0x1000000;
 }
 

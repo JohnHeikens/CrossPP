@@ -48,7 +48,7 @@ void structureBlockLoadModeUI::mouseDown(cveci2& position, cmb& button)
 	structureBlockUI* structureBlockOptions = (structureBlockUI*)parent;
 	if (highestChild == loadButton)
 	{
-		structure* s = getStructureByPath(structureFolder / ((gameControl*)parent)->structureBlockOptions->temporaryStructureBlockData->structureName);
+		structure* s = getStructureByPath(((gameControl*)parent)->structureBlockOptions->temporaryStructureBlockData->structureName);
 		if (s)
 		{
 			structureFeature featureToUse;
@@ -94,7 +94,7 @@ void structureBlockLoadModeUI::render(cveci2& position, const texture& renderTar
 		structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition = newRelativePosition;
 	}
 	rotationSlider->setValue(math::floor((int)rotationSlider->value, 90));
-	structure* s = getStructureByPath(structureFolder / structureBlockOptions->temporaryStructureBlockData->structureName);
+	structure* s = getStructureByPath(structureBlockOptions->temporaryStructureBlockData->structureName);
 	if (s)
 	{
 		cveci2 pos00 = structureBlockOptions->temporaryStructureBlockData->relativeStructurePosition + currentHuman->selectedContainerPosition;

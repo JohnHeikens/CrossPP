@@ -55,9 +55,9 @@ inline void fontFamily::DrawLetter(cletter& l, cmat3x3& transformFrom1x1, const 
 
 	cveci2& texLetterSize = cveci2((int)(tex->defaultSize.x / asciiRowWidth));
 
-	crectangle2& texMaskRect = crectangle2(asciiOffset * texLetterSize, texLetterSize);
+	crectanglei2& texMaskRect = crectanglei2(asciiOffset * texLetterSize, texLetterSize);
 
-	cmat3x3& multipliedTransform = mat3x3::cross(transformFrom1x1, mat3x3::fromRectToRect(texMaskRect, crectangle2(cvec2(1))));
+	cmat3x3& multipliedTransform = mat3x3::cross(transformFrom1x1, mat3x3::fromRectToRect(crectangle2(texMaskRect), crectangle2(cvec2(1))));
 
 	//auto drawer = transformBrush<texture>(multipliedTransform, *tex);
 	fillTransparentRectangle(croppedLetterRects[(byte)l], multipliedTransform, b, renderTarget);

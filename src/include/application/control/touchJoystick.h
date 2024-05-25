@@ -21,8 +21,8 @@ struct touchJoystick : public control {
     bool fingerDown = false;
 
     void mouseDown(cveci2& position, cmb& button) override;
-    void mouseMove(cveci2& position, cmb& button) override;
-    void mouseUp(cveci2& position, cmb& button) override;
+    void drag(cveci2& position, cveci2& originalPosition, cmb& button) override;
+    void drop(cveci2& position, cveci2& originalPosition, cmb& button) override;
     void render(cveci2& position, const texture& renderTarget) override;
 
 };

@@ -24,7 +24,7 @@ bool stackDivider::interactWith(itemStack *candicate) {
             //check if the stack still has the same item type stored in it
             if (divideOver[i]->compare(originalStack)) {
                 //retrieve stacks (add them back up to stackholding)
-                stackHolding.addStack(*divideOver[i], amountsDivided[i]);
+                stackHolding.addStack(*divideOver[i], (int)amountsDivided[i]);
                 roomPerStack[i] = maxStackSize - divideOver[i]->count;
             }
         }
@@ -35,7 +35,7 @@ bool stackDivider::interactWith(itemStack *candicate) {
 
         std::vector<size_t> newAmounts = divideOverArray(total, roomPerStack);
         for (size_t i = 0; i < divideOver.size(); i++) {
-            divideOver[i]->addStack(stackHolding, newAmounts[i]);
+            divideOver[i]->addStack(stackHolding, (int)newAmounts[i]);
         }
         amountsDivided = newAmounts;
     } else {

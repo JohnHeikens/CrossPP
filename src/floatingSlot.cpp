@@ -9,7 +9,7 @@ floatingSlot::floatingSlot(dimension* dimensionIn, cvec2& position) :entity(dime
 void floatingSlot::tick()
 {
 	//despawns after 5 minutes
-	if (ticksFloating++ >= floatingSlotDespawnTicks)
+	if (ticksAvailable++ >= floatingSlotDespawnTicks)
 	{
 		despawn = true;
 	}
@@ -28,7 +28,7 @@ void floatingSlot::tick()
 
 void floatingSlot::render(const gameRenderData& targetData) const
 {
-	fp height = (sin(microsectosec(getmicroseconds()) * math::PI) + 1) * (relativeHitbox.h - itemSize) * 0.5;
+	cfp& height = ((fp)std::sin(microsectosec(getmicroseconds()) * math::PI) + 1) * (relativeHitbox.h - itemSize) * 0.5;
 	stack.renderSingleItem(targetData.clone(
 		mat3x3::fromRectToRect(
 			crectangle2(replaceIfMissing(itemList[(int)stack.stackItemID]->tex).getClientRect()),
@@ -48,6 +48,6 @@ floatingSlot::~floatingSlot()
 void floatingSlot::serializeValue(nbtSerializer& s)
 {
 	entity::serializeValue(s);
-	s.serializeValue(std::wstring(L"ticks floating"), ticksFloating);
+	s.serializeValue(std::wstring(L"ticks floating"), ticksAvailable);
 	stack.serialize(s, std::wstring(L"item"));
 }

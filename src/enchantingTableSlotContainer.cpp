@@ -92,7 +92,7 @@ void enchantingTableSlotContainer::mouseDown(cveci2& pixelPosition, cmb& button,
 
 void enchantingTableSlotContainer::drawExtraData(cmat3x3& transform, const texture& renderTarget)
 {
-	veci2 optionPosition = cvec2(enchantmentBottomOptionPos + cveci2(0, enchantmentOptionSize.y * (enchantmentOptionCount - 1)));
+	veci2 optionPosition = cveci2(enchantmentBottomOptionPos + cveci2(0, enchantmentOptionSize.y * (enchantmentOptionCount - 1)));
 	if (hasEnchantableItem())
 	{
 		recalculateEnchantments();//you never know if it changed

@@ -1,5 +1,6 @@
 #include "constants.h"
 #include "world.h"
+#include "include/filesystem/textfile.h"
 void handleError(const std::wstring& message)
 {
 	const std::string& messageToString = WStringToString(message);
@@ -26,7 +27,14 @@ void handleError(const std::wstring& message)
 		}
 	}
 }
-fp getPowerStrength(const powerLevel& level)
+[[noreturn]] void handleCrash(const std::wstring &message)
+{
+	//create crash log
+	std::string strMessage = WStringToString(message);
+	writealltext(stdPath(L"crashlog.txt"), strMessage);
+	throw std::runtime_error("crash log saved in crashlog.txt");
+}
+fp getPowerStrength(const powerLevel &level)
 {
 	constexpr fp multiplier = powerStrengthStepCount / maxPowerLevel;
 

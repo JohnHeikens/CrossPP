@@ -302,7 +302,7 @@ void block::render(const gameRenderData &targetData, blockData *const data, bloc
 			renderTorch(blockPosition, cvec2(relativeMiddle + (directionX * 0.25), deepTorchDepth), 0, toComparatorData->substractionMode ? *blockList[blockID::redstone_torch]->tex : *unLitRedstoneTorchTexture, targetData);
 			renderTorch(blockPosition, cvec2(relativeMiddle + (directionX * -0.25), normalTorchDepth), 0, outputLevel ? *blockList[blockID::redstone_torch]->tex : *unLitRedstoneTorchTexture, targetData);
 		}
-		fillTransformedBrushRectangle(getAbsoluteRect(crectangle2(tex->getClientRect()), cutSlabRelativeRect), getTextureToWorldTransform(blockList[blockID::stone_slab]->tex->defaultSize, targetData.worldToRenderTargetTransform, blockPosition), *blockList[blockID::stone_slab]->tex, targetData.renderTarget);
+		fillTransformedBrushRectangle(getAbsoluteRect(crectangle2(tex->getClientRect()), cutSlabRelativeRect), getTextureToWorldTransform((veci2)blockList[blockID::stone_slab]->tex->defaultSize, targetData.worldToRenderTargetTransform, blockPosition), *blockList[blockID::stone_slab]->tex, targetData.renderTarget);
 	}
 	else if (identifier == blockID::end_portal)
 	{
@@ -385,6 +385,10 @@ void block::render(const gameRenderData &targetData, blockData *const data, bloc
 		const auto &mult = colorMultiplier<resolutionTexture, solidColorBrush>(*tex, wireColor);
 		render(mult, crectangle2(tex->getClientRect()), crectangle2((vec2)blockPosition, cvec2(1)), targetData, data, containerIn, false);
 	}
+	else if (identifier == blockID::grass_block && isSnow(containerIn->getBlockID(veci2(blockPosition.x, blockPosition.y + 1))))
+	{
+		fillTransformedBrushRectangle(blockTextureRect, getTextureToWorldTransform(veci2(blockTextureRect.size), targetData.worldToRenderTargetTransform, blockPosition), *snowyGrassBlockTexture, targetData.renderTarget);
+	}
 	else
 	{
 		// if (multiplyByBiomeColor(identifier))
@@ -431,9 +435,9 @@ void block::render(const gameRenderData &targetData, blockData *const data, bloc
 	}
 }
 
-mat3x3 block::getTextureToWorldTransform(cveci2 &textureSize, cmat3x3 &blockToRenderTargetTransform, cvec2 &blockPosition)
+mat3x3 block::getTextureToWorldTransform(cvec2 &textureSize, cmat3x3 &blockToRenderTargetTransform, cvec2 &blockPosition)
 {
-	return getBrushRectToWorldTransform(crectangle2(cvec2(), cvec2(textureSize)), blockToRenderTargetTransform, blockPosition);
+	return getBrushRectToWorldTransform(crectangle2(textureSize), blockToRenderTargetTransform, blockPosition);
 }
 
 mat3x3 block::getBrushRectToWorldTransform(crectangle2 &brushRect, cmat3x3 &blockToRenderTargetTransform, cvec2 &blockPosition)
@@ -773,6 +777,7 @@ void block::render(const brush0Type &currentBrush, rectangle2 brushRect, crectan
 
 			if (identifier == blockID::grass_block)
 			{
+
 				mat3x3 overlayTransform = transform;
 				rectangle2 overlayBrushRect = brushRect;
 

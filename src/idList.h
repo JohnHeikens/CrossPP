@@ -3,16 +3,17 @@
 #include "array/arrayFunctions/arrayFunctions.h"
 std::wstring removeNameSpace(const std::wstring& name);
 template<typename dataType, typename idType>
-struct idList :fastList<dataType>
+struct idList : public fastList<dataType>
 {
 	inline dataType& operator[](const idType& index) const
 	{
 		return fastList<dataType>::operator[]((int)index);
 	}
-	inline dataType& operator[](cint& index) const
-	{
-		return fastList<dataType>::operator[](index);
-	}
+	using fastList<dataType>::operator[];
+	//inline dataType& operator[](cint& index) const
+	//{
+	//	return fastList<dataType>::operator[](index);
+	//}
 	idType getIDByName(std::wstring name) const;
 	idList() {}
 	idList(const fastList<dataType>& list) :fastList<dataType>(list) {}

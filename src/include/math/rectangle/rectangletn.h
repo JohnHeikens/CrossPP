@@ -77,42 +77,55 @@ struct baseRect<t, 1>
 template <typename t, fsize_t axisCount>
 struct rectangletn : baseRect<t, axisCount>
 {
-	using baseRect<t, axisCount>::pos0;
-	using baseRect<t, axisCount>::size;
+	using base = baseRect<t, axisCount>;
+	using vec = vectn<t, axisCount>;
+	using cvec = cvectn<t, axisCount>;
+	using base::pos0;
+	using base::size;
 
 	addMemberName(getX, pos0.getX())
 		addMemberName(getY, pos0.getY())
 			addMemberName(getW, size.getX())
 				addMemberName(getH, size.getY())
 		//
-		using baseRect<t, axisCount>::baseRect;
-	constexpr rectangletn() : baseRect<t, axisCount>(vectn<t, axisCount>(), vectn<t, axisCount>()) {}
+		using base::baseRect;
+	constexpr rectangletn() : base(vec(), vec()) {}
 	// constexpr rectangletn(cvectn<t, axisCount> &pos0, cvectn<t, axisCount> &size)
 	//{
 	//	this->pos0 = pos0;
 	//	this->size = size;
 	// }
-	constexpr rectangletn(cvectn<t, axisCount> &size) : baseRect<t, axisCount>(vectn<t, axisCount>(), size) {}
+	constexpr rectangletn(cvectn<t, axisCount> &size) : base(vec(), size) {}
 
-	template <typename t2>
-	explicit constexpr rectangletn(const rectangletn<t2, axisCount> &in) : baseRect<t, axisCount>((vectn<t, axisCount>)in.pos0, (vectn<t, axisCount>)in.size) {}
+	template <typename t2, fsize_t axisCount2>
+	// the input is convertible without loss of data, so make the conversion implicit
+		requires non_narrowing<t2, t>
+	constexpr rectangletn(const rectangletn<t2, axisCount2> &in) : base((vec)in.pos0, (vec)in.size)
+	{
+	}
+
+	template <typename t2, fsize_t axisCount2>
+		requires narrowing_conversion<t2, t>
+	explicit constexpr rectangletn(const rectangletn<t2, axisCount2> &in) : base((vec)in.pos0, (vec)in.size)
+	{
+	}
 
 	constexpr rectIteratortn<t, axisCount> begin() const;
 	constexpr rectIteratortn<t, axisCount> end() const;
 
-	constexpr vectn<t, axisCount> pos10() const
+	constexpr vec pos10() const
 	{
 		return vec2(pos0.x + size.x, pos0.y);
 	}
-	constexpr vectn<t, axisCount> pos01() const
+	constexpr vec pos01() const
 	{
 		return vec2(pos0.x, pos0.y + size.y);
 	}
-	constexpr vectn<t, axisCount> pos1() const
+	constexpr vec pos1() const
 	{
 		return pos0 + size;
 	}
-	constexpr bool contains(const vectn<t, axisCount> &pos) const
+	constexpr bool contains(const vec &pos) const
 	{
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
@@ -133,8 +146,8 @@ struct rectangletn : baseRect<t, axisCount>
 
 	constexpr void expandToContain(const rectangletn &rect)
 	{
-		const vectn<t, axisCount> &oldPos11 = pos1();
-		const vectn<t, axisCount> &rectPos11 = rect.pos1();
+		const vec &oldPos11 = pos1();
+		const vec &rectPos11 = rect.pos1();
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
 			if (rect.pos0[i] < pos0[i])
@@ -152,8 +165,8 @@ struct rectangletn : baseRect<t, axisCount>
 	// the rectangle will not exceed the borders; else it will return false.
 	constexpr bool cropClientRect(rectangletn &toCrop) const
 	{
-		vectn<t, axisCount> toCropPos1 = toCrop.pos1();
-		vectn<t, axisCount> borderPos1 = pos1();
+		vec toCropPos1 = toCrop.pos1();
+		vec borderPos1 = pos1();
 
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
@@ -182,8 +195,8 @@ struct rectangletn : baseRect<t, axisCount>
 	constexpr rectangletn cropClientRectUnsafe(rectangletn toCrop) const
 	{
 
-		vectn<t, axisCount> toCropPos1 = toCrop.pos1();
-		vectn<t, axisCount> borderPos1 = pos1();
+		vec toCropPos1 = toCrop.pos1();
+		vec borderPos1 = pos1();
 
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
@@ -235,9 +248,9 @@ struct rectangletn : baseRect<t, axisCount>
 		}
 		return r;
 	}
-	constexpr vectn<t, axisCount> rectPos0Centered(const vectn<t, axisCount> &innerRectSize) const
+	constexpr vec rectPos0Centered(const vec &innerRectSize) const
 	{
-		vectn<t, axisCount> result = vectn<t, axisCount>();
+		vec result = vec();
 
 		for (fsize_t i = 0; i < axisCount; i++)
 		{
@@ -245,11 +258,11 @@ struct rectangletn : baseRect<t, axisCount>
 		}
 		return result;
 	}
-	constexpr rectangletn<t, axisCount> rectCentered(const vectn<t, axisCount> &innerRectSize) const
+	constexpr rectangletn<t, axisCount> rectCentered(const vec &innerRectSize) const
 	{
 		return rectangletn<t, axisCount>(rectPos0Centered(innerRectSize), innerRectSize);
 	}
-	constexpr rectangletn<t, axisCount> rectCenteredAround(const vectn<t, axisCount> &newCenterPosition) const
+	constexpr rectangletn<t, axisCount> rectCenteredAround(const vec &newCenterPosition) const
 	{
 		return rectangletn<t, axisCount>(newCenterPosition + (size / (t)2), size);
 	}
@@ -261,15 +274,15 @@ struct rectangletn : baseRect<t, axisCount>
 	{
 		return rectangletn(pos0.switchAxes(), size.switchAxes());
 	}
-	constexpr vectn<t, axisCount> getCenter() const
+	constexpr vec getCenter() const
 	{
-		return pos0 + cvec2(size) * 0.5;
+		return pos0 + vec(size) / (t)2;
 	}
 
-	inline static constexpr rectangletn fromOppositeCorners(const vectn<t, axisCount> &corner0, const vectn<t, axisCount> &corner1)
+	inline static constexpr rectangletn fromOppositeCorners(const vec &corner0, const vec &corner1)
 	{
-		vectn<t, axisCount> pos0 = vectn<t, axisCount>();
-		vectn<t, axisCount> pos1 = vectn<t, axisCount>();
+		vec pos0 = vec();
+		vec pos1 = vec();
 
 		for (size_t i = 0; i < axisCount; i++)
 		{
@@ -281,8 +294,8 @@ struct rectangletn : baseRect<t, axisCount>
 
 	constexpr t getAlignedY(const t rectangleHeight, const verticalAlignment &alignment)
 	{
-		using baseRect<t, axisCount>::y;
-		using baseRect<t, axisCount>::h;
+		using base::h;
+		using base::y;
 		switch (alignment)
 		{
 		case verticalAlignment::bottom:
@@ -295,8 +308,8 @@ struct rectangletn : baseRect<t, axisCount>
 	}
 	constexpr t getAlignedX(const t rectangleWidth, const horizontalAlignment &alignment)
 	{
-		using baseRect<t, axisCount>::x;
-		using baseRect<t, axisCount>::w;
+		using base::w;
+		using base::x;
 
 		switch (alignment)
 		{
@@ -355,7 +368,7 @@ addTemplateTypes(rectangle)
 {
 public:
 	vectn<t, axisCount> pos = vectn<t, axisCount>();
-	//rectangletn<t, axisCount> rect = rectangletn<t, axisCount>();
+	// rectangletn<t, axisCount> rect = rectangletn<t, axisCount>();
 	vectn<t, axisCount> pos0 = vectn<t, axisCount>();
 	vectn<t, axisCount> pos1 = vectn<t, axisCount>();
 

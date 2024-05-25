@@ -218,7 +218,7 @@ void pistonData::dropBlocksMoving(tickableBlockContainer* containerIn, cveci2& p
 	cveci2& add = pistonHeadPosition - summonedPiston->movingBlocks->relativeAttachmentPosition;
 
 	cveci2& pos00 = summonedPiston->movingBlocks->arrayPos00Offset;
-	cveci2& pos11 = pos00 + summonedPiston->movingBlocks->blockIDArray.size;
+	cveci2& pos11 = pos00 + cveci2(summonedPiston->movingBlocks->blockIDArray.size);
 	for (int j = pos00.y; j < pos11.y; j++)
 	{
 		for (int i = pos00.x; i < pos11.x; i++)

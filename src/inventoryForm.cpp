@@ -68,7 +68,7 @@ void inventoryForm::mouseMove(cveci2 &position, cmb &button)
 {
     form::mouseMove(position, button);
     holdingMousePos = position;
-    if (mouseButtonPressing != -1)
+    if (mouseButtonPressing != noButton)
     {
         inventoryToDisplay->mouseMove(cveci2(cvec2(position) / scaleMultiplier), mouseButtonPressing, divider);
     }
@@ -77,7 +77,7 @@ void inventoryForm::mouseMove(cveci2 &position, cmb &button)
 void inventoryForm::mouseUp(cveci2 &position, cmb &button)
 {
     control::mouseUp(position, button);
-    mouseButtonPressing = (mb)-1;
+    mouseButtonPressing = noButton;
     divider.divideOver.clear();
     divider.amountsDivided.clear();
     if (divider.stackHolding.count)

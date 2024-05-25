@@ -3111,7 +3111,7 @@ do { \
 		out.resize(mem_needed);
 
 		const uint8_t* pIDAT_data = static_cast<const uint8_t*>(pImage) + idat_ofs + sizeof(uint32_t) * 2;
-		const uint32_t src_len = image_size - (idat_ofs + sizeof(uint32_t) * 2);
+		const uint32_t src_len = image_size - (idat_ofs + (uint32_t)sizeof(uint32_t) * 2);
 
 		bool decomp_status;
 		if (desired_channels == 3)

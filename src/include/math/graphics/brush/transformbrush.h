@@ -56,6 +56,6 @@ struct transformBrush final : public colorBrush
 		//}
 	//}
 		//return baseBrush.getValue(baseBrushPos);
-		return baseBrush.getValue(modifiedTransform.multPointMatrix(pos));
+		return baseBrush.getValue((typename brush0Type::inputType)modifiedTransform.multPointMatrix(pos));
 	}
 };

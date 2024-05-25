@@ -110,12 +110,12 @@ namespace math
 		if (std::is_integral_v<outputType>)
 		{
 			const outputType &i = (outputType)x; /* truncate */
-			return i + (outputType)(i < x);		 /* convert trunc to floor */
+			return i + (outputType)((inputType)i < x);		 /* convert trunc to floor */
 		}
 		else
 		{
 			int i = (int)x;						   /* truncate */
-			return (outputType)(i + (int)(i < x)); /* convert trunc to floor */
+			return (outputType)(i + (int)((inputType)i < x)); /* convert trunc to floor */
 		}
 	}
 
@@ -286,7 +286,7 @@ namespace math
 	// same slope = 0
 	inline fp calculateAngle(cfp &slope0, cfp &slope1)
 	{
-		return abs(atan((slope1 - slope0) / (1 + slope1 * slope0)));
+		return math::absolute(atan((slope1 - slope0) / ((fp)1 + slope1 * slope0)));
 	}
 	inline fp Remainder1(cfp &value)
 	{

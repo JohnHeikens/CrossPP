@@ -9,7 +9,7 @@ struct inventoryForm : form
 	fp scaleMultiplier = 1;
     stackDivider divider = stackDivider();
 	veci2 holdingMousePos = cveci2();
-	mb mouseButtonPressing = (mb)-1;
+	mb mouseButtonPressing = mb::ButtonCount;
 	inventory* inventoryToDisplay = nullptr;
 	inventoryForm();
 

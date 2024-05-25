@@ -40,7 +40,7 @@ void blaze::updateBodyParts() const
 			csize_t &rodIndex =
 				(ringRodIndex < blazeRingBackRodCount) ? ringIndex * blazeRingBackRodCount + ringRodIndex : (ringIndex + blazeRingCount) * blazeRingBackRodCount + (ringRodIndex - blazeRingBackRodCount);
 
-			cfp rodRotation = ((ringRodIndex / (fp)blazeRingRodCount) + additionalRingRotation) * math::PI2;
+			cfp rodRotation = (((fp)ringRodIndex / (fp)blazeRingRodCount) + additionalRingRotation) * math::PI2;
 			rods[rodIndex]->translate = cvec2(-cos(rodRotation) * blazeRingRadius[ringIndex], relativeBlazeRingHeight[ringIndex]);
 			rods[rodIndex]->changed = true;
 		}

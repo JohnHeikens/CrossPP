@@ -1,6 +1,8 @@
 #pragma once
 // https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
 #define GetMacroOverLoad(_1, _2, _3, NAME, ...) NAME
+#define wrap(...) __VA_ARGS__
+#define COMMA ,
 
 // add a member to your struct with [expression] = other variable&
 #define addMemberName(memberName, expression) \
@@ -59,63 +61,65 @@
 	constructorType structName &operator=(const structName &other) = default;
 
 // newexpression should be a macro that creates a new instance with the same size as the argument
-#define addOperator(o, newExpression, structType, functionType)                                                                          \
-	template <typename t2>                                                                                                               \
-	functionType typename std::enable_if<std::is_arithmetic_v<t2>, structType>::type operator o(const t2 &b) const                       \
-	{                                                                                                                                    \
-		newExpression((*this)) auto resultPtr = result.begin();                                                                          \
-		auto const &endPtr = end();                                                                                                      \
-		for (auto thisPtr = begin(); thisPtr < endPtr; thisPtr++, resultPtr++)                                                           \
-		{                                                                                                                                \
-			*resultPtr = *thisPtr o b;                                                                                                   \
-		}                                                                                                                                \
-		return result;                                                                                                                   \
-	}                                                                                                                                    \
-	functionType structType operator o(const structType &b) const                                                                        \
-	{                                                                                                                                    \
-		newExpression(b) auto resultPtr = result.begin();                                                                                \
-		auto const &endPtr = end();                                                                                                      \
-		auto bPtr = b.begin();                                                                                                           \
-		for (auto thisPtr = begin(); thisPtr < endPtr; thisPtr++, resultPtr++, bPtr++)                                                   \
-		{                                                                                                                                \
-			*resultPtr = *thisPtr o(*bPtr);                                                                                              \
-		}                                                                                                                                \
-		return result;                                                                                                                   \
-	}                                                                                                                                    \
-	template <typename t2>                                                                                                               \
-	functionType friend typename std::enable_if<std::is_arithmetic_v<t2>, structType>::type operator o(const t2 &a, const structType &b) \
-	{                                                                                                                                    \
-		newExpression(b) auto resultPtr = result.begin();                                                                                \
-		auto const &endPtr = b.end();                                                                                                    \
-		for (auto bPtr = b.begin(); bPtr < endPtr; bPtr++, resultPtr++)                                                                  \
-		{                                                                                                                                \
-			*resultPtr = a o(*bPtr);                                                                                                     \
-		}                                                                                                                                \
-		return result;                                                                                                                   \
-	}                                                                                                                                    \
-	functionType void operator o##=(const structType &b)                                                                                 \
-	{                                                                                                                                    \
-		auto const &endPtr = end();                                                                                                      \
-		auto bPtr = b.begin();                                                                                                           \
-		for (auto thisPtr = begin(); thisPtr < endPtr; thisPtr++, bPtr++)                                                                \
-		{                                                                                                                                \
-			*thisPtr o## = (*bPtr);                                                                                                      \
-		}                                                                                                                                \
-	}                                                                                                                                    \
-	template <typename t2>                                                                                                               \
-	functionType typename std::enable_if<std::is_arithmetic_v<t2>, void>::type operator o##=(const t2 &b)                                \
-	{                                                                                                                                    \
-		for (t & val : (*this))                                                                                                          \
-		{                                                                                                                                \
-			val o## = b;                                                                                                                 \
-		}                                                                                                                                \
+#define addOperator(o, newExpression, structType, otherStructType, functionType)                                                               \
+	template <typename t2, typename resultType = std::enable_if_t<std::is_arithmetic_v<t2>, decltype(std::declval<t>() o std::declval<t2>())>> \
+	functionType decltype(auto) operator o(const t2 &b) const                                                                                  \
+	{                                                                                                                                          \
+		newExpression(resultType, (*this)) auto resultPtr = result.begin();                                                                    \
+		auto const &endPtr = end();                                                                                                            \
+		for (auto thisPtr = begin(); thisPtr < endPtr; thisPtr++, resultPtr++)                                                                 \
+		{                                                                                                                                      \
+			*resultPtr = *thisPtr o b;                                                                                                         \
+		}                                                                                                                                      \
+		return result;                                                                                                                         \
+	}                                                                                                                                          \
+	template <typename t2, typename resultType = decltype(std::declval<t>() o std::declval<t2>())>                                             \
+	functionType decltype(auto) operator o(const otherStructType &b) const                                                                     \
+	{                                                                                                                                          \
+		newExpression(resultType, b) auto resultPtr = result.begin();                                                                          \
+		auto const &endPtr = end();                                                                                                            \
+		auto bPtr = b.begin();                                                                                                                 \
+		for (auto thisPtr = begin(); thisPtr < endPtr; thisPtr++, resultPtr++, bPtr++)                                                         \
+		{                                                                                                                                      \
+			*resultPtr = *thisPtr o(*bPtr);                                                                                                    \
+		}                                                                                                                                      \
+		return result;                                                                                                                         \
+	}                                                                                                                                          \
+	template <typename t2, typename resultType = std::enable_if_t<std::is_arithmetic_v<t2>, decltype(std::declval<t>() o std::declval<t2>())>>   \
+	functionType friend decltype(auto) operator o(const t2 &a, const structType &b)                                                            \
+	{                                                                                                                                          \
+		newExpression(resultType, b) auto resultPtr = result.begin();                                                                          \
+		auto const &endPtr = b.end();                                                                                                          \
+		for (auto bPtr = b.begin(); bPtr < endPtr; bPtr++, resultPtr++)                                                                        \
+		{                                                                                                                                      \
+			*resultPtr = a o(*bPtr);                                                                                                           \
+		}                                                                                                                                      \
+		return result;                                                                                                                         \
+	}                                                                                                                                          \
+	template <typename t2>                                                                                                                     \
+	functionType void operator o##=(const otherStructType &b)                                                                                  \
+	{                                                                                                                                          \
+		auto const &endPtr = end();                                                                                                            \
+		auto bPtr = b.begin();                                                                                                                 \
+		for (auto thisPtr = begin(); thisPtr < endPtr; thisPtr++, bPtr++)                                                                      \
+		{                                                                                                                                      \
+			*thisPtr o## = (*bPtr);                                                                                                            \
+		}                                                                                                                                      \
+	}                                                                                                                                          \
+	template <typename t2>                                                                                                                     \
+	functionType typename std::enable_if<std::is_arithmetic_v<t2>, void>::type operator o##=(const t2 &b)                                      \
+	{                                                                                                                                          \
+		for (t & val : (*this))                                                                                                                \
+		{                                                                                                                                      \
+			val o## = b;                                                                                                                       \
+		}                                                                                                                                      \
 	}
 
-#define addOperators(newExpression, structType, functionType)       \
-	addOperator(+, newExpression, structType, functionType)         \
-		addOperator(-, newExpression, structType, functionType)     \
-			addOperator(*, newExpression, structType, functionType) \
-				addOperator(/, newExpression, structType, functionType)
+#define addOperators(newExpression, structType, otherStructType, functionType)             \
+	addOperator(+, newExpression, structType, wrap(otherStructType), functionType)         \
+		addOperator(-, newExpression, structType, wrap(otherStructType), functionType)     \
+			addOperator(*, newExpression, structType, wrap(otherStructType), functionType) \
+				addOperator(/, newExpression, structType, wrap(otherStructType), functionType)
 
 #define addAssignmentOperator(structName, functionType) \
 	functionType structName &operator=(structName copy) \

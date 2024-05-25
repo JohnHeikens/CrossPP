@@ -8,6 +8,7 @@
 
 constexpr int currentFileVersionID = 122;
 void handleError(const std::wstring& message);
+[[noreturn]] void handleCrash(const std::wstring& message);
 
 //forward declarations
 //typedefs
@@ -60,8 +61,6 @@ constexpr int microSecondsPerTick = 1000000 / ticksPerRealLifeSecond;
 
 constexpr fp maxFloatingSlotSpeed = 2 * secondsPerTick;
 constexpr fp floatingSlotSpeedOnDeath = 10 * secondsPerTick;
-constexpr fp humanDropSpeed = 10 * secondsPerTick;
-constexpr fp enderDragonExperienceDropSpeed = humanDropSpeed * 2;
 constexpr fp maxExperienceSpeed = maxFloatingSlotSpeed;
 
 constexpr fp gravityForce = 1.6;

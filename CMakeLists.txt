@@ -24,7 +24,7 @@ message("sfml directory: ${SFML_DIR}")
 # Shoutout to CMake guide: https://eliasdaler.github.io/using-cmake/
 
 # increase the amount of i's to update cmakelists.txt:
-# iiiii
+# iiiiiii
 
 #set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
@@ -46,12 +46,14 @@ ELSE()
     # Enable additional warnings and debug mode
     # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
     # -pedantic removed; it complains about anonymous structs
-    set (CMAKE_CXX_FLAGS "-g -W -Wno-stringop-overread")#added D__GXX_TYPEINFO_EQUALITY_INLINE=0 for workaround test
+    set (CMAKE_CXX_FLAGS "-g -W -Wconversion -Wno-stringop-overread")#added D__GXX_TYPEINFO_EQUALITY_INLINE=0 for workaround test
         message ("android is not defined : ${CMAKE_SYSTEM_NAME}")
         #set(SFML_DIR "build\\_deps\\sfml-build")
         
     # If you want to link SFML statically
-    #set(SFML_STATIC_LIBRARIES TRUE) #typeinfo problem
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(SFML_STATIC_LIBRARIES TRUE) #typeinfo problem
+    endif()
     IF (WIN32)
         IF(EXISTS C:/msys64/mingw64/bin/gcc.exe)
             set(CMAKE_C_COMPILER C:/msys64/mingw64/bin/gcc.exe)
@@ -157,13 +159,9 @@ ENDIF()
 
 target_compile_options(${PROJECT_NAME} PRIVATE -Wno-type-limits)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-target_link_libraries(${PROJECT_NAME} PUBLIC 
--static-libgcc -static-libstdc++)
-endif()
-
 #find_package(SFML 2.6.1 COMPONENTS audio network graphics system window REQUIRED)
 IF(SFML_STATIC_LIBRARIES)
+    target_link_libraries(${PROJECT_NAME} PUBLIC -static-libgcc -static-libstdc++)
     set(CMAKE_EXE_LINKER_FLAGS " -static")
 
     set(ZLIB_USE_STATIC_LIBS "ON")
@@ -274,6 +272,6 @@ ZLIB::ZLIB)
     sfml-graphics
     sfml-system
     sfml-window
-    )
+    sfml-main)
 
 ENDIF()

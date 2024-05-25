@@ -3,7 +3,7 @@
 #include <string>
 #include "array/wstringFunctions.h"
 #include "dimensionID.h"
-#include "gameControl.h"
+//#include "gameControl.h"
 struct chat
 {
 

@@ -598,6 +598,11 @@ constexpr bool isSand(const blockID &identifier) noexcept
            identifier == blockID::soul_sand;
 }
 
+constexpr bool isSnow(const blockID& identifier) noexcept
+{
+    return is_in(identifier, blockID::snow, blockID::snow_block);
+}
+
 constexpr bool isFallingBlock(const blockID &identifier) noexcept
 {
     return isSand(identifier) || isConcretePowder(identifier) || (identifier == blockID::gravel) ||

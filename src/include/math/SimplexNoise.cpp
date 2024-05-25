@@ -94,14 +94,14 @@
 simplexNoise::simplexNoise(std::mt19937& randomToUse)
 {
 	//fill lookup table
-	for (size_t i = 0; i < noiseRepeat; i++)
+	for (fsize_t i = 0; i < noiseRepeat; i++)
 	{
 		perm[i] = static_cast<uint8_t> (i);
 	}
 	//shuffle array
 	//source:
 	//http://www.cplusplus.com/reference/algorithm/shuffle/
-	for (size_t i = noiseRepeat - 1; i > 0; i--)
+	for (fsize_t i = noiseRepeat - 1; i > 0; i--)
 	{
 		const uint8_t& current = perm[i];
 		cfsize_t& index = randomToUse() % (i + 1);

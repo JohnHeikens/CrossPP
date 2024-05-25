@@ -64,11 +64,6 @@ void slider::dragCompleted()
 	cfp part = dragButton->rect.pos0.axis[horizontalAxis] - decreaseButton->rect.size.axis[horizontalAxis];
 	cfp max = increaseButton->rect.pos0.axis[horizontalAxis] - dragButton->rect.size.axis[horizontalAxis] - decreaseButton->rect.size.axis[horizontalAxis];
 	setValue(math::mapValue(part, (fp)0, max, minValue, maxValue));
-
-	if (onDragCompleted)
-	{
-		onDragCompleted();
-	}
 }
 
 void slider::layout(crectanglei2 &newRect)

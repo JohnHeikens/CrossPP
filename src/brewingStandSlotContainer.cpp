@@ -59,7 +59,7 @@ void brewingStandSlotContainer::drawExtraData(cmat3x3& transform, const texture&
 	if (selectedBrewingStandData->fuelLeft)
 	{
 		cfp& partLeft = selectedBrewingStandData->fuelLeft / (fp)blazePowderBrewingBatchCount;
-		inventory::drawExtraData(crectanglei2(176, 223, (int)(18 * partLeft), 4), vec2(60, 118), transform, renderTarget);
+		inventory::drawExtraData(crectanglei2(176, 223, (int)(18 * partLeft), 4), veci2(60, 118), transform, renderTarget);
 	}
 }
 

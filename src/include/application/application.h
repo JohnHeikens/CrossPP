@@ -28,6 +28,7 @@ struct application: INamable, IDestructable
 
 	doubleBuffer buffer = doubleBuffer();
 	form* mainForm;
+	struct eventTranslator* translator = nullptr;
 
 	//vecl2 MousePos = vecl2();
 	//clientInput input = clientInput();

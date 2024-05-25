@@ -100,7 +100,8 @@
         "cfenv": "cpp",
         "*.inc": "cpp",
         "__memory": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "control.h": "c"
     },
     
     //"cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe"

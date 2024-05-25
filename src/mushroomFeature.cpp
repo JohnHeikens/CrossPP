@@ -24,7 +24,7 @@ bool mushroomFeature::canPlace(const structurePlacementBlueprint& bluePrint, tic
 
 	cmat3x3i& structureToWorldTransform = bluePrint.placedStructure->getBlocksToWorldTransform(bluePrint.structurePos00, bluePrint.flipX);
 
-	crectanglei2& structureRect = crectanglei2(cveci2(), bluePrint.placedStructure->blockIDArray.size);
+	crectanglei2& structureRect = crectanglei2(cveci2(), cveci2(bluePrint.placedStructure->blockIDArray.size));
 
 	for (cveci2& structurePos : structureRect)
 	{

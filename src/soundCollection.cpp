@@ -21,6 +21,7 @@
 #include "filesystem/sfmlInputStream.h"
 #include "folderList.h"
 #include <regex>
+#include "resourcePack.h"
 
 std::unordered_map<std::wstring, audioCollection *> globalSoundCollectionList = std::unordered_map<std::wstring, audioCollection *>();
 
@@ -44,15 +45,17 @@ void audioCollection::addAudioFileName(const stdPath &path)
 	key = path.lexically_relative(generalSoundFolder).wstring(); // - generalSoundFolder;
 
 	key = std::regex_replace(key, std::wregex(L"\\/|\\\\"), L".");
-	//key.replace(key.begin(), key.end(), stdPath::preferred_separator, L'.');
+	// key.replace(key.begin(), key.end(), stdPath::preferred_separator, L'.');
 
 	globalSoundCollectionList[key] = this;
 	bool loaded = false;
 	stdPath defaultPath = path;
 	defaultPath += L".ogg";
-	if (stdFileSystem::exists(defaultPath))
+
+	stdPath foundPath;
+	if (getLastResourceLocation(defaultPath, foundPath))
 	{
-		addAudioFile(defaultPath);
+		addAudioFile(foundPath);
 		loaded = true;
 	}
 	// warning: starts with 1
@@ -61,12 +64,13 @@ void audioCollection::addAudioFileName(const stdPath &path)
 	{
 		stdPath pathNumber = path;
 		pathNumber += std::to_wstring(i) + L".ogg";
-		if (!stdFileSystem::exists(pathNumber))
-			break;
+		if (getLastResourceLocation(pathNumber, foundPath))
 		{
-			addAudioFile(pathNumber);
+			addAudioFile(foundPath);
 			loaded = true;
 		}
+		else
+			break;
 		i++;
 	}
 	if (!loaded)

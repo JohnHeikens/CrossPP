@@ -74,6 +74,7 @@ enum mb : uint {
 typedef sf::Mouse::Button mb;
 
 #endif
+constexpr mb noButton = mb::ButtonCount;
 
 typedef uint fsize_t;//fast size type, will result in sse instructions and loop unrolling
 typedef const fsize_t cfsize_t;//fast size type, will result in sse instructions and loop unrolling

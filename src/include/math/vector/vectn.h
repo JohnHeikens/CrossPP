@@ -8,6 +8,7 @@
 #include "..\mathFunctions.h"
 #include <ranges>
 #include <array>
+#include "type/conversion.h"
 
 template<typename t, fsize_t n>
 struct baseVec {
@@ -177,11 +178,26 @@ struct vectn
     }
 
     template<typename t2, fsize_t axisCount2>
+    //the input is convertible without loss of data, so make the conversion implicit
+    requires non_narrowing<t2, t>
     constexpr vectn(const vectn<t2, axisCount2> &in) : baseVec<t, n>(std::array<t, n>()) {
         constexpr fsize_t minimum = math::minimum(axisCount, axisCount2);
 
         for (fsize_t i = 0; i < minimum; i++)
         {
+            //implicit conversion
+        	axis[i] = in.axis[i];
+        }
+    }
+
+    template<typename t2, fsize_t axisCount2>
+    requires narrowing_conversion<t2, t>
+    explicit constexpr vectn(const vectn<t2, axisCount2> &in) : baseVec<t, n>(std::array<t, n>()) {
+        constexpr fsize_t minimum = math::minimum(axisCount, axisCount2);
+
+        for (fsize_t i = 0; i < minimum; i++)
+        {
+            //explicit conversion
         	axis[i] = (t)in.axis[i];
         }
     }
@@ -266,8 +282,8 @@ struct vectn
     // can be 0, 90,180, 270
     constexpr vectn rotateXY(cfsize_t &angle) const {
 
-        cint sina = math::sinDegrees(angle);
-        cint cosa = math::cosDegrees(angle);
+        cint& sina = math::sinDegrees(angle);
+        cint& cosa = math::cosDegrees(angle);
         using baseVec<t, n>::x;
         using baseVec<t, n>::y;
 
@@ -399,9 +415,9 @@ struct vectn
 
 #pragma optimize ("", on)
 
-#define newMacro(copySize) vectn result = vectn();
+#define newMacro(type, copySize) vectn<type COMMA n> result = vectn<type COMMA n>();
 
-    addOperators(newMacro, vectn, constexpr)
+    addOperators(newMacro, vectn, wrap(vectn<t2, n>), constexpr)
 
 #undef newMacro
 #pragma optimize ("", off)

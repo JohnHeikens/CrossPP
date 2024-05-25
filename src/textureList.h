@@ -43,6 +43,7 @@ extern resolutionTexture* settingsButtonTexture;
 extern resolutionTexture* inventoryButtonTexture;
 extern resolutionTexture* biomeTexture;
 extern resolutionTexture* tempMapTexture;
+extern resolutionTexture* snowyGrassBlockTexture;
 
 extern resolutionTexture* boatTextures[normalTreeTypeCount];
 extern std::vector<resolutionTexture* > destroyStageTextures;

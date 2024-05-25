@@ -752,7 +752,7 @@ void chat::render(const texture& renderTarget, const gameControl& screen) const
 		if (((timesSaid[i] + chatTime) > currentWorld->ticksSinceStart) || showMoreChat)
 		{
 			//this applies even in the top left
-			veci2 size = f.measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
+			cvec2& size = f.measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
 			f.DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
 			lineCount++;
 			offset.y -= size.y;

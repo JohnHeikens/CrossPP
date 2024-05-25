@@ -11,7 +11,7 @@ texture::texture(const stdPath& path, cbool& flip) : texture(cveci2(), nullptr)
 	veci2 intSize;
 
 	colorb* byteArray = (colorb*)stbi_load(path.string().c_str(), &intSize.x, &intSize.y, &channelCount, bgraColorChannelCount);
-	size = (vect2<size_t>)intSize;
+	size = (vect2<fsize_t>)intSize;
 	if (byteArray)
 	{
 		//rgba to bgra 

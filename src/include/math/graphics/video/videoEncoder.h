@@ -23,11 +23,11 @@ struct videoEncoder
     std::vector<byte> decompressedScreen = std::vector<byte>();
 
     // the screen players will see
-    texture totalTexture = texture(veci2());
+    texture totalTexture = texture(vect2<fsize_t>());
 
     //CAUTION! this texture points to decompressedscreen.begin()!
     //(a trick to have less copying)
-    texture diffTex = texture(veci2());
+    texture diffTex = texture(vect2<fsize_t>());
 
     // the 'perfect' screen. this is what we aim for
     // textureRGB totalCorrectTexture = textureRGB(veci2());

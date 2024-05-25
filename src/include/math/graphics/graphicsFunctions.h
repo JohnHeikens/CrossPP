@@ -55,7 +55,7 @@ inline void fillRowUnsafe(const array2d<t> &array, cfsize_t &rowY, cfsize_t &min
 
     for (t *ptr = rowPtr + minX; ptr < endPtr; ptr++, pos.x++)
     {
-        *ptr = b.getValue(pos);
+        *ptr = b.getValue((typename brush0Type::inputType)pos);
     }
 }
 template <typename t, typename brush0Type>
@@ -69,7 +69,7 @@ inline void fillRowUnsafe(const array2d<t> &array, cfsize_t &rowY, cfsize_t &min
 
     for (t *ptr = rowPtr + minX; ptr < endPtr; ptr++, pos += step)
     {
-        *ptr = b.baseBrush.getValue(pos);
+        *ptr = b.baseBrush.getValue((typename brush0Type::inputType)pos);
     }
 }
 
@@ -164,7 +164,7 @@ inline void fillEllipse(const array2d<t> &array, crectangle2 &rect, const brush0
     croppedRect.h++;
 
     // crectanglei2& croppedRect = ceiledRect.cropped(crectanglei2(cveci2(),array.size));
-    if (crectanglei2(cveci2(), array.size).cropClientRect(croppedRect))
+    if (array.getClientRect().cropClientRect(croppedRect))
     {
         cveci2 &croppedPos1 = croppedRect.pos1();
         // crop

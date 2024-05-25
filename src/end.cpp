@@ -8,6 +8,9 @@
 #include "settings.h"
 #include "textureList.h"
 #include "nbtSerializer.h"
+#include "math/graphics/brush/brushes/solidColorBrush.h"
+#include "include/math/rectangle/rectanglefunctions.h"
+#include "include/math/graphics/graphicsFunctions.h"
 end::end() :dimension(dimensionID::end)
 {
 
@@ -18,7 +21,7 @@ generationData* end::generateTerrain(chunk& generateIn)
 	endGenerationData* data = new endGenerationData();
 
 
-	crectanglei2& rect = crectanglei2(generateIn.worldPos, chunkSize);
+	crectanglei2& rect = crectanglei2(generateIn.worldPos, cveci2(chunkSize));
 	for (cveci2& pos : rect)
 	{
 		cfp thickness = getThickness(cvec2(pos));
@@ -37,7 +40,7 @@ void end::generateStructures(chunk& generateIn)
 {
 	endGenerationData* generationData = (endGenerationData*)generateIn.terrainData;
 
-	crectanglei2& chunkRect = crectanglei2(generateIn.worldPos, chunkSize);
+	crectanglei2& chunkRect = crectanglei2(generateIn.worldPos, veci2(chunkSize));
 	for (cveci2& pos : chunkRect)
 	{
 		if (getBlockID(pos) == blockID::end_stone)
@@ -65,7 +68,7 @@ void end::generateStructures(chunk& generateIn)
 
 
 		//place portal bedrock
-		structure* endExitPortalStructure = getStructureByPath(structureFolder / std::wstring(L"the_end/exit_portal"));
+		structure* endExitPortalStructure = getStructureByPath(L"the_end/exit_portal");
 		structureFeature().placeStructurePart(endExitPortalStructure, this, cveci2(0, exitPortalLevel) + cveci2(-(int)((endExitPortalStructure->blockIDArray.size.x - 1) / 2), 0), false);
 
 		summonEntity(entityID::ender_dragon, this, cvec2(0, exitPortalLevel + 0x20));

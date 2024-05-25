@@ -11,17 +11,17 @@
 #include "math/graphics/brush/colorMixer.h"
 #include "math/vector/vectorfunctions.h"
 
-template <typename t, fsize_t axisCount>
+template <typename t, fsize_t n>
 struct arraynd
 {
-	vectn<fsize_t, axisCount> size = vectn<fsize_t, axisCount>();
+	vectn<fsize_t, n> size = vectn<fsize_t, n>();
 	t *baseArray = nullptr;
 
-	constexpr arraynd(cvectn<fsize_t, axisCount> &size, t *const &baseArray) : size(size), baseArray(baseArray) {}
+	constexpr arraynd(cvectn<fsize_t, n> &size, t *const &baseArray) : size(size), baseArray(baseArray) {}
 
-	constexpr arraynd(cvectn<fsize_t, axisCount> &size = cvect2<fsize_t>(), cbool &initializeToDefault = true) : arraynd(size, initializeToDefault ? new t[size.volume()]() : new t[size.volume()]) {}
+	constexpr arraynd(cvectn<fsize_t, n> &size = cvect2<fsize_t>(), cbool &initializeToDefault = true) : arraynd(size, initializeToDefault ? new t[size.volume()]() : new t[size.volume()]) {}
 
-	constexpr arraynd(const std::vector<t> &elements, cvectn<fsize_t, axisCount> &size) : baseArray(new t[size.volume()]), size(size)
+	constexpr arraynd(const std::vector<t> &elements, cvectn<fsize_t, n> &size) : baseArray(new t[size.volume()]), size(size)
 	{
 		if constexpr (isDebugging)
 		{
@@ -119,8 +119,8 @@ struct arraynd
 		return baseArray + index * size.x;
 	}
 
-#define newMacro(copySize) arraynd result = arraynd((copySize).size);
-	addOperators(newMacro, arraynd, inline)
+#define newMacro(type, copySize) arraynd<type COMMA n> result = arraynd<type COMMA n>((copySize).size);
+	addOperators(newMacro, arraynd, arraynd<t2 COMMA n>, inline)
 #undef newMacro
 
 		// in = y
@@ -146,7 +146,7 @@ struct arraynd
 
 	inline rectanglei2 getClientRect() const
 	{
-		return rectanglei2(size);
+		return rectanglei2(veci2(size));
 	}
 
 	// does not write size to stream!
@@ -156,9 +156,9 @@ struct arraynd
 	}
 
 	template <typename axisType>
-	constexpr bool inBounds(cvectn<axisType, axisCount> &pos) const
+	constexpr bool inBounds(cvectn<axisType, n> &pos) const
 	{
-		for (fsize_t i = 0; i < axisCount; i++)
+		for (fsize_t i = 0; i < n; i++)
 		{
 			if ((pos[i] < 0) || ((fsize_t)pos[i] >= size[i]))
 			{
@@ -167,11 +167,11 @@ struct arraynd
 		}
 		return true;
 	}
-	constexpr bool inBounds(crectanglein<axisCount> &rect) const
+	constexpr bool inBounds(crectanglein<n> &rect) const
 	{
 		cveci2 pos11 = rect.pos1();
 
-		for (fsize_t i = 0; i < axisCount; i++)
+		for (fsize_t i = 0; i < n; i++)
 		{
 			if ((rect.pos0[i] < 0) || (pos11[i] > size[i]))
 			{
@@ -187,7 +187,7 @@ struct arraynd
 	}
 
 	template <typename indexType>
-	inline t &getValueReferenceUnsafe(cvectn<indexType, axisCount> &pos) const
+	inline t &getValueReferenceUnsafe(cvectn<indexType, n> &pos) const
 	{
 		if constexpr (isDebugging)
 		{
@@ -206,35 +206,35 @@ struct arraynd
 	}
 
 	template <typename indexType>
-	inline t getValueUnsafe(cvectn<indexType, axisCount> &pos) const
+	inline t getValueUnsafe(cvectn<indexType, n> &pos) const
 	{
 		return getValueReferenceUnsafe(pos);
 	}
 
 	template <typename indexType>
-	inline t getValue(cvectn<indexType, axisCount> &pos) const
+	inline t getValue(cvectn<indexType, n> &pos) const
 	{
 		return inBounds(pos) ? getValueUnsafe(pos) : t();
 	}
 
 	template <typename indexType>
-	inline void setValueUnsafe(cvectn<indexType, axisCount> &pos, const t &value) const
+	inline void setValueUnsafe(cvectn<indexType, n> &pos, const t &value) const
 	{
 		getValueReferenceUnsafe(pos) = value;
 	}
 
 	template <typename indexType>
-	inline void setValue(cvectn<indexType, axisCount> &pos, const t &value) const
+	inline void setValue(cvectn<indexType, n> &pos, const t &value) const
 	{
 		if (inBounds(pos))
 		{
-			setValueUnsafe((cvectn<fsize_t, axisCount>)pos, value);
+			setValueUnsafe((cvectn<fsize_t, n>)pos, value);
 		}
 	}
 
-	inline t getValueClampedToEdgePositive(cvectn<fsize_t, axisCount> &pos) const
+	inline t getValueClampedToEdgePositive(cvectn<fsize_t, n> &pos) const
 	{
-		vectn<fsize_t, axisCount> clamped = cvectn<fsize_t, axisCount>();
+		vectn<fsize_t, n> clamped = cvectn<fsize_t, n>();
 
 		for (auto axisIt : std::views::zip(clamped, pos, size))
 		{
@@ -244,19 +244,17 @@ struct arraynd
 		return getValueUnsafe(clamped);
 	}
 
-	inline t getValueClampedToEdge(cvecin<axisCount> &pos) const
+	inline t getValueClampedToEdge(cvecin<n> &pos) const
 	{
-		cvecin<axisCount> clamped = cvecin<axisCount>();
+		cvecin<n> clamped = cvecin<n>();
 		for (auto axisIt : std::views::zip(clamped, pos))
 		{
 			std::get<0>(axisIt) = (std::get<1>(axisIt) < 0) ? 0 : std::get<1>(axisIt);
 		}
 
-		return getValueClampedToEdgePositive(cvectn<fsize_t, axisCount>(clamped));
+		return getValueClampedToEdgePositive(cvectn<fsize_t, n>(clamped));
 	}
 };
-
-#undef addOperator
 
 template <typename t>
 using array2d = arraynd<t, 2>;

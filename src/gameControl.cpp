@@ -74,12 +74,12 @@
 #include "rectangularSlotContainer.h"
 #include "humanSlotContainerUI.h"
 #include "end.h"
+#include "application/control/eventTranslator.h"
 
 constexpr rectangle2 crosshairTextureRect = crectangle2(3, 244, 9, 9);
 
 microseconds lastTickTimeMicroseconds;
 seconds lastTickTime;
-seconds lastRenderTime;
 
 void gameControl::render(cveci2 &position, const texture &renderTarget)
 {
@@ -100,7 +100,7 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         microseconds newFrameTime = getmicroseconds();
         const microseconds &currentFrameStartMicroSeconds = newFrameTime;
         const seconds &newFrameStartSeconds = microsectosec(currentFrameStartMicroSeconds);
-        lastRenderTime = newFrameStartSeconds - currentFrameStartSeconds;
+        const seconds& lastRenderTime = newFrameStartSeconds - currentFrameStartSeconds;
         currentFrameStartSeconds = newFrameStartSeconds;
 
         cfp &maximum = math::maximum(player->visibleRangeXWalk, requiredVisibleRangeXSprint);
@@ -108,7 +108,7 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         visibleRange.x = math::lerp(visibleRange.x,
                                     player->wantsToSprint ? maximum : player->visibleRangeXWalk,
                                     1 -
-                                        pow(1 - visibleRangeTransitionSpeedPerSecond, lastRenderTime));
+                                        pow(1 - visibleRangeTransitionSpeedPerSecond, (fp)lastRenderTime));
         renderGame(crectanglei2(position, rect.size), renderTarget, settings::renderHUD);
     }
 
@@ -277,7 +277,7 @@ void gameControl::processInput()
         }
         else
         {
-            processEvent(e);
+            translator->processEvent(e);
         }
     }
     // process buttons
@@ -351,7 +351,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
 {
     // start drawing
 
-    cfp &secondsBetweenTickAndRender = currentFrameStartSeconds - lastTickTime;
+    cfp &secondsBetweenTickAndRender = (fp)(currentFrameStartSeconds - lastTickTime);
     player->updateBodyParts();
     vec2 headPosition = player->getHeadPosition();
     if (player->dimensionIn == player->newDimension)
@@ -640,7 +640,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                                  10); // 0 to 1
             // a value from 0 to 8, 10 options (-1 = not started digging, 9 = broken)
             size_t textureIndex =
-                math::ceil<size_t>(destroyStage * (destroyStageTextures.size() + 1)) -
+                math::ceil<size_t>(destroyStage * (fp)(destroyStageTextures.size() + 1)) -
                 1;
             if (textureIndex >= destroyStageTextures.size())
             {
@@ -1095,7 +1095,7 @@ void renderIcons(const std::vector<fp> &values, const std::vector<rectangle2> &i
         vec2 position = firstIconRect.pos0;
 
         size_t iconTypeIndex = 0;
-        size_t heartIndex = 0;
+        int heartIndex = 0;
 
         fp nextValue = values[0];
 
@@ -1175,7 +1175,7 @@ void renderIcons(const std::vector<fp> &values, const std::vector<rectangle2> &i
 }
 
 gameControl::gameControl(playerSocket &socket) : form(),
-                                                 socket(socket)
+                                                 socket(socket), translator(new eventTranslator(*this))
 {
     options->visible = false;
     videoOptions->visible = false;

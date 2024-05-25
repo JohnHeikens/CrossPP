@@ -5,9 +5,9 @@
 #include "filesystem/jsonReader.h"
 amountDistribution* parseMinimumAndMaximum(const jsonContainer& container)
 {
-	cint typeIndex = container.getChildIndex(std::wstring(L"type"));
+	csize_t& typeIndex = container.getChildIndex(std::wstring(L"type"));
 
-	if (typeIndex == -1)
+	if (typeIndex == std::wstring::npos)
 	{
 		constantAmountDistribution* distribution = new constantAmountDistribution();
 		fp fpAmount = 0;

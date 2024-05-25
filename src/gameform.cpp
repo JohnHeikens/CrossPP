@@ -48,13 +48,6 @@ worldCreator* currentWorldCreator = nullptr;
 mainMenu* currentMainMenu = nullptr;
 accountEditor* currentAccountEditor = nullptr;
 
-
-std::vector<structure*> structureList = std::vector<structure*>();
-
-std::vector<recipe*> craftingRecipes = std::vector<recipe*>();
-std::vector<furnaceRecipe*> furnaceRecipes = std::vector<furnaceRecipe*>();
-
-
 soundHandler2d* handler;
 
 constexpr int normalSmeltingTime = 10 * ticksPerRealLifeSecond;

@@ -86,7 +86,7 @@ struct block :IDestructable
 	template<typename brush0Type>
 	void render(const brush0Type& b, rectangle2 brushRect, crectangle2& blockRect, const gameRenderData& targetData, blockData* const data, blockContainer* containerIn, cbool& renderAnimation = false, const std::optional<vec2>& rotationCentreWorld = std::nullopt) const;
 
-	static mat3x3 getTextureToWorldTransform(cveci2& textureSize, cmat3x3& blockToRenderTargetTransform, cvec2& blockPosition);
+	static mat3x3 getTextureToWorldTransform(cvec2& textureSize, cmat3x3& blockToRenderTargetTransform, cvec2& blockPosition);
 	static mat3x3 getBrushRectToWorldTransform(crectangle2& brushRect, cmat3x3& blockToRenderTargetTransform, cvec2& blockPosition);
 
 	virtual collisionDataCollection getCollisionData(blockContainer* containerIn, cveci2& position) const;

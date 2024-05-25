@@ -136,7 +136,7 @@ void itemStack::render(crectangle2 &rect, const gameRenderData &targetData) cons
         if (count > 1) {
             //draw text
             std::wstring s = std::to_wstring(count);
-            cveci2 size = cveci2((int) (s.size() * defaultTheme().font->fontSize),
+            cveci2 size = cveci2((int) ((fp)s.size() * defaultTheme().font->fontSize),
                                  (int) defaultTheme().font->fontSize);
             cvec2 topRight = rect.pos1();
             currentMinecraftFont->DrawString(s, rectangle2(topRight.x - size.x, rect.pos0.y, size.x,
@@ -231,7 +231,7 @@ void itemStack::renderSingleItem(const gameRenderData &targetData) const {
                     totalColor += colorf(
                             statusEffectDataList[(int) effectToAdd.identifier]->particleColor);
                 }
-                totalColor /= toPotionData->effectsToAdd.size();
+                totalColor /= (fp)toPotionData->effectsToAdd.size();
                 potionColor = color(totalColor);
             } else {
                 potionColor = waterColor;

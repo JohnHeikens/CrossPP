@@ -28,6 +28,15 @@ struct mouseButtonEventArgs : mouseEventArgs{
 };
 typedef eventHandler<mouseButtonEventArgs> mouseButtonEventHandler;
 
+struct dragEventArgs : mouseButtonEventArgs {
+	veci2 originalPosition = veci2();
+	dragEventArgs(control& sender, cveci2& originalPosition, cveci2& position, cmb& button) : mouseButtonEventArgs(sender, position, button), originalPosition(originalPosition)
+	{
+
+	}
+};
+typedef eventHandler<dragEventArgs> dragEventHandler;
+
 struct mouseWheelEventArgs : mouseEventArgs
 {
 	int scrollDelta = 0;
@@ -78,13 +87,15 @@ public:
 	controlEventHandler onFocus = controlEventHandler();
 	controlEventHandler onLostFocus = controlEventHandler();
 
+	dragEventHandler onDrag = dragEventHandler();
+	dragEventHandler onDrop = dragEventHandler();
+
 	//void (*onFocusChild)(control* newFocusedChild) = nullptr;
 	//void (*onLayout)(crectanglei2& newRect) = nullptr;
 	//void (*onPaste)() = nullptr;
 
 	control();
 
-    void processEvent(const sf::Event& event);
 
 	//function invokers
 	//position includes the position of this element
@@ -103,6 +114,8 @@ public:
 	virtual void mouseMove(cveci2& position, cmb& button);
 	virtual void mouseDown(cveci2& position, cmb& button);
 	virtual void mouseUp(cveci2& position, cmb& button);
+	virtual void drag(cveci2& position, cveci2& originalPosition, cmb& button);
+	virtual void drop(cveci2& position, cveci2& originalPosition, cmb& button);
 	virtual void click();
 	virtual void scroll(cveci2& position, cint& scrollDelta);
 	virtual void layout(crectanglei2& newRect);

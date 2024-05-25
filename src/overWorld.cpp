@@ -148,7 +148,7 @@ vec2 overWorld::getWindSpeed(cvec2 &position)
         };
 
         constexpr fp multiplier = 1.0 / ((testCount[0] + testCount[1]) * 2);
-        size_t successCount = 0;
+        fp successCount = 0;
 
         cvec2 &normalized = vec.lengthSquared() == 0 ? vec2() : vec.normalized();
 
@@ -200,7 +200,7 @@ biomeID getBiomeByColor(const color &c)
 
 biomeID overWorld::getBiome(cvec2 &position) const
 {
-    const color &biomeColor = biomeTexture->scaledTextures[0]->getValue(getBiomeTextureCoords(position.x));
+    const color &biomeColor = biomeTexture->scaledTextures[0]->getValue(vect2<fsize_t>(getBiomeTextureCoords(position.x)));
     return getBiomeByColor(biomeColor);
 }
 
@@ -211,7 +211,7 @@ fp overWorld::getTemperature(cvec2 &position) const
                                                             keyFrame<fp>((fp)0x40, (fp)0),
                                                             keyFrame<fp>((fp)0xff, (fp)50)});
 
-    cfp &texValue = (fp)tempMapTexture->scaledTextures[0]->getValue(getBiomeTextureCoords(position.x)).r();
+    cfp &texValue = (fp)tempMapTexture->scaledTextures[0]->getValue(vect2<fsize_t>(getBiomeTextureCoords(position.x))).r();
     return texToTemp.getValue(texValue);
 }
 
@@ -426,10 +426,10 @@ generationData *overWorld::generateTerrain(chunk &generateIn)
 
         if (data->heights[relativeX] > generateIn.worldPos.y)
         {
-            csize_t &relativeHeight = data->heights[relativeX] - generateIn.worldPos.y;
-            csize_t &cappedHeight = math::minimum(relativeHeight, chunkSize.y);
+            cint &relativeHeight = data->heights[relativeX] - generateIn.worldPos.y;
+            cint &cappedHeight = math::minimum(relativeHeight, (int)chunkSize.y);
             setBlockRange(generateIn.worldPos + cveci2(relativeX, 0),
-                          generateIn.worldPos + cveci2(relativeX, (int)cappedHeight - 1),
+                          generateIn.worldPos + cveci2(relativeX, cappedHeight - 1),
                           blockID::stone);
         }
     }

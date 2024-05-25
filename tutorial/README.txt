@@ -223,6 +223,13 @@ android studio -> build -> analyze apk...
 ignoreassetspattern:
 https://stackoverflow.com/questions/59158942/make-android-copy-all-from-next-asset-folder-via-aaptoptions
 
+problems with concepts:
+try to make them use constexpr evaluation only (no functions). idk why but they don't seem to work
+
+common macro errors:
+- use COMMA instead of ,
+- make sure to put a semicolon (;) behind each line!
+
 there are no arguments to that depend on a template parameter:
 typedef the base class as 'base'. then call the base functions using 'base::'
 

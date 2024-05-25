@@ -1,7 +1,11 @@
-#include "soundHandler.h"
+// #include "soundHandler.h"
+#include <SFML/Audio/Music.hpp>
 #include "math/timemath.h"
 #include "math/vector/vectn.h"
 #include "filesystem/filemanager.h"
+#include "array/fastlist.h"
+#include "SFML/Audio/Sound.hpp"
+
 #pragma once
 
 extern int playingSoundCount;
@@ -111,14 +115,8 @@ inline bool audio2dt<t>::audioLoaded() const
 template <typename t>
 inline sf::SoundSource::Status audio2dt<t>::getStatus() const
 {
-	if (playingAudio)
-	{
-		return playingAudio->getStatus();
-	}
-	else
-	{
-		return (sf::SoundSource::Status)-1;
-	}
+	assumeInRelease((bool)playingAudio);
+	return playingAudio->getStatus();
 }
 
 template <typename t>

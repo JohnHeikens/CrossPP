@@ -1,6 +1,9 @@
 #include "soundHandler2D.h"
 #include "filesystem/sfmlInputStream.h"
 #include "filesystem/fileio.h"
+#include <SFML/Audio/Listener.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 int playingSoundCount = 0;
 constexpr int maxSources = 0x100;

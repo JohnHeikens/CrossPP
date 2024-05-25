@@ -232,7 +232,7 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 											//substracting 1 to prevent loop errors. for example pos00 = 1, 1 and pos11 = 10, 10. then you would loop from 1 to 9. but when you flip it (pos00 = 10, pos11 = 1), then you would start the loop at 10
 											cveci2& transformedConnectingStructurePos11 = connectingToColliding.multPointMatrix(cveci2(checkStructure->blockIDArray.size) - 1);
 
-											crectanglei2& otherRect = crectanglei2(cveci2(), placedStructureData->placedStructure->blockIDArray.size - 1);
+											crectanglei2& otherRect = crectanglei2(cveci2(), (veci2)placedStructureData->placedStructure->blockIDArray.size - 1);
 											crectanglei2& collisionRectMinus1 = otherRect.cropClientRectUnsafe(crectanglei2::fromOppositeCorners(transformedConnectingStructurePos00, transformedConnectingStructurePos11));
 											//adding the 1 back for the loop
 											crectanglei2& collisionRect = crectanglei2(collisionRectMinus1.pos0, collisionRectMinus1.size + 1);
@@ -285,7 +285,7 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 						if (possibleConnectingJigsawIndexes.size())
 						{
 							cint possibleConnectionIndex = randIndex(randomToUse, (int)possibleConnectingJigsawIndexes.size());
-							cint connectionIndex = possibleConnectingJigsawIndexes[possibleConnectionIndex];
+							csize_t& connectionIndex = possibleConnectingJigsawIndexes[possibleConnectionIndex];
 
 							connectedStructureJigsawPositions.erase(connectedStructureJigsawPositions.begin() + connectionIndex);
 

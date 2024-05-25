@@ -23,7 +23,7 @@ struct playerSocket;
 struct gameControl : form, clientInput {
     gameControl(playerSocket &socket);
 
-    fp currentFrameStartSeconds = 0;
+    seconds currentFrameStartSeconds = 0;
 
     settingsForm *options = new settingsForm();
     videoSettingsForm *videoOptions = new videoSettingsForm();
@@ -33,7 +33,7 @@ struct gameControl : form, clientInput {
     textBox *commandLineTextbox = new textBox(false);
     inventoryForm *inventoryUI = new inventoryForm();
     creditsForm *currentCredits = new creditsForm();
-
+    struct eventTranslator* translator;
 
     bool startCredits = false;
     //touch variables

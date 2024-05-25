@@ -27,6 +27,8 @@
 #include "serializer/serializeColor.h"
 #include "include/filesystem/fileFunctions.h"
 
+std::vector<structure*> structureList = std::vector<structure*>();
+
 mat3x3i structure::getBlocksToWorldTransform(cveci2 &pos00, cbool &flipX) const {
     mat3x3i structureToWorldTransform = mat3x3i::translate(pos00);
     if (flipX) {

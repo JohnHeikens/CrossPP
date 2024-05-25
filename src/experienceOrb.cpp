@@ -81,9 +81,9 @@ void experienceOrb::render(const gameRenderData& targetData) const
 {
 	cint experienceTableIndex = getExperienceTableIndex(value);
 	//calculate draw offset
-	veci2 off = veci2(experienceTableIndex % 4, experienceTableIndex / 4);
-	cvect2<size_t> experienceTextureSize = experienceTexture->defaultSize / 4;
-	crectangle2 textureRect = crectangle2(off * experienceTextureSize, experienceTextureSize);
+	cveci2& off = veci2(experienceTableIndex % 4, experienceTableIndex / 4);
+	cvec2& experienceTextureSize = experienceTexture->defaultSize / 4;
+	crectangle2& textureRect = rectangle2(off * experienceTextureSize, experienceTextureSize);
 
 	//0: yellow, 10: green
 	cint transitionPart = ticksFloating % ticksPerRealLifeSecond;

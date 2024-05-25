@@ -204,17 +204,29 @@ constexpr int toolEnchantability[toolTierCount]{
 	15,
 };
 
-// from lowest to highest priority: resource packs
+// std::vector<stdPath> dataPackPaths = {
+//	minecraftVersionFolder,
+//	dataPackFolder / L"default",
+//	dataPackFolder / L"randomized loot",
+// };
+//  from lowest to highest priority: resource packs
+//  we don't need a separate folder for data packs. data and resource packs are the same, as they both modify server behavior.
 std::vector<stdPath> resourcePackPaths =
 	{
+		minecraftVersionFolder,
+		resourcePackFolder / L"default",
+		resourcePackFolder / L"sounds 1.16",
+		resourcePackFolder / L"qol",
+		resourcePackFolder / L"BDcraft Sound Pack",
 		// resourcePackFolder / L"happy-v1-3",
 		// resourcePackFolder / L"light levels 1.16",
-		minecraftVersionFolder,
 		resourcePackFolder / L"creator pack",
-		// resourcePackFolder / L"4thful",
-		resourcePackFolder / L"default"};
+		resourcePackFolder / L"randomized loot",
+		// resourcePackFolder / L"4thful",};
+};
 
-idList<block *, blockID> blockList = idList<block *, blockID>();
+idList<block *, blockID>
+	blockList = idList<block *, blockID>();
 idList<itemData *, itemID> itemList = idList<itemData *, itemID>();
 idList<dimensionData *, dimensionID> dimensionDataList = idList<dimensionData *, dimensionID>();
 idList<biomeData *, biomeID> biomeDataList = idList<biomeData *, biomeID>();
@@ -244,7 +256,7 @@ resolutionTexture *loadRotatedTexture(const stdPath &path, cvec2 &defaultSize, c
 resolutionTexture *loadRailsTexture(const stdPath &path)
 {
 	resolutionTexture *tex = loadTextureFromResourcePack(path, false);
-	texture renderTarget(cvect2<size_t>(blockTextureSize), false);
+	texture renderTarget(cvect2<fsize_t>((fsize_t)blockTextureSize), false);
 
 	constexpr rectangle2 unTransformedMiddleTextureRect = crectangle2(7, 0, 1, 0x10);
 	constexpr rectangle2 unTransformedRailsTextureRect = crectangle2(2, 0, 4, 0x10);
@@ -263,7 +275,7 @@ resolutionTexture *loadRailsTexture(const stdPath &path)
 }
 resolutionTexture *loadTextureFromResourcePack(const stdPath &relativePath, cbool &addToTextureList)
 {
-	const auto locations = getResourceLocations(relativePath);
+	const auto &locations = getResourceLocations(relativePath);
 	if (locations.size() == 0)
 	{
 		handleError(relativePath.wstring() + std::wstring(L" not found in any of the resource packs. working directory: ") + workingDirectory.wstring());
@@ -271,12 +283,12 @@ resolutionTexture *loadTextureFromResourcePack(const stdPath &relativePath, cboo
 	csize_t &lastLocation = locations.size() - 1;
 	veci2 size = getImageSize(locations[0]); // the base size of the image will be the one of the lowest resource pack: the minecraft texture folder or the "default" resource pack.
 
-	return loadTexture(locations[lastLocation], cvec2(size), addToTextureList);
+	return loadTexture(locations[lastLocation], size, addToTextureList);
 }
 
-resolutionTexture *loadTexture(stdPath path, cveci2 &defaultSize, cbool &addToTextureList)
+resolutionTexture *loadTexture(stdPath path, cvec2 &defaultSize, cbool &addToTextureList)
 {
-	resolutionTexture *const &result = new resolutionTexture(texture(path, true), cvec2(defaultSize));
+	resolutionTexture *const &result = new resolutionTexture(texture(path, true), defaultSize);
 	if (addToTextureList)
 	{
 		loadedTextures.push_back(result);
@@ -295,6 +307,17 @@ std::vector<stdPath> getResourceLocations(const stdPath &relativePath)
 		}
 	}
 	return foundLocations;
+}
+bool getLastResourceLocation(const stdPath &relativePath, stdPath &result)
+{
+	const auto &locations = getResourceLocations(relativePath);
+
+	if (locations.size())
+	{
+		result = locations[locations.size() - 1];
+	}
+	// handleCrash(relativePath.wstring() + std::wstring(L" not found in any of the resource packs. working directory: ") + workingDirectory.wstring());
+	return locations.size();
 }
 void loadDataLists()
 {
@@ -666,7 +689,7 @@ void setFoodValues()
 	itemList[itemID::potato]->setEatingValues(1, 0.6);
 	itemList[itemID::bread]->setEatingValues(5, 6.0);
 
-	itemList[itemID::beetroot]->setEatingValues(1, 1.2);
+	itemList[(itemID)blockID::beetroots]->setEatingValues(1, 1.2);
 	itemList[itemID::beetroot_soup]->setEatingValues(6, 7.2);
 
 	itemList[itemID::baked_potato]->setEatingValues(5, 6.0);
@@ -744,20 +767,23 @@ void loadMusic()
 void loadTags()
 {
 	tagList = fastList<tag *>();
-	// load tags
-	for (const auto &folderIterator : stdFileSystem::directory_iterator(mainTagFolder))
+	for (const auto &currentFolder : getResourceLocations(mainTagFolder))
 	{
-		const stdPath tagFolder = folderIterator.path();
-		for (const auto &fileIterator : stdFileSystem::directory_iterator(tagFolder))
+		// load tags
+		for (const auto &folderIterator : stdFileSystem::directory_iterator(currentFolder))
 		{
-			const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
-			const std::wstring &extension = fileIterator.path().extension().wstring();
-			if (extension == jsonFileExtension)
+			const stdPath tagFolder = folderIterator.path();
+			for (const auto &fileIterator : stdFileSystem::directory_iterator(tagFolder))
 			{
-				if (getTagListIndexByName(fileNameWithoutExtension) == std::wstring::npos)
+				const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+				const std::wstring &extension = fileIterator.path().extension().wstring();
+				if (extension == jsonFileExtension)
 				{
-					// not a subtag of previously added tags
-					readTag(fileNameWithoutExtension, tagFolder);
+					if (getTagListIndexByName(fileNameWithoutExtension) == std::wstring::npos)
+					{
+						// not a subtag of previously added tags
+						readTag(fileNameWithoutExtension, tagFolder);
+					}
 				}
 			}
 		}
@@ -781,48 +807,118 @@ void loadLootTables()
 {
 	// load loot tables
 	// chest loot
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(chestLootTablesFolder))
+	// we don't know what chest loot tables we're going to use, as they can be defined in a chest as nbtdatavalue
+	// for each chest loot table, we need to only read the 'highest' one
+	// so we iterate from highest to lowest and read all tables which aren't in the map yet
+	for (const auto &currentFolder : getResourceLocations(chestLootTablesFolder) | std::views::reverse)
 	{
-		const stdPath &path = fileIterator.path().wstring();
-		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
-		const std::wstring &extension = fileIterator.path().extension().wstring();
-		if (extension == jsonFileExtension)
+		for (const auto &fileIterator : stdFileSystem::directory_iterator(currentFolder))
 		{
-			std::shared_ptr<lootTable> table = readLootTable(path);
-			chestLootTables.insert(std::pair<std::wstring, std::shared_ptr<lootTable>>(fileNameWithoutExtension, table));
+			const stdPath &path = fileIterator.path().wstring();
+			const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+			const std::wstring &extension = fileIterator.path().extension().wstring();
+			if (extension == jsonFileExtension)
+			{
+				if (!chestLootTables.contains(fileNameWithoutExtension))
+				{
+					std::shared_ptr<lootTable> table = readLootTable(path);
+					chestLootTables.insert(std::pair<std::wstring, std::shared_ptr<lootTable>>(fileNameWithoutExtension, table));
+				}
+			}
 		}
 	}
 
 	// block loot
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(blockLootTablesFolder))
+	// iterate over blocks instead of files, because we can assume that there are more block loot tables than blocks
+	for (block *const &b : blockList)
 	{
-		const stdPath &path = fileIterator.path().wstring();
-		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
-		const std::wstring &extension = fileIterator.path().extension().wstring();
-		if (extension == jsonFileExtension)
+		stdPath location;
+		if (getLastResourceLocation(blockLootTablesFolder / (b->name + L".json"), location))
 		{
-			const blockID &blockListIndex = blockList.getIDByName(fileNameWithoutExtension);
-			if ((int)blockListIndex != -1)
+			// loot table found for this block
+			b->dropsWhenHarvested = readLootTable(location);
+		}
+	}
+	// entity loot
+	// same story here
+	for (entityData *const &e : entityDataList)
+	{
+		if (isMob(e->identifier))
+		{
+			stdPath location;
+			if (getLastResourceLocation(entityLootTablesFolder / (e->name + L".json"), location))
 			{
-				blockList[blockListIndex]->dropsWhenHarvested = readLootTable(path);
+				// loot table found for this block
+				((mobData *)e)->dropsWhenKilled = readLootTable(location);
 			}
 		}
 	}
+
+	// block loot
+	// for (const auto &fileIterator : stdFileSystem::directory_iterator(blockLootTablesFolder))
+	//{
+	//	const stdPath &path = fileIterator.path().wstring();
+	//	const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+	//	const std::wstring &extension = fileIterator.path().extension().wstring();
+	//	if (extension == jsonFileExtension)
+	//	{
+	//		const blockID &blockListIndex = blockList.getIDByName(fileNameWithoutExtension);
+	//		if ((int)blockListIndex != -1)
+	//		{
+	//			blockList[blockListIndex]->dropsWhenHarvested = readLootTable(path);
+	//		}
+	//	}
+	//}
 	// mob loot
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(entityLootTablesFolder))
-	{
-		const stdPath &path = fileIterator.path().wstring();
-		const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
-		const std::wstring &extension = fileIterator.path().extension().wstring();
-		if (extension == jsonFileExtension)
+	// for (const auto &fileIterator : stdFileSystem::directory_iterator(entityLootTablesFolder))
+	//{
+	//	const stdPath &path = fileIterator.path().wstring();
+	//	const std::wstring &fileNameWithoutExtension = fileIterator.path().stem().wstring();
+	//	const std::wstring &extension = fileIterator.path().extension().wstring();
+	//	if (extension == jsonFileExtension)
+	//	{
+	//		cint &entityListIndex = getEntityIDByName(fileNameWithoutExtension);
+	//		if (entityListIndex != -1)
+	//		{
+	//			((mobData *)entityDataList[entityListIndex])->dropsWhenKilled = readLootTable(path);
+	//		}
+	//	}
+	//}
+}
+void loadRecipes()
+{
+	craftingRecipes = std::vector<recipe *>();
+	furnaceRecipes = std::vector<furnaceRecipe *>();
+	for (const auto &currentFolder : getResourceLocations(recipeFolder) | std::views::reverse)
+		for (const auto &fileIterator : stdFileSystem::directory_iterator(currentFolder))
 		{
-			cint &entityListIndex = getEntityIDByName(fileNameWithoutExtension);
-			if (entityListIndex != -1)
+			std::wstring path = fileIterator.path().wstring();
+			const jsonContainer &content = readJson(stringToWString(readAllText(path)));
+			// this might cause double recipes, but the recipes which matter the most will be on top, so it'll match correctly
+			// todo: implement algorithm that eliminates duplicate recipes to save memory
+			readRecipe(content);
+		}
+}
+void loadStructures()
+{
+	structureList = std::vector<structure *>();
+	for (const auto &currentFolder : getResourceLocations(structureFolder) | std::views::reverse)
+		for (const auto &fileIterator : stdFileSystem::recursive_directory_iterator(currentFolder))
+		{
+			const stdPath &path = fileIterator.path().wstring();
+			const std::wstring &extension = fileIterator.path().extension().wstring();
+			if (extension == nbtFileExtension)
 			{
-				((mobData *)entityDataList[entityListIndex])->dropsWhenKilled = readLootTable(path);
+				const stdPath pathWithoutExtension = stdFileSystem::relative(path, currentFolder).replace_extension();
+				if (!getStructureByPath(pathWithoutExtension))
+				{
+					// this structure isn't replaced by some structure of a resourcepack higher in order
+					structure *s = new structure(pathWithoutExtension);
+					s->serialize(path, false);
+					structureList.push_back(s);
+				}
 			}
 		}
-	}
 }
 
 void loadBlockPowerProperties()
@@ -931,10 +1027,12 @@ void loadBlocks()
 	noteSounds = std::make_shared<soundCollection>();
 	for (int i = 0; i < (int)noteTypeID::count; i++)
 	{
-		noteSounds->addAudioFile(noteSoundFolder / (noteDataList[i]->name + std::wstring(L".ogg")));
+		stdPath noteSoundPath;
+		if (getLastResourceLocation(noteSoundFolder / (noteDataList[i]->name + std::wstring(L".ogg")), noteSoundPath))
+			noteSounds->addAudioFile(noteSoundPath);
 	}
 
-	itemPickupSound = std::make_shared<soundCollection>(generalSoundFolder / L"random" / L"pop");
+	popSound = std::make_shared<soundCollection>(generalSoundFolder / L"random" / L"pop");
 	experienceSound = std::make_shared<soundCollection>(generalSoundFolder / L"random" / L"orb");
 	levelUpSound = std::make_shared<soundCollection>(generalSoundFolder / L"random" / L"levelup");
 
@@ -1023,7 +1121,7 @@ void loadBlocks()
 	bigSlimeSound = std::make_shared<soundCollection>(mobSoundFolder / L"slime" / L"big");
 	slimeAttackSound = std::make_shared<soundCollection>(mobSoundFolder / L"slime" / L"attack");
 
-	windSound = std::make_shared<soundCollection>(extraSoundFolder / std::wstring(L"wind"));
+	windSound = std::make_shared<soundCollection>(weatherSoundFolder / L"wind");
 
 	drinkingSound = std::make_shared<soundCollection>(miscellaneousSoundFolder / std::wstring(L"drink"));
 	honeyDrinkingSound = std::make_shared<soundCollection>(itemSoundFolder / L"bottle" / L"drink_honey");
@@ -1047,7 +1145,7 @@ void loadBlocks()
 	fillTransformedBrushRectangle(getAbsoluteRect(dirtTexture->getClientRect(), relativeDirtFarmlandRect), getAbsoluteRect(crectangle2(farmlandTexture->getClientRect()), relativeDirtFarmlandRect), *dirtTexture, *farmlandTexture);
 
 	resolutionTexture *unCroppedLanternTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"lantern.png"));
-	resolutionTexture *lanternGraphics = new resolutionTexture(texture(cvect2<size_t>((size_t)(blockTextureSize * unCroppedLanternTexture->getScaleModifier()))), cvec2(blockTextureSize));
+	resolutionTexture *lanternGraphics = new resolutionTexture(texture(cvect2<fsize_t>((fsize_t)(blockTextureSize * unCroppedLanternTexture->getScaleModifier()))), cvec2(blockTextureSize));
 	crectangle2 lanternTextureRect = crectangle2(0, 39, 6, 9);
 	cvec2 lanternDrawOffset = cvec2((blockTextureSize - lanternTextureRect.w) * 0.5, 0);
 	fillTransformedBrushRectangle(lanternTextureRect, lanternDrawOffset, *unCroppedLanternTexture, *lanternGraphics);
@@ -1057,7 +1155,7 @@ void loadBlocks()
 	auto largeFernTopTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"large_fern_top.png"));
 	auto largeFernBottomTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"large_fern_top.png"));
 
-	// auto brewingStandItemTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+	// auto brewingStandItemTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 	// cbool hasBottle[brewingStandPotionCapacity]
 	//{
 	//	true,
@@ -1068,7 +1166,7 @@ void loadBlocks()
 
 	resolutionTexture *redStoneWireTopView = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"redstone_dust_line0.png"));
 
-	resolutionTexture *redStoneWireTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+	resolutionTexture *redStoneWireTexture = new resolutionTexture(texture(cvect2<fsize_t>((fsize_t)blockTextureSize)), cvec2(blockTextureSize));
 
 	fillTransparentRectangle(crectangle2(blockTextureSize * (0.5 - (redstoneWireHeight * 0.5)), 0, blockTextureSize * redstoneWireHeight, blockTextureSize), 90, crectangle2(0, 0, blockTextureSize, blockTextureSize * redstoneWireHeight), *redStoneWireTopView, *redStoneWireTexture);
 
@@ -1758,8 +1856,8 @@ void loadBlocks()
 		resolutionTexture *frontHorizontalImage = loadTextureFromResourcePack(blockTextureFolder / (dispenserNames[i] + std::wstring(L"_front.png")));
 		resolutionTexture *frontVerticalImage = loadTextureFromResourcePack(blockTextureFolder / (dispenserNames[i] + std::wstring(L"_front_vertical.png")));
 
-		resolutionTexture *horizontalTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
-		resolutionTexture *verticalTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+		resolutionTexture *horizontalTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
+		resolutionTexture *verticalTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 
 		cfp dispenserFrontPart = 0.25;
 
@@ -1790,9 +1888,9 @@ void loadBlocks()
 
 	for (int i = 0; i < anvilDamageLevelCount; i++)
 	{
-		csize_t &anvilTextureSize = basicAnvilTexture->scaledTextures[0]->size.x;
+		cfsize_t &anvilTextureSize = basicAnvilTexture->scaledTextures[0]->size.x;
 		crectangle2 &anvilTextureRect = basicAnvilTexture->getClientRect();
-		resolutionTexture *anvilGraphics = new resolutionTexture(texture(cvect2<size_t>(anvilTextureSize)), cvec2(blockTextureSize));
+		resolutionTexture *anvilGraphics = new resolutionTexture(texture(cvect2<fsize_t>(anvilTextureSize)), cvec2(blockTextureSize));
 
 		csize_t &lastRectIndex = relativeAnvilRects.size() - 1;
 		for (size_t anvilRectIndex = 0; anvilRectIndex < lastRectIndex; anvilRectIndex++)
@@ -1818,7 +1916,7 @@ void loadBlocks()
 	blockList[identifier] = new block((blockID)identifier, 5, 1200, standardBlockWeightPerCubicMeter, anvilTextures[0], std::wstring(L"anvil"), stepStone, stepStone, stepStone, digStone, anvilLandSound, lightFiltering, withPickaxe, woodHarvestTier, collisionTypeID::willCollideTop);
 	identifier++;
 
-	auto grindStoneTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+	auto grindStoneTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 
 	resolutionTexture *grindStoneSideTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grindstone_side.png"), false);
 	resolutionTexture *grindStonePivotTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grindstone_pivot.png"), false);
@@ -1854,7 +1952,7 @@ void loadBlocks()
 
 	constexpr rectangle2 beaconObsidianTextureRect = crectangle2(0, 0, blockTextureSize, innerBeaconTextureRect.getY());
 
-	resolutionTexture *beaconTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+	resolutionTexture *beaconTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 
 	fillTransformedBrushRectangle(innerBeaconTextureRect, innerBeaconTextureRect.pos0, *innerBeaconTexture, *beaconTexture);
 
@@ -1865,7 +1963,7 @@ void loadBlocks()
 	blockList[identifier] = new block((blockID)identifier, 3, 3, standardBlockWeightPerCubicMeter, beaconTexture, std::wstring(L"beacon"), stepStone, stepStone, stepStone, digStone, digStone, lightFiltering, withHand, noHarvestTier, collisionTypeID::willCollideTop, 0, 0, false, false, brightLightSource);
 	identifier++;
 
-	resolutionTexture *conduitTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+	resolutionTexture *conduitTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 
 	resolutionTexture *unOpenedConduitTexture = loadTextureFromResourcePack(entityTextureFolder / L"conduit" / L"base.png");
 
@@ -1878,7 +1976,7 @@ void loadBlocks()
 
 	resolutionTexture *lecternSidesTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"lectern_sides.png"));
 
-	resolutionTexture *lecternGraphics = new resolutionTexture(texture(cvect2<size_t>((size_t)(blockTextureSize * lecternSidesTexture->getScaleModifier()))), cvec2(blockTextureSize));
+	resolutionTexture *lecternGraphics = new resolutionTexture(texture(cvect2<fsize_t>((fsize_t)(blockTextureSize * lecternSidesTexture->getScaleModifier()))), cvec2(blockTextureSize));
 
 	constexpr rectangle2 lecternPoleTextureRect = crectangle2(4, 0, 8, 12);
 
@@ -2144,8 +2242,8 @@ void loadBlocks()
 	for (int i = 0; i < (int)colorID::count; i++)
 	{
 		resolutionTexture *bedTexture = loadTextureFromResourcePack(entityTextureFolder / L"bed" / (colorNames[i] + std::wstring(L".png")));
-		auto backTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
-		auto frontTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+		auto backTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
+		auto frontTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 
 		// cmat3x3 bedBackMatrix = mat3x3::cross(mat3x3::mirror(axisID::x, blockTextureSize / 2), mat3x3::fromRectToRotatedRect(bedBackTextureRect, 270, crectangle2(0, bedLegTextureRect.h, bedBackTextureRect.h, bedBackTextureRect.w)));
 		cmat3x3 bedBackMatrix = mat3x3::fromRectToRotatedRect(bedBackTextureRect, 270, crectangle2(0, bedLegTextureRect.h, bedBackTextureRect.h, bedBackTextureRect.w));
@@ -2384,7 +2482,7 @@ void loadBlocks()
 	identifier++;
 
 	resolutionTexture *dragonEggTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"dragon_egg.png"));
-	resolutionTexture *dragonEggGraphics = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+	resolutionTexture *dragonEggGraphics = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 	// fill oval which is cut off at the bottom
 
 	cfp cutOffPart = 0.2;
@@ -2839,7 +2937,7 @@ void loadEntityData()
 
 	resolutionTexture *unEditedSlimeTexture = loadTextureFromResourcePack(entityTextureFolder / L"slime" / L"slime.png");
 
-	auto editedSlimeTexture = new resolutionTexture(texture(editedSlimeTextureRect.size, false), cvec2(editedSlimeTextureRect.size));
+	auto editedSlimeTexture = new resolutionTexture(texture(vect2<fsize_t>(editedSlimeTextureRect.size), false), cvec2(editedSlimeTextureRect.size));
 
 	fillTransparentRectangle(crectangle2(slimeInnerBodyTextureRect), crectangle2((editedSlimeTextureRect.size - slimeInnerBodyTextureRect.size) / 2, slimeInnerBodyTextureRect.size), *unEditedSlimeTexture, *editedSlimeTexture);
 	fillTransparentRectangle(crectangle2(slimeEyeTextureRect), crectangle2(cvec2(0xb, 0x8), slimeEyeTextureRect.size), *unEditedSlimeTexture, *editedSlimeTexture);
@@ -2886,7 +2984,7 @@ void loadEntityData()
 	currentEntityID++;
 
 	resolutionTexture *unEditedMinecartTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"minecart.png"));
-	auto minecartEditedTexture = new resolutionTexture(texture(minecartEditedTextureRect.size), minecartEditedTextureRect.size);
+	auto minecartEditedTexture = new resolutionTexture(texture(vect2<fsize_t>(minecartEditedTextureRect.size)), minecartEditedTextureRect.size);
 	fillTransformedBrushRectangle(minecartBottomTextureRect, cvec2(), *unEditedMinecartTexture, *minecartEditedTexture);
 	fillTransformedBrushRectangle(minecartTopTextureRect, cvec2(0, minecartBottomTextureRect.size.y), *unEditedMinecartTexture, *minecartEditedTexture);
 	minecartTexture = minecartEditedTexture;
@@ -2955,8 +3053,8 @@ void loadResourcePacks()
 
 	// non-resource pack:
 	// world gen
-	biomeTexture = loadTexture(dataPacksFolder / L"default" / L"biomes" / L"overworld" / L"map.png");
-	tempMapTexture = loadTexture(dataPacksFolder / L"default" / L"biomes" / L"overworld" / L"temperatures.png");
+	biomeTexture = loadTextureFromResourcePack(overworldDataFolder / L"biomes.png");
+	tempMapTexture = loadTextureFromResourcePack(overworldDataFolder / L"temperatures.png");
 
 	experienceTexture = loadTextureFromResourcePack(entityTextureFolder / std::wstring(L"experience_orb.png"));
 
@@ -2975,6 +3073,7 @@ void loadResourcePacks()
 	inventoryButtonTexture = loadTextureFromResourcePack(buttonTextureFolder / L"inventory.png");
 
 	grassOverlay = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grass_block_side_overlay.png"));
+	snowyGrassBlockTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"grass_block_snow.png"));
 	woolOverlay = loadTextureFromResourcePack(entityTextureFolder / L"sheep" / L"sheep_fur.png");
 	endPortalFrameEyeTexture = loadTextureFromResourcePack(blockTextureFolder / std::wstring(L"end_portal_frame_eye.png"));
 	endSkyTexture = loadTextureFromResourcePack(environmentTextureFolder / std::wstring(L"end_sky.png"));
@@ -3066,7 +3165,7 @@ void loadResourcePacks()
 	/*
 	for (int i = (int)blockID::wood_fence; i < (int)blockID::wood_fence + fenceTypeCount; i++)
 	{
-		resolutionTexture* renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
+		resolutionTexture* renderedTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize)));
 
 		cbool connect[fenceConnectionPossibilityCount]{ true, true };
 		renderFence(blockTextureRect, connect, *blockList[i]->tex, *renderedTexture);
@@ -3074,7 +3173,7 @@ void loadResourcePacks()
 	}
 	for (int i = (int)blockID::wood_fence_gate; i < (int)blockID::wood_fence_gate + woodTypeCount; i++)
 	{
-		auto renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
+		auto renderedTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize)));
 
 		cbool connect[fenceConnectionPossibilityCount]{ true, false };
 		renderFenceGate(blockTextureRect, connect, true, directionID::positiveX, *blockList[i]->tex, *renderedTexture);
@@ -3082,7 +3181,7 @@ void loadResourcePacks()
 	}
 	for (int i = (int)blockID::wood_slab; i < (int)blockID::wood_slab + slabTypeCount; i++)
 	{
-		auto renderedTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize)));
+		auto renderedTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize)));
 
 		cbool connect[fenceConnectionPossibilityCount]{ true, true };
 		fillTransformedBrushRectangle(crectangle2(0, 0, blockTextureSize, blockTextureSize / 2), cveci2(), *blockList[i]->tex, *renderedTexture);
@@ -3101,7 +3200,7 @@ void loadResourcePacks()
 		entityID id = mobList[i];
 		mobData *data = (mobData *)entityDataList[(int)id];
 
-		auto currentSpawnEggTexture = new resolutionTexture(texture(cvect2<size_t>(blockTextureSize)), cvec2(blockTextureSize));
+		auto currentSpawnEggTexture = new resolutionTexture(texture(cvect2<fsize_t>(blockTextureSize)), cvec2(blockTextureSize));
 
 		const solidColorBrush spawnEggColorBrush = solidColorBrush(data->spawnEggColor);
 		const auto &spawnEggMultiplier = colorMultiplier<resolutionTexture, solidColorBrush>(*spawnEggTexture, spawnEggColorBrush);
@@ -3116,16 +3215,8 @@ void loadResourcePacks()
 
 	loadTags();
 	loadLootTables();
+	loadRecipes();
 
-	craftingRecipes = std::vector<recipe *>();
-	furnaceRecipes = std::vector<furnaceRecipe *>();
-	for (const auto &fileIterator : stdFileSystem::directory_iterator(recipeFolder))
-	{
-		std::wstring path = fileIterator.path().wstring();
-		const jsonContainer &content = readJson(stringToWString(readAllText(path)));
-
-		readRecipe(content);
-	}
 	// add loot tables
 	// for (const auto &fileIterator : stdFileSystem::directory_iterator(blockLootTablesFolder))
 	//{
@@ -3145,24 +3236,15 @@ void loadResourcePacks()
 
 	idConverter::writeIDsToFile();
 
-	structureList = std::vector<structure *>();
-	for (const auto &fileIterator : stdFileSystem::recursive_directory_iterator(structureFolder))
-	{
-		const stdPath &path = fileIterator.path().wstring();
-		const std::wstring &extension = fileIterator.path().extension().wstring();
-		const stdPath folder = stdPath(path).replace_extension();
-		if (extension == nbtFileExtension)
-		{
-			structure *s = new structure(folder);
-			s->serialize(path, false);
-			structureList.push_back(s);
-		}
-	}
+	loadStructures();
 
 	reloadJigsawPools();
-
-	creditsText = stringToWString(readAllText(minecraftAssetsFolder / L"texts" / L"end.txt"));
-	creditsText = replace(creditsText, std::wstring(L"PLAYERNAME"), std::wstring(L"Me"));
+	stdPath textPath;
+	if (getLastResourceLocation(textFolder / L"end.txt", textPath))
+	{
+		creditsText = stringToWString(readAllText(textPath));
+		creditsText = replace(creditsText, std::wstring(L"PLAYERNAME"), std::wstring(L"Me"));
+	}
 }
 std::vector<resolutionTexture *> loadGrowthStageTextures(const std::wstring &blockName, std::vector<size_t> growthStageIndexes)
 {
@@ -3244,7 +3326,7 @@ resolutionTexture *loadChestTexture(const stdPath &path)
 {
 	resolutionTexture *chestImage = loadTextureFromResourcePack(path);
 	cfp &scaleMultiplier = (fp)chestImage->scaledTextures[0]->size.x / chestImage->defaultSize.x;
-	resolutionTexture *croppedTexture = new resolutionTexture(texture(cvect2<size_t>((size_t)((fp)blockTextureSize * scaleMultiplier))), cvec2(blockTextureSize));
+	resolutionTexture *croppedTexture = new resolutionTexture(texture(cvect2<fsize_t>((fsize_t)((fp)blockTextureSize * scaleMultiplier))), cvec2(blockTextureSize));
 
 	cfp &chestBottomPixelHeight = 10;
 	cfp &padLockPixelWidth = 6;

@@ -10,6 +10,7 @@
 #include <SFML/OpenGL.hpp>
 #include "application/thread/setThreadName.h"
 #include "array/arrayFunctions/sortedArray.h"
+#include "control/eventTranslator.h"
 // #include <gl/glew.h>
 
 // works on windows only
@@ -129,7 +130,7 @@ void application::runGraphics()
 
 void application::layout(crectanglei2 &newRect)
 {
-    sf::FloatRect visibleArea(newRect.x, newRect.y, newRect.w, newRect.h);
+    sf::FloatRect visibleArea((float)newRect.x, (float)newRect.y, (float)newRect.w, (float)newRect.h);
     window->setView(sf::View(visibleArea));
 
     screenToApp = mat3x3::combine({mat3x3::scale(vec2(1.0 / pixelMultiplier)),
@@ -223,8 +224,8 @@ void application::processInput()
 application::application(form *mainForm, const std::wstring &name) : INamable(name)
 {
     this->mainForm = mainForm;
-    this->mainForm->addEventHandlers(&control::processEvent, listener);
-    // std::fill(lastKeyDown, lastKeyDown + 0x100, false);
+    this->translator = new eventTranslator(*mainForm);
+    listener.hook(&eventTranslator::processEvent, translator);
 }
 
 application::~application()

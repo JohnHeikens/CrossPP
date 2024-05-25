@@ -72,7 +72,7 @@ android {
     buildTypes {
         release {
             androidResources {
-                ignoreAssetsPattern = "<dir>saves:<dir>screenshots:<dir>4thful:<dir>4x4:<dir>creator pack:<file>playerdata.dat:<file>serverlist.dat:<file>.class"
+                ignoreAssetsPattern = "playerdata.dat:saves:screenshots:BDCraft Sound Pack:4x4:4thful:randomized loot:*.class"
             }
         }
     }

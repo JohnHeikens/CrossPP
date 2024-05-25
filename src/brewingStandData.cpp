@@ -194,7 +194,7 @@ bool brewingstandData::tick(tickableBlockContainer *containerIn, cveci2 &positio
                         }
                     }
                 }
-                brewingFinishSound->playRandomSound(containerIn, position + cvec2(0.5));
+                brewingFinishSound->playRandomSound(containerIn, cvec2(position) + cvec2(0.5));
                 ingredientSlot->slots[0].add(-1);
                 ticksBrewed = 0;
             } else {

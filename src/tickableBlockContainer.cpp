@@ -152,7 +152,7 @@ bool tickableBlockContainer::findRaycastRecursive(cvec2& absolutePosition, cvec2
 			closestDistanceSquared = (exactBlockIntersection - croppedP0).lengthSquared();
 			resultingContainer = this;
 		}
-		else if (this->getBlockID(exactBlockIntersection) != blockID::air)
+		else if (this->getBlockID(floorVector(exactBlockIntersection)) != blockID::air)
 		{
 			noCollisionBlockContainer = this;
 		}

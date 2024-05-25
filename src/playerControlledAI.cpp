@@ -11,21 +11,22 @@
 #include "soundList.h"
 #include "gameForm.h"
 #include "rectangularSlotContainer.h"
+#include "floatingSlot.h"
 // to switch to flying or walking
 
 void playerControlledAI::execute()
 {
     human *connectedPlayer = (human *)connectedEntity;
     // currentGame->focused && !currentGame->focusedChild;
-    
+
     cbool &worldFocus =
         connectedPlayer->screen.getWorldFocus();
 
     connectedPlayer->screen.updateTransforms(connectedPlayer->getHeadPosition());
     if (worldFocus)
     {
-        //only update lookingat on world focus
-        // all values are set to false automatically
+        // only update lookingat on world focus
+        //  all values are set to false automatically
         if (connectedPlayer->screen.touchInput)
         {
             connectedPlayer->lookingAt = connectedPlayer->getHeadPosition() + connectedPlayer->screen.interactJoystick->value;
@@ -75,6 +76,25 @@ void playerControlledAI::execute()
                 connectedPlayer->screen.holdingDownKey((vk)keyID::down);
             connectedPlayer->wantsToGoUp =
                 connectedPlayer->screen.holdingDownKey((vk)keyID::up);
+            if (connectedPlayer->screen.pressedKey((vk)keyID::drop))
+            {
+                if (connectedPlayer->itemHolding->count)
+                {
+                    if (connectedPlayer->screen.holdingDownKey((vk)sf::Keyboard::Key::LControl))
+                    {
+                        //drop the whole stack
+                        connectedPlayer->drop(*connectedPlayer->itemHolding);
+                    }
+                    else{
+                        connectedPlayer->drop(*connectedPlayer->itemHolding, 1);
+                    }
+                }
+
+                // we don't have to clear toDrop or something
+                //  connectedPlayer->itemHolding->clearData();
+                //  floatingSlot *slot = (floatingSlot *)summonEntity(entityID::item, connectedPlayer->dimensionIn, connectedPlayer->getDropPosition());
+                //  connectedPlayer->itemHolding.size_t amount = connectedPlayer->screen.holdingDownKey((vk)sf::Keyboard::Key::LControl) ?
+            }
         }
 
         cbool &spectating = connectedPlayer->currentGameMode == gameModeID::spectator;

@@ -26,7 +26,7 @@ struct movableBlockContainer : tickableBlockContainer, public blockArrayContaine
 	collisionDataCollection getHitboxCollisionData(crectangle2& box) override;
 	bool cropRelativeLineToContainer(vec2& p0, vec2& p1) override;
 
-	movableBlockContainer(cvect2<size_t>& size) :blockArrayContainer(size) {}
+	movableBlockContainer(cvect2<fsize_t>& size) :blockArrayContainer(size) {}
 	void serializeValue(nbtSerializer& s) override;
 	~movableBlockContainer() override;
 };

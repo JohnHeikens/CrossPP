@@ -32,19 +32,19 @@ std::shared_ptr <lootTable> readLootTable(const stdPath& path)
 //https://gist.github.com/misode/66456e57372ce62cd9b65d1052521069
 lootTable* readDrop(const jsonContainer& container)
 {
-	cint typeIndex = container.getChildIndex(std::wstring(L"type"));
+	csize_t& typeIndex = container.getChildIndex(std::wstring(L"type"));
 	lootTable* dropToReturn = nullptr;
-	if (typeIndex != -1)
+	if (typeIndex != std::wstring::npos)
 	{
 		if (container.children[typeIndex].children[0].value == std::wstring(L"minecraft:item"))
 		{
-			cint nameIndex = container.getChildIndex(std::wstring(L"name"));
+			csize_t& nameIndex = container.getChildIndex(std::wstring(L"name"));
 			const itemID& itemIndex = itemList.getIDByName(container.children[nameIndex].children[0].value);
 			if ((int)itemIndex != -1)
 			{
 				dropToReturn = new itemDrop(itemIndex);
-				cint functionsIndex = container.getChildIndex(std::wstring(L"functions"));
-				if (functionsIndex != -1)
+				csize_t& functionsIndex = container.getChildIndex(std::wstring(L"functions"));
+				if (functionsIndex != std::wstring::npos)
 				{
 					const std::vector<jsonContainer>& functionContainers = container.children[functionsIndex].children;
 					for (size_t i = 0; i < functionContainers.size(); i++)
@@ -121,8 +121,8 @@ lootTable* readDrop(const jsonContainer& container)
 		}
 	}
 
-	cint poolsIndex = container.getChildIndex(std::wstring(L"pools"));
-	if (poolsIndex != -1)
+	csize_t& poolsIndex = container.getChildIndex(std::wstring(L"pools"));
+	if (poolsIndex != std::wstring::npos)
 	{
 		additiveDrop* drop = new additiveDrop();
 		for (const jsonContainer& child : container.children[poolsIndex].children)
@@ -132,9 +132,9 @@ lootTable* readDrop(const jsonContainer& container)
 		dropToReturn = drop;
 	}
 
-	cint entriesIndex = container.getChildIndex(std::wstring(L"entries"));
+	csize_t& entriesIndex = container.getChildIndex(std::wstring(L"entries"));
 	jsonContainer entriesContainer;
-	if (entriesIndex != -1)
+	if (entriesIndex != std::wstring::npos)
 	{
 		entriesContainer = container.children[entriesIndex];
 	}
@@ -152,8 +152,8 @@ lootTable* readDrop(const jsonContainer& container)
 		for (const jsonContainer& child : entriesContainer.children)
 		{
 			fp chance;
-			cint weightIndex = child.getChildIndex(std::wstring(L"weight"));
-			if ((weightIndex == -1) || !convertToDouble(child.children[weightIndex].children[0].value, chance))
+			csize_t& weightIndex = child.getChildIndex(std::wstring(L"weight"));
+			if ((weightIndex == std::wstring::npos) || !convertToDouble(child.children[weightIndex].children[0].value, chance))
 			{
 				chance = 1;
 			}
@@ -164,7 +164,7 @@ lootTable* readDrop(const jsonContainer& container)
 	}
 noEntriesFound:
 
-	if (cint& rollsIndex = container.getChildIndex(std::wstring(L"rolls")); rollsIndex != -1)
+	if (csize_t& rollsIndex = container.getChildIndex(std::wstring(L"rolls")); rollsIndex != std::wstring::npos)
 	{
 		const jsonContainer& rollsContainer = container.children[rollsIndex];
 
@@ -173,7 +173,7 @@ noEntriesFound:
 		dropToReturn = drop;
 	}
 
-	if (cint conditionsIndex = container.getChildIndex(std::wstring(L"conditions")); conditionsIndex != -1)
+	if (csize_t& conditionsIndex = container.getChildIndex(std::wstring(L"conditions")); conditionsIndex != std::wstring::npos)
 	{
 		const std::vector<jsonContainer> conditionContainers = container.children[conditionsIndex].children;
 		for (size_t i = 0; i < conditionContainers.size(); i++)
