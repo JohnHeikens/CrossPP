@@ -21,7 +21,7 @@ fontFamily::fontFamily(resolutionTexture* tex, cbool& flipRows)
 {
 	this->tex = tex;
 	texture& topTextureToEdit = *tex->scaledTextures[0];
-	cvect2<size_t>& texLetterSize = topTextureToEdit.size.x / asciiRowWidth;
+	cvect2<size_t>& texLetterSize = topTextureToEdit.size / asciiRowWidth;
 	if (flipRows)
 	{
 		for (size_t yRow0 = 0; yRow0 < asciiColumnHeight / 2; yRow0++)
@@ -46,7 +46,7 @@ fontFamily::fontFamily(resolutionTexture* tex, cbool& flipRows)
 
 		cveci2& asciiOffset = getAsciiOffset((byte)i);
 		cveci2& multipliedOffset = asciiOffset * fontScaleMultiplier;
-		crectanglei2& rectToSearch = rectanglei2(multipliedOffset, fontScaleMultiplier);
+		crectanglei2& rectToSearch = rectanglei2(multipliedOffset, veci2(fontScaleMultiplier));
 		int width = 0;
 		rectanglei2 pixelRect = rectanglei2();
 		for (int y = 0; y < fontScaleMultiplier; y++){

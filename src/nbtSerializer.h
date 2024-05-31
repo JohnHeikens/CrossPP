@@ -99,7 +99,7 @@ struct nbtSerializer : iSerializer
 
 	// IMPORTANT: DO NOT READ AFTER A push<nbtDataTag::tagCompound>() WHICH RETURNED FALSE
 	template <nbtDataTag tagType = nbtDataTag::tagCompound>
-	bool push(const std::wstring &name = std::wstring(L""))
+	bool push(const std::wstring &name = std::wstring())
 	{
 		nbtCompound *childCompound;
 		childCompound = (nbtCompound *)getOrCreateNBTData<tagType>(name);
@@ -243,7 +243,7 @@ struct nbtSerializer : iSerializer
 
 		if (currentChildCompound.dataTag == nbtDataTag::tagCompound)
 		{
-			if (memberName == std::wstring(L""))
+			if (memberName.length() == 0)
 			{
 				handleError(std::wstring(L"compound tags have names"));
 			}
@@ -302,7 +302,7 @@ struct nbtSerializer : iSerializer
 			{
 				if constexpr (isDebugging)
 				{
-					if (memberName == std::wstring(L""))
+					if (memberName == std::wstring())
 					{
 						handleError(std::wstring(L"compound tags have names"));
 					}

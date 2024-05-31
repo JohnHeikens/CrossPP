@@ -29,30 +29,30 @@
 #include "math/vector/vectn.h"
 #include "optimization/benchmark.h"
 #include "recipe.h"
-#include "soundHandler2D.h"
 #include "structure.h"
 #include "serverEditor.h"
 #include "client.h"
 #include "accountEditor.h"
 #include <numeric>
 #include <server.h>
+#include "sound/soundHandler2D.h"
 
-application* currentApplication = nullptr;
+application *currentApplication = nullptr;
 
-client* currentClient = nullptr;
-worldSelector* currentWorldSelector = nullptr;
-serverSelector* currentServerSelector = nullptr;
-serverEditor* currentServerEditor = nullptr;
-gameForm* mainForm = nullptr;
-worldCreator* currentWorldCreator = nullptr;
-mainMenu* currentMainMenu = nullptr;
-accountEditor* currentAccountEditor = nullptr;
+client *currentClient = nullptr;
+worldSelector *currentWorldSelector = nullptr;
+serverSelector *currentServerSelector = nullptr;
+serverEditor *currentServerEditor = nullptr;
+gameForm *mainForm = nullptr;
+worldCreator *currentWorldCreator = nullptr;
+mainMenu *currentMainMenu = nullptr;
+accountEditor *currentAccountEditor = nullptr;
 
-soundHandler2d* handler;
+// soundHandler2d* handler;
 
 constexpr int normalSmeltingTime = 10 * ticksPerRealLifeSecond;
 
-world* currentWorld = nullptr;
+world *currentWorld = nullptr;
 
 std::mt19937 worldRandom;
 std::mt19937 currentRandom;
@@ -94,82 +94,87 @@ gameForm::~gameForm()
 
 bool gameForm::close()
 {
-	if (currentServer) {
+	if (currentServer)
+	{
 		currentServer->stop();
 	}
 	return true;
-	//can't close if you're not on the main menu
-	//return currentMainMenu->visible;
+	// can't close if you're not on the main menu
+	// return currentMainMenu->visible;
 }
 
-void gameForm::layout(crectanglei2& rect)
+void gameForm::layout(crectanglei2 &rect)
 {
 	form::layout(rect);
-	for (control* c : children) {
+	for (control *c : children)
+	{
 		c->layout(rect);
 	}
-	//currentMainMenu->layout(rect);
-	//currentWorldSelector->layout(rect);
-	//currentWorldCreator->layout(rect);
-	//currentServerSelector->layout(rect);
-	//currentServerEditor->layout(rect);
-	//currentClient->layout(rect);
-	//currentAccountEditor->layout(rect);
+	// currentMainMenu->layout(rect);
+	// currentWorldSelector->layout(rect);
+	// currentWorldCreator->layout(rect);
+	// currentServerSelector->layout(rect);
+	// currentServerEditor->layout(rect);
+	// currentClient->layout(rect);
+	// currentAccountEditor->layout(rect);
 }
 
-gameForm::gameForm() :form()
+gameForm::gameForm() : form()
 {
 
 	currentRandom = getRandomFromSeed(getmicroseconds());
 
-
-	handler = new soundHandler2d();
+	// handler = new soundHandler2d();
 
 	loadResourcePacks();
 
-
-
-	//load controls
+	// load controls
 	mainForm = this;
 
 	currentMainMenu = new mainMenu();
 
 	currentClient = new client();
 
-	currentAccountEditor = new accountEditor();//initialize accounteditor after the client, as the account editor edits data which the client has to retrieve first
+	currentAccountEditor = new accountEditor(); // initialize accounteditor after the client, as the account editor edits data which the client has to retrieve first
 
 	currentWorldSelector = new worldSelector();
-	currentWorldSelector->refresh();//can't put refresh() in base constructor because refresh() calls a virtual function
+	currentWorldSelector->refresh(); // can't put refresh() in base constructor because refresh() calls a virtual function
 	currentWorldCreator = new worldCreator();
 
 	currentServerSelector = new serverSelector();
-	currentServerSelector->refresh();//can't put refresh() in base constructor because refresh() calls a virtual function
+	currentServerSelector->refresh(); // can't put refresh() in base constructor because refresh() calls a virtual function
 	currentServerEditor = new serverEditor();
 
-	addChildren({ currentMainMenu, currentAccountEditor,
-		currentWorldSelector, currentWorldCreator,
-		currentServerSelector, currentServerEditor,
-		currentClient });
-	for (auto*& c : children) {
+	addChildren({currentMainMenu, currentAccountEditor,
+				 currentWorldSelector, currentWorldCreator,
+				 currentServerSelector, currentServerEditor,
+				 currentClient});
+	for (auto *&c : children)
+	{
 		c->visible = false;
 	}
 	currentMainMenu->visible = true;
 	focusChild(currentMainMenu);
 }
 
-void gameForm::render(cveci2& position, const texture& renderTarget)
+void gameForm::render(cveci2 &position, const texture &renderTarget)
 {
-	//the game will update music for itself, depending on the situation
+	// the game will update music for itself, depending on the situation
 	if (!currentClient->visible)
 	{
 		updateMusic(mainMenuBackgroundMusic.get());
 	}
-	handler->update(currentClient->earPosition, hearingRange, settings::soundSettings::volume);
+	handler.hearingRange = currentClient->hearingRange2D;
+	handler.earPosition = currentClient->earPosition;
+	handler.earSpeed = currentClient->earSpeed;
+	handler.globalVolume = settings::soundSettings::volume;
+	handler.update();
 
 	currentApplication->window->setMouseCursorVisible(focusedChild != currentClient);
 
-	//draw all controls
+	// draw all controls
 	renderChildren(position, renderTarget);
-	//don't draw self
-	//form::render(position, renderTarget);
+	// don't draw self
+	// form::render(position, renderTarget);
+	handler.visualize(renderTarget);
 }

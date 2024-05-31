@@ -7,7 +7,7 @@
 struct entityData :IDestructable
 {
 	entityData(const entityID& identifier, const std::wstring name, cfp& maxHealth, crectangle2& initialialRelativeHitbox, cfp& volume = 0, cfp& weight = 0, cbool& canGoThroughPortals = true);
-	std::wstring name = std::wstring(L"");
+	std::wstring name = std::wstring();
 	fp maxHealth = 0;
 	entityID identifier = (entityID)0;
 	rectangle2 initialRelativeHitbox = crectangle2();

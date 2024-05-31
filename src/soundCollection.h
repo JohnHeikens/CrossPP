@@ -2,7 +2,8 @@
 #include "audioCollection.h"
 #include <SFML/Audio/Sound.hpp>
 #include <memory>
-#include "soundHandler2D.h"
+#include "sound/audio2d.h"
+#include "sound/sound2d.h"
 #include <unordered_map>
 struct tickableBlockContainer;
 

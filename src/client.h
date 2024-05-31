@@ -11,6 +11,8 @@
 struct client : control, socketContainer {
 	serverData currentServerData = serverData();
 	vec3 earPosition = vec3();
+	vec3 earSpeed = vec3();
+	fp hearingRange2D = 0;
     bool socketWantsTextInput = false;
 	bool socketWantsClipboardInput = false;
 

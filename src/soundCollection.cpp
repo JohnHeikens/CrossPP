@@ -12,7 +12,7 @@
 #include "globalFunctions.h"
 #include "math/random/random.h"
 #include "math/vector/vectn.h"
-#include "soundHandler2D.h"
+#include "sound/soundHandler2D.h"
 #include "soundPacket.h"
 #include "human.h"
 #include <fstream>
@@ -22,6 +22,7 @@
 #include "folderList.h"
 #include <regex>
 #include "resourcePack.h"
+#include "math/sound/sound.h"
 
 std::unordered_map<std::wstring, audioCollection *> globalSoundCollectionList = std::unordered_map<std::wstring, audioCollection *>();
 
@@ -118,12 +119,20 @@ std::shared_ptr<audio2d> soundCollection::playRandomSound(cfp &volume, cfp &pitc
 std::shared_ptr<sound2d> soundCollection::playSound(csize_t &index, tickableBlockContainer *containerIn, cvec2 &position, cfp &volume, cfp &pitch)
 {
 	const dimension *soundDimension = containerIn->rootDimension;
-	cvec2 &soundPosition = containerIn->containerToRootTransform.multPointMatrix(position);
-	const auto &players = currentServer->getPlayersInRadius(soundDimension, soundPosition, soundLoadRange);
-	soundPacket packet = soundPacket(position, key, (int)index, volume, pitch);
-	for (const auto &p : players)
+	cvec2 &absolutePosition = containerIn->containerToRootTransform.multPointMatrix(position);
+
+	// get all players from soundDimension
+	//check their new position. this is very important, because for example they should hear the portal arrive sound when they go through a portal!
+	const soundPacket &packet = soundPacket(position, key, (int)index, volume, pitch);
+	for (const auto* const &c : currentServer->clients)
 	{
-		p->screen.dataToSend.push_back(packet);
+		const human* const& p = c->player;
+		if (p->newDimension == soundDimension)
+		{
+			// now check for each player if they can hear it (players have different hearing ranges, for example when zoomed out)
+			if ((p->newPosition - absolutePosition).lengthSquared() < math::squared(getHearingRange2D(p->visibleRangeXWalk)))
+				p->screen.dataToSend.push_back(packet);
+		}
 	}
 
 	return nullptr;
@@ -132,6 +141,6 @@ std::shared_ptr<sound2d> soundCollection::playSound(csize_t &index, tickableBloc
 std::shared_ptr<sound2d> soundCollection::playSound(csize_t &index, cfp &volume, cfp &pitch)
 {
 	std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(audioToChooseFrom[index], cvec2(), volume, pitch, false);
-	handler->playAudio(soundToPlay);
+	handler.playAudio(soundToPlay);
 	return soundToPlay;
 }

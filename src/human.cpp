@@ -107,7 +107,6 @@
 #include "gameRenderData.h"
 #include "smithingTableSlotContainer.h"
 #include "soundCollection.h"
-#include "soundHandler2D.h"
 #include "statusEffect.h"
 #include "statusEffectID.h"
 #include "treeItemTypeID.h"
@@ -359,10 +358,10 @@ void human::tick()
 						// remove music disc from jukebox
 						addStackOrDrop(toJukeBoxData->recordSlot->slots[0]);
 
-						handler->stopAudio(toJukeBoxData->musicPlaying);
+						//handler->stopAudio(toJukeBoxData->musicPlaying);
 
 						// for safety
-						toJukeBoxData->musicPlaying = nullptr;
+						//toJukeBoxData->musicPlaying = nullptr;
 
 						goto rightClickUsed;
 					}

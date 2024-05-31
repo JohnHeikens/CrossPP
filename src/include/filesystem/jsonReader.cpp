@@ -7,9 +7,9 @@ jsonContainer readJson(std::wstring content)
 	content = replace(content, std::wstring(L"\\u0026"), std::wstring(L"&"));
 	//{ = data with name
 	//[ = data without name
-	csize_t& indexQuote = find(content, 0, std::wstring(L"\""), std::wstring(L""));
-	csize_t& indexCurlyBracket = find(content, 0, std::wstring(L"{"), std::wstring(L""));
-	csize_t& indexBracket = find(content, 0, std::wstring(L"["), std::wstring(L""));
+	csize_t& indexQuote = find(content, 0, std::wstring(L"\""), std::wstring());
+	csize_t& indexCurlyBracket = find(content, 0, std::wstring(L"{"), std::wstring());
+	csize_t& indexBracket = find(content, 0, std::wstring(L"["), std::wstring());
 	csize_t& nearestIndex = FindNearest(std::vector<size_t>({ indexQuote,indexCurlyBracket,indexBracket }));
 	if (nearestIndex == std::wstring::npos)
 	{
@@ -20,7 +20,7 @@ jsonContainer readJson(std::wstring content)
 		//" first
 						//read name
 		csize_t& startPos = indexQuote + 1;
-		csize_t& endPos = find(content, startPos, std::wstring(L"\""), std::wstring(L""));
+		csize_t& endPos = find(content, startPos, std::wstring(L"\""), std::wstring());
 		container.value = content.substr(startPos, endPos - startPos);
 
 		csize_t& indexColon = find(content, endPos + 1, std::wstring(L":"), std::wstring(L"{}[]()\"\""));
@@ -35,7 +35,7 @@ jsonContainer readJson(std::wstring content)
 			else
 			{
 				indexQuote2 += 1;
-				csize_t& endIndexQuote2 = find(content, indexQuote2, std::wstring(L"\""), std::wstring(L""));
+				csize_t& endIndexQuote2 = find(content, indexQuote2, std::wstring(L"\""), std::wstring());
 				movingBlocks.value = content.substr(indexQuote2, endIndexQuote2 - indexQuote2);
 			}
 			container.children.push_back(movingBlocks);

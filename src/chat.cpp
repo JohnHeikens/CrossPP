@@ -50,15 +50,17 @@
 #include "minecraftFont.h"
 #include <SFML/Network.hpp>
 #include "rectangularSlotContainer.h"
+#include <fstream>
+#include "folderList.h"
 
 constexpr int selectedPositionCount = 2;
 vec2 selectedPositions[selectedPositionCount]{};
 bool selectedPositionSet[selectedPositionCount]{};
 dimensionID selectedDimensions[selectedPositionCount]{};
 
-bool chat::getLocation(const human& sender, const wstringContainer& container, int& offset, dimensionID& dimensionIn, vec2& position)
+bool chat::getLocation(const human &sender, const wstringContainer &container, int &offset, dimensionID &dimensionIn, vec2 &position)
 {
-	const std::wstring& dimensionName = getWord(container, offset);
+	const std::wstring &dimensionName = getWord(container, offset);
 
 	if (dimensionName == std::wstring(L"@p"))
 	{
@@ -91,7 +93,7 @@ bool chat::getLocation(const human& sender, const wstringContainer& container, i
 		newOffset++;
 	}
 
-	vec2 posToReturn = vec2();//the position will not be modified if the last one fails
+	vec2 posToReturn = vec2(); // the position will not be modified if the last one fails
 	for (int i = 0; i < 2; i++)
 	{
 		const std::wstring axisWord = getWord(container, newOffset);
@@ -133,7 +135,7 @@ bool chat::getLocation(const human& sender, const wstringContainer& container, i
 	return true;
 }
 
-bool chat::getBlockToUse(const human& sender, const wstringContainer& container, int& offset, blockID& result)
+bool chat::getBlockToUse(const human &sender, const wstringContainer &container, int &offset, blockID &result)
 {
 	std::wstring blockName = getWord(container, offset);
 	if (blockName.length())
@@ -150,8 +152,8 @@ bool chat::getBlockToUse(const human& sender, const wstringContainer& container,
 	}
 	else if (isHumanoid(sender.entityType))
 	{
-		const humanoid& currentHumanoid = (humanoid&)sender;
-		const itemID& item = currentHumanoid.itemHolding->stackItemID;
+		const humanoid &currentHumanoid = (humanoid &)sender;
+		const itemID &item = currentHumanoid.itemHolding->stackItemID;
 		if ((int)item)
 		{
 			result = (blockID)item;
@@ -172,16 +174,16 @@ bool chat::getBlockToUse(const human& sender, const wstringContainer& container,
 	return false;
 }
 
-bool chat::selectEntities(const human& sender, const wstringContainer& container, int& offset, std::vector<entity*>& result)
+bool chat::selectEntities(const human &sender, const wstringContainer &container, int &offset, std::vector<entity *> &result)
 {
-	const std::wstring& compareString = getWord(container, offset);
+	const std::wstring &compareString = getWord(container, offset);
 	if (compareString.size() && (compareString[0] == L'@'))
 	{
 		offset++;
-		const std::vector<entity*> entityList = sender.dimensionIn->findNearEntities(sender.position, commandEntityRadius);
-		std::vector<entity*> selectedEntities = std::vector<entity*>();
+		const std::vector<entity *> entityList = sender.dimensionIn->findNearEntities(sender.position, commandEntityRadius);
+		std::vector<entity *> selectedEntities = std::vector<entity *>();
 
-		for (entity* e : entityList)
+		for (entity *e : entityList)
 		{
 			if (e->compareSelector(sender, compareString))
 			{
@@ -192,18 +194,18 @@ bool chat::selectEntities(const human& sender, const wstringContainer& container
 	}
 	else
 	{
-		result = { (entity*)&sender };
+		result = {(entity *)&sender};
 	}
 	return true;
 }
 
-void chat::say(human& sender, std::wstring line)
+void chat::say(human &sender, std::wstring line)
 {
 	addLine(line);
 	if (line.length() && line[0] == L'/')
 	{
-		line = line.substr(1);//remove the backslash
-		//it's a command
+		line = line.substr(1); // remove the backslash
+		// it's a command
 		const wstringContainer lines = split_string(line, std::wstring(L" "), std::wstring(L"[](){}\"\""));
 		if (lines.size())
 		{
@@ -211,7 +213,7 @@ void chat::say(human& sender, std::wstring line)
 			{
 				if (getWord(lines, 1) == std::wstring(L"lighting"))
 				{
-					for (const std::pair<cveci2, chunk*>& currentPair : sender.dimensionIn->loadedChunksMap)
+					for (const std::pair<veci2, chunk *> &currentPair : sender.dimensionIn->loadedChunksMap)
 					{
 						currentPair.second->internalSunLightLevels.fill(0);
 						currentPair.second->blockLightLevels.fill(0);
@@ -230,11 +232,11 @@ void chat::say(human& sender, std::wstring line)
 					}
 					else if (getWord(lines, 0) == std::wstring(L"kill"))
 					{
-						std::vector<entity*> listToKill;
+						std::vector<entity *> listToKill;
 						int index = 1;
 						if (selectEntities(sender, lines, index, listToKill))
 						{
-							for (entity* e : listToKill)
+							for (entity *e : listToKill)
 							{
 								e->onDeath();
 							}
@@ -242,7 +244,7 @@ void chat::say(human& sender, std::wstring line)
 					}
 					else if (getWord(lines, 0) == std::wstring(L"heal"))
 					{
-						std::vector<entity*> listToHeal;
+						std::vector<entity *> listToHeal;
 						int index = 1;
 						if (selectEntities(sender, lines, index, listToHeal))
 						{
@@ -251,7 +253,7 @@ void chat::say(human& sender, std::wstring line)
 							{
 								heartAmount = INFINITY;
 							}
-							for (entity* e : listToHeal)
+							for (entity *e : listToHeal)
 							{
 								e->heal(heartAmount);
 							}
@@ -262,11 +264,11 @@ void chat::say(human& sender, std::wstring line)
 					{
 						if (getWord(lines, 1) == std::wstring(L"clear"))
 						{
-							std::vector<entity*> listToRemoveEffects;
+							std::vector<entity *> listToRemoveEffects;
 							int index = 2;
 							if (selectEntities(sender, lines, index, listToRemoveEffects))
 							{
-								for (entity* e : listToRemoveEffects)
+								for (entity *e : listToRemoveEffects)
 								{
 									e->activeEffects.clear();
 								}
@@ -275,9 +277,9 @@ void chat::say(human& sender, std::wstring line)
 						else
 						{
 							int index = 1;
-							std::vector<entity*> listToAddEffectTo;
+							std::vector<entity *> listToAddEffectTo;
 							selectEntities(sender, lines, index, listToAddEffectTo);
-							const statusEffectID& id = statusEffectDataList.getIDByName(getWord(lines, index++));
+							const statusEffectID &id = statusEffectDataList.getIDByName(getWord(lines, index++));
 							if ((int)id != -1)
 							{
 								statusEffect effectToAdd = statusEffect(id);
@@ -288,9 +290,9 @@ void chat::say(human& sender, std::wstring line)
 										effectToAdd.potency = 1;
 									}
 
-									for (entity* e : listToAddEffectTo)
+									for (entity *e : listToAddEffectTo)
 									{
-										e->addStatusEffects({ effectToAdd });
+										e->addStatusEffects({effectToAdd});
 									}
 								}
 							}
@@ -298,27 +300,27 @@ void chat::say(human& sender, std::wstring line)
 					}
 					else if (getWord(lines, 0) == std::wstring(L"locatebiome"))
 					{
-						const biomeID& biomeIndex = biomeDataList.getIDByName(getWord(lines, 1));
+						const biomeID &biomeIndex = biomeDataList.getIDByName(getWord(lines, 1));
 						if ((int)biomeIndex != -1)
 						{
 							vec2 biomeLocation;
-							if (sender.dimensionIn->locateBiomes({ biomeIndex }, sender.position, biomeLocation))
+							if (sender.dimensionIn->locateBiomes({biomeIndex}, sender.position, biomeLocation))
 							{
-								//teleport player to biome
+								// teleport player to biome
 								sender.teleportTo(sender.dimensionIn, biomeLocation, true);
 							}
 						}
 					}
 					else if (getWord(lines, 0) == std::wstring(L"locate"))
 					{
-						const structureID& structureIndex = structureDataList.getIDByName(getWord(lines, 1));
+						const structureID &structureIndex = structureDataList.getIDByName(getWord(lines, 1));
 						if ((int)structureIndex != -1)
 						{
 							vec2 structureLocation = sender.position;
 							if (sender.dimensionIn->locateStructure(structureIndex, sender.position, structureLocation))
 							{
 
-								//teleport player to structure
+								// teleport player to structure
 								sender.teleportTo(sender.dimensionIn, structureLocation, true);
 							}
 						}
@@ -336,7 +338,7 @@ void chat::say(human& sender, std::wstring line)
 						bool loc0 = getLocation(sender, lines, offset, poolDimension, from) || selectedPositionSet[0];
 						if (loc0)
 						{
-							const blockID& b = blockList.getIDByName(getWord(lines, offset));
+							const blockID &b = blockList.getIDByName(getWord(lines, offset));
 							if ((int)b != -1)
 							{
 								int maxPoolSize;
@@ -365,20 +367,20 @@ void chat::say(human& sender, std::wstring line)
 					}
 					else if (isMob(sender.entityType))
 					{
-						mob& currentMob = (mob&)sender;
+						mob &currentMob = (mob &)sender;
 						if (getWord(lines, 0) == std::wstring(L"fly"))
 						{
-							//set also in survival
+							// set also in survival
 							currentMob.flying = !currentMob.flying;
 						}
 						else if (isHumanoid(sender.entityType))
 						{
-							humanoid& currentHumanoid = (humanoid&)sender;
+							humanoid &currentHumanoid = (humanoid &)sender;
 
 							if (getWord(lines, 0) == std::wstring(L"give"))
 							{
-								//give item
-								const itemID& itemIDToGive = itemList.getIDByName(getWord(lines, 1));
+								// give item
+								const itemID &itemIDToGive = itemList.getIDByName(getWord(lines, 1));
 								if ((int)itemIDToGive != -1)
 								{
 									int amountToGive = 1;
@@ -396,7 +398,7 @@ void chat::say(human& sender, std::wstring line)
 										amountToGive -= stackToGive.count;
 										if (!currentHumanoid.addStack(stackToGive))
 										{
-											break;//inventory is full
+											break; // inventory is full
 										}
 									}
 								}
@@ -406,7 +408,7 @@ void chat::say(human& sender, std::wstring line)
 								if (currentHumanoid.itemHolding && currentHumanoid.itemHolding->count)
 								{
 									enchantment e;
-									const enchantmentID& index = enchantmentDataList.getIDByName(getWord(lines, 1));
+									const enchantmentID &index = enchantmentDataList.getIDByName(getWord(lines, 1));
 									if ((int)index != -1)
 									{
 										e.identifier = (enchantmentID)index;
@@ -446,15 +448,13 @@ void chat::say(human& sender, std::wstring line)
 								}
 								else if (getWord(lines, 0) == std::wstring(L"gamemode"))
 								{
-									const gameModeID& id = gameModeDataList.getIDByName(getWord(lines, 1));
+									const gameModeID &id = gameModeDataList.getIDByName(getWord(lines, 1));
 									if ((int)id != -1)
 									{
 										sender.setGameMode((gameModeID)id);
 									}
 								}
-
 							}
-
 						}
 					}
 					if (getWord(lines, 0).substr(0, 3) == std::wstring(L"pos"))
@@ -478,10 +478,10 @@ void chat::say(human& sender, std::wstring line)
 					}
 					if (getWord(lines, 0) == std::wstring(L"data"))
 					{
-						nbtSerializable* selectedSerializable = nullptr;
+						nbtSerializable *selectedSerializable = nullptr;
 						int wordOffset = 3;
 
-						std::wstring outputString = std::wstring(L"");
+						std::wstring outputString = L"";
 						std::wstring dataString = getWord(lines, 2);
 
 						if (dataString == std::wstring(L"block"))
@@ -502,14 +502,14 @@ void chat::say(human& sender, std::wstring line)
 						}
 						else if (getWord(lines, 2) == std::wstring(L"entity"))
 						{
-							std::vector<entity*> entityList;
+							std::vector<entity *> entityList;
 							int index = 1;
 							if (selectEntities(sender, lines, wordOffset, entityList))
 							{
 								if (entityList.size())
 								{
 									selectedSerializable = entityList[0];
-									wordOffset++;
+									// wordOffset++;
 								}
 								else
 								{
@@ -522,7 +522,6 @@ void chat::say(human& sender, std::wstring line)
 						{
 							if (getWord(lines, 1) == std::wstring(L"get"))
 							{
-
 							}
 							else if (getWord(lines, 1) == std::wstring(L"merge"))
 							{
@@ -546,14 +545,15 @@ void chat::say(human& sender, std::wstring line)
 					{
 						addLine(std::wstring(L"Seed: ") + std::to_wstring(currentWorld->seed));
 					}
-					else if (getWord(lines, 0) == std::wstring(L"ip")) {
+					else if (getWord(lines, 0) == std::wstring(L"ip"))
+					{
 						addLine(std::wstring(L"private ip: ") + stringToWString(sf::IpAddress::getLocalAddress().toString()));
-						//public ip adress takes a while as it needs to connect to an outside server to check
+						// public ip adress takes a while as it needs to connect to an outside server to check
 						addLine(std::wstring(L"public ip: ") + stringToWString(sf::IpAddress::getPublicAddress().toString()));
 					}
 					else if (getWord(lines, 0) == std::wstring(L"tp"))
 					{
-						std::vector<entity*> listToTeleport;
+						std::vector<entity *> listToTeleport;
 						int wordOffset = 1;
 						if (selectEntities(sender, lines, wordOffset, listToTeleport))
 						{
@@ -562,7 +562,7 @@ void chat::say(human& sender, std::wstring line)
 							if (getLocation(sender, lines, wordOffset, teleportDimension, teleportPosition))
 							{
 
-								for (entity* e : listToTeleport)
+								for (entity *e : listToTeleport)
 								{
 									e->teleportTo(currentWorld->dimensions[(int)teleportDimension], teleportPosition, true);
 								}
@@ -589,7 +589,7 @@ void chat::say(human& sender, std::wstring line)
 					else if (getWord(lines, 0) == std::wstring(L"log") && getWord(lines, 1) == std::wstring(L"chat"))
 					{
 						const std::wstring path = getWord(lines, 2);
-						std::wstring mergedString = std::wstring(L"");
+						std::wstring mergedString = L"";
 						if (path.size() > 2)
 						{
 							for (size_t i = 0; i < currentWorld->currentChat.linesSaid.size(); i++)
@@ -612,7 +612,7 @@ void chat::say(human& sender, std::wstring line)
 					else if (getWord(lines, 0) == std::wstring(L"time") && getWord(lines, 1) == std::wstring(L"set"))
 					{
 						fp newTime;
-						const std::wstring& timeString = getWord(lines, 2);
+						const std::wstring &timeString = getWord(lines, 2);
 						if (convertToDouble(timeString, newTime))
 						{
 							currentWorld->currentTime = newTime;
@@ -672,7 +672,7 @@ void chat::say(human& sender, std::wstring line)
 					else
 					{
 						int offset = 0;
-						const std::wstring& commandName = getWord(lines, offset++);
+						const std::wstring &commandName = getWord(lines, offset++);
 
 						vec2 from = selectedPositions[0];
 						dimensionID fromDimension = selectedDimensions[0];
@@ -694,7 +694,7 @@ void chat::say(human& sender, std::wstring line)
 								}
 								else if (commandName == std::wstring(L"replace"))
 								{
-									const wstringContainer& replaceContainer = split_string(getWord(lines, offset++), std::wstring(L","));
+									const wstringContainer &replaceContainer = split_string(getWord(lines, offset++), std::wstring(L","));
 
 									std::vector<blockID> replaceList = std::vector<blockID>(replaceContainer.size());
 									if (replaceContainer.size())
@@ -731,31 +731,49 @@ void chat::say(human& sender, std::wstring line)
 	}
 }
 
-void chat::addLine(const std::wstring& line)
+void chat::addLine(const std::wstring &line)
 {
 	timesSaid.push_back(currentWorld->ticksSinceStart);
 	linesSaid.push_back(line);
+	const stdPath &logPath = savesFolder / currentWorld->name / L"log.txt";
+	cbool &fileExists = std::ifstream(logPath).good();
+	std::wofstream logFile(logPath, std::ios_base::app | std::ios_base::out);
+	if (logFile.is_open())
+	{
+		if (!fileExists)
+		{
+			logFile.imbue(std::locale(logFile.getloc(), new std::codecvt_utf8_utf16<wchar_t, 0x10ffff, std::little_endian>));
+			logFile << L'\uFEFF'; // UTF-16 BOM. this tells apps that this is a wide char text file
+			logFile << line;
+		}
+		else
+		{
+			logFile << "\n" << line;
+		}
+		logFile.flush();
+		logFile.close();
+	}
 }
 
-void chat::render(const texture& renderTarget, const gameControl& screen) const
+void chat::render(const texture &renderTarget, const gameControl &screen) const
 {
 	cint chatTime = 0x8 * ticksPerRealLifeSecond;
 	cbool showMoreChat = screen.focusedChild == screen.commandLineTextbox;
 
 	int lineCount = 0;
 	cint maxLineCount = 0x10;
-    minecraftFont f = minecraftFont();
+	minecraftFont f = minecraftFont();
 	vec2 offset = cvec2(screen.commandLineTextbox->rect.pos0);
-    offset.y -= f.fontSize;
+	// offset.y -= f.fontSize;
 	for (int i = (int)linesSaid.size() - 1; (i >= 0) && (lineCount < maxLineCount); i--)
 	{
 		if (((timesSaid[i] + chatTime) > currentWorld->ticksSinceStart) || showMoreChat)
 		{
-			//this applies even in the top left
-			cvec2& size = f.measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
+			// this applies even in the top left
+			cvec2 &size = f.measureStringSize(cvec2(renderTarget.size), linesSaid[i]);
+			offset.y -= size.y;
 			f.DrawString(linesSaid[i], crectangle2(offset, size), renderTarget);
 			lineCount++;
-			offset.y -= size.y;
 		}
 		else
 		{

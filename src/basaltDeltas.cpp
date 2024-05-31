@@ -2,7 +2,6 @@
 #include "dimension.h"
 basaltDeltas::basaltDeltas() : netherBiomeGenerator(biomeID::basalt_deltas)
 {
-	cint octaveCount = 0x1;
 	const std::vector<fp>& octaveWeights
 	{
 		1

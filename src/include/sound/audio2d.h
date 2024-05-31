@@ -1,29 +1,22 @@
-// #include "soundHandler.h"
-#include <SFML/Audio/Music.hpp>
+#pragma once
+#include "globalFunctions.h"
 #include "math/timemath.h"
 #include "math/vector/vectn.h"
-#include "filesystem/filemanager.h"
-#include "array/fastlist.h"
-#include "SFML/Audio/Sound.hpp"
-
-#pragma once
-
-extern int playingSoundCount;
-
-constexpr fp maxVolume = 1;
-
-class sfmlInputStream;
+#include <SFML/Audio/SoundSource.hpp>
+#include "interface/idestructable.h"
+#include "AL/al.h"
 
 struct audio2d
 {
 	virtual void play() = 0;
 	virtual void stop() = 0;
-	microseconds startedPlaying = 0; // will be set by the first next update
 
-	bool isSpatial = true;
+	vec2 pos = vec2();
+	vec2 speed = vec2();
 	fp volume = 1;
 	fp pitch = 1;
-	vec2 pos = vec2();
+	bool isSpatial = true;
+	microseconds startedPlaying = 0; // will be set by the first next update
 
 	audio2d(cvec2 &pos, cfp &volume, cfp &pitch, cbool &isSpatial) : pos(pos), volume(volume), pitch(pitch), isSpatial(isSpatial), startedPlaying(0) {}
 
@@ -41,6 +34,7 @@ struct audio2d
 	virtual microseconds getPlayingOffset() = 0;
 
 	virtual sf::SoundSource::Status getStatus() const = 0;
+	virtual uint getSource() const = 0;
 };
 
 template <typename t>
@@ -58,6 +52,15 @@ struct audio2dt : audio2d, IDestructable
 	virtual void setPlayingOffset(const microseconds &offset) override;
 	virtual microseconds getPlayingOffset() override;
 	virtual void setPosition(cvec2 &newPosition) override;
+	inline void setSpeed(cvec2 &speed) const
+	{
+		vect3<float> vel(speed);
+		alSourcefv(playingAudio->getSource(), AL_VELOCITY, &vel[0]);
+	}
+	inline uint getSource() const override
+	{
+		return playingAudio->getSource();
+	}
 
 	virtual void play() override;
 	virtual void stop() override;
@@ -70,42 +73,6 @@ struct audio2dt : audio2d, IDestructable
 		playingAudio = nullptr;
 	}
 };
-
-struct sound2d : audio2dt<sf::Sound>
-{
-	std::shared_ptr<sf::SoundBuffer> buffer;
-
-	inline sound2d(const std::shared_ptr<sf::SoundBuffer> &buffer, cvec2 &pos, cfp &volume, cfp &pitch, cbool &isSpatial) : buffer(buffer), audio2dt(pos, volume, pitch, isSpatial)
-	{
-	}
-	virtual void loadAudio() override;
-	virtual microseconds getDuration() override;
-};
-
-struct music2d : audio2dt<sf::Music>
-{
-	stdPath path;
-	sfmlInputStream *stream;
-
-	inline music2d(const stdPath &path, cvec2 &pos, cfp &volume, cfp &pitch, cbool &isSpatial) : path(path), audio2dt(pos, volume, pitch, isSpatial)
-	{
-	}
-
-	virtual void loadAudio() override;
-	virtual microseconds getDuration() override;
-	~music2d();
-};
-
-struct soundHandler2d : IDestructable
-{
-	fastList<std::shared_ptr<audio2d>> currentlyPlayIngAudio = fastList<std::shared_ptr<audio2d>>();
-	// earPosition.z = the distance of the player to the screen in real life converted to 'ingame distance'
-	void update(cvec3 &earPosition, cfp &hearingRange, cfp &maxVolume);
-
-	void playAudio(const std::shared_ptr<audio2d> &audioToPlay);
-	void stopAudio(const std::shared_ptr<audio2d> &audioToStop);
-};
-
 template <typename t>
 inline bool audio2dt<t>::audioLoaded() const
 {
@@ -145,10 +112,14 @@ inline void audio2dt<t>::setAttenuation(cfp &attenuation)
 template <typename t>
 inline void audio2dt<t>::setVolume(cfp &volume)
 {
-	audio2d::volume = volume;
-	if (playingAudio)
+	if (audio2d::volume != volume)
 	{
-		playingAudio->setVolume((float)volume * 100.0f);
+
+		audio2d::volume = volume;
+		if (playingAudio)
+		{
+			playingAudio->setVolume((float)volume * 100.0f);
+		}
 	}
 }
 template <typename t>
@@ -190,6 +161,7 @@ inline void audio2dt<t>::play()
 	}
 	playingAudio->setVolume((float)volume * 100.0f);
 	playingAudio->setPosition((float)pos.x, (float)pos.y, 0);
+	setSpeed(speed);
 }
 
 template <typename t>
@@ -197,5 +169,3 @@ inline void audio2dt<t>::stop()
 {
 	playingAudio->stop();
 }
-
-extern soundHandler2d *handler;

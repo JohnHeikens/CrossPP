@@ -4,7 +4,7 @@
 #include "interface/idestructable.h"
 struct jsonContainer
 {
-	std::wstring value = std::wstring(L"");
+	std::wstring value = std::wstring();
 	std::vector<jsonContainer> children = std::vector<jsonContainer>();
 	size_t getChildIndex(const std::wstring& value) const;
 	jsonContainer getChild(const std::wstring& value) const;

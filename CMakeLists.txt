@@ -24,7 +24,7 @@ message("sfml directory: ${SFML_DIR}")
 # Shoutout to CMake guide: https://eliasdaler.github.io/using-cmake/
 
 # increase the amount of i's to update cmakelists.txt:
-# iiiiiii
+# iiiiiiii
 
 #set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
@@ -46,7 +46,7 @@ ELSE()
     # Enable additional warnings and debug mode
     # https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
     # -pedantic removed; it complains about anonymous structs
-    set (CMAKE_CXX_FLAGS "-g -W -Wconversion -Wno-stringop-overread")#added D__GXX_TYPEINFO_EQUALITY_INLINE=0 for workaround test
+    set (CMAKE_CXX_FLAGS "-g -Wextra -Wall -Wconversion -Wno-stringop-overread -Wno-unknown-pragmas -Wno-unused-parameter")#added D__GXX_TYPEINFO_EQUALITY_INLINE=0 for workaround test
         message ("android is not defined : ${CMAKE_SYSTEM_NAME}")
         #set(SFML_DIR "build\\_deps\\sfml-build")
         
@@ -112,6 +112,12 @@ include_directories( ${ZLIB_INCLUDE_DIRS} )
 
 # 3rd party dependencies
 add_subdirectory(lib)
+
+#include more modern AL headers (when sfml updated openAL, they didn't update the headers)
+include_directories(lib/headers)
+
+# Find OpenAL
+find_package(OpenAL REQUIRED)
 
 # Here the .c/.cpp files get linked
 IF(ANDROID)
@@ -221,6 +227,7 @@ ZLIB::ZLIB)
     sfml-graphics
     sfml-window
     sfml-system
+    OpenAL::OpenAL
     android
     log
     -Wl,--no-whole-archive
@@ -258,20 +265,26 @@ ZLIB::ZLIB)
     # Set "a" to be the output filename, does not really matter, shorter is quicker to type...
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "a")
 
-    #copy OpenAL32.dll
-    message(STATUS "win32: ${WIN32} build audio: ${SFML_BUILD_AUDIO}")
-    message(STATUS "copy command: ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/sfml-src/extlibs/bin/x64/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>")
-    if (WIN32 AND SFML_BUILD_AUDIO)
-      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/sfml-src/extlibs/bin/x64/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>
-      )
-    endif()
     target_link_libraries(${PROJECT_NAME} PRIVATE
     sfml-audio
     sfml-network
     sfml-graphics
     sfml-system
     sfml-window
-    sfml-main)
+    sfml-main
+    OpenAL::OpenAL)
+
+    #copy OpenAL32.dll
+    message(STATUS "win32: ${WIN32} build audio: ${SFML_BUILD_AUDIO}")
+    message(STATUS "copy command: ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/sfml-src/extlibs/bin/x64/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>")
+    if (WIN32 AND SFML_BUILD_AUDIO)
+      #update openAL and add alsoft.ini to enable hrtf
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/lib/openAL/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      )
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/lib/openAL/alsoft.ini $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      )
+    endif()
 
 ENDIF()

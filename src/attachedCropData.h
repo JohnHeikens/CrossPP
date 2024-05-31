@@ -1,7 +1,7 @@
 #pragma once
 #include "attachedBlockData.h"
 #include "cropData.h"
-struct attachedCropData : attachedBlockData, cropData
+struct attachedCropData : cropData, attachedBlockData
 {
 	attachedCropData(cint& age = 0) : cropData(age), attachedBlockData() {}
 	virtual void serializeValue(nbtSerializer& s) override {

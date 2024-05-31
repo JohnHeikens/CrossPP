@@ -11,7 +11,7 @@ bool stareDownAI::shouldExecute()
 	//check if any entity, except for the player, is staring into it
 	auto l = connectedEntity->dimensionIn->findNearEntities(connectedEntity->position, proximity + mobSizeMargin);
 	for (const entity* e : l) {
-		if (isMob(e->entityType) && e->entityType != entityID::enderman) {
+		if (isHumanoid(e->entityType) && e->entityType != entityID::enderman) {
 
 			const mob* m = (mob*)e;
 			m->updateBodyParts();

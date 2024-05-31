@@ -90,7 +90,7 @@ constexpr fp standardBlockWeightPerCubicMeter = 1000;
 
 constexpr bool checkStructureCollisions = true;
 
-//to modify the part of the world you see
+//visible range x: the distance between the screens left and right corner
 constexpr fp defaultVisibleRangeXWalk = 0xa;//0x100;//sight [range] blocks far
 constexpr fp requiredVisibleRangeXSprint = 0xc;
 
@@ -283,7 +283,6 @@ constexpr fp randomDespawnDistance = 0x40;
 
 constexpr fp swingsPerSecond = 4;
 
-constexpr fp fireBallSpeed = 0x10 * secondsPerTick;
 
 constexpr fp minimumSlimeSize = 0.5;
 constexpr fp maximumSlimeSize = 3;
@@ -304,8 +303,8 @@ constexpr int maxFood = 20;
 
 constexpr int inventorySlotSize = 0x24;
 
-constexpr fp hearingRange = 0x20;
-constexpr fp soundLoadRange = hearingRange + 0x40;
+//constexpr fp hearingRange = 0x20;
+//constexpr fp soundLoadRange = hearingRange + 0x40;
 
 
 

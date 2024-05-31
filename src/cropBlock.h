@@ -10,5 +10,5 @@ struct cropBlock :public block
 	bool canPlace(tickableBlockContainer* containerIn, cveci2 position) override;
 	virtual ~cropBlock() override;
 	cropBlock(const block& b, cint& growthStageCount, const std::vector<resolutionTexture* >& growthStageTextures, cfp& chanceToGrow = 0) :
-		block(b), chanceToGrow(chanceToGrow), growthStageCount(growthStageCount), growthStageTextures(growthStageTextures) {}
+		block(b), growthStageCount(growthStageCount), growthStageTextures(growthStageTextures), chanceToGrow(chanceToGrow) {}
 };

@@ -41,7 +41,7 @@ bool attachedBlockData::attached(tickableBlockContainer *containerIn, cveci2 &po
 		// seek for attachment points
 		for (fsize_t i = 0; i < directionCount2D; i++)
 		{
-			const veci2 &directionToCheck = directionVectors2D[i];
+			//const veci2 &directionToCheck = directionVectors2D[i];
 			if (containerIn->canAttachTo(position + directionVectors2D[i], flipDirection((directionID)i)))
 			{
 				return true;

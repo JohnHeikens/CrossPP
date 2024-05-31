@@ -29,7 +29,7 @@ void readRecipe(const jsonContainer& recipeDescription)
 		{
 			if (keyContainer.children.size() > 1)
 			{
-				tag* t = new tag(std::wstring(L""));//name does not matter
+				tag* t = new tag(std::wstring());//name does not matter
 				for (const jsonContainer& child : keyContainer.children)
 				{
 					if (IItemComparable* comparable = getItemComparableByName(child.children[0].children[0].value))

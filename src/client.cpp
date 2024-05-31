@@ -21,7 +21,7 @@
 #include "math/random/random.h"
 #include "math/vector/vectn.h"
 #include "serverData.h"
-#include "soundHandler2D.h"
+#include "sound/soundHandler2D.h"
 #include "folderList.h"
 #include "math/timemath.h"
 #include "main.h"
@@ -144,8 +144,16 @@ bool client::connectToServer(const serverData &server)
     currentApplication->listener.hook(&client::addEvent, this);
 
     s.socket = new sf::TcpSocket();
-    status = s.socket->connect(server.serverIPAddress, server.serverPort,
-                               sf::seconds(5));
+    int tries = 0;
+    do
+    {
+        if (tries)
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        status = s.socket->connect(server.serverIPAddress, server.serverPort,
+                                   sf::seconds(5));
+
+    } while (++tries < 2 && status != sf::Socket::Done && server.serverIPAddress == sf::IpAddress::LocalHost);
+
     if (status != sf::Socket::Done)
     {
         if (status == sf::Socket::Error)
@@ -179,8 +187,8 @@ bool client::connectToServer(const serverData &server)
     streamSerializer streamS = streamSerializer(s, true, std::endian::big);
     authPacket.serialize(streamS);
     s.sendPacket();
-    //reset
-    //selector.clear();
+    // reset
+    // selector.clear();
     selector.add(*s.socket);
     std::thread receiveThread = std::thread(std::bind(&client::retrievePacketsAsync, this));
     receiveThread.detach();
@@ -260,10 +268,17 @@ void client::processIncomingPackets(const texture &renderTarget)
         {
             inSerializer->serializeValue(L"wantsTextInput", socketWantsTextInput);
         }
-        inSerializer->serializeValue(L"wantsClipboardInput", socketWantsClipboardInput);
+        inSerializer->serializeValue(L"paste", socketWantsClipboardInput);
+        std::wstring copiedText;
+        if (inSerializer->serializeValue(L"copy", copiedText))
+        {
+            sf::Clipboard::setString(WStringToString(copiedText));
+        }
         // serialize colors of the screen
         // sounds
+        serializeNBTValue(*inSerializer, L"hearingRange2D", hearingRange2D);
         serializeNBTValue(*inSerializer, L"earPosition", earPosition);
+        serializeNBTValue(*inSerializer, L"earSpeed", earSpeed);
         size_t soundCount;
         if (inSerializer->push<nbtDataTag::tagList>(L"sounds"))
         {
@@ -298,7 +313,7 @@ void client::processIncomingPackets(const texture &renderTarget)
                         std::shared_ptr<sound2d> soundToPlay = std::make_shared<sound2d>(
                             buffer,
                             sp.position, sp.volume, sp.pitch, true);
-                        handler->playAudio(soundToPlay);
+                        handler.playAudio(soundToPlay);
                     }
 
                     inSerializer->pop();
@@ -314,7 +329,8 @@ void client::processIncomingPackets(const texture &renderTarget)
                 const musicCollection *collection = (musicCollection *)globalSoundCollectionList[newMusicKey];
                 replaceMusic(collection);
             }
-            else if(inSerializer->serializeValue(L"prefer", newMusicKey)){
+            else if (inSerializer->serializeValue(L"prefer", newMusicKey))
+            {
                 const musicCollection *collection = (musicCollection *)globalSoundCollectionList[newMusicKey];
                 updateMusic(collection);
             }
@@ -357,7 +373,7 @@ void client::processIncomingPackets(const texture &renderTarget)
         auto f = std::bind(&client::addEvent, this, std::placeholders::_1);
         // std::function{f}.target_type();
         currentApplication->listener.unhook(&client::addEvent, this);
-        //VERY IMPORTANT: FIRST REMOVE THE SOCKET, THEN DISCONNECT!
+        // VERY IMPORTANT: FIRST REMOVE THE SOCKET, THEN DISCONNECT!
         selector.remove(*s.socket);
         // disconnect, in case of any error
         s.socket->disconnect();

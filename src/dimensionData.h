@@ -6,7 +6,7 @@ struct dimensionData
 {
 	dimensionData(const std::wstring& name, resolutionTexture* lightMapTexture, cbool& hasSunLight = false) :
 		name(name), lightMapTexture(lightMapTexture), hasSunLight(hasSunLight) {}
-	std::wstring name = std::wstring(L"");
+	std::wstring name = L"";
 	resolutionTexture* lightMapTexture = nullptr;
 	bool hasSunLight = false;
 };

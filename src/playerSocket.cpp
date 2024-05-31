@@ -24,6 +24,8 @@
 #include "serializer/serializeUUID.h"
 #include "serializer/serializeColor.h"
 #include "serializer/serializeList.h"
+#include "math/sound/sound.h"
+
 playerSocket::playerSocket(sf::TcpSocket *socket)
 {
 	screen = new gameControl(*this);
@@ -67,8 +69,8 @@ playerSocket::playerSocket(sf::TcpSocket *socket)
 		screen->addTouchInput();
 		encoder.shouldCompress = socket->getRemoteAddress() != sf::IpAddress::LocalHost;
 	}
-	//enable to debug compression
-	//encoder.shouldCompress = true;
+	// enable to debug compression
+	// encoder.shouldCompress = true;
 
 	rectanglei2 screenRect = rectanglei2();
 	serializeNBTValue(inNBTSerializer, L"screenSize", screenRect.size);
@@ -114,7 +116,7 @@ void renderAsync(playerSocket *socket)
 			delete currentRenderTarget;
 		}
 		currentRenderTarget = new texture(socket->screen->rect.size, false);
-		//this way it will not be transparent
+		// this way it will not be transparent
 		currentRenderTarget->fill(colorPalette::black);
 	}
 	// we don't have to set the new render texture to active because its context is active already
@@ -146,11 +148,22 @@ void renderAsync(playerSocket *socket)
 	bool wantsTextInput = socket->screen->wantsTextInput();
 	outSerializer->serializeValue(L"wantsTextInput", wantsTextInput);
 
-	outSerializer->serializeValue(L"wantsClipboardInput", socket->screen->wantsClipboardInput);
+	outSerializer->serializeValue(L"paste", socket->screen->wantsClipboardInput);
+	socket->screen->wantsClipboardInput = false;
+	if (socket->screen->copyToClipboard.length())
+	{
+		outSerializer->serializeValue(L"copy", socket->screen->copyToClipboard);
+		socket->screen->copyToClipboard.clear();
+	}
+	fp hearingRange2D = getHearingRange2D(socket->screen->visibleRange.x);
+	serializeNBTValue(*outSerializer, L"hearingRange2D", hearingRange2D);
 
 	vec3 earPosition = vec3(socket->screen->cameraPosition.x, socket->screen->cameraPosition.y, settings::soundSettings::headScreenDistance * socket->screen->visibleRange.x);
 	// vec2 earPosition = socket->screen->player->getHeadPosition();
 	serializeNBTValue(*outSerializer, L"earPosition", earPosition);
+	// ear speed doesn't take into account that the ear can move closer and farther from the screen when zooming out
+	vec3 earSpeed = vec3((socket->screen->player->newPosition - socket->screen->player->position) * ticksPerRealLifeSecond);
+	serializeNBTValue(*outSerializer, L"earSpeed", earSpeed);
 
 	if (outSerializer->push<nbtDataTag::tagList>(L"sounds"))
 	{
@@ -164,7 +177,7 @@ void renderAsync(playerSocket *socket)
 		}
 		outSerializer->pop();
 	}
-	
+
 	socket->screen->serializeMusicPreference(*outSerializer);
 
 	socket->screen->dataToSend.clear();
@@ -252,17 +265,15 @@ void sendRenderResultAsync(playerSocket *socket, nbtCompound *compound, nbtSeria
 
 	// uint pixelCount = i.getSize().x * i.getSize().y;
 
-	//const textureRGB &texWithoutAlpha = textureRGB(currentRenderResult->size);
-	//const colorRGB c = colorRGB();
-	//colorRGB *ptr = texWithoutAlpha.baseArray;
+	// const textureRGB &texWithoutAlpha = textureRGB(currentRenderResult->size);
+	// const colorRGB c = colorRGB();
+	// colorRGB *ptr = texWithoutAlpha.baseArray;
 	//// color *imagePtr = (color *)i.getPixelsPtr();
-	//for (const color &c : *currentRenderResult)
+	// for (const color &c : *currentRenderResult)
 	//{
 	//	*ptr++ = colorRGB(c);
-	//}
+	// }
 	socket->encoder.addFrame(*currentRenderResult, *s);
-
-
 
 	delete s;
 	// TODO: video streaming

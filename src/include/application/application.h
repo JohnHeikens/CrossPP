@@ -23,7 +23,7 @@ struct application: INamable, IDestructable
 	clientInput input = clientInput();
 
 	//data
-	//std::wstring windowCaption = std::wstring(L"");
+	//std::wstring windowCaption = std::wstring();
 	//colorb* windowColorPtr = nullptr;
 
 	doubleBuffer buffer = doubleBuffer();

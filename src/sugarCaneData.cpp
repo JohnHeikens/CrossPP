@@ -2,10 +2,9 @@
 #include "tickableBlockContainer.h"
 sugarCaneData::sugarCaneData()
 {
-
 }
 
-void sugarCaneData::randomTick(tickableBlockContainer* containerIn, cveci2& position)
+void sugarCaneData::randomTick(tickableBlockContainer *containerIn, cveci2 &position)
 {
 	cint maxSugarCaneHeight = 4;
 	if (containerIn->getBlockID(position + cveci2(0, -1)) != blockID::sand)
@@ -27,4 +26,9 @@ void sugarCaneData::randomTick(tickableBlockContainer* containerIn, cveci2& posi
 			containerIn->setBlockID(position + cveci2(0, height), blockID::sugar_cane);
 		}
 	}
+}
+
+bool sugarCaneData::attached(tickableBlockContainer *containerIn, cveci2 &position) const
+{
+	return attachedBlockData::attached(containerIn, position) || containerIn->getBlockID(position + veci2(0, -1)) == blockID::sugar_cane;
 }

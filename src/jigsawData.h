@@ -3,11 +3,11 @@
 struct jigsawData :facingData
 {
 	//other structures will connect to this
-	std::wstring jigsawName = std::wstring(L"");
+	std::wstring jigsawName = std::wstring();
 	//connect to jigsaw blocks with this name
-	std::wstring targetName = std::wstring(L"");
+	std::wstring targetName = std::wstring();
 
-	std::wstring targetPoolName = std::wstring(L"");
+	std::wstring targetPoolName = std::wstring();
 	//wether the placed structure can be rolled in order to fit
 	bool rollable = false;
 

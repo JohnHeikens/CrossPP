@@ -9,44 +9,40 @@
 #include <utility>
 #include "globalFunctions.h"
 
-//super fast solution for iterating through a list while deleting certain items and adding items
+// super fast solution for iterating through a list while deleting certain items and adding items
 constexpr bool keepindicator = true;
 constexpr bool eraseindicator = !keepindicator;
-template<typename t>
-struct fastList :IDestructable
+template <typename t>
+struct fastList : IDestructable
 {
-	bool* mask = nullptr;
-	t* baseArray = nullptr;
+	t *baseArray = nullptr;
 	size_t size = 0;
+	bool *mask = nullptr;
 	size_t newSize = 0;
 	std::vector<t> addList = std::vector<t>();
 
-	inline fastList(const size_t& size = 0, cbool& initializeToDefault = true)
-		:size(size),
-		mask(nullptr),
-		baseArray(initializeToDefault ? new t[size]() : new t[size]),
-		addList(std::vector<t>()),
-		newSize(size)
+	inline explicit fastList(const size_t &size = 0, cbool &initializeToDefault = true)
+		: baseArray(initializeToDefault ? new t[size]() : new t[size]),
+		  size(size),
+		  mask(nullptr),
+		  newSize(size),
+		  addList(std::vector<t>())
 	{
-
 	}
 
-	inline fastList(const std::initializer_list<t>& values) :
-		size(values.size()),
-		mask(nullptr),
-		baseArray(new t[values.size()]),
-		addList(std::vector<t>()),
-		newSize(values.size())
+	inline fastList(const std::initializer_list<t> &values) : baseArray(new t[values.size()]),
+															  size(values.size()),
+															  mask(nullptr),
+															  newSize(values.size()),
+															  addList(std::vector<t>())
 	{
 		std::copy(values.begin(), values.end(), baseArray);
 	}
 
-	inline fastList(const fastList& other) :
-		size(other.size),
-		mask(other.mask ? new bool[other.size] : nullptr),
-		baseArray(new t[other.size]),
-		addList(other.addList),
-		newSize(other.newSize)
+	inline fastList(const fastList &other) : baseArray(new t[other.size]), size(other.size),
+											 mask(other.mask ? new bool[other.size] : nullptr),
+											 newSize(other.newSize),
+											 addList(other.addList)
 	{
 		if (other.mask)
 		{
@@ -54,9 +50,9 @@ struct fastList :IDestructable
 		}
 
 		std::copy(other.baseArray, other.baseArray + other.size, baseArray);
-	}	
+	}
 
-	void swap(fastList<t>& with)
+	void swap(fastList<t> &with)
 	{
 		std::swap(addList, with.addList);
 		std::swap(baseArray, with.baseArray);
@@ -65,19 +61,19 @@ struct fastList :IDestructable
 		std::swap(size, with.size);
 	}
 
-	//inline fastList& operator=(fastList copy) = default;
-	inline fastList& operator=(fastList copy)
+	// inline fastList& operator=(fastList copy) = default;
+	inline fastList &operator=(fastList copy)
 	{
 		this->swap(copy);
 		return *this;
 	}
 
-	//for iterative functions
-	inline t* begin() const
+	// for iterative functions
+	inline t *begin() const
 	{
 		return baseArray;
 	}
-	inline t* end() const
+	inline t *end() const
 	{
 		return baseArray + size;
 	}
@@ -86,7 +82,7 @@ struct fastList :IDestructable
 	{
 		update();
 		std::vector<t> newArray = std::vector<t>();
-		//remove all double elements from the list
+		// remove all double elements from the list
 		for (size_t i = 0; i < size; i++)
 		{
 			const t current = baseArray[i];
@@ -101,30 +97,30 @@ struct fastList :IDestructable
 		std::copy(newArray.begin(), newArray.end(), baseArray);
 	}
 
-	//refresh the list (add and remove selected items)
+	// refresh the list (add and remove selected items)
 	inline void update()
 	{
 		if (mask || size != newSize)
 		{
-			//needs to update
-			//delete according to the mask: false = do not delete, true = delete
-			t* newArray = new t[newSize];
+			// needs to update
+			// delete according to the mask: false = do not delete, true = delete
+			t *newArray = new t[newSize];
 			size_t newIndex = 0;
-			//iterate through old array
+			// iterate through old array
 			for (size_t oldindex = 0; oldindex < size; oldindex++)
 			{
 				if ((!mask) || mask[oldindex])
 				{
 					newArray[newIndex] = baseArray[oldindex];
 					++newIndex;
-				}//else skip
+				} // else skip
 			}
 			if (addList.size())
 			{
-				//add the 'addlist' array
+				// add the 'addlist' array
 				std::copy(addList.begin(), addList.end(), &newArray[newIndex]);
 			}
-			//update variables
+			// update variables
 			size = newSize;
 			if (mask)
 			{
@@ -141,15 +137,15 @@ struct fastList :IDestructable
 		mask = new bool[size];
 		std::fill(mask, mask + size, keepindicator);
 	}
-	inline void erase(const t& element)
+	inline void erase(const t &element)
 	{
-		csize_t& index = find(element);
+		csize_t &index = find(element);
 		if (index != std::wstring::npos)
 		{
 			erase(index);
 		}
 	}
-	inline void erase(csize_t& index)
+	inline void erase(csize_t &index)
 	{
 		if (!mask)
 		{
@@ -162,56 +158,58 @@ struct fastList :IDestructable
 		}
 	}
 
-	inline void erase(const t* const& pointer)
+	inline void erase(const t *const &pointer)
 	{
 		erase(pointer - baseArray);
 	}
 
-	//find the index of an element with a comparison function
-	template<class compareFunction>
-	inline size_t findFunction(const compareFunction&& function) const
+	// find the index of an element with a comparison function
+	template <class compareFunction>
+	inline size_t findFunction(const compareFunction &&function) const
 	{
 		for (size_t index = 0; index < size; index++)
 		{
-			if (function(baseArray[index]))return index;
+			if (function(baseArray[index]))
+				return index;
 		}
 		return -1;
 	}
 
-	//find the index of an element
-	inline size_t find(const t& element) const
+	// find the index of an element
+	inline size_t find(const t &element) const
 	{
 		for (size_t index = 0; index < size; index++)
 		{
-			if (baseArray[index] == element)return index;
+			if (baseArray[index] == element)
+				return index;
 		}
 		return (size_t)-1;
 	}
 
-	//this is slow
-	inline void insertAndUpdate(const t& element, size_t index)
+	// this is slow
+	inline void insertAndUpdate(const t &element, size_t index)
 	{
-		//mask is null, that will continue to be so
+		// mask is null, that will continue to be so
 		update();
 
 		newSize = size + 1;
-		t* newarray = new t[newSize];
-		//0 to index: old 0 to index
+		t *newarray = new t[newSize];
+		// 0 to index: old 0 to index
 		std::copy(baseArray, baseArray + index, newarray);
-		//index: new value
+		// index: new value
 		newarray[index] = element;
-		//index + 1 to size + 1: old index to size
+		// index + 1 to size + 1: old index to size
 		std::copy(baseArray + index, baseArray + size, newarray + index + 1);
 		delete[] baseArray;
 		baseArray = newarray;
 		size = newSize;
 	}
-	inline void push_back(const t& element)
+	inline void push_back(const t &element)
 	{
 		addList.push_back(element);
 		newSize++;
 	}
-	inline void push_back(t* const begin, t* const end)
+	inline void push_back(t *const begin, t *const end)
 	{
 		addList->insert(addList.end(), begin, end);
 		newSize += end - begin;
@@ -222,11 +220,11 @@ struct fastList :IDestructable
 		newSize += elements.size();
 	}
 	template <typename indexType>
-	inline t& operator[](const indexType& index) const
+	inline t &operator[](const indexType &index) const
 	{
 		if constexpr (isDebugging)
 		{
-			//index can't be less than 0
+			// index can't be less than 0
 			if ((size_t)index >= size)
 			{
 				throw std::out_of_range("index out of range");
@@ -238,7 +236,8 @@ struct fastList :IDestructable
 
 	inline void clear()
 	{
-		if (mask)delete[] mask;
+		if (mask)
+			delete[] mask;
 		mask = nullptr;
 		delete[] baseArray;
 		baseArray = new t[0];
@@ -258,7 +257,7 @@ struct fastList :IDestructable
 	*/
 	inline ~fastList() override
 	{
-		//dont delete the elements!
+		// dont delete the elements!
 		delete[] baseArray;
 		baseArray = nullptr;
 		if (mask)
@@ -269,9 +268,9 @@ struct fastList :IDestructable
 	}
 };
 
-//WILL NOT SERIALIZE LIST MEMBERS
-template<typename streamType, typename t>
-inline void serializeList(streamType& stream, cbool& write, fastList<t>*& list)
+// WILL NOT SERIALIZE LIST MEMBERS
+template <typename streamType, typename t>
+inline void serializeList(streamType &stream, cbool &write, fastList<t> *&list)
 {
 	if (write)
 	{
@@ -284,4 +283,3 @@ inline void serializeList(streamType& stream, cbool& write, fastList<t>*& list)
 		list = new fastList<t>(size, false);
 	}
 };
-

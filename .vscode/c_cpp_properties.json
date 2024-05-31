@@ -6,7 +6,7 @@
                 "${default}",
                 "${workspaceFolder}/**",
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers",
-                "${workspaceFolder}/build/Debug/_deps/sfml-src/include"//debug or release doesn't matter for this. we assume one at least will have built release
+                "${workspaceFolder}/build/Debug/_deps/sfml-src/include"
             ],
             "cStandard": "gnu23",
             "cppStandard": "gnu++23",
@@ -22,7 +22,8 @@
                 "C:/msys64/mingw64/include/c++/14.1.0",
                 "C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32",
                 "C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include",
-                "${workspaceFolder}/build/Debug/_deps/sfml-src/include"
+                "${workspaceFolder}/build/Debug/_deps/sfml-src/include",
+                "${workspaceFolder}/lib/headers"
             ],
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
             "cStandard": "gnu23",

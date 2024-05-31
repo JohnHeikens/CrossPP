@@ -5,7 +5,6 @@
 #include "world.h"
 badlands::badlands() : overWorldBiomeGenerator(biomeID::badlands)
 {
-	cint octaveCount = 0x4;
 	std::vector<fp> octaveWeights
 	{
 		//big scale noise: 40%
@@ -16,7 +15,6 @@ badlands::badlands() : overWorldBiomeGenerator(biomeID::badlands)
 	cfp averageHillWidth = 0x80;
 	elevationNoise = new layerNoiseSimplex(worldRandom, octaveWeights, averageHillWidth, crectangle1::fromOppositeCorners(cvec1(0), cvec1(0x30)));
 
-	cint carrotOctaveCount = 0x1;
 	std::vector<fp> carrotOctaveWeights
 	{
 		//big scale noise: 100%

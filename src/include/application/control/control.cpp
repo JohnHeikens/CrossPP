@@ -143,21 +143,21 @@ void control::mouseUp(cveci2 &position, cmb &button)
 	}
 }
 
-void control::drag(cveci2 &position, cveci2 &originalPosition, cmb &button)
+void control::drag(cveci2 &originalPosition, cveci2 &position, cmb &button)
 {
 	onDrag.invoke(dragEventArgs(*this, originalPosition, position, button));
 	if (control *highest = getHighestChild(originalPosition))
 	{
-		highest->drag(position - highest->rect.pos0, originalPosition - highest->rect.pos0, button);
+		highest->drag(originalPosition - highest->rect.pos0, position - highest->rect.pos0, button);
 	}
 }
 
-void control::drop(cveci2 &position, cveci2 &originalPosition, cmb &button)
+void control::drop(cveci2 &originalPosition, cveci2 &position, cmb &button)
 {
 	onDrop.invoke(dragEventArgs(*this, originalPosition, position, button));
 	if (control *highest = getHighestChild(originalPosition))
 	{
-		highest->drop(position - highest->rect.pos0, originalPosition - highest->rect.pos0, button);
+		highest->drop(originalPosition - highest->rect.pos0, position - highest->rect.pos0, button);
 	}
 }
 
@@ -213,6 +213,11 @@ void control::paste(const std::wstring &text)
 	{
 		focusedChild->paste(text);
 	}
+}
+
+std::wstring control::copy()
+{
+	return focusedChild ? focusedChild->copy() : L"";
 }
 
 void control::focusChild(control *newFocusedChild)

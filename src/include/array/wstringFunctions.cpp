@@ -26,7 +26,7 @@ bool convertToInt(const std::wstring& line, int& number, cint& base)
 bool convertToDouble(const std::wstring& line, fp& number)
 {
 	//weirdly "" is converted to 0
-	if (line == std::wstring(L""))
+	if (line == std::wstring())
 	{
 		return false;
 	}

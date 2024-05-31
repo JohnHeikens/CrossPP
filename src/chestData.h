@@ -3,7 +3,7 @@
 struct chestData :blockData
 {
 	chestData();
-	std::wstring lootTableName = std::wstring(L"");
+	std::wstring lootTableName = L"";
 	int64_t lootTableSeed = 0;
 	rectangularSlotContainer* slots = nullptr;
 	virtual void onBlockRemove(tickableBlockContainer* containerIn, cveci2& position) override;

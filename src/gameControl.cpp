@@ -57,7 +57,6 @@
 #include "lightLevelID.h"
 #include "mob.h"
 #include "gameRenderData.h"
-#include "soundHandler2D.h"
 #include "keyHistoryEvent.h"
 #include "minecraftFont.h"
 #include <SFML/Window.hpp>
@@ -100,7 +99,7 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         microseconds newFrameTime = getmicroseconds();
         const microseconds &currentFrameStartMicroSeconds = newFrameTime;
         const seconds &newFrameStartSeconds = microsectosec(currentFrameStartMicroSeconds);
-        const seconds& lastRenderTime = newFrameStartSeconds - currentFrameStartSeconds;
+        const seconds &lastRenderTime = newFrameStartSeconds - currentFrameStartSeconds;
         currentFrameStartSeconds = newFrameStartSeconds;
 
         cfp &maximum = math::maximum(player->visibleRangeXWalk, requiredVisibleRangeXSprint);
@@ -108,7 +107,8 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         visibleRange.x = math::lerp(visibleRange.x,
                                     player->wantsToSprint ? maximum : player->visibleRangeXWalk,
                                     1 -
-                                        pow(1 - visibleRangeTransitionSpeedPerSecond, (fp)lastRenderTime));
+                                        pow(1 - visibleRangeTransitionSpeedPerSecond,
+                                            (fp)lastRenderTime));
         renderGame(crectanglei2(position, rect.size), renderTarget, settings::renderHUD);
     }
 
@@ -144,9 +144,11 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
         {
             overWorld *currentOverWorld = (overWorld *)player->dimensionIn;
             cvec2 &coords = currentOverWorld->getBiomeTextureCoords(player->position.x);
-            text += std::wstring(L"noise values:\tbiome texture coords:\tx:") + std::to_wstring(coords.x) +
+            text += std::wstring(L"noise values:\tbiome texture coords:\tx:") +
+                    std::to_wstring(coords.x) +
                     std::wstring(L"\ty:") + std::to_wstring(coords.y) +
-                    std::wstring(L"\ttemp:") + std::to_wstring(currentOverWorld->getTemperature(player->position.x)) +
+                    std::wstring(L"\ttemp:") +
+                    std::to_wstring(currentOverWorld->getTemperature(player->position)) +
                     std::wstring(L"\tcloudiness:\t") + std::to_wstring(currentOverWorld->cloudThicknessNoise->evaluate(vec1(currentWorld->currentTime))) + std::wstring(L"\n");
         }
 
@@ -168,8 +170,8 @@ void gameControl::render(cveci2 &position, const texture &renderTarget)
             }
         }
         text += std::wstring(L"\n");
-        text += std::wstring(L"sound count:\t") + std::to_wstring(playingSoundCount) +
-                std::wstring(L"\n");
+        //text += std::wstring(L"sound count:\t") + std::to_wstring(playingSoundCount) +
+        //        std::wstring(L"\n");
         text += std::wstring(L"fps:\t") + std::to_wstring(1.0 / microsectosec(currentBenchmark->measureTotalBenchmarkTime())) +
                 std::wstring(L"\nmicroseconds used:\ntotal: ") +
                 std::to_wstring(currentBenchmark->measureTotalBenchmarkTime()) +
@@ -271,9 +273,25 @@ void gameControl::processInput()
                 }
             }
         }
-        if (focusedChild == commandLineTextbox && e.type == sf::Event::KeyPressed && e.key.control && e.key.code == sf::Keyboard::V)
+        if (focusedChild == commandLineTextbox && e.type == sf::Event::KeyPressed &&
+            e.key.control && is_in(e.key.code, sf::Keyboard::C, sf::Keyboard::V))
         {
-            wantsClipboardInput = true;
+            if (e.key.code == sf::Keyboard::V)
+            {
+                if (copyToClipboard.length())
+                {
+                    //copied and pasted in the same frame
+                    paste(copyToClipboard);
+                }
+                else
+                {
+                    wantsClipboardInput = true;
+                }
+            }
+            else
+            {
+                copyToClipboard = copy();
+            }
         }
         else
         {
@@ -696,7 +714,7 @@ void gameControl::renderGame(crectanglei2 &rect, const texture &renderTarget, cb
                                 mat3x3::fromRectToRect(blockScreenRect,
                                                        crectangle2(cvec2(0), cvec2(1))),
                                 interpolator);
-                            const auto &multipier = colorMultiplier<texture, decltype(transform)>(
+                            const auto &multipier = colorMultiplier(
                                 targetData.renderTarget, transform);
 
                             fillRectangle(targetData.renderTarget, ceilRectangle(blockScreenRect),
@@ -1016,7 +1034,8 @@ void gameControl::layout(crectanglei2 &newRect)
     rectanglei2 commandLineRect;
     if (touchInput)
     {
-        commandLineRect = rectanglei2(commandLineHeight, rect.size.y - commandLineHeight, rect.size.x - commandLineHeight * 2,
+        commandLineRect = rectanglei2(commandLineHeight, rect.size.y - commandLineHeight,
+                                      rect.size.x - commandLineHeight * 2,
                                       commandLineHeight);
         cint &joystickSize = rect.size.x / 0x10 * 0x4;
         cint &joystickOffset = joystickSize / 0x8;
@@ -1056,6 +1075,7 @@ void gameControl::focus()
 void gameControl::lostFocus()
 {
     focused = false;
+    touching = false;
     if (focusedChild)
     {
         focusedChild->lostFocus();
@@ -1175,7 +1195,8 @@ void renderIcons(const std::vector<fp> &values, const std::vector<rectangle2> &i
 }
 
 gameControl::gameControl(playerSocket &socket) : form(),
-                                                 socket(socket), translator(new eventTranslator(*this))
+                                                 socket(socket),
+                                                 translator(new eventTranslator(*this))
 {
     options->visible = false;
     videoOptions->visible = false;
@@ -1216,15 +1237,15 @@ void gameControl::addTouchInput()
     // since the other controls aren't laid out as well, we don't have to lay them out
     addChildren({moveJoystick, interactJoystick, chatButton, settingsButton, inventoryButton});
     addEventHandlers(&gameControl::onJoystickTouch, interactJoystick->onMouseDown, onMouseDown);
-    addEventHandlers(&gameControl::onJoystickTouchEnd, interactJoystick->onMouseUp, onMouseUp);
-    addEventHandlers(&gameControl::processScreenTouch, onMouseMove);
+    addEventHandlers(&gameControl::onJoystickTouchEnd, interactJoystick->onDrop, onDrop);
+    addEventHandlers(&gameControl::processScreenTouch, onDrag);
 }
 
-bool gameControl::processScreenTouch(const mouseButtonEventArgs &args)
+bool gameControl::processScreenTouch(const dragEventArgs &args)
 {
     for (control *c : children)
     {
-        if (c->visible && c->rect.expanded(moveJoystick->rect.x).contains(args.position))
+        if (c->visible && c->rect.expanded(moveJoystick->rect.x).contains(args.originalPosition))
         {
             return false;
         }
@@ -1254,7 +1275,9 @@ void gameControl::onJoystickTouch(const mouseButtonEventArgs &args)
     { // interactJoystick
         // wants to click or dig
         // calculate relative position
-        if (&args.sender == this && !processScreenTouch(args))
+        if (&args.sender == this && !processScreenTouch(
+                                        // original position = position, since we just started dragging
+                                        dragEventArgs(args.sender, args.position, args.position, args.button)))
             return;
         touchStarted = true;
         touching = true;
@@ -1262,12 +1285,13 @@ void gameControl::onJoystickTouch(const mouseButtonEventArgs &args)
     }
 }
 
-void gameControl::onJoystickTouchEnd(const mouseButtonEventArgs &args)
+void gameControl::onJoystickTouchEnd(const dragEventArgs &args)
 {
-    if (&args.sender == this && !processScreenTouch(args))
-        return;
+    // touching always has to be set to false
     touching = false;
     touchEnded = true;
+    // if (&args.sender == this && !processScreenTouch(args))
+    //     return;
 }
 
 void gameControl::switchInventoryGUI()
@@ -1319,7 +1343,7 @@ void gameControl::commandLineKeyPressed(const keyEventArgs &e)
 
         focusChild(nullptr); // back to the game
         commandLineTextbox->visible = false;
-        commandLineTextbox->text = std::wstring(L"");
+        commandLineTextbox->text = std::wstring();
         commandLineTextbox->cursorIndex = 0;
     }
 }
@@ -1333,8 +1357,12 @@ void gameControl::serializeMusicPreference(nbtSerializer &serializer)
             serializer.serializeValue(L"prefer", music->key);
         };
         bool boatInWater;
-        entity *entityRidingOn = player->dimensionIn->findUUID(player->position, ridingEntitySearchRadius, player->UUIDRidingOn);
-        if (entityRidingOn && entityRidingOn->entityType == entityID::boat && (entityRidingOn->getFluidArea(entityRidingOn->calculateHitBox(), {blockID::water}) > 0))
+        entity *entityRidingOn = player->dimensionIn->findUUID(player->position,
+                                                               ridingEntitySearchRadius,
+                                                               player->UUIDRidingOn);
+        if (entityRidingOn && entityRidingOn->entityType == entityID::boat &&
+            (entityRidingOn->getFluidArea(entityRidingOn->calculateHitBox(), {blockID::water}) >
+             0))
         {
             boatInWater = true;
         }
@@ -1375,9 +1403,11 @@ void gameControl::serializeMusicPreference(nbtSerializer &serializer)
             }
             else
             {
-                cbool inWater = (player->getFluidArea(player->calculateHitBox(), {blockID::water}) > 0);
+                cbool inWater = (player->getFluidArea(player->calculateHitBox(), {blockID::water}) >
+                                 0);
                 cbool inOcean = player->dimensionIn->getBiome(player->position) == biomeID::ocean;
-                cbool inCreative = (player->entityType == entityID::human) && ((human *)player)->currentGameMode == gameModeID::creative;
+                cbool inCreative = (player->entityType == entityID::human) &&
+                                   ((human *)player)->currentGameMode == gameModeID::creative;
                 prefer(inNether ? netherMusic : inEnd                               ? endMusic
                                             : ((boatInWater || inWater) && inOcean) ? waterMusic
                                             : inCreative                            ? creativeModeMusic

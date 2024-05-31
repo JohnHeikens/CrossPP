@@ -3,5 +3,6 @@
 struct sugarCaneData :attachedBlockData
 {
 	sugarCaneData();
-	virtual void randomTick(tickableBlockContainer* containerIn, cveci2& position) override;
+	void randomTick(tickableBlockContainer* containerIn, cveci2& position) override;
+	bool attached(tickableBlockContainer* containerIn, cveci2& position) const override;
 };

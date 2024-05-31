@@ -26,7 +26,7 @@ void server::execute()
 		listener = listeners[defaultPort];
 		// it doesn't work like this:
 		// listener = listeners[defaultPort] = new sf::TcpListener();
-		while ((portStatus = listener->listen(defaultPort)))
+		while (!stopping && (portStatus = listener->listen(defaultPort)))
 		{
 			// cannot listen at the moment
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));

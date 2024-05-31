@@ -3,7 +3,7 @@
 #include "doubleAttachedBlockData.h"
 struct doubleAttachedBlockPollenData : pollenData, doubleAttachedBlockData
 {
-	doubleAttachedBlockPollenData(cbool& isPart0 = false) : doubleAttachedBlockData(isPart0), pollenData() {}
+	doubleAttachedBlockPollenData(cbool& isPart0 = false) : pollenData(), doubleAttachedBlockData(isPart0) {}
 
 	virtual void serializeValue(nbtSerializer& s) override {
 		return doubleAttachedBlockData::serializeValue(s);

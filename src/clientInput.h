@@ -2,7 +2,7 @@
 #include <SFML/Window.hpp>
 #include "keyID.h"
 #include "keyHistoryEvent.h"
-#include "mouseHistoryEvent.h"
+#include "math/vector/vectn.h"
 
 struct nbtSerializer;
 struct socketContainer;
@@ -14,7 +14,6 @@ struct clientInput {
 	bool clicked[sf::Mouse::ButtonCount]{};
 	bool clickReleased[sf::Mouse::ButtonCount]{};
 	bool holding[sf::Mouse::ButtonCount]{};
-    std::vector<mouseHistoryEvent> mouseHistory = std::vector<mouseHistoryEvent>();
 
 	//the keys which were pressed (0 = start)
 	std::vector<keyHistoryEvent> keyDownHistory = std::vector<keyHistoryEvent>();

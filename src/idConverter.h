@@ -98,7 +98,7 @@ struct idConverter
 		{
 			for (fsize_t i = 0; i < dataList.size; i++)
 			{
-				s.serializeValue(std::wstring(L""), dataList[i]->name);
+				s.serializeValue(std::wstring(), dataList[i]->name);
 			}
 			s.pop();
 		}

@@ -66,21 +66,27 @@
 #include "include/math/graphics/brush/brushes/colorMultiplier.h"
 #include "gameColors.h"
 
-block::block(blockID identifier, fp hardness, fp blastResistance, cfp &weightPerCubicMeter, resolutionTexture *tex, std::wstring name, std::shared_ptr<soundCollection> fallSound, std::shared_ptr<soundCollection> stepSound, std::shared_ptr<soundCollection> hitSound, std::shared_ptr<soundCollection> breakSound, std::shared_ptr<soundCollection> placeSound, cint (&filterStrength)[(size_t)levelID::count], harvestTypeID bestTool, harvestTierID itemTier, collisionTypeID collisiontype, cint &fireEncouragement, cint &flammability, cbool &canCatchFireFromLava, cbool &canReplaceBlock, cint (&emittanceLevel)[(size_t)levelID::count], const experienceDrop &experienceWhenBroken, std::shared_ptr<soundCollection> ambientSound) : hardness(hardness), blastResistance(blastResistance), tex(tex), name(name), bestTool(bestTool), itemTier(itemTier),
-																																																																																																																																																																																				  fallSound(fallSound),
-																																																																																																																																																																																				  stepSound(stepSound),
-																																																																																																																																																																																				  hitSound(hitSound),
-																																																																																																																																																																																				  breakSound(breakSound),
-																																																																																																																																																																																				  placeSound(placeSound),
-																																																																																																																																																																																				  identifier(identifier),
-																																																																																																																																																																																				  blockCollisionType(collisiontype),
-																																																																																																																																																																																				  canReplaceBlock(canReplaceBlock),
-																																																																																																																																																																																				  experienceWhenBroken(experienceWhenBroken),
-																																																																																																																																																																																				  fireEncouragement(fireEncouragement),
-																																																																																																																																																																																				  flammability(flammability),
-																																																																																																																																																																																				  canCatchFireFromLava(canCatchFireFromLava),
-																																																																																																																																																																																				  ambientSound(ambientSound),
-																																																																																																																																																																																				  weightPerCubicMeter(weightPerCubicMeter)
+block::block(blockID identifier, fp hardness, fp blastResistance, cfp &weightPerCubicMeter, resolutionTexture *tex, std::wstring name, std::shared_ptr<soundCollection> fallSound, std::shared_ptr<soundCollection> stepSound, std::shared_ptr<soundCollection> hitSound, std::shared_ptr<soundCollection> breakSound, std::shared_ptr<soundCollection> placeSound, cint (&filterStrength)[(size_t)levelID::count], harvestTypeID bestTool, harvestTierID itemTier, collisionTypeID collisiontype, cint &fireEncouragement, cint &flammability, cbool &canCatchFireFromLava, cbool &canReplaceBlock, cint (&emittanceLevel)[(size_t)levelID::count], const experienceDrop &experienceWhenBroken, std::shared_ptr<soundCollection> ambientSound)
+	: INamable(name),
+	  identifier(identifier),
+	  itemTier(itemTier),
+	  bestTool(bestTool),
+	  hardness(hardness),
+	  blastResistance(blastResistance),
+	  fireEncouragement(fireEncouragement),
+	  flammability(flammability),
+	  canCatchFireFromLava(canCatchFireFromLava),
+	  blockCollisionType(collisiontype),
+	  weightPerCubicMeter(weightPerCubicMeter),
+	  tex(tex),
+	  fallSound(fallSound),
+	  stepSound(stepSound),
+	  hitSound(hitSound),
+	  breakSound(breakSound),
+	  placeSound(placeSound),
+	  ambientSound(ambientSound),
+	  canReplaceBlock(canReplaceBlock),
+	  experienceWhenBroken(experienceWhenBroken)
 {
 	std::copy(filterStrength, filterStrength + (size_t)levelID::count, this->filterStrength);
 	std::copy(emittanceLevel, emittanceLevel + (size_t)levelID::count, this->emittanceLevel);
@@ -743,7 +749,7 @@ void block::render(const brush0Type &currentBrush, rectangle2 brushRect, crectan
 		{
 			cvec2 &rootPosition = c->containerToRootTransform.multPointMatrix(blockRect.getCenter());
 			// multiply by the biome color
-			const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition.x)]->grassColor);
+			const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->rootDimension->getBiome(rootPosition)]->grassColor);
 			// const solidColorBrush biomeColorBrush = solidColorBrush(biomeDataList[c->getBiome(blockRect.getCenter().x)]->grassColor);
 
 			constexpr bool mipmap = std::is_same<brush0Type, resolutionTexture>::value;

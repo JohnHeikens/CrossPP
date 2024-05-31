@@ -48,6 +48,7 @@ struct gameControl : form, clientInput {
     human *player;//for less code
 
     bool wantsClipboardInput = false;
+    std::wstring copyToClipboard = L"";
 
     //rendering
     //only use the camera position for rendering!
@@ -91,11 +92,11 @@ struct gameControl : form, clientInput {
     virtual void lostFocus() override;
 
     void onJoystickTouch(const mouseButtonEventArgs &args);
-    void onJoystickTouchEnd(const mouseButtonEventArgs &args);
+    void onJoystickTouchEnd(const dragEventArgs& args);
     void onButtonClick(const controlEventArgs &args);
     void switchInventoryGUI();
 
-    bool processScreenTouch(const mouseButtonEventArgs &args);
+    bool processScreenTouch(const dragEventArgs &args);
 
     void addTouchInput();
 

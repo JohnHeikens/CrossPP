@@ -14,6 +14,7 @@ public:
 	virtual void lostFocus() override;
     virtual void focus() override;
 	virtual void paste(const std::wstring& text) override;
+	virtual std::wstring copy() override;
 	virtual void mouseDown(cveci2& position, cmb& button) override;
 	void checkCursorIndex();
     virtual bool wantsTextInput() const override;

@@ -12,7 +12,7 @@ blockParticleBrush::blockParticleBrush(const blockID& brushBlockID) : rectPartic
 
 void blockParticleBrush::serializeValue(nbtSerializer& s)
 {
-	s.serializeValue(std::wstring(L"brush block id"), (int&)brushBlockID);
+	s.serializeValue(std::wstring(L"brush block id"), brushBlockID);
 	rectParticleBrush::serializeValue(s);
 }
 

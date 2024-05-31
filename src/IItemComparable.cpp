@@ -16,14 +16,14 @@ IItemComparable* getItemComparableByName(const std::wstring& name)
 	}
 	return nullptr;
 }
-bool IItemComparable::compare(const itemID& itemToCompare) const
-{
-	handleError(std::wstring(L"not implemented"));
-	return false;
-}
+//bool IItemComparable::compare(const itemID& itemToCompare) const
+//{
+//	handleError(std::wstring(L"not implemented"));
+//	return false;
+//}
 
-bool IItemComparable::willCompareToAnyItem() const
-{
-	handleError(std::wstring(L"not implemented"));
-	return false;
-}
+//bool IItemComparable::willCompareToAnyItem() const
+//{
+//	handleError(std::wstring(L"not implemented"));
+//	return false;
+//}

@@ -15,7 +15,21 @@ namespace math
 	constexpr fp radiansToDegrees = 180 / PI;
 	constexpr fp fpepsilon = 0.0001;
 	constexpr fp averageSinusHillValue = 2.0 / PI;
-	static fp sqrt2 = sqrt(2.0);
+
+	template <typename t>
+	constexpr t sqrt(const t& x, const t& curr, const t& prev)
+	{
+		return curr == prev ? curr : sqrt(x, (t)0.5 * (curr + x / curr), curr);
+	}
+
+	template <typename t>
+	constexpr t sqrt(const t& x)
+	{
+		return x >= (t)0 && x < std::numeric_limits<t>::infinity()
+				   ? sqrt(x, x, (t)0)
+				   : std::numeric_limits<t>::quiet_NaN();
+	}
+	constexpr fp sqrt2 = sqrt(2.0);
 
 	template <typename t = fsize_t>
 	constexpr t getNextPowerOf2Multiplied(const t &n)
@@ -109,12 +123,12 @@ namespace math
 	{
 		if (std::is_integral_v<outputType>)
 		{
-			const outputType &i = (outputType)x; /* truncate */
-			return i + (outputType)((inputType)i < x);		 /* convert trunc to floor */
+			const outputType &i = (outputType)x;	   /* truncate */
+			return i + (outputType)((inputType)i < x); /* convert trunc to floor */
 		}
 		else
 		{
-			int i = (int)x;						   /* truncate */
+			int i = (int)x;									  /* truncate */
 			return (outputType)(i + (int)((inputType)i < x)); /* convert trunc to floor */
 		}
 	}
@@ -247,11 +261,11 @@ namespace math
 		std::uint32_t i = std::bit_cast<std::uint32_t>(number);
 		i = 0x5f3759df - (i >> 1);
 		number = std::bit_cast<float>(i);
-		#else
-		//can be dangerous!
-		std::uint32_t* i = reinterpret_cast<std::uint32_t*>(&number);
+#else
+		// can be dangerous!
+		std::uint32_t *i = reinterpret_cast<std::uint32_t *>(&number);
 		*i = 0x5f3759df - (*i >> 1);
-		number = *reinterpret_cast<float*>(&i);
+		number = *reinterpret_cast<float *>(&i);
 #endif
 		number *= threehalfs - (x2 * math::squared(number));
 		return number;

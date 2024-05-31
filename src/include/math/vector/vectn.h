@@ -125,7 +125,7 @@ struct vectn
     }
 
     // fill with this value
-    constexpr vectn(const t &initializerValue) : baseVec<t, n>(std::array<t, n>()) {
+    constexpr explicit vectn(const t &initializerValue) : baseVec<t, n>(std::array<t, n>()) {
         //no faster way to do it yet
         for (t& value : axis)
         {

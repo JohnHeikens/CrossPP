@@ -98,14 +98,14 @@ struct baseFont
 	}
 	inline vec2 DrawString(const std::wstring text, crectangle2& rect, const texture& renderTarget, const std::optional<mat3x3>& matrix = std::nullopt) const
 	{
-		return DrawString(text, rect, MeasureStringOffset(rect, std::wstring(L"")), renderTarget, matrix);
+		return DrawString(text, rect, MeasureStringOffset(rect, std::wstring()), renderTarget, matrix);
 	}
 	//returns the position for the next letter like measurestring
 
 	template<typename fontBrushType, typename = std::enable_if_t<is_brush_v<fontBrushType>>>
 	inline vec2 DrawString(const std::wstring text, crectangle2& rect, const texture& renderTarget, const fontBrushType& b, const std::optional<mat3x3>& matrix = std::nullopt) const
 	{
-		return DrawString(text, rect, MeasureStringOffset(rect, std::wstring(L"")), renderTarget, b, matrix);
+		return DrawString(text, rect, MeasureStringOffset(rect, std::wstring()), renderTarget, b, matrix);
 	}
 	inline virtual vec2 DrawString(const std::wstring text, crectangle2& rect, cvec2& offset, const texture& renderTarget, const std::optional<mat3x3>& matrix = std::nullopt) const
 	{

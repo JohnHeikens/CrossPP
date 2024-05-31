@@ -1,12 +1,7 @@
-#include "world.h"
-#include "idAnalysis.h"
-#include "entity.h"
 #include "settings.h"
 #include "musicManager.h"
-#include "dimension.h"
-#include "human.h"
-#include "end.h"
 #include "musicList.h"
+#include "sound/soundHandler2D.h"
 std::shared_ptr<music2d> currentlyPlayingMusic = nullptr;
 const musicCollection *currentlyPlayingCollection = nullptr;
 void updateMusic(const musicCollection *const &musicIfFinished)
@@ -24,7 +19,7 @@ void stopMusic()
 {
 	if (currentlyPlayingMusic)
 	{
-		handler->stopAudio(currentlyPlayingMusic);
+		handler.stopAudio(currentlyPlayingMusic);
 		//delete this reference
 		currentlyPlayingMusic = nullptr;
 	}

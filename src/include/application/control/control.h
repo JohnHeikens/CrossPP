@@ -114,8 +114,8 @@ public:
 	virtual void mouseMove(cveci2& position, cmb& button);
 	virtual void mouseDown(cveci2& position, cmb& button);
 	virtual void mouseUp(cveci2& position, cmb& button);
-	virtual void drag(cveci2& position, cveci2& originalPosition, cmb& button);
-	virtual void drop(cveci2& position, cveci2& originalPosition, cmb& button);
+	virtual void drag(cveci2& originalPosition, cveci2& position, cmb& button);
+	virtual void drop(cveci2& originalPosition, cveci2& position, cmb& button);
 	virtual void click();
 	virtual void scroll(cveci2& position, cint& scrollDelta);
 	virtual void layout(crectanglei2& newRect);
@@ -150,6 +150,7 @@ public:
 	virtual void lostFocus();
 
 	virtual void paste(const std::wstring& text);
+	virtual std::wstring copy();
 
 	//called when a child gains focus
 	void focusChild(control* newFocusedChild);
@@ -178,7 +179,7 @@ public:
 
 	baseFont* currentFont = nullptr;
 
-	std::wstring text = std::wstring(L"");
+	std::wstring text = std::wstring();
 	verticalAlignment textVerticalAlignment = verticalAlignment::top;
 	horizontalAlignment textHorizontalAlignment = horizontalAlignment::left;
 	int borderSize = 2;

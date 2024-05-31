@@ -101,7 +101,8 @@
         "*.inc": "cpp",
         "__memory": "cpp",
         "typeindex": "cpp",
-        "control.h": "c"
+        "control.h": "c",
+        "text_encoding": "cpp"
     },
     
     //"cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe"

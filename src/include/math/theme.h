@@ -7,7 +7,7 @@ constexpr int buttonMargin = 5;
 struct theme
 {
 	theme(baseFont* font = nullptr, int borderSize = defaultBorderSize, color backGroundColor = colorPalette::black, color borderColor = defaultBorderColor) :
-		font(font), borderSize(borderSize), backGroundColor(backGroundColor), borderColor(borderColor) {}
+		borderSize(borderSize), backGroundColor(backGroundColor), borderColor(borderColor), font(font) {}
 	int borderSize = 1;
 	color backGroundColor = colorPalette::black;
 	color borderColor = defaultBorderColor;

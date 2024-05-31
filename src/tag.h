@@ -6,7 +6,7 @@
 //represents a list of items that hold this tag
 struct tag :IItemComparable, IDestructable
 {
-	std::wstring name = std::wstring(L"");
+	std::wstring name = std::wstring();
 	fastList<IItemComparable*>* taggedComparables = nullptr;
 	tag(std::wstring name) :name(name), taggedComparables(new fastList<IItemComparable*>()) {}
 	bool hasTaggedItems();

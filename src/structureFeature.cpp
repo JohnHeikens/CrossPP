@@ -102,7 +102,7 @@ bool structureFeature::placeStructure(structure* firstStructure, tickableBlockCo
 			for (cveci2& pos : expandFrom->positionsToConnect)
 			{
 				jigsawData* currentJigsawData = dynamic_cast<jigsawData*>(expandFrom->placedStructure->blockDataArray.getValueUnsafe(pos));
-				if (currentJigsawData->targetName != std::wstring(L""))
+				if (currentJigsawData->targetName != std::wstring())
 				{
 					//find fitting piece for this jigsaw
 					cveci2 currentJigsawWorldPos = structureToWorldTransform.multPointMatrix(pos);

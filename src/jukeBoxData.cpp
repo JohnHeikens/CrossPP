@@ -9,10 +9,10 @@ bool jukeBoxData::tick(tickableBlockContainer* containerIn, cveci2& position)
 void jukeBoxData::onBlockRemove(tickableBlockContainer* containerIn, cveci2& position)
 {
 	recordSlot->dropContent(containerIn, cvec2(position) + 0.5);
-	if (musicPlaying.get())
-	{
-		handler->stopAudio(musicPlaying);
-	}
+	//if (musicPlaying.get())
+	//{
+	//	handler->stopAudio(musicPlaying);
+	//}
 }
 
 void jukeBoxData::serializeValue(nbtSerializer& s)
@@ -24,18 +24,18 @@ void jukeBoxData::serializeValue(nbtSerializer& s)
 		int64_t playProgress = 0;
 		if (s.write)
 		{
-			if (musicPlaying)
-			{
-				playProgress = (int64_t)musicPlaying->getPlayingOffset();
-				s.serializeValue(std::wstring(L"play progress"), playProgress);
-			}
+			//if (musicPlaying)
+			//{
+			//	playProgress = (int64_t)musicPlaying->getPlayingOffset();
+			//	s.serializeValue(std::wstring(L"play progress"), playProgress);
+			//}
 		}
 		else
 		{
-			if (s.serializeValue(std::wstring(L"play progress"), playProgress))
-			{
-				//playMusic(containerIn);
-			}
+			//if (s.serializeValue(std::wstring(L"play progress"), playProgress))
+			//{
+			//	//playMusic(containerIn);
+			//}
 
 			//todo: continue playing of music
 		}
@@ -44,15 +44,15 @@ void jukeBoxData::serializeValue(nbtSerializer& s)
 
 jukeBoxData::~jukeBoxData()
 {
-	if (musicPlaying.get())
-	{
-		handler->stopAudio(musicPlaying);
-	}
+	//if (musicPlaying.get())
+	//{
+	//	handler->stopAudio(musicPlaying);
+	//}
 
 	delete recordSlot;
 }
 
 void jukeBoxData::playMusic(tickableBlockContainer* containerIn, cveci2& position)
 {
-	musicPlaying = recordsMusic->playAudio((int)recordSlot->slots[0].stackItemID - (int)itemID::music_disc, containerIn, cvec2(position) + 0.5);
+	//musicPlaying = recordsMusic->playAudio((int)recordSlot->slots[0].stackItemID - (int)itemID::music_disc, containerIn, cvec2(position) + 0.5);
 }

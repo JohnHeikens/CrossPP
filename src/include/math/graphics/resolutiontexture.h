@@ -19,9 +19,9 @@ struct resolutionTexture : public colorBrush
 	inline rectangle2 getClientRect() const
 	{
 		// vec2 test = veci2();
-		constexpr bool res1 = narrowing_conversion<int, fp>;
-		constexpr bool res2 = narrowing_conversion<fp, int>;
-		constexpr bool res3 = narrowing_conversion<std::uint8_t, std::int16_t>;
+		//constexpr bool res1 = narrowing_conversion<int, fp>;
+		//constexpr bool res2 = narrowing_conversion<fp, int>;
+		//constexpr bool res3 = narrowing_conversion<std::uint8_t, std::int16_t>;
 		return crectangle2(cvec2(0), defaultSize);
 	}
 	inline resolutionTexture(resolutionTexture &other) = delete;

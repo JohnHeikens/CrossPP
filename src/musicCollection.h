@@ -1,6 +1,6 @@
 #pragma once
 #include "audioCollection.h"
-#include "soundHandler2D.h"
+#include "sound/music2d.h"
 #include "filesystem/filemanager.h"
 struct tickableBlockContainer;
 struct musicCollection : audioCollection

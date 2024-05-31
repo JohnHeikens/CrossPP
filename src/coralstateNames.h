@@ -3,6 +3,6 @@
 #pragma once
 const std::wstring coralStateNames[(int)coralColorID::count]
 {
-	std::wstring(L""),
+	L"",
 	std::wstring(L"dead_")
 };

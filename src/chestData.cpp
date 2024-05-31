@@ -27,7 +27,7 @@ void chestData::serializeValue(nbtSerializer& s)
 	blockData::serializeValue(s);
 	((nbtSerializable*)slots)->serialize(s, std::wstring(L"chest slots"));
 
-	if ((s.write ? (lootTableName != std::wstring(L"")) : true) && s.serializeValue(std::wstring(L"loot table name"), lootTableName))
+	if ((s.write ? (lootTableName != std::wstring()) : true) && s.serializeValue(std::wstring(L"loot table name"), lootTableName))
 	{
 		s.serializeValue(std::wstring(L"loot table seed"), lootTableSeed);
 	}
@@ -35,7 +35,7 @@ void chestData::serializeValue(nbtSerializer& s)
 
 void chestData::generateChestLoot()
 {
-	if (lootTableName != std::wstring(L""))
+	if (lootTableName != std::wstring())
 	{
 		auto it = chestLootTables.find(lootTableName);
 		if (it != chestLootTables.end())
@@ -58,7 +58,7 @@ void chestData::generateChestLoot()
 			}
 		}
 		//reset data
-		lootTableName = std::wstring(L"");
+		lootTableName = L"";
 		lootTableSeed = 0;
 	}
 }

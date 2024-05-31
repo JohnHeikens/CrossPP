@@ -297,5 +297,5 @@ bool convertToInt(const std::wstring& line, int& number, cint& base = 10);
 
 inline std::wstring getWord(const wstringContainer& sentenceContainer, csize_t& index)
 {
-	return index < sentenceContainer.size() ? sentenceContainer[index] : std::wstring(L"");
+	return index < sentenceContainer.size() ? sentenceContainer[index] : std::wstring();
 }

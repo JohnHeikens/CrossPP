@@ -121,7 +121,7 @@ minecraftFont *currentMinecraftFont = nullptr;
 fontFamily *currentMinecraftFontFamily = nullptr;
 
 std::vector<resolutionTexture *> loadedTextures = std::vector<resolutionTexture *>();
-std::wstring creditsText = std::wstring(L"");
+std::wstring creditsText = std::wstring();
 
 const std::wstring musicDiscNames[musicDiscTypeCount]{
 	std::wstring(L"13"),
@@ -2225,8 +2225,8 @@ void loadBlocks()
 		}
 	}
 
-	const wstringContainer sandStoneColorNames = {std::wstring(L""), std::wstring(L"red_")};
-	const wstringContainer sandStoneTypeNames = {std::wstring(L""), std::wstring(L"chiseled_"), std::wstring(L"cut_"), std::wstring(L"smooth_")};
+	const wstringContainer sandStoneColorNames = {std::wstring(), std::wstring(L"red_")};
+	const wstringContainer sandStoneTypeNames = {std::wstring(), std::wstring(L"chiseled_"), std::wstring(L"cut_"), std::wstring(L"smooth_")};
 	for (int i = 0; i < (int)sandStoneColorID::count; i++)
 	{
 		for (int j = 0; j < (int)sandStoneTypeID::count; j++)

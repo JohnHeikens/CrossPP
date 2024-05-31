@@ -90,7 +90,7 @@ void boat::serializeValue(nbtSerializer& s)
 {
 	ridableEntity::serializeValue(s);
 	s.serializeValue(std::wstring(L"paddle rotations"), paddleRotations);
-	s.serializeValue(std::wstring(L"boat type"), (int&)boatType);
+	s.serializeValue(std::wstring(L"boat type"), boatType);
 }
 
 vec2 boat::getRelativeSeatPosition(csize_t& seatIndex) const

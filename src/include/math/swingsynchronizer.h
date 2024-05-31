@@ -4,7 +4,7 @@
 struct swingSynchronizer
 {
 	constexpr swingSynchronizer() {}
-	constexpr swingSynchronizer(cfp& swingDuration, cfp& minAngle, cfp& maxAngle, cfp& offset = 0) :swingDuration(swingDuration), maxAngle(maxAngle), minAngle(minAngle), offset(offset) {}
+	constexpr swingSynchronizer(cfp& swingDuration, cfp& minAngle, cfp& maxAngle, cfp& offset = 0) :swingDuration(swingDuration), minAngle(minAngle), maxAngle(maxAngle), offset(offset) {}
 
 	//the duration of a single swing (back and forth)
 	fp swingDuration = 0;

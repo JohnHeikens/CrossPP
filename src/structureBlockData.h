@@ -3,7 +3,7 @@
 #include "structureBlockMode.h"
 struct structureBlockData : blockData
 {
-	std::wstring structureName = std::wstring(L"");
+	std::wstring structureName = std::wstring();
 	veci2 relativeStructurePosition = cveci2(1, 0);
 	veci2 structureSize = cveci2();
 	bool includeEntities = false;

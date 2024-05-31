@@ -208,7 +208,7 @@ void rectangularSlotContainer::serializeValue(nbtSerializer& s)
 			std::vector<nbtData*> serializedSlots = s.getChildren();
 			for (int i = 0; i < rowsAndColumns.x * rowsAndColumns.y; i++)
 			{
-				if (s.push(serializedSlots[i]))
+				if (s.push())
 				{
 					slots[i].serializeValue(s);
 					s.pop();

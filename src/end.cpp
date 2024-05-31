@@ -98,7 +98,7 @@ void end::serializeValue(nbtSerializer& s)
 	{
 		for (size_t i = 0; i < obsidianPillarCount; i++)
 		{
-			s.serializeValue(std::wstring(L""), obsidianPillarLevel[i]);
+			s.serializeValue(std::wstring(), obsidianPillarLevel[i]);
 		}
 		s.pop();
 	}

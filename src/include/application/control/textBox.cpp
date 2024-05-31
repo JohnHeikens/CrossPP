@@ -23,7 +23,10 @@ void textBox::render(cveci2 &position, const texture &renderTarget)
 void textBox::enterText(cuint &uniCode)
 {
 	checkCursorIndex();
-	if (!is_in((wchar_t)uniCode, L'\b') &&
+	const wchar_t& charEntered = (wchar_t)uniCode;
+	constexpr wchar_t pasteChar = L'\x0016';
+	constexpr wchar_t copyChar = L'\x0003';
+	if (!is_in(charEntered, L'\b', copyChar, pasteChar) &&
 		(multiLine || !is_in((wchar_t)uniCode, L'\n', L'\r')))
 	{
 		text.insert(cursorIndex, 1, (wchar_t)uniCode);
@@ -75,6 +78,11 @@ void textBox::paste(const std::wstring &text)
 	//	text.insert(cursorIndex, clipBoardText);
 	//	cursorIndex += clipBoardText.length();
 	// }
+}
+
+std::wstring textBox::copy()
+{
+    return text;
 }
 
 void textBox::mouseDown(cveci2 &position, cmb &button)

@@ -38,7 +38,7 @@ struct world :IDestructable, nbtSerializable
 	vec2 worldSpawnPoint = vec2();
 	dimensionID worldSpawnDimension = dimensionID();
 
-	std::wstring name = std::wstring(L"");
+	std::wstring name = std::wstring();
 
 	ull seed = 0;
 	virtual ~world() override;

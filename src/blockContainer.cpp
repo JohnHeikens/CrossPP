@@ -738,7 +738,7 @@ bool blockContainer::hasFullEdge(cveci2 &position, const directionID &edgeToChec
 {
 	const collisionDataCollection &collection = getBlockCollisionData(position);
 
-	cveci2 &adjacentPosition = position + directionVectors2D[(int)edgeToCheck];
+	//cveci2 &adjacentPosition = position + directionVectors2D[(int)edgeToCheck];
 
 	cvec2 relativeEdgePosition = cvec2(0.5) + cvec2(directionVectors2D[(int)edgeToCheck]) * 0.5;
 

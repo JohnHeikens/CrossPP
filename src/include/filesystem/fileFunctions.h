@@ -10,7 +10,7 @@ inline std::wstring findFileRecursive(const std::wstring& fileNameWithExtionsion
 			return fileIterator.path().wstring();
 		}
 	}
-	return std::wstring(L"");
+	return std::wstring();
 }
 
 //only creates last directory

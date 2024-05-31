@@ -9,6 +9,8 @@
 #include "mob.h"
 #include "nbtSerializer.h"
 #include "serializer/serializeUUID.h"
+constexpr fp fireBallSpeed = 0x10;
+
 void fireBallAI::shootFireBall(const entity* shootFireBallAt) const
 {
 	mob* connectedMob = (mob*)connectedEntity;

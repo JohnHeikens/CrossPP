@@ -2,6 +2,7 @@
 #include "math/random/random.h"
 #include "entity.h"
 #include "tickableBlockContainer.h"
+#include "sound/soundHandler2D.h"
 void musicCollection::addAudioFile(const stdPath &path)
 {
 	audioPaths.push_back(path);
@@ -21,7 +22,7 @@ std::shared_ptr<music2d> musicCollection::playAudio(csize_t &index, cfp &volume,
 { // TODO: send music to client
 	std::shared_ptr<music2d> musicToPlay = std::make_shared<music2d>(audioPaths[index], cvec2(), volume, pitch, false);
 	(*musicToPlay).loadAudio();
-	handler->playAudio(musicToPlay);
+	handler.playAudio(musicToPlay);
 	return musicToPlay;
 }
 

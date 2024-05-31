@@ -95,7 +95,7 @@ struct rectangletn : baseRect<t, axisCount>
 	//	this->pos0 = pos0;
 	//	this->size = size;
 	// }
-	constexpr rectangletn(cvectn<t, axisCount> &size) : base(vec(), size) {}
+	explicit constexpr rectangletn(cvectn<t, axisCount> &size) : base(vec(), size) {}
 
 	template <typename t2, fsize_t axisCount2>
 	// the input is convertible without loss of data, so make the conversion implicit

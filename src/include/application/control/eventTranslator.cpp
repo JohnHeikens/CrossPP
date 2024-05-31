@@ -14,14 +14,14 @@ void eventTranslator::processEvent(const sf::Event &event)
         receiver.mouseMove(
             mousePos,
             button);
-        receiver.drag(mousePos, dragStartPositions[button], button);
+        receiver.drag(dragStartPositions[button], mousePos, button);
     };
     auto processMouseUp = [this](cveci2 &mousePos, cmb &button)
     {
         receiver.mouseUp(
             mousePos,
             button);
-        receiver.drop(mousePos, dragStartPositions[button], button);
+        receiver.drop(dragStartPositions[button], mousePos, button);
         dragStartPositions.erase(button);
     };
     if (event.type == sf::Event::KeyPressed)

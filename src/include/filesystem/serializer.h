@@ -54,10 +54,11 @@ typedef streamBaseInterface defaultStreamType;
 template <typename streamType = defaultStreamType>
 struct serializer : iSerializer
 {
-	// the std::endian of the file the serializer is interacting with
+	streamType &stream;
+
+	// the endianness of the file the serializer is interacting with
 	const std::endian fileEndianness;
 
-	streamType &stream;
 	serializer(streamType &stream, cbool &write, const std::endian &fileEndianness = std::endian::native) : iSerializer(write), stream(stream), fileEndianness(fileEndianness) {}
 
 	template <typename valueType, typename = std::enable_if_t<is_endian_convertable_v<valueType>>>

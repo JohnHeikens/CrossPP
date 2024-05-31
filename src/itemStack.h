@@ -11,7 +11,7 @@
 struct itemStack : IDestructable, nbtSerializable
 {
 	itemStack(itemID stackItemID = (itemID)0, cint& count = 0, itemTag* data = nullptr, std::vector<enchantment*> enchantments = std::vector<enchantment*>()) :
-		stackItemID(stackItemID), data(data ? data : createItemTag(stackItemID)), enchantments(enchantments), count(count) {}
+		stackItemID(stackItemID), count(count), data(data ? data : createItemTag(stackItemID)), enchantments(enchantments) {}
 
 	itemStack(const itemStack& other);
 

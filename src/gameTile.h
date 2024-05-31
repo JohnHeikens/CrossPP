@@ -8,7 +8,7 @@ struct gameTile : form
 	gameTile(const std::wstring& saveFileName);
 	pictureBox* screenShot = nullptr;
 	label* infoLabel;
-	std::wstring gameName = std::wstring(L"");
+	std::wstring gameName = std::wstring();
 	virtual ~gameTile() override;
 	virtual void layout(crectanglei2& newRect) override;
 };

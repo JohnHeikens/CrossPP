@@ -43,7 +43,7 @@ inline bool serializeNBTValue(nbtSerializer &s, const std::wstring &memberName, 
             }
             for (t &it : value)
             {
-                serializeNBTValue(s, std::wstring(L""), it);
+                serializeNBTValue(s, std::wstring(), it);
             }
             s.pop();
             return true;
