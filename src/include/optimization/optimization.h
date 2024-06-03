@@ -43,7 +43,7 @@
 
 //#define assumeInRelease(e) (((e) || assert(__FILE__, __LINE__)), [[assume(e)]] )
 
-inline void throwIfFalse(cbool& shouldBeTrue, std::wstring errorMessageIfFalse = L"")
+inline void throwIfFalse(cbool& shouldBeTrue, std::wstring errorMessageIfFalse = std::wstring())
 {
 	if (!shouldBeTrue)
 	{

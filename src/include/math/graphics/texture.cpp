@@ -83,11 +83,11 @@ bool texture::Save(const stdPath& path) const
 	//bgra to rgba
 	switchChannels(byteArray, 0, 2);
 	bool success = false;
-	if (path.extension() == std::wstring(L"png"))
+	if (path.extension() == stdPath(L"png"))
 	{
 		success = stbi_write_png(path.string().c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray, 0);
 	}
-	else if (path.extension() == std::wstring(L"bmp"))
+	else if (path.extension() == stdPath(L"bmp"))
 	{
 		success = stbi_write_bmp(path.string().c_str(), (int)size.x, (int)size.y, bgraColorChannelCount, byteArray);
 	}

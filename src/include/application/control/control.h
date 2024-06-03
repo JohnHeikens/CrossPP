@@ -1,11 +1,15 @@
 #include "array/fastlist.h"
-#include "math/theme.h"
 #include "event/eventhandler.h"
 #include "event/eventargs.h"
 #include <initializer_list>
 #include <SFML/Window.hpp>
+#include "math/vector/vectn.h"
+#include "math/rectangle/rectangletn.h"
+#include "math/graphics/color/color.h"
+#include "math/graphics/color/colorPalette.h"
 
 struct control;
+struct texture;
 
 typedef eventArgs<control> controlEventArgs;
 typedef eventHandler<controlEventArgs> controlEventHandler;
@@ -121,18 +125,6 @@ public:
 	virtual void layout(crectanglei2& newRect);
 	void addChildren(std::initializer_list<control*> children);
 
-	template<typename childListType>
-	static void layoutTableCentered(crectanglei2& rect, const childListType& controls, cveci2& childSize = buttonSize, cint& margin = buttonMargin) {
-		cint& offsetStep = childSize.y + margin;
-		//using end - begin instead of size() because fastlist doesn't have size()
-		cveci2& tablePos = rect.rectPos0Centered(cveci2(childSize.x, childSize.y + offsetStep * ((int)(controls.end() - controls.begin()) - 1)));
-		rectanglei2 currentChildRect = rectanglei2(tablePos, childSize);
-		for (auto c : controls) {
-			c->layout(currentChildRect);
-			currentChildRect.y += offsetStep;
-		}
-	}
-
     template<typename mostDerivedType, typename returnValueType, typename eventArgsType, typename eventHandlerType, typename ...eventHandlerTypes>
     inline void addEventHandlers( returnValueType(mostDerivedType::*memberFunction)(eventArgsType), eventHandlerType& handler, eventHandlerTypes&&... handlers)
     {
@@ -177,7 +169,7 @@ public:
 	control* focusedChild = nullptr;
 	fastList<control*> children = fastList<control*>();
 
-	baseFont* currentFont = nullptr;
+	struct baseFont* currentFont = nullptr;
 
 	std::wstring text = std::wstring();
 	verticalAlignment textVerticalAlignment = verticalAlignment::top;
@@ -188,4 +180,4 @@ public:
 	color borderColor = colorPalette::white;
 };
 
-theme& defaultTheme();
+struct theme& defaultTheme();

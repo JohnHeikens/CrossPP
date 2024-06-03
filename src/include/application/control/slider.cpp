@@ -1,7 +1,7 @@
 #include "slider.h"
 
 slider::slider(cfp &minValue, cfp &maxValue, cfp &value, cfp &step) : control(),
-																	  minValue(minValue), maxValue(maxValue), value(value), step(step)
+																	  value(value), minValue(minValue), maxValue(maxValue), step(step)
 {
 	addChildren({increaseButton, decreaseButton, dragButton});
 }

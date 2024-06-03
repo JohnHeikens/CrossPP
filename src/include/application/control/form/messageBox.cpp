@@ -1,5 +1,6 @@
 #include "messageBox.h"
 #include "application/control/button.h"
+#include "application/control/controlFunctions.h"
 messageBox::messageBox(const std::wstring message, const std::vector<std::wstring> &buttonTexts)
 {
     text = message;

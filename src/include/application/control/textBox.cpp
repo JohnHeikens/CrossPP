@@ -1,6 +1,8 @@
 #include "textBox.h"
 #include "math/timemath.h"
 #include "application/interaction.h"
+#include "math/graphics/brush/font/baseFont.h"
+#include "math/graphics/graphicsFunctions.h"
 
 textBox::textBox(cbool &multiLine) : control(), multiLine(multiLine)
 {
@@ -90,7 +92,7 @@ void textBox::mouseDown(cveci2 &position, cmb &button)
 	// check position of cursor
 
 	crectangle2 &relativeTextRect = crectangle2(rectanglei2(rect.size).expanded(-borderSize));
-	vec2 offset = currentFont->MeasureStringOffset(relativeTextRect, L"");
+	vec2 offset = currentFont->MeasureStringOffset(relativeTextRect, std::wstring());
 	fp closestDistance = INFINITY;
 	fsize_t closestIndex = 0;
 	for (fsize_t i = 0;; i++, offset = currentFont->MeasureLetterOffset(relativeTextRect, offset, text[i]))

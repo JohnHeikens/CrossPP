@@ -1,4 +1,5 @@
 #include "pictureBox.h"
+#include "math/graphics/brush/brushes.h"
 
 pictureBox::pictureBox(texture* const& backGroundImage)
 {

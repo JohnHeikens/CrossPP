@@ -1,5 +1,6 @@
 #include "LayerNoiseSimplex.h"
 #include <numeric>
+#include "math/random/random.h"
 constexpr fp MAX_NOISE_OUTPUT = 1;
 constexpr fp NOISE_MULT = 1.0f / MAX_NOISE_OUTPUT; // multiply output by this to map from -1 to 1
 

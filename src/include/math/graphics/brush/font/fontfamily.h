@@ -1,5 +1,6 @@
 #include "math/graphics/resolutiontexture.h"
 #include <optional>
+#include "math/graphics/brush/brushes.h"
 #pragma once
 
 //0x10 letters in a row

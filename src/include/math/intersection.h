@@ -4,6 +4,7 @@ struct iIntersectable;
 
 struct intersection 
 {
+	iIntersectable* intersectedWith;
 	fp intersectionDistance = 0;//the distance the light has to travel to reach the intersection point
 	vec3 intersectionColor = vec3();//the color of the intersection point
 	fp intersectionOpacity = 0;//the opacity of the intersection
@@ -12,8 +13,7 @@ struct intersection
 	vec3 normal = vec3();//the normal of the edge the ray hit
 	//TODO: the amount of angle a reflection can change its direction
 	
-	iIntersectable* intersectedWith;
 	intersection(iIntersectable* intersectedWith, vec3 normal, fp intersectionOpacity, vec3 intersectionColor, fp intersectionDistance):
-		intersectedWith(intersectedWith),normal(normal),intersectionOpacity(intersectionOpacity),intersectionColor(intersectionColor),intersectionDistance(intersectionDistance){}
+		intersectedWith(intersectedWith),intersectionDistance(intersectionDistance),intersectionColor(intersectionColor),intersectionOpacity(intersectionOpacity),normal(normal){}
 };
 

@@ -1,11 +1,9 @@
 #include "videoEncoder.h"
 #include "math/algorithm/findInCircles.h"
 #include "math/graphics/brush/brushes.h"
-#include "nbtSerializer.h"
-#include "gzipIncluder.h"
-#include "serializer/serializeList.h"
+#include "filesystem/gzipIncluder.h"
 #include "math/rectangle/rectangleBuilder.h"
-#include "fpng.h"
+#include "filesystem/fpng/fpng.h"
 #include <unordered_set>
 
 constexpr bool showCommunication = false;
@@ -139,7 +137,7 @@ inline void moveArrayPart(const texture &tex, rectanglei2 rect, cveci2 &directio
         {
             // copy in the reverse order of moving
             cint &yStep = tex.size.x;
-            cveci2 &end = rect.pos1();
+            //cveci2 &end = rect.pos1();
             if (direction.y > 0)
             {
                 // copy from top to bottom
@@ -182,7 +180,7 @@ inline void moveArrayPart(const texture &tex, rectanglei2 rect, cveci2 &directio
     }
 }
 
-void videoEncoder::addFrameDiff(nbtSerializer &serializer)
+void videoEncoder::addFrameDiff(streamSerializer& serializer)
 {
     serializeScreen(serializer);
     cbool &shouldResize = diffTex.size != totalTexture.size;
@@ -218,7 +216,7 @@ void videoEncoder::addFrameDiff(nbtSerializer &serializer)
     diffTex.baseArray = nullptr;
 }
 
-void videoEncoder::addFrame(const texture &frame, nbtSerializer &serializer)
+void videoEncoder::addFrame(const texture &frame, streamSerializer& serializer)
 {
     if (frame.size != totalTexture.size)
     {
@@ -300,7 +298,7 @@ void videoEncoder::addFrame(const texture &frame, nbtSerializer &serializer)
 
                 // first things to check:
                 if (checkFunction(veci2()) ||                           // zero motion
-                    lastMotion != veci2() && checkFunction(lastMotion)) // old motion
+                    (lastMotion != veci2() && checkFunction(lastMotion))) // old motion
                     continue;
 
                 // copy
@@ -455,7 +453,7 @@ void videoEncoder::addFrame(const texture &frame, nbtSerializer &serializer)
     serializeScreen(serializer);
 }
 
-void videoEncoder::serializeMotionVectors(nbtSerializer &serializer)
+void videoEncoder::serializeMotionVectors(streamSerializer& serializer)
 {
     byte *unCompressedRectBytes = nullptr;
     size_t rectCount;
@@ -489,15 +487,16 @@ void videoEncoder::serializeMotionVectors(nbtSerializer &serializer)
     }
     else
     {
-        size_t compressedDataSize = 0;
-        sbyte *compressedRectBytes = nullptr; // initialize with nullptr so the serializer will allocate a new array
+        //size_t compressedDataSize = 0;
+        //sbyte *compressedRectBytes = nullptr; 
+        std::string compressedRectBytes;
+        // initialize with nullptr so the serializer will allocate a new array
 
         // when no packet with motion vectors is sent, return. for example when showCommunication is true and the screen is resized
-        if (!serializer.serializeVariableArray(std::wstring(L"motion vectors"), compressedRectBytes, compressedDataSize))
+        if (!serializer.serializeString(compressedRectBytes))
             return;
 
-        unCompressedArray = gzip::decompress((char *)compressedRectBytes, compressedDataSize);
-        delete[] compressedRectBytes;
+        unCompressedArray = gzip::decompress(&*compressedRectBytes.begin(), compressedRectBytes.size());
         unCompressedRectBytes = (byte *)&*unCompressedArray.begin();
         rectCount = unCompressedArray.size() / stride;
     }
@@ -521,14 +520,13 @@ void videoEncoder::serializeMotionVectors(nbtSerializer &serializer)
         }
         std::string compressedVectors = gzip::compress((char *)unCompressedRectBytes, rectCount * stride, Z_HUFFMAN_ONLY);
         delete[] unCompressedRectBytes;
-        sbyte *ptr = (sbyte *)&compressedVectors[0];
-        serializer.serializeArray(std::wstring(L"motion vectors"), ptr, compressedVectors.size());
+        serializer.serializeString(compressedVectors);
     }
     else
     {
         // copy pointer
         const posType *const endPtr = rectYPtr;
-        csize_t &count = endPtr - rectXPtr;
+        //csize_t &count = endPtr - rectXPtr;
         sourceMotionVectors.fill(compressedSourceMotionVector());
         // totalTexture.fill(color(0x80, 0xff, 0xff));
         auto it = builder.finishedRectangles.begin();
@@ -633,7 +631,7 @@ void videoEncoder::addMotionVectors() const
     }
 }
 
-void videoEncoder::serializeScreen(nbtSerializer &serializer)
+void videoEncoder::serializeScreen(streamSerializer& serializer)
 {
     constexpr int compressionColorChannelCount = bgraColorChannelCount;
     if (serializer.write)
@@ -642,12 +640,12 @@ void videoEncoder::serializeScreen(nbtSerializer &serializer)
         // std::copy(socket->lastRenderResult->baseArray, socket->lastRenderResult->baseArray + socket->lastRenderResult->size.volume(), colorsWithoutAlpha);
         fpng::fpng_encode_image_to_memory(diffTex.baseArray, diffTex.size.x, diffTex.size.y, compressionColorChannelCount, compressedScreen);
 
-        serializeNBTValue(serializer, L"compressedScreen", compressedScreen);
+        serializer.serialize(compressedScreen);
     }
     else
     {
         std::vector<byte> compressedScreen;
-        if (serializeNBTValue(serializer, L"compressedScreen", compressedScreen))
+        if (serializer.serialize(compressedScreen))
         {
             vectn<fsize_t, 2> size;
             uint32_t channelCount;
@@ -659,7 +657,7 @@ void videoEncoder::serializeScreen(nbtSerializer &serializer)
             diffTex = texture(size, (color *)&*decompressedScreen.begin());
         }
     }
-    serializer.serializeValue(L"compresssed", shouldCompress);
+    serializer.serialize(shouldCompress);
 }
 
 void videoEncoder::resizeGrid()

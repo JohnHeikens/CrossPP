@@ -92,5 +92,5 @@ texture resolutionTexture::getDoubleResolution(const texture& halfResolution)
 {
 	texture result(halfResolution.size * 2);
 	fillTransformedTexture(crectangle2(result.getClientRect()), halfResolution, result);
-	return std::move(result);
+	return result;
 }

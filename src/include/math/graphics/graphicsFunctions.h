@@ -187,17 +187,17 @@ inline void fillEllipse(const array2d<t> &array, crectangle2 &rect, const brush0
             cfp val = 1 - math::squared((midy - j) * multy);
             if (val > 0)
             {
-                cfp dx = sqrt(val) / multx;
+                cfp& dx = math::sqrt(val) / multx;
 
-                cfp &fromX = midx - dx;
-                cfp &toX = midx + dx;
+                //cfp &fromX = midx - dx;
+                //cfp &toX = midx + dx;
 
                 // 0.5 to 1.5:
                 // only fill two pixels
                 cint &minX = math::maximum((int)ceil(midx - dx), croppedRect.x);
                 cint &maxX = math::minimum((int)floor(midx + dx) + 1, croppedPos1.x); //+1 for also filling the last pixel
 
-                t *ptr = array.baseArray + j * array.size.x + minX;
+                //t *ptr = array.baseArray + j * array.size.x + minX;
 
                 fillRow(array, j, minX, maxX, b);
             }

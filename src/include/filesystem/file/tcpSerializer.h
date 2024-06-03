@@ -1,17 +1,17 @@
 #pragma once
 #include <SFML/Network/TcpSocket.hpp>
-#include <network/compressedPacket.h>
 #include <utility>
 #include "optimization/optimization.h"
 #include <future>
 #include <functional>
 #include "include/filesystem/serializer.h"
+#include <SFML/Network/Packet.hpp>
 
 struct tcpSerializer : streamBaseInterface
 {
 	sf::TcpSocket *socket = nullptr;
-	compressedPacket *receivingPacket = new compressedPacket();
-	compressedPacket *sendingPacket = new compressedPacket();
+	sf::Packet *receivingPacket = new sf::Packet();
+	sf::Packet *sendingPacket = new sf::Packet();
 	const char *receivingPacketPos = nullptr;
 	const char *receivingPacketEndPos = nullptr;
 	std::thread *packetSender = nullptr;
@@ -32,8 +32,8 @@ struct tcpSerializer : streamBaseInterface
 	inline sf::Socket::Status sendPacket()
 	{
 		// this way, other threads can construct a new packet already while the old packet is sending
-		compressedPacket *packetCopy = sendingPacket;
-		sendingPacket = new compressedPacket();
+		sf::Packet *packetCopy = sendingPacket;
+		sendingPacket = new sf::Packet();
 		// std::swap(packetCopy, sendingPacket);
 		// sendingPacket;
 		if (packetSender)
@@ -54,7 +54,7 @@ struct tcpSerializer : streamBaseInterface
 		return sf::Socket::Done;
 	}
 
-	inline void setReceivingPacket(compressedPacket *p)
+	inline void setReceivingPacket(sf::Packet *p)
 	{
 		receivingPacket = p;
 		receivingPacketPos = (const char *)p->getData();

@@ -3,5 +3,5 @@
 #pragma once
 struct label :public control
 {
-	label(const std::wstring& text = L"");
+	label(const std::wstring& text = std::wstring());
 };

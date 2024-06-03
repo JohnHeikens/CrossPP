@@ -4,7 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "clientInput.h"
+#include "network/client/clientInput.h"
 #include "math/vector/vectn.h"
 #include "globalFunctions.h"
 #include "interface/inamable.h"

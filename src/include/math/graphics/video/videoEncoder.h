@@ -31,12 +31,12 @@ struct videoEncoder
 
     // the 'perfect' screen. this is what we aim for
     // textureRGB totalCorrectTexture = textureRGB(veci2());
-    void addFrameDiff(nbtSerializer &serializer);
+    void addFrameDiff(streamSerializer& serializer);
     void resizeGrid();
     void addMotionVectors() const;
-    void serializeScreen(nbtSerializer& serializer);
-    void addFrame(const texture &frame, nbtSerializer &serializer);
-    void serializeMotionVectors(nbtSerializer &serializer);
+    void serializeScreen(streamSerializer& serializer);
+    void addFrame(const texture &frame, streamSerializer& serializer);
+    void serializeMotionVectors(streamSerializer& serializer);
     void visualize(const texture &screen);
     ~videoEncoder();
 };

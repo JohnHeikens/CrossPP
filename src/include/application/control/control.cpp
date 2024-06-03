@@ -1,6 +1,9 @@
 #include "control.h"
 #include "math/graphics/brush/brushes.h"
 #include "filesystem/filemanager.h"
+#include "math/graphics/brush/font/fontfamily.h"
+#include "math/graphics/brush/font/font.h"
+#include "math/theme.h"
 
 // to make sure its initialized
 // https://stackoverflow.com/questions/9092479/why-isnt-my-extern-variable-initialized-yet
@@ -217,7 +220,7 @@ void control::paste(const std::wstring &text)
 
 std::wstring control::copy()
 {
-	return focusedChild ? focusedChild->copy() : L"";
+	return focusedChild ? focusedChild->copy() : std::wstring();
 }
 
 void control::focusChild(control *newFocusedChild)

@@ -1,6 +1,5 @@
 #pragma once
 #include "fontfamily.h"
-#include "math/graphics/brush/brushes.h"
 
 constexpr fp defaultFontSize = 0x10;
 
@@ -51,7 +50,7 @@ struct baseFont
 		}
 
 	}
-	inline vec2 MeasureStringOffset(crectangle2& bounds, const std::wstring& text = L"") const
+	inline vec2 MeasureStringOffset(crectangle2& bounds, const std::wstring& text = std::wstring()) const
 	{
 		//start at top left
 		vec2 offset = vec2(bounds.pos0.x, bounds.pos0.y + bounds.h - fontSize);
@@ -76,7 +75,7 @@ struct baseFont
 	}
 
 	template<typename fontBrushType, typename = std::enable_if_t < is_brush_v<fontBrushType>>>
-	inline vec2 DrawString(const std::wstring text, crectangle2& rect, vec2 offset, const texture& renderTarget, const fontBrushType& b, const std::optional<mat3x3>& matrix = std::nullopt) const
+	inline vec2 DrawString(const std::wstring& text, crectangle2& rect, vec2 offset, const texture& renderTarget, const fontBrushType& b, const std::optional<mat3x3>& matrix = std::nullopt) const
 	{
 		if (text.length())
 		{
@@ -96,18 +95,18 @@ struct baseFont
 		}
 		return offset;
 	}
-	inline vec2 DrawString(const std::wstring text, crectangle2& rect, const texture& renderTarget, const std::optional<mat3x3>& matrix = std::nullopt) const
+	inline vec2 DrawString(const std::wstring& text, crectangle2& rect, const texture& renderTarget, const std::optional<mat3x3>& matrix = std::nullopt) const
 	{
 		return DrawString(text, rect, MeasureStringOffset(rect, std::wstring()), renderTarget, matrix);
 	}
 	//returns the position for the next letter like measurestring
 
 	template<typename fontBrushType, typename = std::enable_if_t<is_brush_v<fontBrushType>>>
-	inline vec2 DrawString(const std::wstring text, crectangle2& rect, const texture& renderTarget, const fontBrushType& b, const std::optional<mat3x3>& matrix = std::nullopt) const
+	inline vec2 DrawString(const std::wstring& text, crectangle2& rect, const texture& renderTarget, const fontBrushType& b, const std::optional<mat3x3>& matrix = std::nullopt) const
 	{
 		return DrawString(text, rect, MeasureStringOffset(rect, std::wstring()), renderTarget, b, matrix);
 	}
-	inline virtual vec2 DrawString(const std::wstring text, crectangle2& rect, cvec2& offset, const texture& renderTarget, const std::optional<mat3x3>& matrix = std::nullopt) const
+	inline virtual vec2 DrawString(const std::wstring& text, crectangle2& rect, cvec2& offset, const texture& renderTarget, const std::optional<mat3x3>& matrix = std::nullopt) const
 	{
 		return DrawString(text, rect, offset, renderTarget, *family.tex, matrix);
 	}

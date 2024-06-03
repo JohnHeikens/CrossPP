@@ -21,7 +21,7 @@ struct arraynd
 
 	constexpr arraynd(cvectn<fsize_t, n> &size = cvect2<fsize_t>(), cbool &initializeToDefault = true) : arraynd(size, initializeToDefault ? new t[size.volume()]() : new t[size.volume()]) {}
 
-	constexpr arraynd(const std::vector<t> &elements, cvectn<fsize_t, n> &size) : baseArray(new t[size.volume()]), size(size)
+	constexpr arraynd(const std::vector<t> &elements, cvectn<fsize_t, n> &size) : size(size), baseArray(new t[size.volume()])
 	{
 		if constexpr (isDebugging)
 		{
@@ -76,7 +76,7 @@ struct arraynd
 	};
 
 	// move constructor
-	inline arraynd(arraynd &&other) : baseArray(other.baseArray), size(other.size)
+	inline arraynd(arraynd &&other) : size(other.size), baseArray(other.baseArray)
 	{
 		other.baseArray = nullptr;
 		other.size = veci2();

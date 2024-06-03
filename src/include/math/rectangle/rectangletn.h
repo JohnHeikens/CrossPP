@@ -2,7 +2,6 @@
 #include "math/direction.h"
 #include "math/vector\vectn.h"
 #include "math/graphics/alignment.h"
-#include "math/random/random.h"
 
 template <typename t, fsize_t axisCount>
 struct rectIteratortn;
@@ -374,7 +373,7 @@ public:
 
 	constexpr rectIteratortn() = default;
 
-	constexpr rectIteratortn(crectangletn<t, axisCount> &rect, cvectn<t, axisCount> &pos) : pos0(rect.pos0), pos1(rect.pos1()), pos(pos) {}
+	constexpr rectIteratortn(crectangletn<t, axisCount> &rect, cvectn<t, axisCount> &pos) : pos(pos), pos0(rect.pos0), pos1(rect.pos1()) {}
 
 	// ++prefix operator
 	constexpr rectIteratortn &operator++()

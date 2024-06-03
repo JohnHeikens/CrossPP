@@ -1,6 +1,7 @@
 #pragma once
 #include "math/rectangle/rectangletn.h"
 #include "math/vector/vectorfunctions.h"
+#include "math/random/random.h"
 // DONT USE THIS TO CONVERT TO PIXEL RECTANGLES; USE CEILRECT
 template <typename outputType = int, typename inputType, fsize_t axisCount>
 inline rectangletn<outputType, axisCount> floorRectangle(crectangletn<inputType, axisCount> &rect)

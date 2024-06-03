@@ -3,7 +3,7 @@
 #pragma once
 struct button :public control 
 {
-	button(const std::wstring& text = L"");
+	button(const std::wstring& text = std::wstring());
 	miliseconds lastClickTime = 0;
 	color clickColor = colorPalette::white;
 	virtual void click() override;

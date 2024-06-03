@@ -7,19 +7,21 @@
 #include "math/vector/vectn.h"
 #include "math/uuid.h"
 
-struct membuf : std::streambuf 
+struct membuf : std::streambuf
 {
-    membuf(char const* base, size_t size) {
-        char* p(const_cast<char*>(base));
-        this->setg(p, p, p + size);
-    }
+	membuf(char const *base, size_t size)
+	{
+		char *p(const_cast<char *>(base));
+		this->setg(p, p, p + size);
+	}
 };
 
-struct imemstream: virtual membuf, std::istream {
-    imemstream(char const* base, size_t size)
-        : membuf(base, size)
-        , std::istream(static_cast<std::streambuf*>(this)) {
-    }
+struct imemstream : virtual membuf, std::istream
+{
+	imemstream(char const *base, size_t size)
+		: membuf(base, size), std::istream(static_cast<std::streambuf *>(this))
+	{
+	}
 };
 
 struct streamBaseInterface
@@ -193,20 +195,22 @@ struct serializer : iSerializer
 	}
 
 	template <typename sizeType = int>
-	inline void serializeString(std::string &str) const
+	inline bool serializeString(std::string &str) const
 	{
 		sizeType size;
 		if (write)
 		{
 			size = (sizeType)str.size();
-			serialize(size);
+			if (!serialize(size))
+				return false;
 		}
 		else
 		{
-			serialize(size);
+			if (!serialize(size))
+				return false;
 			str = std::string((size_t)size, L'#');
 		}
-		serialize(&str[0], str.length());
+		return serialize(&str[0], str.length());
 	}
 
 	inline void serializeStringUntilZero(std::string &str) const

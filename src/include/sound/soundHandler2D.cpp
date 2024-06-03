@@ -2,7 +2,7 @@
 #include "filesystem/sfmlInputStream.h"
 #include "filesystem/fileio.h"
 
-//define al headers first! else the constants will be redefined by SFML
+// define al headers first! else the constants will be redefined by SFML
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <AL/alext.h>
@@ -46,9 +46,9 @@ constexpr fp getHeadRadius(cfp &headScreenDistance)
 {
     return headScreenDistance / 10;
 }
-//#ifndef ALC_HRTF_SOFT
-//#define ALC_HRTF_SOFT 0x1992
-//#endif
+// #ifndef ALC_HRTF_SOFT
+// #define ALC_HRTF_SOFT 0x1992
+// #endif
 void soundHandler2d::update()
 {
     static bool initialized = false;
@@ -93,7 +93,8 @@ void soundHandler2d::update()
 
     cmicroseconds currentTime = getmicroseconds();
     currentlyPlayIngAudio.update();
-    cfp &minimalVolume = 0.05f, maximalVolume = 1.0f;
+    // below the minimal volume, sounds will cut out
+    cfp &minimalVolume = 0.05f;
     cfp &headSize = getHeadRadius(earPosition.z); // the distance between the head and the screen is normally 3 * the size of the head
 
     // the place closest to the ear position, but still on the screen
@@ -114,7 +115,8 @@ void soundHandler2d::update()
 
         cfp &distance3D = (vec3(s->pos) - earPosition).length();
         cbool &canHear = (distance3D <= hearingRange3d) || (!s->isSpatial);
-        cfp &volumeMultiplier = getVolumeFactor(minDistance, attenuation, distance3D); // math::minimum(distanceFullVolume3D / distance3D, maximalVolume);
+        // enable this for debugging purposes
+        // cfp &volumeMultiplier = getVolumeFactor(minDistance, attenuation, distance3D);
 
         if (s->startedPlaying)
         {
@@ -192,109 +194,111 @@ void soundHandler2d::update()
 
 soundHandler2d::soundHandler2d()
 {
-    //ALCcontext *context = alcGetCurrentContext();
-    //ALCdevice *device = alcGetContextsDevice(context);
-    //ALCboolean hrtf;
-
-    //if (alcIsExtensionPresent(device, "ALC_SOFT_HRTF"))
-    //{
-    //    ALCint attr[] = {ALC_HRTF_SOFT, ALC_TRUE, 0};
-    //    context = alcCreateContext(device, attr);
-    //}
-        // Retrieve the current OpenAL context and device
-    ALCdevice *device;
-    ALCcontext *context;
-    ALCint hrtf;
-    const ALCchar *name;
-
-    device = alcOpenDevice(NULL); // Open default device
-    //if (!device) {
-    //    
-    //    //fprintf(stderr, "Unable to open default device\n");
-    //    return;
-    //}
-
-    // Check if HRTF extension is available
-    if (alcIsExtensionPresent(device, "ALC_SOFT_HRTF")) {
-        ALCint attr[3] = { ALC_HRTF_SOFT, ALC_TRUE, 0 };
-        context = alcCreateContext(device, attr);
-    } else {
-        //fprintf(stderr, "HRTF extension not available\n");
-        //hrtf is not available; SFML itself will create the audio device for us
-        alcCloseDevice(device);
-        return;
-    }
-
-    //if (!context) {
-    //    fprintf(stderr, "Unable to create context\n");
-    //    alcCloseDevice(device);
-    //    return -1;
-    //}
-
-    alcMakeContextCurrent(context);
-
-    
-    ALCint num_hrtf;
-     /* Enumerate available HRTFs, and reset the device using one. */
-    alcGetIntegerv(device, ALC_NUM_HRTF_SPECIFIERS_SOFT, 1, &num_hrtf);
-    //if(!num_hrtf)
-    //    printf("No HRTFs found\n");
-    //else
-    //{
-    //    ALCint attr[5];
-    //    ALCint index = -1;
-    //    ALCint i;
-//
-    //    printf("Available HRTFs:\n");
-    //    for(i = 0;i < num_hrtf;i++)
-    //    {
-    //        const ALCchar *name = alcGetStringiSOFT(device, ALC_HRTF_SPECIFIER_SOFT, i);
-    //        printf("    %d: %s\n", i, name);
-//
-    //        /* Check if this is the HRTF the user requested. */
-    //        if(hrtfname && strcmp(name, hrtfname) == 0)
-    //            index = i;
-    //    }
-//
-    //    i = 0;
-    //    attr[i++] = ALC_HRTF_SOFT;
-    //    attr[i++] = ALC_TRUE;
-    //    if(index == -1)
-    //    {
-    //        if(hrtfname)
-    //            printf("HRTF \"%s\" not found\n", hrtfname);
-    //        printf("Using default HRTF...\n");
-    //    }
-    //    else
-    //    {
-    //        printf("Selecting HRTF %d...\n", index);
-    //        attr[i++] = ALC_HRTF_ID_SOFT;
-    //        attr[i++] = index;
-    //    }
-    //    attr[i] = 0;
-//
-    //    if(!alcResetDeviceSOFT(device, attr))
-    //        printf("Failed to reset device: %s\n", alcGetString(device, alcGetError(device)));
-    //}
-
-    // Check if HRTF is enabled
-    //alcGetIntegerv(device, ALC_HRTF_SOFT, 1, &hrtf);
-    //if (hrtf) {
-    //    //printf("HRTF is enabled\n");
-    //    //name = alcGetString(device, ALC_HRTF_STATUS_SOFT);
-    //    //printf("HRTF status: %s\n", name);
-    //} else {
-    //    //printf("HRTF is not enabled\n");
-    //}
-    // Enable HRTF if available
-    // ALCint hrtf;
-    // alcGetIntegerv(device, alc_ste, 1, &hrtf);
-    // if (hrtf == ALC_FALSE) {
-    //    alcResetDeviceSOFT(device, nullptr);
-    //    std::cerr << "HRTF not supported, continuing without it." << std::endl;
-    //} else {
-    //    std::cout << "HRTF supported and enabled." << std::endl;
-    //}
+    //   // ALCcontext *context = alcGetCurrentContext();
+    //   // ALCdevice *device = alcGetContextsDevice(context);
+    //   // ALCboolean hrtf;
+//   
+    //   // if (alcIsExtensionPresent(device, "ALC_SOFT_HRTF"))
+    //   //{
+    //   //     ALCint attr[] = {ALC_HRTF_SOFT, ALC_TRUE, 0};
+    //   //     context = alcCreateContext(device, attr);
+    //   // }
+    //   //  Retrieve the current OpenAL context and device
+    //   ALCdevice *device;
+    //   ALCcontext *context;
+    //   // ALCint hrtf;
+    //   // const ALCchar *name;
+//   
+    //   device = alcOpenDevice(NULL); // Open default device
+    //   // if (!device) {
+    //   //
+    //   //     //fprintf(stderr, "Unable to open default device\n");
+    //   //     return;
+    //   // }
+//   
+    //   // Check if HRTF extension is available
+    //   if (alcIsExtensionPresent(device, "ALC_SOFT_HRTF"))
+    //   {
+    //       ALCint attr[3] = {ALC_HRTF_SOFT, ALC_TRUE, 0};
+    //       context = alcCreateContext(device, attr);
+    //   }
+    //   else
+    //   {
+    //       // fprintf(stderr, "HRTF extension not available\n");
+    //       // hrtf is not available; SFML itself will create the audio device for us
+    //       alcCloseDevice(device);
+    //       return;
+    //   }
+//   
+    //   // if (!context) {
+    //   //     fprintf(stderr, "Unable to create context\n");
+    //   //     alcCloseDevice(device);
+    //   //     return -1;
+    //   // }
+//   
+    //   alcMakeContextCurrent(context);
+//   
+    //   ALCint num_hrtf;
+    //   /* Enumerate available HRTFs, and reset the device using one. */
+    //   alcGetIntegerv(device, ALC_NUM_HRTF_SPECIFIERS_SOFT, 1, &num_hrtf);
+    //   // if(!num_hrtf)
+    //   //     printf("No HRTFs found\n");
+    //   // else
+    //   //{
+    //   //     ALCint attr[5];
+    //   //     ALCint index = -1;
+    //   //     ALCint i;
+    //   //
+    //   //    printf("Available HRTFs:\n");
+    //   //    for(i = 0;i < num_hrtf;i++)
+    //   //    {
+    //   //        const ALCchar *name = alcGetStringiSOFT(device, ALC_HRTF_SPECIFIER_SOFT, i);
+    //   //        printf("    %d: %s\n", i, name);
+    //   //
+    //   //        /* Check if this is the HRTF the user requested. */
+    //   //        if(hrtfname && strcmp(name, hrtfname) == 0)
+    //   //            index = i;
+    //   //    }
+    //   //
+    //   //    i = 0;
+    //   //    attr[i++] = ALC_HRTF_SOFT;
+    //   //    attr[i++] = ALC_TRUE;
+    //   //    if(index == -1)
+    //   //    {
+    //   //        if(hrtfname)
+    //   //            printf("HRTF \"%s\" not found\n", hrtfname);
+    //   //        printf("Using default HRTF...\n");
+    //   //    }
+    //   //    else
+    //   //    {
+    //   //        printf("Selecting HRTF %d...\n", index);
+    //   //        attr[i++] = ALC_HRTF_ID_SOFT;
+    //   //        attr[i++] = index;
+    //   //    }
+    //   //    attr[i] = 0;
+    //   //
+    //   //    if(!alcResetDeviceSOFT(device, attr))
+    //   //        printf("Failed to reset device: %s\n", alcGetString(device, alcGetError(device)));
+    //   //}
+//   
+    //   // Check if HRTF is enabled
+    //   // alcGetIntegerv(device, ALC_HRTF_SOFT, 1, &hrtf);
+    //   // if (hrtf) {
+    //   //    //printf("HRTF is enabled\n");
+    //   //    //name = alcGetString(device, ALC_HRTF_STATUS_SOFT);
+    //   //    //printf("HRTF status: %s\n", name);
+    //   //} else {
+    //   //    //printf("HRTF is not enabled\n");
+    //   //}
+    //   // Enable HRTF if available
+    //   // ALCint hrtf;
+    //   // alcGetIntegerv(device, alc_ste, 1, &hrtf);
+    //   // if (hrtf == ALC_FALSE) {
+    //   //    alcResetDeviceSOFT(device, nullptr);
+    //   //    std::cerr << "HRTF not supported, continuing without it." << std::endl;
+    //   //} else {
+    //   //    std::cout << "HRTF supported and enabled." << std::endl;
+    //   //}
 }
 
 void soundHandler2d::playAudio(const std::shared_ptr<audio2d> &audioToPlay)
