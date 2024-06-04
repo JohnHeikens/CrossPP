@@ -1,5 +1,5 @@
 #include "control.h"
-#include "math/theme.h"
+#include "application/theme.h"
 template <typename childListType>
 inline void layoutTableCentered(crectanglei2 &rect, const childListType &controls, cveci2 &childSize = buttonSize, cint &margin = buttonMargin)
 {

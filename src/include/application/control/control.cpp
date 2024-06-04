@@ -3,7 +3,7 @@
 #include "filesystem/filemanager.h"
 #include "math/graphics/brush/font/fontfamily.h"
 #include "math/graphics/brush/font/font.h"
-#include "math/theme.h"
+#include "application/theme.h"
 
 // to make sure its initialized
 // https://stackoverflow.com/questions/9092479/why-isnt-my-extern-variable-initialized-yet
